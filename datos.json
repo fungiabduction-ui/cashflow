@@ -1416,6 +1416,59 @@
       "margen": 77.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0032\n📅 Fecha: 21/03/2026\n👤 Cliente: Ariel Roberts\n\n🛒 Pedido\n\n💀 2 ud × $ 22,785 = $ 45,570\n\n💰 Total: $ 45,570\n📝 Nota: 🔴 Pendiente",
       "auditText": "--- AUDITORÍA ---\nTotal: $ 45,570 | Costo: $ 10,150 | Margen: 77.7% | ID: V-202603-0032"
+    },
+    {
+      "id": "V-202603-0033",
+      "fecha": "2026-03-22",
+      "fechaDisplay": "22/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": "Domingo 18:00",
+      "cliente": "Flor (Aldana)",
+      "productos": {
+        "calaveras": 5,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 5,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 113925,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 113925,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 113925,
+        "totalUSDT": null
+      },
+      "costo": 25375,
+      "margen": 77.7,
+      "ticketText": "🧾 Orden de Venta: V-202603-0033\n📅 Fecha: 22/03/2026\n👤 Cliente: Flor (Aldana)\n\n🛒 Pedido\n\n💀 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925\n📝 Nota: Domingo 18:00",
+      "auditText": "--- AUDITORÍA ---\nTotal: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202603-0033"
     }
   ],
   "egresos": [
