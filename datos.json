@@ -1363,59 +1363,6 @@
       "margen": 90,
       "ticketText": "🧾 Orden de Venta: V-202603-0031\n📅 Fecha: 21/03/2026\n[Importado]\n💰 Total: $ 79,968\n📝 Nico Veintemilla 20:00",
       "auditText": "[Importado] V-202603-0031"
-    },
-    {
-      "id": "V-202603-0032",
-      "fecha": "2026-03-21",
-      "fechaDisplay": "21/03/2026",
-      "mesActual": "202603",
-      "tipoPago": "ARS",
-      "tc": null,
-      "nota": "🔴 Pendiente",
-      "cliente": "Ariel Roberts",
-      "productos": {
-        "calaveras": 2,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 2,
-        "precioPastilla": 22785,
-        "tramoInfo": 5,
-        "totalPastillasLinea": 45570,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "p-past",
-            "varId": "v-cal",
-            "qty": 2,
-            "precio": 22785,
-            "subtotal": 45570
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 45570,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 45570,
-        "totalUSDT": null
-      },
-      "costo": 10150,
-      "margen": 77.7,
-      "ticketText": "🧾 Orden de Venta: V-202603-0032\n📅 Fecha: 21/03/2026\n👤 Cliente: Ariel Roberts\n\n🛒 Pedido\n\n💀 2 ud × $ 22,785 = $ 45,570\n\n💰 Total: $ 45,570\n📝 Nota: 🔴 Pendiente",
-      "auditText": "--- AUDITORÍA ---\nTotal: $ 45,570 | Costo: $ 10,150 | Margen: 77.7% | ID: V-202603-0032"
     }
   ],
   "egresos": [
