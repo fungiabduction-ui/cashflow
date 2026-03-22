@@ -2001,8 +2001,8 @@
     },
     {
       "id": "E-202603-0032",
-      "fecha": "2026-03-22",
-      "fechaDisplay": "22/03/2026",
+      "fecha": "2026-03-21",
+      "fechaDisplay": "21/03/2026",
       "mesActual": "202603",
       "concepto": "Pizza Santa Lucia",
       "montoTotal": 31500,
@@ -2015,6 +2015,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 22/03/2026\nID Egreso: E-202603-0032\n\n📉 Egreso:\nConcepto: Pizza Santa Lucia\nMonto: $ 31,500\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 31,500\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0033",
+      "fecha": "2026-03-21",
+      "fechaDisplay": "21/03/2026",
+      "mesActual": "202603",
+      "concepto": "Sprite 0",
+      "montoTotal": 5000,
+      "cuotaBase": 5000,
+      "ultimaCuota": 5000,
+      "impactoCaja": 5000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "03/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 21/03/2026\nID Egreso: E-202603-0033\n\n📉 Egreso:\nConcepto: Sprite 0\nMonto: $ 5,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 5,000\nFinaliza: 03/2026"
     }
   ],
   "precios": null,
