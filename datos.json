@@ -2078,6 +2078,28 @@
       "precioVenta": 1450,
       "resultadoRealizado": 95782,
       "capitalRecuperado": 1388848
+    },
+    {
+      "id": "I-202603-0002",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "USD",
+      "fuente": "distribucion",
+      "modalidad": "COMPRA",
+      "monedaOrigen": "ARS",
+      "monedaDestino": "USD",
+      "monto": 670478.5,
+      "moneda": "ARS",
+      "montoARS": 670478.5,
+      "precioCompra": 1200,
+      "cantidad": "558,73 USD",
+      "precioActual": 1425,
+      "resultadoFlotante": 0,
+      "estado": "ACTIVA",
+      "fechaCierre": null,
+      "nota": null,
+      "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0002\n📈 Inversión:\n  Activo: OTRO\n  Fuente: distribucion\n  Monto invertido: $ 670,479\n  Precio de compra: $ 1,200 ARS\n  Cantidad adquirida: 558,73 USD\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 670,479\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — OTRO\n"
     }
   ],
   "liquidezExterna": []
