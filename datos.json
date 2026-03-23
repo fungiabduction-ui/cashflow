@@ -2037,18 +2037,6 @@
   "precios": null,
   "costos": null,
   "productos": null,
-  "liquidezExterna": [
-    {
-      "id": "L-202603-0001",
-      "fecha": "2026-03-23",
-      "fechaDisplay": "23/03/2026",
-      "mesActual": "202603",
-      "moneda": "USD",
-      "monto": 10000,
-      "arsEquivalente": 14250000,
-      "btcEquivalente": 0.14697237,
-      "descripcion": "Ahorro"
-    }
-  ],
+  "liquidezExterna": [],
   "inversiones": []
 }
