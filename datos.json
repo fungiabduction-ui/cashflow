@@ -2037,25 +2037,18 @@
   "precios": null,
   "costos": null,
   "productos": null,
-  "inversiones": [
+  "inversiones": [],
+  "liquidezExterna": [
     {
-      "id": "I-202603-0001",
+      "id": "L-202603-0001",
       "fecha": "2026-03-23",
       "fechaDisplay": "23/03/2026",
       "mesActual": "202603",
-      "activo": "USD_BLUE",
-      "fuente": "distribucion",
-      "monto": 2000000,
-      "moneda": "ARS",
-      "montoARS": 2000000,
-      "precioCompra": 1425,
-      "cantidad": "1,403.50 USD",
-      "precioActual": 1425,
-      "resultadoFlotante": 0,
-      "estado": "ACTIVA",
-      "fechaCierre": null,
-      "nota": null,
-      "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0001\n📈 Inversión:\n  Activo: Dólar Blue (USD)\n  Fuente: distribucion\n  Monto invertido: $ 2,000,000\n  Precio de compra: $ 1,425 ARS\n  Cantidad adquirida: 1,403.50 USD\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 2,000,000\n📊 Precio actual: $ 1,425\n📈 Resultado flotante: +$ 0\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — Dólar Blue (USD)\n"
+      "moneda": "USD",
+      "monto": 1000,
+      "arsEquivalente": 1425000,
+      "btcEquivalente": 0.01407301,
+      "descripcion": null
     }
   ]
 }
