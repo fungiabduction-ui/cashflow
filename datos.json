@@ -2032,6 +2032,22 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 21/03/2026\nID Egreso: E-202603-0033\n\n📉 Egreso:\nConcepto: Sprite 0\nMonto: $ 5,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 5,000\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0034",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "concepto": "🟡 LIQ. INVERSIÓN I-202603-0001 (USD) — Resultado: +$ 95,782",
+      "montoTotal": 1388848,
+      "impactoCaja": -1388848,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "2026-03-23",
+      "medio": "Liquidación Inversión",
+      "obs": "Ref: I-202603-0001 | Capital recuperado: $ 1,388,848",
+      "esLiquidacionInv": true,
+      "invRef": "I-202603-0001"
     }
   ],
   "precios": null,
@@ -2054,11 +2070,14 @@
       "precioCompra": 1350,
       "cantidad": "957,82 USD",
       "precioActual": 1425,
-      "resultadoFlotante": 0,
-      "estado": "ACTIVA",
-      "fechaCierre": null,
+      "resultadoFlotante": 71837,
+      "estado": "LIQUIDADA",
+      "fechaCierre": "2026-03-23",
       "nota": null,
-      "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0001\n📈 Inversión:\n  Activo: OTRO\n  Fuente: distribucion\n  Monto invertido: $ 1,293,066\n  Precio de compra: $ 1,350 ARS\n  Cantidad adquirida: 957,82 USD\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 1,293,066\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — OTRO\n"
+      "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0001\n📈 Inversión:\n  Activo: OTRO\n  Fuente: distribucion\n  Monto invertido: $ 1,293,066\n  Precio de compra: $ 1,350 ARS\n  Cantidad adquirida: 957,82 USD\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 1,293,066\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — OTRO\n",
+      "precioVenta": 1450,
+      "resultadoRealizado": 95782,
+      "capitalRecuperado": 1388848
     }
   ],
   "liquidezExterna": []
