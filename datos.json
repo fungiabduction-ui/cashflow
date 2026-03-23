@@ -2052,6 +2052,20 @@
       "precioActivo": 1430,
       "unidad": "839.16 USD",
       "nota": null
+    },
+    {
+      "id": "I-202603-0002",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "USD_BLUE",
+      "fuente": "resultado_real",
+      "moneda": "ARS",
+      "montoOriginal": 1200000,
+      "montoARS": 1200000,
+      "precioActivo": 1430,
+      "unidad": "839.16 USD",
+      "nota": null
     }
   ]
 }
