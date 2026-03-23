@@ -2103,6 +2103,28 @@
       "fechaCierre": null,
       "nota": null,
       "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0003\n📈 Inversión:\n  Activo: OTRO\n  Fuente: distribucion\n  Monto invertido: $ 1,000,000\n  Precio de compra: $ 1,435 ARS\n  Cantidad adquirida: 696,86 USD\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 1,000,000\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — OTRO\n"
+    },
+    {
+      "id": "I-202603-0004",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "BTC",
+      "fuente": "liquidez_externa",
+      "modalidad": "COMPRA",
+      "monedaOrigen": "USD",
+      "monedaDestino": "BTC",
+      "monto": 5000,
+      "moneda": "USD",
+      "montoARS": 7125000,
+      "precioCompra": 68000,
+      "cantidad": "0,07352941 BTC",
+      "precioActual": 70859,
+      "resultadoFlotante": 0,
+      "estado": "ACTIVA",
+      "fechaCierre": null,
+      "nota": null,
+      "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0004\n📈 Inversión:\n  Activo: OTRO\n  Fuente: liquidez_externa\n  Monto invertido: $ 5,000\n  Precio de compra: $ 68,000 ARS\n  Cantidad adquirida: 0,07352941 BTC\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 7,125,000\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — OTRO\n"
     }
   ],
   "liquidezExterna": [
