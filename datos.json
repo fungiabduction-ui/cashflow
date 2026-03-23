@@ -2066,6 +2066,20 @@
       "precioActivo": 68000,
       "unidad": "0.00382353 BTC",
       "nota": null
+    },
+    {
+      "id": "I-202603-0003",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "BTC",
+      "fuente": "distribucion",
+      "moneda": "USDT",
+      "montoOriginal": 260,
+      "montoARS": 384748,
+      "precioActivo": 68000,
+      "unidad": "0.00382353 BTC",
+      "nota": null
     }
   ]
 }
