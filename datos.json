@@ -2057,6 +2057,25 @@
       "fechaCierre": null,
       "nota": null,
       "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0001\n📈 Inversión:\n  Activo: Fondo Reposición (REPO)\n  Fuente: Distribución (DIST)\n  Monto invertido: $ 500,000\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 500,000\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — Fondo Reposición (REPO)\n"
+    },
+    {
+      "id": "I-202603-0002",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "USD_BLUE",
+      "fuente": "DIST",
+      "monto": 500000,
+      "moneda": "ARS",
+      "montoARS": 500000,
+      "precioCompra": 1425,
+      "cantidad": "350.87 USD",
+      "precioActual": 1425,
+      "resultadoFlotante": 0,
+      "estado": "ACTIVA",
+      "fechaCierre": null,
+      "nota": null,
+      "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0002\n📈 Inversión:\n  Activo: Dólar Blue (USD)\n  Fuente: Distribución (DIST)\n  Monto invertido: $ 500,000\n  Precio de compra: $ 1,425 ARS\n  Cantidad adquirida: 350.87 USD\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 500,000\n📊 Precio actual: $ 1,425\n📈 Resultado flotante: +$ 0\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — Dólar Blue (USD)\n"
     }
   ]
 }
