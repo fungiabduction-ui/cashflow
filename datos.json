@@ -2105,5 +2105,17 @@
       "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0003\n📈 Inversión:\n  Activo: OTRO\n  Fuente: distribucion\n  Monto invertido: $ 1,000,000\n  Precio de compra: $ 1,435 ARS\n  Cantidad adquirida: 696,86 USD\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 1,000,000\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — OTRO\n"
     }
   ],
-  "liquidezExterna": []
+  "liquidezExterna": [
+    {
+      "id": "L-202603-0001",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "moneda": "USD",
+      "monto": 10000,
+      "arsEquivalente": 14250000,
+      "btcEquivalente": 0.14112533,
+      "descripcion": null
+    }
+  ]
 }
