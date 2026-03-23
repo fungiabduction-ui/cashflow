@@ -2122,6 +2122,20 @@
       "precioActivo": 814.175,
       "unidad": "$ 814 en stock",
       "nota": null
+    },
+    {
+      "id": "I-202603-0007",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "STOCK_PAST",
+      "fuente": "distribucion",
+      "moneda": "ARS",
+      "montoOriginal": 814.175,
+      "montoARS": 814.175,
+      "precioActivo": 814.175,
+      "unidad": "$ 814 en stock",
+      "nota": null
     }
   ]
 }
