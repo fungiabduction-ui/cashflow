@@ -2050,5 +2050,20 @@
       "descripcion": null
     }
   ],
-  "inversiones": []
+  "inversiones": [
+    {
+      "id": "I-202603-0001",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "BTC",
+      "fuente": "liquidez_externa",
+      "moneda": "USD",
+      "montoOriginal": 10000,
+      "montoARS": 14250000,
+      "precioActivo": null,
+      "unidad": "0.147397 BTC",
+      "nota": null
+    }
+  ]
 }
