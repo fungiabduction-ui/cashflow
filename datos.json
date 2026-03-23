@@ -2037,7 +2037,27 @@
   "precios": null,
   "costos": null,
   "productos": null,
-  "inversiones": [],
+  "inversiones": [
+    {
+      "id": "I-202603-0001",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "REPO",
+      "fuente": "distribucion",
+      "monto": 2586132,
+      "moneda": "ARS",
+      "montoARS": 2586132,
+      "precioCompra": 0,
+      "cantidad": "$ 2,586,132 en reposición",
+      "precioActual": 0,
+      "resultadoFlotante": 0,
+      "estado": "ACTIVA",
+      "fechaCierre": null,
+      "nota": null,
+      "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0001\n📈 Inversión:\n  Activo: Fondo Reposición (REPO)\n  Fuente: distribucion\n  Monto invertido: $ 2,586,132\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 2,586,132\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — Fondo Reposición (REPO)\n"
+    }
+  ],
   "liquidezExterna": [
     {
       "id": "L-202603-0001",
