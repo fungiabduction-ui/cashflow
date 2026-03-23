@@ -2047,53 +2047,12 @@
       "activo": "BTC",
       "fuente": "distribucion",
       "moneda": "USDT",
-      "montoOriginal": 260,
-      "montoARS": 384748,
+      "montoOriginal": 500,
+      "montoARS": 739900,
       "precioActivo": 68000,
-      "unidad": "0.00382353 BTC",
-      "nota": null
-    },
-    {
-      "id": "I-202603-0002",
-      "fecha": "2026-03-23",
-      "fechaDisplay": "23/03/2026",
-      "mesActual": "202603",
-      "activo": "BTC",
-      "fuente": "distribucion",
-      "moneda": "USDT",
-      "montoOriginal": 260,
-      "montoARS": 384748,
-      "precioActivo": 68000,
-      "unidad": "0.00382353 BTC",
-      "nota": null
-    },
-    {
-      "id": "I-202603-0003",
-      "fecha": "2026-03-23",
-      "fechaDisplay": "23/03/2026",
-      "mesActual": "202603",
-      "activo": "BTC",
-      "fuente": "distribucion",
-      "moneda": "USDT",
-      "montoOriginal": 260,
-      "montoARS": 384748,
-      "precioActivo": 68000,
-      "unidad": "0.00382353 BTC",
-      "nota": null
-    },
-    {
-      "id": "I-202603-0004",
-      "fecha": "2026-03-23",
-      "fechaDisplay": "23/03/2026",
-      "mesActual": "202603",
-      "activo": "BTC",
-      "fuente": "distribucion",
-      "moneda": "USDT",
-      "montoOriginal": 260,
-      "montoARS": 384748,
-      "precioActivo": 68000,
-      "unidad": "0.00382353 BTC",
-      "nota": null
+      "unidad": "0.00735294 BTC",
+      "nota": null,
+      "ticketText": "ð¡ Inversion: I-202603-0001\nð Fecha: 23/03/2026\nð Activo: Bitcoin\nð° Fuente: Distribucion\nðµ Monto: 500 USDT = $ 739,900\nð Obtenido: 0.00735294 BTC\nð Precio: 68000\n"
     }
   ]
 }
