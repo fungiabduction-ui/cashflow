@@ -2037,33 +2037,6 @@
   "precios": null,
   "costos": null,
   "productos": null,
-  "liquidezExterna": [
-    {
-      "id": "L-202603-0001",
-      "fecha": "2026-03-22",
-      "fechaDisplay": "22/03/2026",
-      "mesActual": "202603",
-      "moneda": "USD",
-      "monto": 20000,
-      "arsEquivalente": 28500000,
-      "btcEquivalente": 0.29353059,
-      "descripcion": null
-    }
-  ],
-  "inversiones": [
-    {
-      "id": "I-202603-0001",
-      "fecha": "2026-03-22",
-      "fechaDisplay": "22/03/2026",
-      "mesActual": "202603",
-      "activo": "STOCK_PAST",
-      "fuente": "resultado_real",
-      "moneda": "ARS",
-      "montoOriginal": 300000,
-      "montoARS": 300000,
-      "precioActivo": null,
-      "unidad": "",
-      "nota": null
-    }
-  ]
+  "liquidezExterna": [],
+  "inversiones": []
 }
