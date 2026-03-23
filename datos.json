@@ -2053,6 +2053,21 @@
       "unidad": "0.00735294 BTC",
       "nota": null,
       "ticketText": "ð¡ Inversion: I-202603-0001\nð Fecha: 23/03/2026\nð Activo: Bitcoin\nð° Fuente: Distribucion\nðµ Monto: 500 USDT = $ 739,900\nð Obtenido: 0.00735294 BTC\nð Precio: 68000\n"
+    },
+    {
+      "id": "I-202603-0002",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "BTC",
+      "fuente": "distribucion",
+      "moneda": "USDT",
+      "montoOriginal": 500,
+      "montoARS": 739900,
+      "precioActivo": 68000,
+      "unidad": "0.00735294 BTC",
+      "nota": null,
+      "ticketText": "ð¡ Inversion: I-202603-0002\nð Fecha: 23/03/2026\nð Activo: Bitcoin\nð° Fuente: Distribucion\nðµ Monto: 500 USDT = $ 739,900\nð Obtenido: 0.00735294 BTC\nð Precio: 68000\n"
     }
   ]
 }
