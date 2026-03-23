@@ -2075,6 +2075,25 @@
       "fechaCierre": null,
       "nota": null,
       "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0002\n📈 Inversión:\n  Activo: Bitcoin (BTC)\n  Fuente: liquidez_externa\n  Monto invertido: 1,000.00 USDT\n  Precio de compra: $ 85,500,000 ARS (US$ 60,000.00)\n  Cantidad adquirida: 0.01666666 BTC\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 1,478,200\n📊 Precio actual: $ 101,257,650\n📈 Resultado flotante: +$ 262,627\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — Bitcoin (BTC)\n"
+    },
+    {
+      "id": "I-202603-0003",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "activo": "BTC",
+      "fuente": "liquidez_externa",
+      "monto": 1000,
+      "moneda": "USDT",
+      "montoARS": 1478200,
+      "precioCompra": 60000,
+      "cantidad": "0.01666666 BTC",
+      "precioActual": 71058,
+      "resultadoFlotante": 262627,
+      "estado": "ACTIVA",
+      "fechaCierre": null,
+      "nota": null,
+      "ticketText": "📅 Fecha: 23/03/2026\nID Inversión: I-202603-0003\n📈 Inversión:\n  Activo: Bitcoin (BTC)\n  Fuente: liquidez_externa\n  Monto invertido: 1,000.00 USDT\n  Precio de compra: $ 85,500,000 ARS (US$ 60,000.00)\n  Cantidad adquirida: 0.01666666 BTC\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 1,478,200\n📊 Precio actual: $ 101,257,650\n📈 Resultado flotante: +$ 262,627\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — Bitcoin (BTC)\n"
     }
   ],
   "liquidezExterna": [
