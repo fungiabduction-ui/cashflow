@@ -2032,6 +2032,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 21/03/2026\nID Egreso: E-202603-0033\n\n📉 Egreso:\nConcepto: Sprite 0\nMonto: $ 5,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 5,000\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0034",
+      "fecha": "2026-03-23",
+      "fechaDisplay": "23/03/2026",
+      "mesActual": "202603",
+      "concepto": "Supermercado",
+      "montoTotal": 42000,
+      "cuotaBase": 42000,
+      "ultimaCuota": 42000,
+      "impactoCaja": 42000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "03/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 23/03/2026\nID Egreso: E-202603-0034\n\n📉 Egreso:\nConcepto: Supermercado\nMonto: $ 42,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 42,000\nFinaliza: 03/2026"
     }
   ],
   "precios": null,
