@@ -1469,6 +1469,59 @@
       "margen": 77.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0033\n📅 Fecha: 22/03/2026\n👤 Cliente: Flor (Aldana)\n\n🛒 Pedido\n\n💀 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925\n📝 Nota: Domingo 18:00",
       "auditText": "--- AUDITORÍA ---\nTotal: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202603-0033"
+    },
+    {
+      "id": "V-202603-0034",
+      "fecha": "2026-03-27",
+      "fechaDisplay": "27/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": "10 gr",
+      "cliente": "Mauro Olmedo",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 10,
+        "precioHongos": 12000,
+        "totalHongos": 120000,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-hong",
+            "varId": null,
+            "qty": 10,
+            "precio": 12000,
+            "subtotal": 120000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 0,
+        "totalHongos": 120000,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 120000,
+        "totalUSDT": null
+      },
+      "costo": 20000,
+      "margen": 83.3,
+      "ticketText": "🧾 Orden de Venta: V-202603-0034\n📅 Fecha: 27/03/2026\n👤 Cliente: Mauro Olmedo\n\n🛒 Pedido\n\n🍄 10 g × $ 12,000 = $ 120,000\n\n💰 Total: $ 120,000\n📝 Nota: 10 gr",
+      "auditText": "--- AUDITORÍA ---\nTotal: $ 120,000 | Costo: $ 20,000 | Margen: 83.3% | ID: V-202603-0034"
     }
   ],
   "egresos": [
