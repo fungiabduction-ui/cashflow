@@ -1575,6 +1575,72 @@
       "margen": 76.5,
       "ticketText": "🧾 Orden de Venta: V-202603-0035\n📅 Fecha: 27/03/2026\n👤 Cliente: Federico Eduardo Parodi\n\n🛒 Pedido\n\n🍄 50 g × $ 8,500 = $ 425,000\n\n💰 Total: $ 425,000\n📝 Nota: Telegram @EL_kirki",
       "auditText": "--- AUDITORÍA ---\nTotal: $ 425,000 | Costo: $ 100,000 | Margen: 76.5% | ID: V-202603-0035"
+    },
+    {
+      "id": "V-202603-0036",
+      "fecha": "2026-03-27",
+      "fechaDisplay": "27/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": "chorizo | Recargo 20% | Recargo fijo $ 20,000 | Dto 10% | Dto fijo $ 50,000",
+      "cliente": "pepito",
+      "productos": {
+        "calaveras": 5,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 5,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 113925,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 113925,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 95317.5,
+        "subtotalBruto": 113925,
+        "ajusteNeto": -18607.5,
+        "totalUSDT": null
+      },
+      "costo": 25375,
+      "margen": 73.4,
+      "ajuste": {
+        "recargoPct": 20,
+        "recargoFijo": 20000,
+        "descPct": 10,
+        "descFijo": 50000,
+        "recargoPctMonto": 22785,
+        "recargoFijoMonto": 20000,
+        "descPctMonto": 11392.5,
+        "descFijoMonto": 50000,
+        "ajusteNeto": -18607.5
+      },
+      "ticketText": "🧾 Orden de Venta: V-202603-0036\n📅 Fecha: 27/03/2026\n👤 Cliente: pepito\n\n🛒 Pedido\n\n💀 5 ud × $ 22,785 = $ 113,925\n\n📈 Recargo 20%: +$ 22,785\n📈 Recargo fijo: +$ 20,000\n📉 Descuento 10%: -$ 11,393\n📉 Descuento fijo: -$ 50,000\n━━━━━━━━━━━━━━━━━━━━━\n\n💰 Total: $ 95,318\n   (subtotal $ 113,925 - ajuste $ 18,608)\n📝 Nota: chorizo | Recargo 20% | Recargo fijo $ 20,000 | Dto 10% | Dto fijo $ 50,000",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: $ -18,607 | Total: $ 95,318 | Costo: $ 25,375 | Margen: 73.4% | ID: V-202603-0036"
     }
   ],
   "egresos": [
