@@ -2292,6 +2292,23 @@
       "medio": "Otro",
       "obs": "Galicia",
       "ticketText": "📅 Fecha: 26/03/2026\nID Egreso: E-202603-0037\n\n📉 Egreso:\nConcepto: Edenor\nMonto: $ 68,469\nMedio de pago: Otro\n📝 Observaciones: Galicia\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 68,469\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0038",
+      "fecha": "2026-03-27",
+      "fechaDisplay": "27/03/2026",
+      "mesActual": "202603",
+      "concepto": "Peluqueria",
+      "montoTotal": 15000,
+      "cuotaBase": 15000,
+      "ultimaCuota": 15000,
+      "impactoCaja": 15000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "03/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 27/03/2026\nID Egreso: E-202603-0038\n\n📉 Egreso:\nConcepto: Peluqueria\nMonto: $ 15,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 15,000\nFinaliza: 03/2026"
     }
   ],
   "precios": null,
