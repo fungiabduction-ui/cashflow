@@ -1669,8 +1669,8 @@
       "mesActual": "202603",
       "tipoPago": "ARS",
       "tc": null,
-      "nota": null,
-      "cliente": "Samtt",
+      "nota": "Ñ+54 9 11 6368-7908",
+      "cliente": "SamTT",
       "productos": {
         "calaveras": 100,
         "teddy": 100,
@@ -1739,7 +1739,7 @@
         "descFijoMonto": 0,
         "ajusteNeto": 0
       },
-      "ticketText": "🧾 Orden de Venta: V-202603-0037\n📅 Fecha: 28/03/2026\n👤 Cliente: Samtt\n\n🛒 Pedido\n\n💀 100 ud × $ 10,800 = $ 1,080,000\n🧸 100 ud × $ 10,800 = $ 1,080,000\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 2,380,500",
+      "ticketText": "🧾 Orden de Venta: V-202603-0037\n📅 Fecha: 28/03/2026\n👤 Cliente: SamTT\n\n🛒 Pedido\n\nundefined 100  × $ 10,800 = $ 1,080,000\nundefined 100  × $ 10,800 = $ 1,080,000\nundefined 3  × $ 73,500 = $ 220,500\n\n💰 Total: $ 2,380,500\n📝 Nota: Ñ+54 9 11 6368-7908",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 2,380,500 | Ajuste: +$ 0 | Total: $ 2,380,500 | Costo: $ 1,038,925 | Margen: 56.4% | ID: V-202603-0037"
     },
     {
