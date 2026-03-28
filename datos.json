@@ -1661,6 +1661,86 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202603-0036\n📅 Fecha: 28/03/2026\n👤 Cliente: Cesar Beau\n\n🛒 Pedido\n\n💀 15 ud × $ 19,367 = $ 290,505\n🧸 5 ud × $ 19,367 = $ 96,835\n\n💰 Total: $ 387,340\n📝 Nota: @cesarbe77",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 387,340 | Ajuste: +$ 0 | Total: $ 387,340 | Costo: $ 101,500 | Margen: 73.8% | ID: V-202603-0036"
+    },
+    {
+      "id": "V-202603-0037",
+      "fecha": "2026-03-28",
+      "fechaDisplay": "28/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": null,
+      "cliente": "Samtt",
+      "productos": {
+        "calaveras": 100,
+        "teddy": 100,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 200,
+        "precioPastilla": 10800,
+        "tramoInfo": 200,
+        "totalPastillasLinea": 2160000,
+        "cristales": 3,
+        "precioCristales": 73500,
+        "totalCristales": 220500,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 100,
+            "precio": 10800,
+            "subtotal": 1080000
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 100,
+            "precio": 10800,
+            "subtotal": 1080000
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 3,
+            "precio": 73500,
+            "subtotal": 220500
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 2160000,
+        "totalCristales": 220500,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 2380500,
+        "subtotalBruto": 2380500,
+        "ajusteNeto": 0,
+        "totalUSDT": null
+      },
+      "costo": 1038925,
+      "margen": 56.4,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202603-0037\n📅 Fecha: 28/03/2026\n👤 Cliente: Samtt\n\n🛒 Pedido\n\n💀 100 ud × $ 10,800 = $ 1,080,000\n🧸 100 ud × $ 10,800 = $ 1,080,000\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 2,380,500",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 2,380,500 | Ajuste: +$ 0 | Total: $ 2,380,500 | Costo: $ 1,038,925 | Margen: 56.4% | ID: V-202603-0037"
     }
   ],
   "egresos": [
