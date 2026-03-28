@@ -1741,6 +1741,86 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202603-0037\n📅 Fecha: 28/03/2026\n👤 Cliente: Samtt\n\n🛒 Pedido\n\n💀 100 ud × $ 10,800 = $ 1,080,000\n🧸 100 ud × $ 10,800 = $ 1,080,000\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 2,380,500",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 2,380,500 | Ajuste: +$ 0 | Total: $ 2,380,500 | Costo: $ 1,038,925 | Margen: 56.4% | ID: V-202603-0037"
+    },
+    {
+      "id": "V-202603-0038",
+      "fecha": "2026-03-28",
+      "fechaDisplay": "28/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": null,
+      "cliente": "Juan Martin (Fede Schulzt)",
+      "productos": {
+        "calaveras": 8,
+        "teddy": 8,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 16,
+        "precioPastilla": 20580,
+        "tramoInfo": 15,
+        "totalPastillasLinea": 329280,
+        "cristales": 3,
+        "precioCristales": 73500,
+        "totalCristales": 220500,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 8,
+            "precio": 20580,
+            "subtotal": 164640
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 8,
+            "precio": 20580,
+            "subtotal": 164640
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 3,
+            "precio": 73500,
+            "subtotal": 220500
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 329280,
+        "totalCristales": 220500,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 549780,
+        "subtotalBruto": 549780,
+        "ajusteNeto": 0,
+        "totalUSDT": null
+      },
+      "costo": 105125,
+      "margen": 80.9,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202603-0038\n📅 Fecha: 28/03/2026\n👤 Cliente: Juan Martin (Fede Schulzt)\n\n🛒 Pedido\n\n💀 8 ud × $ 20,580 = $ 164,640\n🧸 8 ud × $ 20,580 = $ 164,640\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 549,780",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 549,780 | Ajuste: +$ 0 | Total: $ 549,780 | Costo: $ 105,125 | Margen: 80.9% | ID: V-202603-0038"
     }
   ],
   "egresos": [
