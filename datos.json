@@ -2503,6 +2503,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 28/03/2026\nID Egreso: E-202603-0040\n\n📉 Egreso:\nConcepto: Estacionamiento\nMonto: $ 30,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 30,000\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0041",
+      "fecha": "2026-03-29",
+      "fechaDisplay": "29/03/2026",
+      "mesActual": "202603",
+      "concepto": "Lo de Charly parrilla",
+      "montoTotal": 40000,
+      "cuotaBase": 40000,
+      "ultimaCuota": 40000,
+      "impactoCaja": 40000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "03/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 29/03/2026\nID Egreso: E-202603-0041\n\n📉 Egreso:\nConcepto: Lo de Charly parrilla\nMonto: $ 40,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 40,000\nFinaliza: 03/2026"
     }
   ],
   "precios": null,
