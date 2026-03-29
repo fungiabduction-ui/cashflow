@@ -2486,6 +2486,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 28/03/2026\nID Egreso: E-202603-0039\n\n📉 Egreso:\nConcepto: Carniceria\nMonto: $ 52,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 52,000\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0040",
+      "fecha": "2026-03-28",
+      "fechaDisplay": "28/03/2026",
+      "mesActual": "202603",
+      "concepto": "Estacionamiento",
+      "montoTotal": 30000,
+      "cuotaBase": 30000,
+      "ultimaCuota": 30000,
+      "impactoCaja": 30000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "03/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 28/03/2026\nID Egreso: E-202603-0040\n\n📉 Egreso:\nConcepto: Estacionamiento\nMonto: $ 30,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 30,000\nFinaliza: 03/2026"
     }
   ],
   "precios": null,
