@@ -1902,8 +1902,8 @@
       "mesActual": "202603",
       "tipoPago": "USDT",
       "tc": 1395,
-      "nota": null,
-      "cliente": null,
+      "nota": "+54 9 11 6237-3644",
+      "cliente": "Esteban",
       "productos": {
         "calaveras": 0,
         "teddy": 100,
@@ -1965,7 +1965,7 @@
         "descFijoMonto": 0,
         "ajusteNeto": 0
       },
-      "ticketText": "🧾 Orden de Venta: V-202603-0040\n📅 Fecha: 30/03/2026\n\n🛒 Pedido\n\n🧸 100 ud × $ 12,750 = $ 1,275,000\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 1,354,968\n→ Total en USDT: 971.30 USDT\n(TC: 1 USD = 1395 ARS)",
+      "ticketText": "🧾 Orden de Venta: V-202603-0040\n📅 Fecha: 30/03/2026\n👤 Cliente: Esteban\n\n🛒 Pedido\n\nundefined 100  × $ 12,750 = $ 1,275,000\nundefined 1  × $ 79,968 = $ 79,968\n\n💰 Total: $ 1,354,968\n→ Total en USDT: 971.30 USDT\n(TC: 1 USD = 1395 ARS)\n📝 Nota: +54 9 11 6237-3644",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,354,968 | Ajuste: +$ 0 | Total: $ 1,354,968 | Costo: $ 515,475 | Margen: 62% | ID: V-202603-0040"
     }
   ],
@@ -2683,6 +2683,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 29/03/2026\nID Egreso: E-202603-0042\n\n📉 Egreso:\nConcepto: YPF infinia\nMonto: $ 105,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 105,000\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0043",
+      "fecha": "2026-03-29",
+      "fechaDisplay": "29/03/2026",
+      "mesActual": "202603",
+      "concepto": "Merienda en la cochera",
+      "montoTotal": 23200,
+      "cuotaBase": 23200,
+      "ultimaCuota": 23200,
+      "impactoCaja": 23200,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "03/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 29/03/2026\nID Egreso: E-202603-0043\n\n📉 Egreso:\nConcepto: Merienda en la cochera\nMonto: $ 23,200\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 23,200\nFinaliza: 03/2026"
     }
   ],
   "precios": null,
