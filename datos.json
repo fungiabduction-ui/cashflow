@@ -1967,6 +1967,86 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202603-0040\n📅 Fecha: 30/03/2026\n👤 Cliente: Esteban\n\n🛒 Pedido\n\nundefined 100  × $ 12,750 = $ 1,275,000\nundefined 1  × $ 79,968 = $ 79,968\n\n💰 Total: $ 1,354,968\n→ Total en USDT: 971.30 USDT\n(TC: 1 USD = 1395 ARS)\n📝 Nota: +54 9 11 6237-3644",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,354,968 | Ajuste: +$ 0 | Total: $ 1,354,968 | Costo: $ 515,475 | Margen: 62% | ID: V-202603-0040"
+    },
+    {
+      "id": "V-202603-0041",
+      "fecha": "2026-03-30",
+      "fechaDisplay": "30/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "USDT",
+      "tc": 1427.4,
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 30,
+        "teddy": 30,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 60,
+        "precioPastilla": 14810,
+        "tramoInfo": 50,
+        "totalPastillasLinea": 888600,
+        "cristales": 8,
+        "precioCristales": 67972,
+        "totalCristales": 543776,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 30,
+            "precio": 14810,
+            "subtotal": 444300
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 30,
+            "precio": 14810,
+            "subtotal": 444300
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 8,
+            "precio": 67972,
+            "subtotal": 543776
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 888600,
+        "totalCristales": 543776,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 1432376,
+        "subtotalBruto": 1432376,
+        "ajusteNeto": 0,
+        "totalUSDT": 1003.49
+      },
+      "costo": 368300,
+      "margen": 74.3,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202603-0041\n📅 Fecha: 30/03/2026\n\n🛒 Pedido\n\n💀 30 ud × $ 14,810 = $ 444,300\n🧸 30 ud × $ 14,810 = $ 444,300\n💎 8 g × $ 67,972 = $ 543,776\n\n💰 Total: $ 1,432,376\n→ Total en USDT: 1,003.49 USDT\n(TC: 1 USD = 1427.4 ARS)",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,432,376 | Ajuste: +$ 0 | Total: $ 1,432,376 | Costo: $ 368,300 | Margen: 74.3% | ID: V-202603-0041"
     }
   ],
   "egresos": [
@@ -2717,6 +2797,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 29/03/2026\nID Egreso: E-202603-0044\n\n📉 Egreso:\nConcepto: Supermercado\nMonto: $ 18,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 18,000\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0045",
+      "fecha": "2026-03-29",
+      "fechaDisplay": "29/03/2026",
+      "mesActual": "202603",
+      "concepto": "Café morenita + soporte para cuello",
+      "montoTotal": 21960,
+      "cuotaBase": 7320,
+      "ultimaCuota": 7320,
+      "impactoCaja": 7320,
+      "cuotasTotales": 3,
+      "cuotasRestantes": 2,
+      "finaliza": "05/2026",
+      "medio": "Mercado Pago",
+      "obs": "$ 65,880 monto total",
+      "ticketText": "📅 Fecha: 29/03/2026\nID Egreso: E-202603-0045\n\n📉 Egreso:\nConcepto: Café morenita + soporte para cuello\nMonto: $ 21,960\nMedio de pago: Mercado Pago\nCuotas: 3 (base $ 7,320, última $ 7,320)\n📝 Observaciones: $ 65,880 monto total\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 7,320\nCuotas restantes: 2\nFinaliza: 05/2026"
     }
   ],
   "precios": null,
