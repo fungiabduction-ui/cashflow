@@ -1821,6 +1821,79 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202603-0038\n📅 Fecha: 28/03/2026\n👤 Cliente: Juan Martin (Fede Schulzt)\n\n🛒 Pedido\n\n💀 8 ud × $ 20,580 = $ 164,640\n🧸 8 ud × $ 20,580 = $ 164,640\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 549,780",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 549,780 | Ajuste: +$ 0 | Total: $ 549,780 | Costo: $ 105,125 | Margen: 80.9% | ID: V-202603-0038"
+    },
+    {
+      "id": "V-202603-0039",
+      "fecha": "2026-03-30",
+      "fechaDisplay": "30/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 0,
+        "teddy": 100,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 100,
+        "precioPastilla": 12750,
+        "tramoInfo": 100,
+        "totalPastillasLinea": 1275000,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 100,
+            "precio": 12750,
+            "subtotal": 1275000
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 1275000,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 1354968,
+        "subtotalBruto": 1354968,
+        "ajusteNeto": 0,
+        "totalUSDT": null
+      },
+      "costo": 515475,
+      "margen": 62,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202603-0039\n📅 Fecha: 30/03/2026\n\n🛒 Pedido\n\n🧸 100 ud × $ 12,750 = $ 1,275,000\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 1,354,968",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,354,968 | Ajuste: +$ 0 | Total: $ 1,354,968 | Costo: $ 515,475 | Margen: 62% | ID: V-202603-0039"
     }
   ],
   "egresos": [
@@ -2534,7 +2607,7 @@
       "cuotasTotales": 1,
       "cuotasRestantes": 0,
       "finaliza": "03/2026",
-      "medio": "Efectivo",
+      "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 29/03/2026\nID Egreso: E-202603-0042\n\n📉 Egreso:\nConcepto: YPF infinia\nMonto: $ 105,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 105,000\nFinaliza: 03/2026"
     }
