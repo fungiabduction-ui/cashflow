@@ -2047,6 +2047,59 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202603-0041\n📅 Fecha: 30/03/2026\n\n🛒 Pedido\n\n💀 30 ud × $ 14,810 = $ 444,300\n🧸 30 ud × $ 14,810 = $ 444,300\n💎 8 g × $ 67,972 = $ 543,776\n\n💰 Total: $ 1,432,376\n→ Total en USDT: 1,003.49 USDT\n(TC: 1 USD = 1427.4 ARS)",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,432,376 | Ajuste: +$ 0 | Total: $ 1,432,376 | Costo: $ 368,300 | Margen: 74.3% | ID: V-202603-0041"
+    },
+    {
+      "id": "V-202603-0042",
+      "fecha": "2026-03-31",
+      "fechaDisplay": "31/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 7,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 7,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 159495,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 7,
+            "precio": 22785,
+            "subtotal": 159495
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 159495,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 159495,
+        "totalUSDT": null
+      },
+      "costo": 35525,
+      "margen": 77.7,
+      "ticketText": "🧾 Orden de Venta: V-202603-0042\n📅 Fecha: 31/03/2026\n\n🛒 Pedido\n\n💀 7 ud × $ 22,785 = $ 159,495\n\n💰 Total: $ 159,495",
+      "auditText": "--- AUDITORÍA ---\nTotal: $ 159,495 | Costo: $ 35,525 | Margen: 77.7% | ID: V-202603-0042"
     }
   ],
   "egresos": [
@@ -2820,5 +2873,95 @@
   "costos": null,
   "productos": null,
   "inversiones": [],
-  "liquidezExterna": []
+  "liquidezExterna": [],
+  "stockMovs": [
+    {
+      "fecha": "2026-03-31T05:11:46.353Z",
+      "tipo": "AJUSTE",
+      "prodId": "p-pet",
+      "nombre": "Petri",
+      "emoji": "🧫",
+      "delta": 20,
+      "antes": 0,
+      "despues": 20,
+      "nota": "Ajuste manual"
+    },
+    {
+      "fecha": "2026-03-31T05:11:46.353Z",
+      "tipo": "AJUSTE",
+      "prodId": "p-got",
+      "nombre": "Goteros",
+      "emoji": "💧",
+      "delta": 3,
+      "antes": 0,
+      "despues": 3,
+      "nota": "Ajuste manual"
+    },
+    {
+      "fecha": "2026-03-31T05:11:46.353Z",
+      "tipo": "AJUSTE",
+      "prodId": "p-hong",
+      "nombre": "Hongos",
+      "emoji": "🍄",
+      "delta": 100,
+      "antes": 0,
+      "despues": 100,
+      "nota": "Ajuste manual"
+    },
+    {
+      "fecha": "2026-03-31T05:11:46.353Z",
+      "tipo": "AJUSTE",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": 500,
+      "antes": 0,
+      "despues": 500,
+      "nota": "Ajuste manual"
+    },
+    {
+      "fecha": "2026-03-31T05:11:46.353Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-lck",
+      "nombre": "Lucky Cat",
+      "emoji": "🐱",
+      "delta": 20,
+      "antes": 0,
+      "despues": 20,
+      "nota": "Ajuste manual"
+    },
+    {
+      "fecha": "2026-03-31T05:11:46.353Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": 500,
+      "antes": 0,
+      "despues": 500,
+      "nota": "Ajuste manual"
+    },
+    {
+      "fecha": "2026-03-31T05:11:46.353Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": 1000,
+      "antes": 0,
+      "despues": 1000,
+      "nota": "Ajuste manual"
+    }
+  ],
+  "stock": {
+    "grp-p-past": 0,
+    "v-cal": 1000,
+    "v-ted": 500,
+    "v-lck": 20,
+    "v-gen": 0,
+    "p-cris": 500,
+    "p-hong": 100,
+    "p-got": 3,
+    "p-pet": 20
+  }
 }
