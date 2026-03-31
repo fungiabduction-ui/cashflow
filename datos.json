@@ -2100,6 +2100,59 @@
       "margen": 77.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0042\n📅 Fecha: 31/03/2026\n\n🛒 Pedido\n\n💀 7 ud × $ 22,785 = $ 159,495\n\n💰 Total: $ 159,495",
       "auditText": "--- AUDITORÍA ---\nTotal: $ 159,495 | Costo: $ 35,525 | Margen: 77.7% | ID: V-202603-0042"
+    },
+    {
+      "id": "V-202603-0043",
+      "fecha": "2026-03-31",
+      "fechaDisplay": "31/03/2026",
+      "mesActual": "202603",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 70,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 70,
+        "precioPastilla": 14810,
+        "tramoInfo": 50,
+        "totalPastillasLinea": 1036700,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 70,
+            "precio": 14810,
+            "subtotal": 1036700
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 1036700,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 1036700,
+        "totalUSDT": null
+      },
+      "costo": 355250,
+      "margen": 65.7,
+      "ticketText": "🧾 Orden de Venta: V-202603-0043\n📅 Fecha: 31/03/2026\n\n🛒 Pedido\n\n💀 70 ud × $ 14,810 = $ 1,036,700\n\n💰 Total: $ 1,036,700",
+      "auditText": "--- AUDITORÍA ---\nTotal: $ 1,036,700 | Costo: $ 355,250 | Margen: 65.7% | ID: V-202603-0043"
     }
   ],
   "egresos": [
@@ -2876,6 +2929,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-03-31T05:12:20.941Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "💀",
+      "delta": 0,
+      "antes": 0,
+      "despues": 0,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-03-31T05:12:20.941Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -7,
+      "antes": 1000,
+      "despues": 993,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-03-31T05:11:46.353Z",
       "tipo": "AJUSTE",
       "prodId": "p-pet",
@@ -2955,7 +3030,7 @@
   ],
   "stock": {
     "grp-p-past": 0,
-    "v-cal": 1000,
+    "v-cal": 993,
     "v-ted": 500,
     "v-lck": 20,
     "v-gen": 0,
