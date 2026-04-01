@@ -3102,6 +3102,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 30/03/2026\nID Egreso: E-202603-0046\n\n📉 Egreso:\nConcepto: Super Vea\nMonto: $ 22,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 22,000\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202603-0047",
+      "fecha": "2026-03-31",
+      "fechaDisplay": "31/03/2026",
+      "mesActual": "202603",
+      "concepto": "Super Chino",
+      "montoTotal": 13000,
+      "cuotaBase": 13000,
+      "ultimaCuota": 13000,
+      "impactoCaja": 13000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "03/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 31/03/2026\nID Egreso: E-202603-0047\n\n📉 Egreso:\nConcepto: Super Chino\nMonto: $ 13,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 13,000\nFinaliza: 03/2026"
     }
   ],
   "precios": null,
