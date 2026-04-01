@@ -1976,7 +1976,7 @@
       "tipoPago": "USDT",
       "tc": 1427.4,
       "nota": null,
-      "cliente": null,
+      "cliente": "Rodrigo Molini (@rodri.molini)",
       "productos": {
         "calaveras": 30,
         "teddy": 30,
@@ -2045,27 +2045,27 @@
         "descFijoMonto": 0,
         "ajusteNeto": 0
       },
-      "ticketText": "🧾 Orden de Venta: V-202603-0041\n📅 Fecha: 30/03/2026\n\n🛒 Pedido\n\n💀 30 ud × $ 14,810 = $ 444,300\n🧸 30 ud × $ 14,810 = $ 444,300\n💎 8 g × $ 67,972 = $ 543,776\n\n💰 Total: $ 1,432,376\n→ Total en USDT: 1,003.49 USDT\n(TC: 1 USD = 1427.4 ARS)",
+      "ticketText": "🧾 Orden de Venta: V-202603-0041\n📅 Fecha: 30/03/2026\n👤 Cliente: Rodrigo Molini (@rodri.molini)\n\n🛒 Pedido\n\nundefined 30  × $ 14,810 = $ 444,300\nundefined 30  × $ 14,810 = $ 444,300\nundefined 8  × $ 67,972 = $ 543,776\n\n💰 Total: $ 1,432,376\n→ Total en USDT: 1,003.49 USDT\n(TC: 1 USD = 1427.4 ARS)",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,432,376 | Ajuste: +$ 0 | Total: $ 1,432,376 | Costo: $ 368,300 | Margen: 74.3% | ID: V-202603-0041"
     },
     {
-      "id": "V-202603-0042",
-      "fecha": "2026-03-31",
-      "fechaDisplay": "31/03/2026",
-      "mesActual": "202603",
+      "id": "V-202604-0001",
+      "fecha": "2026-04-01",
+      "fechaDisplay": "01/04/2026",
+      "mesActual": "202604",
       "tipoPago": "ARS",
       "tc": null,
       "nota": null,
       "cliente": null,
       "productos": {
-        "calaveras": 7,
-        "teddy": 0,
+        "calaveras": 10,
+        "teddy": 6,
         "lucky": 0,
         "genericas": 0,
-        "totalPastillas": 7,
-        "precioPastilla": 22785,
-        "tramoInfo": 5,
-        "totalPastillasLinea": 159495,
+        "totalPastillas": 16,
+        "precioPastilla": 20580,
+        "tramoInfo": 15,
+        "totalPastillasLinea": 329280,
         "cristales": 0,
         "precioCristales": null,
         "totalCristales": 0,
@@ -2081,78 +2081,45 @@
           {
             "prodId": "p-past",
             "varId": "v-cal",
-            "qty": 7,
-            "precio": 22785,
-            "subtotal": 159495
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 159495,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 159495,
-        "totalUSDT": null
-      },
-      "costo": 35525,
-      "margen": 77.7,
-      "ticketText": "🧾 Orden de Venta: V-202603-0042\n📅 Fecha: 31/03/2026\n\n🛒 Pedido\n\n💀 7 ud × $ 22,785 = $ 159,495\n\n💰 Total: $ 159,495",
-      "auditText": "--- AUDITORÍA ---\nTotal: $ 159,495 | Costo: $ 35,525 | Margen: 77.7% | ID: V-202603-0042"
-    },
-    {
-      "id": "V-202603-0043",
-      "fecha": "2026-03-31",
-      "fechaDisplay": "31/03/2026",
-      "mesActual": "202603",
-      "tipoPago": "ARS",
-      "tc": null,
-      "nota": null,
-      "cliente": null,
-      "productos": {
-        "calaveras": 70,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 70,
-        "precioPastilla": 14810,
-        "tramoInfo": 50,
-        "totalPastillasLinea": 1036700,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
+            "qty": 10,
+            "precio": 20580,
+            "subtotal": 205800
+          },
           {
             "prodId": "p-past",
-            "varId": "v-cal",
-            "qty": 70,
-            "precio": 14810,
-            "subtotal": 1036700
+            "varId": "v-ted",
+            "qty": 6,
+            "precio": 20580,
+            "subtotal": 123480
           }
         ]
       },
       "totales": {
-        "totalPastillasLinea": 1036700,
+        "totalPastillasLinea": 329280,
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
         "totalPetri": 0,
-        "totalGeneral": 1036700,
+        "totalGeneral": 329280,
+        "subtotalBruto": 329280,
+        "ajusteNeto": 0,
         "totalUSDT": null
       },
-      "costo": 355250,
-      "margen": 65.7,
-      "ticketText": "🧾 Orden de Venta: V-202603-0043\n📅 Fecha: 31/03/2026\n\n🛒 Pedido\n\n💀 70 ud × $ 14,810 = $ 1,036,700\n\n💰 Total: $ 1,036,700",
-      "auditText": "--- AUDITORÍA ---\nTotal: $ 1,036,700 | Costo: $ 355,250 | Margen: 65.7% | ID: V-202603-0043"
+      "costo": 81200,
+      "margen": 75.3,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0001\n📅 Fecha: 01/04/2026\n\n🛒 Pedido\n\n💀 10 ud × $ 20,580 = $ 205,800\n🧸 6 ud × $ 20,580 = $ 123,480\n\n💰 Total: $ 329,280",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 329,280 | Ajuste: +$ 0 | Total: $ 329,280 | Costo: $ 81,200 | Margen: 75.3% | ID: V-202604-0001"
     }
   ],
   "egresos": [
@@ -2926,117 +2893,5 @@
   "costos": null,
   "productos": null,
   "inversiones": [],
-  "liquidezExterna": [],
-  "stockMovs": [
-    {
-      "fecha": "2026-03-31T05:12:20.941Z",
-      "tipo": "VENTA",
-      "prodId": "grp-p-past",
-      "nombre": "Grupo",
-      "emoji": "💀",
-      "delta": 0,
-      "antes": 0,
-      "despues": 0,
-      "nota": "Descuento grupo"
-    },
-    {
-      "fecha": "2026-03-31T05:12:20.941Z",
-      "tipo": "VENTA",
-      "prodId": "v-cal",
-      "nombre": "Calaveras",
-      "emoji": "💀",
-      "delta": -7,
-      "antes": 1000,
-      "despues": 993,
-      "nota": "Ticket generado"
-    },
-    {
-      "fecha": "2026-03-31T05:11:46.353Z",
-      "tipo": "AJUSTE",
-      "prodId": "p-pet",
-      "nombre": "Petri",
-      "emoji": "🧫",
-      "delta": 20,
-      "antes": 0,
-      "despues": 20,
-      "nota": "Ajuste manual"
-    },
-    {
-      "fecha": "2026-03-31T05:11:46.353Z",
-      "tipo": "AJUSTE",
-      "prodId": "p-got",
-      "nombre": "Goteros",
-      "emoji": "💧",
-      "delta": 3,
-      "antes": 0,
-      "despues": 3,
-      "nota": "Ajuste manual"
-    },
-    {
-      "fecha": "2026-03-31T05:11:46.353Z",
-      "tipo": "AJUSTE",
-      "prodId": "p-hong",
-      "nombre": "Hongos",
-      "emoji": "🍄",
-      "delta": 100,
-      "antes": 0,
-      "despues": 100,
-      "nota": "Ajuste manual"
-    },
-    {
-      "fecha": "2026-03-31T05:11:46.353Z",
-      "tipo": "AJUSTE",
-      "prodId": "p-cris",
-      "nombre": "Cristales",
-      "emoji": "💎",
-      "delta": 500,
-      "antes": 0,
-      "despues": 500,
-      "nota": "Ajuste manual"
-    },
-    {
-      "fecha": "2026-03-31T05:11:46.353Z",
-      "tipo": "AJUSTE",
-      "prodId": "v-lck",
-      "nombre": "Lucky Cat",
-      "emoji": "🐱",
-      "delta": 20,
-      "antes": 0,
-      "despues": 20,
-      "nota": "Ajuste manual"
-    },
-    {
-      "fecha": "2026-03-31T05:11:46.353Z",
-      "tipo": "AJUSTE",
-      "prodId": "v-ted",
-      "nombre": "Teddy",
-      "emoji": "🧸",
-      "delta": 500,
-      "antes": 0,
-      "despues": 500,
-      "nota": "Ajuste manual"
-    },
-    {
-      "fecha": "2026-03-31T05:11:46.353Z",
-      "tipo": "AJUSTE",
-      "prodId": "v-cal",
-      "nombre": "Calaveras",
-      "emoji": "💀",
-      "delta": 1000,
-      "antes": 0,
-      "despues": 1000,
-      "nota": "Ajuste manual"
-    }
-  ],
-  "stock": {
-    "grp-p-past": 0,
-    "v-cal": 993,
-    "v-ted": 500,
-    "v-lck": 20,
-    "v-gen": 0,
-    "p-cris": 500,
-    "p-hong": 100,
-    "p-got": 3,
-    "p-pet": 20
-  }
+  "liquidezExterna": []
 }
