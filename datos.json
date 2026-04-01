@@ -3085,6 +3085,23 @@
       "medio": "Mercado Pago",
       "obs": "$ 65,880 monto total",
       "ticketText": "📅 Fecha: 29/03/2026\nID Egreso: E-202603-0045\n\n📉 Egreso:\nConcepto: Café morenita + soporte para cuello\nMonto: $ 21,960\nMedio de pago: Mercado Pago\nCuotas: 3 (base $ 7,320, última $ 7,320)\n📝 Observaciones: $ 65,880 monto total\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 7,320\nCuotas restantes: 2\nFinaliza: 05/2026"
+    },
+    {
+      "id": "E-202603-0046",
+      "fecha": "2026-03-30",
+      "fechaDisplay": "30/03/2026",
+      "mesActual": "202603",
+      "concepto": "Super Vea",
+      "montoTotal": 22000,
+      "cuotaBase": 22000,
+      "ultimaCuota": 22000,
+      "impactoCaja": 22000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "03/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 30/03/2026\nID Egreso: E-202603-0046\n\n📉 Egreso:\nConcepto: Super Vea\nMonto: $ 22,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 22,000\nFinaliza: 03/2026"
     }
   ],
   "precios": null,
@@ -3300,6 +3317,39 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-01T21:15:19.437Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -2,
+      "antes": 792,
+      "despues": 790,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-01T21:15:19.437Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "🧸",
+      "delta": -12,
+      "antes": 1930,
+      "despues": 1918,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-01T21:15:19.437Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -12,
+      "antes": 1360,
+      "despues": 1348,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-01T21:14:32.281Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -3511,9 +3561,9 @@
   ],
   "stock": {
     "v-cal": 570,
-    "grp-p-past": 1930,
-    "v-ted": 1360,
-    "p-cris": 792,
+    "grp-p-past": 1918,
+    "v-ted": 1348,
+    "p-cris": 790,
     "p-hong": 200,
     "p-got": 20,
     "p-pet": 20
