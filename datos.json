@@ -2179,6 +2179,72 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0002\n📅 Fecha: 01/04/2026\n👤 Cliente: Facu (Seba)\n\n🛒 Pedido\n\n🧸 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925\n📝 Nota: 17:25",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0002"
+    },
+    {
+      "id": "V-202604-0003",
+      "fecha": "2026-04-01",
+      "fechaDisplay": "01/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": "17:30",
+      "cliente": "Joaco (Magiclau)",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 50,
+        "precioPastilla": 14810,
+        "tramoInfo": 50,
+        "totalPastillasLinea": 740500,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 50,
+            "precio": 14810,
+            "subtotal": 740500
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 740500,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 740500,
+        "subtotalBruto": 740500,
+        "ajusteNeto": 0,
+        "totalUSDT": null
+      },
+      "costo": 253750,
+      "margen": 65.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0003\n📅 Fecha: 01/04/2026\n👤 Cliente: Joaco (Magiclau)\n\n🛒 Pedido\n\n💀 50 ud × $ 14,810 = $ 740,500\n\n💰 Total: $ 740,500\n📝 Nota: 17:30",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 740,500 | Ajuste: +$ 0 | Total: $ 740,500 | Costo: $ 253,750 | Margen: 65.7% | ID: V-202604-0003"
     }
   ],
   "egresos": [
@@ -3161,6 +3227,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-01T21:14:02.745Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "🧸",
+      "delta": -5,
+      "antes": 1985,
+      "despues": 1980,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-01T21:14:02.745Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -5,
+      "antes": 1365,
+      "despues": 1360,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-01T21:13:27.496Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -3328,8 +3416,8 @@
   ],
   "stock": {
     "v-cal": 620,
-    "grp-p-past": 1985,
-    "v-ted": 1365,
+    "grp-p-past": 1980,
+    "v-ted": 1360,
     "p-cris": 792,
     "p-hong": 200,
     "p-got": 20,
