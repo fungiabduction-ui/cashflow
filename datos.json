@@ -2049,26 +2049,26 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,432,376 | Ajuste: +$ 0 | Total: $ 1,432,376 | Costo: $ 368,300 | Margen: 74.3% | ID: V-202603-0041"
     },
     {
-      "id": "V-202604-0001",
-      "fecha": "2026-04-01",
-      "fechaDisplay": "01/04/2026",
-      "mesActual": "202604",
+      "id": "V-202603-0042",
+      "fecha": "2026-03-30",
+      "fechaDisplay": "30/03/2026",
+      "mesActual": "202603",
       "tipoPago": "ARS",
       "tc": null,
-      "nota": "19:30",
-      "cliente": "Angel",
+      "nota": "19:20",
+      "cliente": "Rodrigo Molini (@rodri.molini)",
       "productos": {
-        "calaveras": 2,
-        "teddy": 3,
+        "calaveras": 0,
+        "teddy": 0,
         "lucky": 0,
         "genericas": 0,
-        "totalPastillas": 5,
-        "precioPastilla": 22785,
-        "tramoInfo": 5,
-        "totalPastillasLinea": 113925,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
+        "totalPastillas": 60,
+        "precioPastilla": 14810,
+        "tramoInfo": 50,
+        "totalPastillasLinea": 888600,
+        "cristales": 8,
+        "precioCristales": 67972,
+        "totalCristales": 543776,
         "hongos": 0,
         "precioHongos": null,
         "totalHongos": 0,
@@ -2081,98 +2081,39 @@
           {
             "prodId": "p-past",
             "varId": "v-cal",
-            "qty": 2,
-            "precio": 22785,
-            "subtotal": 45570
+            "qty": 30,
+            "precio": 14810,
+            "subtotal": 444300
           },
           {
             "prodId": "p-past",
             "varId": "v-ted",
-            "qty": 3,
-            "precio": 22785,
-            "subtotal": 68355
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 113925,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 113925,
-        "subtotalBruto": 113925,
-        "ajusteNeto": 0,
-        "totalUSDT": null
-      },
-      "costo": 25375,
-      "margen": 77.7,
-      "ajuste": {
-        "recargoPct": 0,
-        "recargoFijo": 0,
-        "descPct": 0,
-        "descFijo": 0,
-        "recargoPctMonto": 0,
-        "recargoFijoMonto": 0,
-        "descPctMonto": 0,
-        "descFijoMonto": 0,
-        "ajusteNeto": 0
-      },
-      "ticketText": "🧾 Orden de Venta: V-202604-0001\n📅 Fecha: 01/04/2026\n👤 Cliente: Angel\n\n🛒 Pedido\n\n💀 2 ud × $ 22,785 = $ 45,570\n🧸 3 ud × $ 22,785 = $ 68,355\n\n💰 Total: $ 113,925\n📝 Nota: 19:30",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0001"
-    },
-    {
-      "id": "V-202604-0002",
-      "fecha": "2026-04-01",
-      "fechaDisplay": "01/04/2026",
-      "mesActual": "202604",
-      "tipoPago": "ARS",
-      "tc": null,
-      "nota": "17:30",
-      "cliente": "Joaco",
-      "productos": {
-        "calaveras": 50,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 50,
-        "precioPastilla": 14810,
-        "tramoInfo": 50,
-        "totalPastillasLinea": 740500,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "p-past",
-            "varId": "v-cal",
-            "qty": 50,
+            "qty": 30,
             "precio": 14810,
-            "subtotal": 740500
+            "subtotal": 444300
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 8,
+            "precio": 67972,
+            "subtotal": 543776
           }
         ]
       },
       "totales": {
-        "totalPastillasLinea": 740500,
-        "totalCristales": 0,
+        "totalPastillasLinea": 888600,
+        "totalCristales": 543776,
         "totalHongos": 0,
         "totalGoteros": 0,
         "totalPetri": 0,
-        "totalGeneral": 740500,
-        "subtotalBruto": 740500,
+        "totalGeneral": 1432376,
+        "subtotalBruto": 1432376,
         "ajusteNeto": 0,
         "totalUSDT": null
       },
-      "costo": 253750,
-      "margen": 65.7,
+      "costo": 368300,
+      "margen": 74.3,
       "ajuste": {
         "recargoPct": 0,
         "recargoFijo": 0,
@@ -2184,8 +2125,8 @@
         "descFijoMonto": 0,
         "ajusteNeto": 0
       },
-      "ticketText": "🧾 Orden de Venta: V-202604-0002\n📅 Fecha: 01/04/2026\n👤 Cliente: Joaco\n\n🛒 Pedido\n\n💀 50 ud × $ 14,810 = $ 740,500\n\n💰 Total: $ 740,500\n📝 Nota: 17:30",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 740,500 | Ajuste: +$ 0 | Total: $ 740,500 | Costo: $ 253,750 | Margen: 65.7% | ID: V-202604-0002"
+      "ticketText": "🧾 Orden de Venta: V-202603-0042\n📅 Fecha: 30/03/2026\n👤 Cliente: Rodrigo Molini (@rodri.molini)\n\n🛒 Pedido\n\n💀 30 ud × $ 14,810 = $ 444,300\n🧸 30 ud × $ 14,810 = $ 444,300\n💎 8 g × $ 67,972 = $ 543,776\n\n💰 Total: $ 1,432,376\n📝 Nota: 19:20",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,432,376 | Ajuste: +$ 0 | Total: $ 1,432,376 | Costo: $ 368,300 | Margen: 74.3% | ID: V-202603-0042"
     }
   ],
   "egresos": [
@@ -2957,7 +2898,312 @@
   ],
   "precios": null,
   "costos": null,
-  "productos": null,
+  "productos": [
+    {
+      "id": "p-past",
+      "emoji": "💊",
+      "nombre": "Pastillas",
+      "agrupacion": "grupo",
+      "unit": "ud",
+      "costo": 5075,
+      "tipo": "tramos",
+      "variantes": [
+        {
+          "id": "v-cal",
+          "emoji": "💀",
+          "nombre": "Calaveras"
+        },
+        {
+          "id": "v-ted",
+          "emoji": "🧸",
+          "nombre": "Teddy"
+        }
+      ],
+      "tramos": [
+        {
+          "t": 5,
+          "p": 22785
+        },
+        {
+          "t": 10,
+          "p": 21735
+        },
+        {
+          "t": 15,
+          "p": 20580
+        },
+        {
+          "t": 20,
+          "p": 19367
+        },
+        {
+          "t": 30,
+          "p": 18228
+        },
+        {
+          "t": 40,
+          "p": 17089
+        },
+        {
+          "t": 50,
+          "p": 14810
+        },
+        {
+          "t": 100,
+          "p": 12750
+        },
+        {
+          "t": 200,
+          "p": 10800
+        },
+        {
+          "t": 300,
+          "p": 10050
+        },
+        {
+          "t": 400,
+          "p": 9450
+        },
+        {
+          "t": 500,
+          "p": 9000
+        }
+      ],
+      "activo": true
+    },
+    {
+      "id": "p-cris",
+      "emoji": "💎",
+      "nombre": "Cristales",
+      "agrupacion": "individual",
+      "unit": "g",
+      "costo": 7975,
+      "tipo": "tramos",
+      "variantes": [],
+      "tramos": [
+        {
+          "t": 1,
+          "p": 79968
+        },
+        {
+          "t": 3,
+          "p": 73500
+        },
+        {
+          "t": 5,
+          "p": 67972
+        },
+        {
+          "t": 10,
+          "p": 63974
+        },
+        {
+          "t": 15,
+          "p": 59976
+        },
+        {
+          "t": 20,
+          "p": 55977
+        },
+        {
+          "t": 30,
+          "p": 51979
+        },
+        {
+          "t": 40,
+          "p": 47980
+        },
+        {
+          "t": 50,
+          "p": 43982
+        }
+      ],
+      "activo": true,
+      "maxConsulta": 60,
+      "legacyKey": "cristales"
+    },
+    {
+      "id": "p-hong",
+      "emoji": "🍄",
+      "nombre": "Hongos",
+      "agrupacion": "individual",
+      "unit": "g",
+      "costo": 2000,
+      "tipo": "tramos",
+      "variantes": [],
+      "tramos": [
+        {
+          "t": 5,
+          "p": 14000
+        },
+        {
+          "t": 10,
+          "p": 12000
+        },
+        {
+          "t": 20,
+          "p": 10000
+        },
+        {
+          "t": 50,
+          "p": 8500
+        },
+        {
+          "t": 100,
+          "p": 8000
+        },
+        {
+          "t": 200,
+          "p": 7000
+        },
+        {
+          "t": 500,
+          "p": 5000
+        },
+        {
+          "t": 1000,
+          "p": 3500
+        }
+      ],
+      "activo": true,
+      "legacyKey": "hongos"
+    },
+    {
+      "id": "p-got",
+      "emoji": "💧",
+      "nombre": "Goteros",
+      "agrupacion": "individual",
+      "unit": "ud",
+      "costo": 5000,
+      "tipo": "fijo",
+      "variantes": [],
+      "tramos": [
+        {
+          "t": 1,
+          "p": 85000
+        }
+      ],
+      "activo": true,
+      "legacyKey": "goteros"
+    },
+    {
+      "id": "p-pet",
+      "emoji": "🧫",
+      "nombre": "Petri",
+      "agrupacion": "individual",
+      "unit": "ud",
+      "costo": 2000,
+      "tipo": "fijo",
+      "variantes": [],
+      "tramos": [
+        {
+          "t": 1,
+          "p": 56000
+        }
+      ],
+      "activo": true,
+      "legacyKey": "petri"
+    }
+  ],
   "inversiones": [],
-  "liquidezExterna": []
+  "liquidezExterna": [],
+  "stockMovs": [
+    {
+      "fecha": "2026-04-01T21:07:48.547Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -1,
+      "antes": 1401,
+      "despues": 1400,
+      "nota": "Ajuste desde tabla"
+    },
+    {
+      "fecha": "2026-04-01T21:07:47.004Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": 1,
+      "antes": 1400,
+      "despues": 1401,
+      "nota": "Ajuste desde tabla"
+    },
+    {
+      "fecha": "2026-04-01T21:07:45.439Z",
+      "tipo": "AJUSTE",
+      "prodId": "p-pet",
+      "nombre": "Petri",
+      "emoji": "🧫",
+      "delta": 20,
+      "antes": 0,
+      "despues": 20,
+      "nota": "Ajuste desde tabla"
+    },
+    {
+      "fecha": "2026-04-01T21:07:42.830Z",
+      "tipo": "AJUSTE",
+      "prodId": "p-got",
+      "nombre": "Goteros",
+      "emoji": "💧",
+      "delta": 20,
+      "antes": 0,
+      "despues": 20,
+      "nota": "Ajuste desde tabla"
+    },
+    {
+      "fecha": "2026-04-01T21:07:33.804Z",
+      "tipo": "AJUSTE",
+      "prodId": "p-hong",
+      "nombre": "Hongos",
+      "emoji": "🍄",
+      "delta": 200,
+      "antes": 0,
+      "despues": 200,
+      "nota": "Ajuste desde tabla"
+    },
+    {
+      "fecha": "2026-04-01T21:07:22.609Z",
+      "tipo": "AJUSTE",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": 800,
+      "antes": 0,
+      "despues": 800,
+      "nota": "Ajuste desde tabla"
+    },
+    {
+      "fecha": "2026-04-01T21:07:19.256Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": 1400,
+      "antes": 0,
+      "despues": 1400,
+      "nota": "Ajuste desde tabla"
+    },
+    {
+      "fecha": "2026-04-01T21:07:14.023Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": 650,
+      "antes": 0,
+      "despues": 650,
+      "nota": "Ajuste desde tabla"
+    }
+  ],
+  "stock": {
+    "v-cal": 650,
+    "grp-p-past": 2050,
+    "v-ted": 1400,
+    "p-cris": 800,
+    "p-hong": 200,
+    "p-got": 20,
+    "p-pet": 20
+  }
 }
