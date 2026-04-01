@@ -2245,6 +2245,79 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0003\n📅 Fecha: 01/04/2026\n👤 Cliente: Joaco (Magiclau)\n\n🛒 Pedido\n\n💀 50 ud × $ 14,810 = $ 740,500\n\n💰 Total: $ 740,500\n📝 Nota: 17:30",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 740,500 | Ajuste: +$ 0 | Total: $ 740,500 | Costo: $ 253,750 | Margen: 65.7% | ID: V-202604-0003"
+    },
+    {
+      "id": "V-202604-0004",
+      "fecha": "2026-04-01",
+      "fechaDisplay": "01/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": "18:30",
+      "cliente": "Seba - Denu",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 12,
+        "precioPastilla": 21735,
+        "tramoInfo": 10,
+        "totalPastillasLinea": 260820,
+        "cristales": 2,
+        "precioCristales": 79968,
+        "totalCristales": 159936,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 12,
+            "precio": 21735,
+            "subtotal": 260820
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 2,
+            "precio": 79968,
+            "subtotal": 159936
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 260820,
+        "totalCristales": 159936,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 420756,
+        "subtotalBruto": 420756,
+        "ajusteNeto": 0,
+        "totalUSDT": null
+      },
+      "costo": 76850,
+      "margen": 81.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0004\n📅 Fecha: 01/04/2026\n👤 Cliente: Seba - Denu\n\n🛒 Pedido\n\n🧸 12 ud × $ 21,735 = $ 260,820\n💎 2 g × $ 79,968 = $ 159,936\n\n💰 Total: $ 420,756\n📝 Nota: 18:30",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 420,756 | Ajuste: +$ 0 | Total: $ 420,756 | Costo: $ 76,850 | Margen: 81.7% | ID: V-202604-0004"
     }
   ],
   "egresos": [
@@ -3227,6 +3300,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-01T21:14:32.281Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "💀",
+      "delta": -50,
+      "antes": 1980,
+      "despues": 1930,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-01T21:14:32.281Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -50,
+      "antes": 620,
+      "despues": 570,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-01T21:14:02.745Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -3415,8 +3510,8 @@
     }
   ],
   "stock": {
-    "v-cal": 620,
-    "grp-p-past": 1980,
+    "v-cal": 570,
+    "grp-p-past": 1930,
     "v-ted": 1360,
     "p-cris": 792,
     "p-hong": 200,
