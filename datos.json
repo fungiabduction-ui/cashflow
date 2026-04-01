@@ -2113,6 +2113,72 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0001\n📅 Fecha: 01/04/2026\n👤 Cliente: Esteban @estiaracama (Alva)\n\n🛒 Pedido\n\n🧸 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925\n📝 Nota: 12:00",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0001"
+    },
+    {
+      "id": "V-202604-0002",
+      "fecha": "2026-04-01",
+      "fechaDisplay": "01/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": "17:25",
+      "cliente": "Facu (Seba)",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 5,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 113925,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 113925,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 113925,
+        "subtotalBruto": 113925,
+        "ajusteNeto": 0,
+        "totalUSDT": null
+      },
+      "costo": 25375,
+      "margen": 77.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0002\n📅 Fecha: 01/04/2026\n👤 Cliente: Facu (Seba)\n\n🛒 Pedido\n\n🧸 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925\n📝 Nota: 17:25",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0002"
     }
   ],
   "egresos": [
@@ -3095,6 +3161,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-01T21:13:27.496Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "🧸",
+      "delta": -5,
+      "antes": 1990,
+      "despues": 1985,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-01T21:13:27.496Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -5,
+      "antes": 1370,
+      "despues": 1365,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-01T21:11:14.864Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -3240,8 +3328,8 @@
   ],
   "stock": {
     "v-cal": 620,
-    "grp-p-past": 1990,
-    "v-ted": 1370,
+    "grp-p-past": 1985,
+    "v-ted": 1365,
     "p-cris": 792,
     "p-hong": 200,
     "p-got": 20,
