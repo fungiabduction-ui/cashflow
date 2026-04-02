@@ -2488,6 +2488,92 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0006\n📅 Fecha: 02/04/2026\n👤 Cliente: sancho\n\n🛒 Pedido\n\n💀 20 ud × $ 19,367 = $ 387,340\n\n📉 Descuento 10%: -$ 38,734\n━━━━━━━━━━━━━━━━━━━━━\n\n💰 Total ARS: $ 348,606\n   (subtotal $ 387,340 - ajuste $ 38,734)\n💳 Pago: USD 348,606.00 (TC: 1,400)\n📝 Nota: Dto 10%",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 387,340 | Ajuste: $ -38,734 | Total: $ 348,606 | Pago: USD | Costo: $ 101,500 | Margen: 70.9% | ID: V-202604-0006"
+    },
+    {
+      "id": "V-202604-0007",
+      "fecha": "2026-04-02",
+      "fechaDisplay": "02/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "USD",
+      "tc": null,
+      "payment": {
+        "ars": 0,
+        "usd": 387340,
+        "usdt": 0,
+        "tc_usd": 1400,
+        "tc_usdt": 0,
+        "total_ars": 542276000,
+        "total_usdt": null,
+        "modo": "USD"
+      },
+      "nota": null,
+      "cliente": "sancho",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 20,
+        "precioPastilla": 19367,
+        "tramoInfo": 20,
+        "totalPastillasLinea": 387340,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 20,
+            "precio": 19367,
+            "subtotal": 387340
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 387340,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 387340,
+        "subtotalBruto": 387340,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 0,
+          "usd": 387340,
+          "usdt": 0,
+          "tc_usd": 1400,
+          "tc_usdt": 0,
+          "total_ars": 542276000,
+          "total_usdt": null,
+          "modo": "USD"
+        }
+      },
+      "costo": 101500,
+      "margen": 73.8,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0007\n📅 Fecha: 02/04/2026\n👤 Cliente: sancho\n\n🛒 Pedido\n\n💀 20 ud × $ 19,367 = $ 387,340\n\n💰 Total ARS: $ 387,340\n💳 Pago: USD 387,340.00 (TC: 1,400)",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 387,340 | Ajuste: +$ 0 | Total: $ 387,340 | Pago: USD | Costo: $ 101,500 | Margen: 73.8% | ID: V-202604-0007"
     }
   ],
   "egresos": [
@@ -3521,6 +3607,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-02T15:04:19.919Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "💀",
+      "delta": -20,
+      "antes": 1918,
+      "despues": 1898,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-02T15:04:19.919Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -20,
+      "antes": 570,
+      "despues": 550,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-01T21:15:19.437Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -3764,8 +3872,8 @@
     }
   ],
   "stock": {
-    "v-cal": 570,
-    "grp-p-past": 1918,
+    "v-cal": 550,
+    "grp-p-past": 1898,
     "v-ted": 1348,
     "p-cris": 790,
     "p-hong": 200,
