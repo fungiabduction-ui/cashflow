@@ -2583,6 +2583,99 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0008\n📅 Fecha: 02/04/2026\n\n🛒 Pedido\n\n💀 5 ud × $ 21,735 = $ 108,675\n🧸 5 ud × $ 21,735 = $ 108,675\n\n💰 Total: $ 217,350 ARS\n💵 Total USD: 155.25 (TC 1,400)",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 217,350 | Ajuste: +$ 0 | Total: $ 217,350 | Pago: USD | Costo: $ 50,750 | Margen: 76.7% | ID: V-202604-0008"
+    },
+    {
+      "id": "V-202604-0009",
+      "fecha": "2026-04-02",
+      "fechaDisplay": "02/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "USDT",
+      "tc": null,
+      "payment": {
+        "ars": 0,
+        "usd": 0,
+        "usdt": 149.9,
+        "tc_usd": 0,
+        "tc_usdt": 1450,
+        "total_ars": 217355,
+        "total_usdt": 149.9,
+        "modo": "USDT"
+      },
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 10,
+        "precioPastilla": 21735,
+        "tramoInfo": 10,
+        "totalPastillasLinea": 217350,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 21735,
+            "subtotal": 108675
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 5,
+            "precio": 21735,
+            "subtotal": 108675
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 217350,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 217350,
+        "subtotalBruto": 217350,
+        "ajusteNeto": 0,
+        "totalUSDT": 149.9,
+        "payment": {
+          "ars": 0,
+          "usd": 0,
+          "usdt": 149.9,
+          "tc_usd": 0,
+          "tc_usdt": 1450,
+          "total_ars": 217355,
+          "total_usdt": 149.9,
+          "modo": "USDT"
+        }
+      },
+      "costo": 50750,
+      "margen": 76.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0009\n📅 Fecha: 02/04/2026\n\n🛒 Pedido\n\n💀 5 ud × $ 21,735 = $ 108,675\n🧸 5 ud × $ 21,735 = $ 108,675\n\n💰 Total: $ 217,350 ARS\n🔵 Total USDT: 149.90 (TC 1,450)",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 217,350 | Ajuste: +$ 0 | Total: $ 217,350 | Pago: USDT | Costo: $ 50,750 | Margen: 76.7% | ID: V-202604-0009"
     }
   ],
   "egresos": [
@@ -3616,6 +3709,50 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-02T16:20:43.048Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "🧸",
+      "delta": -5,
+      "antes": 1893,
+      "despues": 1888,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-02T16:20:43.048Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -5,
+      "antes": 1348,
+      "despues": 1343,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-02T16:20:43.048Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "💀",
+      "delta": -5,
+      "antes": 1898,
+      "despues": 1893,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-02T16:20:43.048Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -5,
+      "antes": 550,
+      "despues": 545,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-02T15:04:19.919Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -3881,9 +4018,9 @@
     }
   ],
   "stock": {
-    "v-cal": 550,
-    "grp-p-past": 1898,
-    "v-ted": 1348,
+    "v-cal": 545,
+    "grp-p-past": 1888,
+    "v-ted": 1343,
     "p-cris": 790,
     "p-hong": 200,
     "p-got": 20,
