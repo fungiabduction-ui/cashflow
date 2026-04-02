@@ -2402,6 +2402,92 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0005\n📅 Fecha: 02/04/2026\n\n🛒 Pedido\n\n💀 2 ud × $ 22,785 = $ 45,570\n\n💰 Total: $ 45,570\n💳 Pago: ARS $ 50,000 + USD 50.00\n≈ Total en USDT: 85.71",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 45,570 | Ajuste: +$ 0 | Total: $ 45,570 | Pago: MIX | Costo: $ 10,150 | Margen: 77.7% | ID: V-202604-0005"
+    },
+    {
+      "id": "V-202604-0006",
+      "fecha": "2026-04-02",
+      "fechaDisplay": "02/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "USD",
+      "tc": null,
+      "payment": {
+        "ars": 0,
+        "usd": 348606,
+        "usdt": 0,
+        "tc_usd": 1400,
+        "tc_usdt": 0,
+        "total_ars": 488048400,
+        "total_usdt": null,
+        "modo": "USD"
+      },
+      "nota": "Dto 10%",
+      "cliente": "sancho",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 20,
+        "precioPastilla": 19367,
+        "tramoInfo": 20,
+        "totalPastillasLinea": 387340,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 20,
+            "precio": 19367,
+            "subtotal": 387340
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 387340,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 348606,
+        "subtotalBruto": 387340,
+        "ajusteNeto": -38734,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 0,
+          "usd": 348606,
+          "usdt": 0,
+          "tc_usd": 1400,
+          "tc_usdt": 0,
+          "total_ars": 488048400,
+          "total_usdt": null,
+          "modo": "USD"
+        }
+      },
+      "costo": 101500,
+      "margen": 70.9,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 10,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 38734,
+        "descFijoMonto": 0,
+        "ajusteNeto": -38734
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0006\n📅 Fecha: 02/04/2026\n👤 Cliente: sancho\n\n🛒 Pedido\n\n💀 20 ud × $ 19,367 = $ 387,340\n\n📉 Descuento 10%: -$ 38,734\n━━━━━━━━━━━━━━━━━━━━━\n\n💰 Total ARS: $ 348,606\n   (subtotal $ 387,340 - ajuste $ 38,734)\n💳 Pago: USD 348,606.00 (TC: 1,400)\n📝 Nota: Dto 10%",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 387,340 | Ajuste: $ -38,734 | Total: $ 348,606 | Pago: USD | Costo: $ 101,500 | Margen: 70.9% | ID: V-202604-0006"
     }
   ],
   "egresos": [
