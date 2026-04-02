@@ -2457,6 +2457,72 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0006\n📅 Fecha: 02/04/2026\n👤 Cliente: Bruno Emiliano Borelli (peugeot) (Juanmi)\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0006"
+    },
+    {
+      "id": "V-202604-0007",
+      "fecha": "2026-04-02",
+      "fechaDisplay": "02/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": null,
+      "cliente": "Juanmi",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 5,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 113925,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 113925,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 113925,
+        "subtotalBruto": 113925,
+        "ajusteNeto": 0,
+        "totalUSDT": null
+      },
+      "costo": 25375,
+      "margen": 77.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0007\n📅 Fecha: 02/04/2026\n👤 Cliente: Juanmi\n\n🛒 Pedido\n\n🧸 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0007"
     }
   ],
   "egresos": [
@@ -3490,6 +3556,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-02T17:54:35.737Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 790,
+      "despues": 789,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-01T22:21:35.228Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -3780,7 +3857,7 @@
     "v-cal": 568,
     "grp-p-past": 1913,
     "v-ted": 1345,
-    "p-cris": 790,
+    "p-cris": 789,
     "p-hong": 200,
     "p-got": 20,
     "p-pet": 20
