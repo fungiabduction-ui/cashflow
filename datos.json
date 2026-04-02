@@ -2320,90 +2320,6 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 420,756 | Ajuste: +$ 0 | Total: $ 420,756 | Costo: $ 76,850 | Margen: 81.7% | ID: V-202604-0004"
     },
     {
-      "id": "V-202604-0005",
-      "fecha": "2026-04-02",
-      "fechaDisplay": "02/04/2026",
-      "mesActual": "202604",
-      "tipoPago": "MIX",
-      "tc": 1400,
-      "payment": {
-        "ars": 50000,
-        "usd": 50,
-        "usdt": 0,
-        "tc": 1400,
-        "total_ars": 120000,
-        "total_usdt": 85.71428571428572,
-        "modo": "MIX"
-      },
-      "nota": null,
-      "cliente": null,
-      "productos": {
-        "calaveras": 0,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 2,
-        "precioPastilla": 22785,
-        "tramoInfo": 5,
-        "totalPastillasLinea": 45570,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "p-past",
-            "varId": "v-cal",
-            "qty": 2,
-            "precio": 22785,
-            "subtotal": 45570
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 45570,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 45570,
-        "subtotalBruto": 45570,
-        "ajusteNeto": 0,
-        "totalUSDT": 85.71428571428572,
-        "payment": {
-          "ars": 50000,
-          "usd": 50,
-          "usdt": 0,
-          "tc": 1400,
-          "total_ars": 120000,
-          "total_usdt": 85.71428571428572,
-          "modo": "MIX"
-        }
-      },
-      "costo": 10150,
-      "margen": 77.7,
-      "ajuste": {
-        "recargoPct": 0,
-        "recargoFijo": 0,
-        "descPct": 0,
-        "descFijo": 0,
-        "recargoPctMonto": 0,
-        "recargoFijoMonto": 0,
-        "descPctMonto": 0,
-        "descFijoMonto": 0,
-        "ajusteNeto": 0
-      },
-      "ticketText": "🧾 Orden de Venta: V-202604-0005\n📅 Fecha: 02/04/2026\n\n🛒 Pedido\n\n💀 2 ud × $ 22,785 = $ 45,570\n\n💰 Total: $ 45,570\n💳 Pago: ARS $ 50,000 + USD 50.00\n≈ Total en USDT: 85.71",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 45,570 | Ajuste: +$ 0 | Total: $ 45,570 | Pago: MIX | Costo: $ 10,150 | Margen: 77.7% | ID: V-202604-0005"
-    },
-    {
       "id": "V-202604-0006",
       "fecha": "2026-04-02",
       "fechaDisplay": "02/04/2026",
@@ -2574,6 +2490,99 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0007\n📅 Fecha: 02/04/2026\n👤 Cliente: sancho\n\n🛒 Pedido\n\n💀 20 ud × $ 19,367 = $ 387,340\n\n💰 Total ARS: $ 387,340\n💳 Pago: USD 387,340.00 (TC: 1,400)",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 387,340 | Ajuste: +$ 0 | Total: $ 387,340 | Pago: USD | Costo: $ 101,500 | Margen: 73.8% | ID: V-202604-0007"
+    },
+    {
+      "id": "V-202604-0008",
+      "fecha": "2026-04-02",
+      "fechaDisplay": "02/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "USD",
+      "tc": null,
+      "payment": {
+        "ars": 0,
+        "usd": 155.25,
+        "usdt": 0,
+        "tc_usd": 1400,
+        "tc_usdt": 0,
+        "total_ars": 217350,
+        "total_usdt": null,
+        "modo": "USD"
+      },
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 10,
+        "precioPastilla": 21735,
+        "tramoInfo": 10,
+        "totalPastillasLinea": 217350,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 21735,
+            "subtotal": 108675
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 5,
+            "precio": 21735,
+            "subtotal": 108675
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 217350,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 217350,
+        "subtotalBruto": 217350,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 0,
+          "usd": 155.25,
+          "usdt": 0,
+          "tc_usd": 1400,
+          "tc_usdt": 0,
+          "total_ars": 217350,
+          "total_usdt": null,
+          "modo": "USD"
+        }
+      },
+      "costo": 50750,
+      "margen": 76.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0008\n📅 Fecha: 02/04/2026\n\n🛒 Pedido\n\n💀 5 ud × $ 21,735 = $ 108,675\n🧸 5 ud × $ 21,735 = $ 108,675\n\n💰 Total: $ 217,350 ARS\n💵 Total USD: 155.25 (TC 1,400)",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 217,350 | Ajuste: +$ 0 | Total: $ 217,350 | Pago: USD | Costo: $ 50,750 | Margen: 76.7% | ID: V-202604-0008"
     }
   ],
   "egresos": [
