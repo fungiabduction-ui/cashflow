@@ -2391,6 +2391,72 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0005\n📅 Fecha: 01/04/2026\n👤 Cliente: Angel\n\n🛒 Pedido\n\n💀 2 ud × $ 22,785 = $ 45,570\n🧸 3 ud × $ 22,785 = $ 68,355\n\n💰 Total: $ 113,925\n📝 Nota: 19:20",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0005"
+    },
+    {
+      "id": "V-202604-0006",
+      "fecha": "2026-04-02",
+      "fechaDisplay": "02/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "nota": null,
+      "cliente": "Bruno Emiliano Borelli (peugeot) (Juanmi)",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 79968,
+        "subtotalBruto": 79968,
+        "ajusteNeto": 0,
+        "totalUSDT": null
+      },
+      "costo": 7975,
+      "margen": 90,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0006\n📅 Fecha: 02/04/2026\n👤 Cliente: Bruno Emiliano Borelli (peugeot) (Juanmi)\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0006"
     }
   ],
   "egresos": [
