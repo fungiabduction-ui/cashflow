@@ -2735,182 +2735,6 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0010\n📅 Fecha: 03/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n💀 5 ud × $ 17,089 = $ 85,445\n🧸 35 ud × $ 17,089 = $ 598,115\n\n💰 Total: $ 683,560 ARS\n📝 Nota: 20:00",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 683,560 | Ajuste: +$ 0 | Total: $ 683,560 | Pago: ARS | Costo: $ 203,000 | Margen: 70.3% | ID: V-202604-0010"
-    },
-    {
-      "id": "V-202604-0011",
-      "fecha": "2026-04-03",
-      "fechaDisplay": "03/04/2026",
-      "mesActual": "202604",
-      "tipoPago": "ARS",
-      "tc": null,
-      "payment": {
-        "ars": 4500000,
-        "usd": 0,
-        "usdt": 0,
-        "tc": 0,
-        "tc_usd": 0,
-        "tc_usdt": 0,
-        "total_ars": 4500000,
-        "total_usdt": null,
-        "modo": "ARS"
-      },
-      "nota": "20:00",
-      "cliente": "Maxi Saez DJ",
-      "productos": {
-        "calaveras": 0,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 500,
-        "precioPastilla": 9000,
-        "tramoInfo": 500,
-        "totalPastillasLinea": 4500000,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "p-past",
-            "varId": "v-cal",
-            "qty": 500,
-            "precio": 9000,
-            "subtotal": 4500000
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 4500000,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 4500000,
-        "subtotalBruto": 4500000,
-        "ajusteNeto": 0,
-        "totalUSDT": null,
-        "payment": {
-          "ars": 4500000,
-          "usd": 0,
-          "usdt": 0,
-          "tc": 0,
-          "tc_usd": 0,
-          "tc_usdt": 0,
-          "total_ars": 4500000,
-          "total_usdt": null,
-          "modo": "ARS"
-        }
-      },
-      "costo": 2537500,
-      "margen": 43.6,
-      "ajuste": {
-        "recargoPct": 0,
-        "recargoFijo": 0,
-        "descPct": 0,
-        "descFijo": 0,
-        "recargoPctMonto": 0,
-        "recargoFijoMonto": 0,
-        "descPctMonto": 0,
-        "descFijoMonto": 0,
-        "ajusteNeto": 0
-      },
-      "ticketText": "🧾 Orden de Venta: V-202604-0011\n📅 Fecha: 03/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n💀 500 ud × $ 9,000 = $ 4,500,000\n\n💰 Total: $ 4,500,000 ARS\n📝 Nota: 20:00",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 4,500,000 | Ajuste: +$ 0 | Total: $ 4,500,000 | Pago: ARS | Costo: $ 2,537,500 | Margen: 43.6% | ID: V-202604-0011"
-    },
-    {
-      "id": "V-202604-0012",
-      "fecha": "2026-04-03",
-      "fechaDisplay": "03/04/2026",
-      "mesActual": "202604",
-      "tipoPago": "ARS",
-      "tc": null,
-      "payment": {
-        "ars": 1275000,
-        "usd": 0,
-        "usdt": 0,
-        "tc": 0,
-        "tc_usd": 0,
-        "tc_usdt": 0,
-        "total_ars": 1275000,
-        "total_usdt": null,
-        "modo": "ARS"
-      },
-      "nota": null,
-      "cliente": null,
-      "productos": {
-        "calaveras": 0,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 100,
-        "precioPastilla": 12750,
-        "tramoInfo": 100,
-        "totalPastillasLinea": 1275000,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "p-past",
-            "varId": "v-cal",
-            "qty": 100,
-            "precio": 12750,
-            "subtotal": 1275000
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 1275000,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 1275000,
-        "subtotalBruto": 1275000,
-        "ajusteNeto": 0,
-        "totalUSDT": null,
-        "payment": {
-          "ars": 1275000,
-          "usd": 0,
-          "usdt": 0,
-          "tc": 0,
-          "tc_usd": 0,
-          "tc_usdt": 0,
-          "total_ars": 1275000,
-          "total_usdt": null,
-          "modo": "ARS"
-        }
-      },
-      "costo": 507500,
-      "margen": 60.2,
-      "ajuste": {
-        "recargoPct": 0,
-        "recargoFijo": 0,
-        "descPct": 0,
-        "descFijo": 0,
-        "recargoPctMonto": 0,
-        "recargoFijoMonto": 0,
-        "descPctMonto": 0,
-        "descFijoMonto": 0,
-        "ajusteNeto": 0
-      },
-      "ticketText": "🧾 Orden de Venta: V-202604-0012\n📅 Fecha: 03/04/2026\n\n🛒 Pedido\n\n💀 100 ud × $ 12,750 = $ 1,275,000\n\n💰 Total: $ 1,275,000 ARS",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,275,000 | Ajuste: +$ 0 | Total: $ 1,275,000 | Pago: ARS | Costo: $ 507,500 | Margen: 60.2% | ID: V-202604-0012"
     }
   ],
   "egresos": [
@@ -3729,6 +3553,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 29/03/2026\nID Egreso: E-202603-0048\n\n📉 Egreso:\nConcepto: Spotify\nMonto: $ 4,330\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 4,330\nFinaliza: 03/2026"
+    },
+    {
+      "id": "E-202604-0001",
+      "fecha": "2026-04-03",
+      "fechaDisplay": "03/04/2026",
+      "mesActual": "202604",
+      "concepto": "Facturas",
+      "montoTotal": 10000,
+      "cuotaBase": 10000,
+      "ultimaCuota": 10000,
+      "impactoCaja": 10000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 03/04/2026\nID Egreso: E-202604-0001\n\n📉 Egreso:\nConcepto: Facturas\nMonto: $ 10,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 10,000\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -3943,6 +3784,39 @@
   "inversiones": [],
   "liquidezExterna": [],
   "stockMovs": [
+    {
+      "fecha": "2026-04-03T21:05:47.070Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": 500,
+      "antes": 0,
+      "despues": 500,
+      "nota": "Ajuste desde tabla"
+    },
+    {
+      "fecha": "2026-04-03T20:55:25.121Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "💀",
+      "delta": -100,
+      "antes": 1333,
+      "despues": 1233,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-03T20:55:25.121Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -63,
+      "antes": 63,
+      "despues": 0,
+      "nota": "Ticket generado"
+    },
     {
       "fecha": "2026-04-03T20:54:33.194Z",
       "tipo": "VENTA",
@@ -4396,8 +4270,8 @@
     }
   ],
   "stock": {
-    "v-cal": 63,
-    "grp-p-past": 1333,
+    "v-cal": 500,
+    "grp-p-past": 1770,
     "v-ted": 1270,
     "p-cris": 787,
     "p-hong": 200,
