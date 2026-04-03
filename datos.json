@@ -2735,6 +2735,101 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0009\n📅 Fecha: 03/04/2026\n👤 Cliente: Felipe Aracama\n\n🛒 Pedido\n\n🧸 20 ud × $ 19,367 = $ 387,340\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 467,308 ARS\n📝 Nota: 20:00 Horas",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 467,308 | Ajuste: +$ 0 | Total: $ 467,308 | Pago: ARS | Costo: $ 109,475 | Margen: 76.6% | ID: V-202604-0009"
+    },
+    {
+      "id": "V-202604-0010",
+      "fecha": "2026-04-03",
+      "fechaDisplay": "03/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 683560,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 683560,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "20:00",
+      "cliente": "Maxi Saez DJ",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 40,
+        "precioPastilla": 17089,
+        "tramoInfo": 40,
+        "totalPastillasLinea": 683560,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 17089,
+            "subtotal": 85445
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 35,
+            "precio": 17089,
+            "subtotal": 598115
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 683560,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 683560,
+        "subtotalBruto": 683560,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 683560,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 683560,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 203000,
+      "margen": 70.3,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0010\n📅 Fecha: 03/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n💀 5 ud × $ 17,089 = $ 85,445\n🧸 35 ud × $ 17,089 = $ 598,115\n\n💰 Total: $ 683,560 ARS\n📝 Nota: 20:00",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 683,560 | Ajuste: +$ 0 | Total: $ 683,560 | Pago: ARS | Costo: $ 203,000 | Margen: 70.3% | ID: V-202604-0010"
     }
   ],
   "egresos": [
@@ -3768,6 +3863,39 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-03T20:21:31.958Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 788,
+      "despues": 787,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-03T20:21:31.958Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "🧸",
+      "delta": -20,
+      "antes": 1893,
+      "despues": 1873,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-03T20:21:31.958Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -20,
+      "antes": 1325,
+      "despues": 1305,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-03T20:20:46.664Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -4122,9 +4250,9 @@
   ],
   "stock": {
     "v-cal": 568,
-    "grp-p-past": 1893,
-    "v-ted": 1325,
-    "p-cris": 788,
+    "grp-p-past": 1873,
+    "v-ted": 1305,
+    "p-cris": 787,
     "p-hong": 200,
     "p-got": 20,
     "p-pet": 20
