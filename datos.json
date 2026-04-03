@@ -2728,6 +2728,101 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0009\n📅 Fecha: 03/04/2026\n👤 Cliente: FFGDGDFSGFGD\n\n🛒 Pedido\n\n💀 18 ud × $ 19,367 = $ 348,606\n🧸 4 ud × $ 19,367 = $ 77,468\n\n💰 Total: $ 426,074 ARS\n💵 Total USD: 313.94 (TC 1,357)\n📝 Nota: DFGDFGFDGFDGGFD",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 426,074 | Ajuste: +$ 0 | Total: $ 426,074 | Pago: USD | Costo: $ 111,650 | Margen: 73.8% | ID: V-202604-0009"
+    },
+    {
+      "id": "V-202604-0010",
+      "fecha": "2026-04-03",
+      "fechaDisplay": "03/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "USD",
+      "tc": 1457.2,
+      "payment": {
+        "ars": 0,
+        "usd": 327.7,
+        "usdt": 0,
+        "tc": 1300.2,
+        "tc_usd": 1300.2,
+        "tc_usdt": 1457.2,
+        "total_ars": 426076,
+        "total_usdt": null,
+        "modo": "USD"
+      },
+      "nota": "DFGDFGFDGFDGGFD",
+      "cliente": "FFGDGDFSGFGD",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 22,
+        "precioPastilla": 19367,
+        "tramoInfo": 20,
+        "totalPastillasLinea": 426074,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 18,
+            "precio": 19367,
+            "subtotal": 348606
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 4,
+            "precio": 19367,
+            "subtotal": 77468
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 426074,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 426074,
+        "subtotalBruto": 426074,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 0,
+          "usd": 327.7,
+          "usdt": 0,
+          "tc": 1300.2,
+          "tc_usd": 1300.2,
+          "tc_usdt": 1457.2,
+          "total_ars": 426076,
+          "total_usdt": null,
+          "modo": "USD"
+        }
+      },
+      "costo": 111650,
+      "margen": 73.8,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0010\n📅 Fecha: 03/04/2026\n👤 Cliente: FFGDGDFSGFGD\n\n🛒 Pedido\n\n💀 18 ud × $ 19,367 = $ 348,606\n🧸 4 ud × $ 19,367 = $ 77,468\n\n💰 Total: $ 426,074 ARS\n💵 Total USD: 327.70 (TC 1,300)\n📝 Nota: DFGDFGFDGFDGGFD",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 426,074 | Ajuste: +$ 0 | Total: $ 426,074 | Pago: USD | Costo: $ 111,650 | Margen: 73.8% | ID: V-202604-0010"
     }
   ],
   "egresos": [
@@ -3761,6 +3856,50 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-03T01:37:19.074Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "🧸",
+      "delta": -4,
+      "antes": 1872,
+      "despues": 1868,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-03T01:37:19.074Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -4,
+      "antes": 1340,
+      "despues": 1336,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-03T01:37:19.074Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "💀",
+      "delta": -18,
+      "antes": 1890,
+      "despues": 1872,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-03T01:37:19.074Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -18,
+      "antes": 550,
+      "despues": 532,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-03T01:36:48.194Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -4103,9 +4242,9 @@
     }
   ],
   "stock": {
-    "v-cal": 550,
-    "grp-p-past": 1890,
-    "v-ted": 1340,
+    "v-cal": 532,
+    "grp-p-past": 1868,
+    "v-ted": 1336,
     "p-cris": 789,
     "p-hong": 200,
     "p-got": 20,
