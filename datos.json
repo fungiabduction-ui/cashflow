@@ -2545,6 +2545,101 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0007\n📅 Fecha: 02/04/2026\n👤 Cliente: Juanmi\n\n🛒 Pedido\n\n🧸 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0007"
+    },
+    {
+      "id": "V-202604-0008",
+      "fecha": "2026-04-03",
+      "fechaDisplay": "03/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 388668,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 388668,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "20:00 Horas",
+      "cliente": "Felipe Aracama",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 15,
+        "precioPastilla": 20580,
+        "tramoInfo": 15,
+        "totalPastillasLinea": 308700,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 15,
+            "precio": 20580,
+            "subtotal": 308700
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 308700,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 388668,
+        "subtotalBruto": 388668,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 388668,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 388668,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 84100,
+      "margen": 78.4,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0008\n📅 Fecha: 03/04/2026\n👤 Cliente: Felipe Aracama\n\n🛒 Pedido\n\n🧸 15 ud × $ 20,580 = $ 308,700\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 388,668 ARS\n📝 Nota: 20:00 Horas",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 388,668 | Ajuste: +$ 0 | Total: $ 388,668 | Pago: ARS | Costo: $ 84,100 | Margen: 78.4% | ID: V-202604-0008"
     }
   ],
   "egresos": [
