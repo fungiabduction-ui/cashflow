@@ -2547,101 +2547,6 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0007"
     },
     {
-      "id": "V-202604-0008",
-      "fecha": "2026-04-03",
-      "fechaDisplay": "03/04/2026",
-      "mesActual": "202604",
-      "tipoPago": "ARS",
-      "tc": null,
-      "payment": {
-        "ars": 388668,
-        "usd": 0,
-        "usdt": 0,
-        "tc": 0,
-        "tc_usd": 0,
-        "tc_usdt": 0,
-        "total_ars": 388668,
-        "total_usdt": null,
-        "modo": "ARS"
-      },
-      "nota": "20:00 Horas",
-      "cliente": "Felipe Aracama",
-      "productos": {
-        "calaveras": 0,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 15,
-        "precioPastilla": 20580,
-        "tramoInfo": 15,
-        "totalPastillasLinea": 308700,
-        "cristales": 1,
-        "precioCristales": 79968,
-        "totalCristales": 79968,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "p-past",
-            "varId": "v-ted",
-            "qty": 15,
-            "precio": 20580,
-            "subtotal": 308700
-          },
-          {
-            "prodId": "p-cris",
-            "varId": null,
-            "qty": 1,
-            "precio": 79968,
-            "subtotal": 79968
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 308700,
-        "totalCristales": 79968,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 388668,
-        "subtotalBruto": 388668,
-        "ajusteNeto": 0,
-        "totalUSDT": null,
-        "payment": {
-          "ars": 388668,
-          "usd": 0,
-          "usdt": 0,
-          "tc": 0,
-          "tc_usd": 0,
-          "tc_usdt": 0,
-          "total_ars": 388668,
-          "total_usdt": null,
-          "modo": "ARS"
-        }
-      },
-      "costo": 84100,
-      "margen": 78.4,
-      "ajuste": {
-        "recargoPct": 0,
-        "recargoFijo": 0,
-        "descPct": 0,
-        "descFijo": 0,
-        "recargoPctMonto": 0,
-        "recargoFijoMonto": 0,
-        "descPctMonto": 0,
-        "descFijoMonto": 0,
-        "ajusteNeto": 0
-      },
-      "ticketText": "🧾 Orden de Venta: V-202604-0008\n📅 Fecha: 03/04/2026\n👤 Cliente: Felipe Aracama\n\n🛒 Pedido\n\n🧸 15 ud × $ 20,580 = $ 308,700\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 388,668 ARS\n📝 Nota: 20:00 Horas",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 388,668 | Ajuste: +$ 0 | Total: $ 388,668 | Pago: ARS | Costo: $ 84,100 | Margen: 78.4% | ID: V-202604-0008"
-    },
-    {
       "id": "V-202604-0009",
       "fecha": "2026-04-03",
       "fechaDisplay": "03/04/2026",
@@ -2830,6 +2735,94 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0010\n📅 Fecha: 03/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n💀 5 ud × $ 17,089 = $ 85,445\n🧸 35 ud × $ 17,089 = $ 598,115\n\n💰 Total: $ 683,560 ARS\n📝 Nota: 20:00",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 683,560 | Ajuste: +$ 0 | Total: $ 683,560 | Pago: ARS | Costo: $ 203,000 | Margen: 70.3% | ID: V-202604-0010"
+    },
+    {
+      "id": "V-202604-0011",
+      "fecha": "2026-04-03",
+      "fechaDisplay": "03/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 4500000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 4500000,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "20:00",
+      "cliente": "Maxi Saez DJ",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 500,
+        "precioPastilla": 9000,
+        "tramoInfo": 500,
+        "totalPastillasLinea": 4500000,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 500,
+            "precio": 9000,
+            "subtotal": 4500000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 4500000,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 4500000,
+        "subtotalBruto": 4500000,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 4500000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 4500000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 2537500,
+      "margen": 43.6,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0011\n📅 Fecha: 03/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n💀 500 ud × $ 9,000 = $ 4,500,000\n\n💰 Total: $ 4,500,000 ARS\n📝 Nota: 20:00",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 4,500,000 | Ajuste: +$ 0 | Total: $ 4,500,000 | Pago: ARS | Costo: $ 2,537,500 | Margen: 43.6% | ID: V-202604-0011"
     }
   ],
   "egresos": [
@@ -3863,6 +3856,50 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-03T20:50:28.293Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "🧸",
+      "delta": -35,
+      "antes": 1868,
+      "despues": 1833,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-03T20:50:28.293Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -35,
+      "antes": 1305,
+      "despues": 1270,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-03T20:50:28.293Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "💀",
+      "delta": -5,
+      "antes": 1873,
+      "despues": 1868,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-03T20:50:28.293Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -5,
+      "antes": 568,
+      "despues": 563,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-03T20:21:31.958Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -4249,9 +4286,9 @@
     }
   ],
   "stock": {
-    "v-cal": 568,
-    "grp-p-past": 1873,
-    "v-ted": 1305,
+    "v-cal": 563,
+    "grp-p-past": 1833,
+    "v-ted": 1270,
     "p-cris": 787,
     "p-hong": 200,
     "p-got": 20,
