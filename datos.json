@@ -2633,6 +2633,101 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0001\n📅 Fecha: 31/05/2026\n\n🛒 Pedido\n\n💀 1500 ud × $ 9,000 = $ 13,500,000\n\n💰 Total: $ 13,500,000 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 13,500,000 | Ajuste: +$ 0 | Total: $ 13,500,000 | Pago: ARS | Costo: $ 7,612,500 | Margen: 43.6% | ID: V-202605-0001"
+    },
+    {
+      "id": "V-202606-0001",
+      "fecha": "2026-06-30",
+      "fechaDisplay": "30/06/2026",
+      "mesActual": "202606",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 16416000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 16416000,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 1824,
+        "precioPastilla": 9000,
+        "tramoInfo": 500,
+        "totalPastillasLinea": 16416000,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 496,
+            "precio": 9000,
+            "subtotal": 4464000
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 1328,
+            "precio": 9000,
+            "subtotal": 11952000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 16416000,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 16416000,
+        "subtotalBruto": 16416000,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 16416000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 16416000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 9256800,
+      "margen": 43.6,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202606-0001\n📅 Fecha: 30/06/2026\n\n🛒 Pedido\n\n💀 496 ud × $ 9,000 = $ 4,464,000\n🧸 1328 ud × $ 9,000 = $ 11,952,000\n\n💰 Total: $ 16,416,000 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 16,416,000 | Ajuste: +$ 0 | Total: $ 16,416,000 | Pago: ARS | Costo: $ 9,256,800 | Margen: 43.6% | ID: V-202606-0001"
     }
   ],
   "egresos": [
@@ -3666,6 +3761,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-03T02:34:58.980Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "💀",
+      "delta": -1500,
+      "antes": 1824,
+      "despues": 324,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-03T02:34:58.980Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -496,
+      "antes": 496,
+      "despues": 0,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-03T01:38:16.360Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -4140,8 +4257,8 @@
     }
   ],
   "stock": {
-    "v-cal": 496,
-    "grp-p-past": 1824,
+    "v-cal": 0,
+    "grp-p-past": 324,
     "v-ted": 1328,
     "p-cris": 789,
     "p-hong": 200,
