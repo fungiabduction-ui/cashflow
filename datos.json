@@ -2640,6 +2640,101 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0008\n📅 Fecha: 03/04/2026\n👤 Cliente: Felipe Aracama\n\n🛒 Pedido\n\n🧸 15 ud × $ 20,580 = $ 308,700\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 388,668 ARS\n📝 Nota: 20:00 Horas",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 388,668 | Ajuste: +$ 0 | Total: $ 388,668 | Pago: ARS | Costo: $ 84,100 | Margen: 78.4% | ID: V-202604-0008"
+    },
+    {
+      "id": "V-202604-0009",
+      "fecha": "2026-04-03",
+      "fechaDisplay": "03/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 467308,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 467308,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "20:00 Horas",
+      "cliente": "Felipe Aracama",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 20,
+        "precioPastilla": 19367,
+        "tramoInfo": 20,
+        "totalPastillasLinea": 387340,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 20,
+            "precio": 19367,
+            "subtotal": 387340
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 387340,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 467308,
+        "subtotalBruto": 467308,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 467308,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 467308,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 109475,
+      "margen": 76.6,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0009\n📅 Fecha: 03/04/2026\n👤 Cliente: Felipe Aracama\n\n🛒 Pedido\n\n🧸 20 ud × $ 19,367 = $ 387,340\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 467,308 ARS\n📝 Nota: 20:00 Horas",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 467,308 | Ajuste: +$ 0 | Total: $ 467,308 | Pago: ARS | Costo: $ 109,475 | Margen: 76.6% | ID: V-202604-0009"
     }
   ],
   "egresos": [
@@ -3673,6 +3768,39 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-03T20:20:46.664Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 789,
+      "despues": 788,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-03T20:20:46.664Z",
+      "tipo": "VENTA",
+      "prodId": "grp-p-past",
+      "nombre": "Grupo",
+      "emoji": "🧸",
+      "delta": -15,
+      "antes": 1908,
+      "despues": 1893,
+      "nota": "Descuento grupo"
+    },
+    {
+      "fecha": "2026-04-03T20:20:46.664Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -15,
+      "antes": 1340,
+      "despues": 1325,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-02T17:55:01.277Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -3994,9 +4122,9 @@
   ],
   "stock": {
     "v-cal": 568,
-    "grp-p-past": 1908,
-    "v-ted": 1340,
-    "p-cris": 789,
+    "grp-p-past": 1893,
+    "v-ted": 1325,
+    "p-cris": 788,
     "p-hong": 200,
     "p-got": 20,
     "p-pet": 20
