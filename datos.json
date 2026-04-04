@@ -3616,7 +3616,7 @@
         "total_usdt": null,
         "modo": "ARS"
       },
-      "nota": "Tienda Nube",
+      "nota": "Tienda Nube - Telegram @Ubnity",
       "cliente": "Lucas Diaz",
       "productos": {
         "calaveras": 0,
@@ -4537,6 +4537,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 03/04/2026\nID Egreso: E-202604-0002\n\n📉 Egreso:\nConcepto: Supermercado Vea\nMonto: $ 62,634\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 62,634\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0003",
+      "fecha": "2026-04-04",
+      "fechaDisplay": "04/04/2026",
+      "mesActual": "202604",
+      "concepto": "CLAUDE",
+      "montoTotal": 28100,
+      "cuotaBase": 28100,
+      "ultimaCuota": 28100,
+      "impactoCaja": 28100,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Débito automático",
+      "obs": "20 usd x 1405 pagados con grabrfi",
+      "ticketText": "📅 Fecha: 04/04/2026\nID Egreso: E-202604-0003\n\n📉 Egreso:\nConcepto: CLAUDE\nMonto: $ 28,100\nMedio de pago: Débito automático\n📝 Observaciones: 20 usd x 1405 pagados con grabrfi\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 28,100\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -4751,6 +4768,17 @@
   "inversiones": [],
   "liquidezExterna": [],
   "stockMovs": [
+    {
+      "fecha": "2026-04-04T16:41:41.862Z",
+      "tipo": "VENTA",
+      "prodId": "p-hong",
+      "nombre": "Hongos",
+      "emoji": "🍄",
+      "delta": -5,
+      "antes": 200,
+      "despues": 195,
+      "nota": "Ticket generado"
+    },
     {
       "fecha": "2026-04-04T05:14:21.767Z",
       "tipo": "AJUSTE",
@@ -5219,7 +5247,7 @@
     "grp-p-past": 1770,
     "v-ted": 1270,
     "p-cris": 787,
-    "p-hong": 200,
+    "p-hong": 195,
     "p-got": 20,
     "p-pet": 20
   },
