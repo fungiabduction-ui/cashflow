@@ -3535,6 +3535,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 03/04/2026\nID Egreso: E-202604-0001\n\n📉 Egreso:\nConcepto: Facturas La estrella\nMonto: $ 9,500\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 9,500\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0002",
+      "fecha": "2026-04-03",
+      "fechaDisplay": "03/04/2026",
+      "mesActual": "202604",
+      "concepto": "Supermercado Vea",
+      "montoTotal": 62634,
+      "cuotaBase": 62634,
+      "ultimaCuota": 62634,
+      "impactoCaja": 62634,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 03/04/2026\nID Egreso: E-202604-0002\n\n📉 Egreso:\nConcepto: Supermercado Vea\nMonto: $ 62,634\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 62,634\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
