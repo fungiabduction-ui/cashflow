@@ -3597,6 +3597,94 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0010\n📅 Fecha: 03/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n💀 5 ud × $ 17,089 = $ 85,445\n🧸 35 ud × $ 17,089 = $ 598,115\n\n💰 Total: $ 683,560 ARS\n📝 Nota: 20:00",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 683,560 | Ajuste: +$ 0 | Total: $ 683,560 | Pago: ARS | Costo: $ 203,000 | Margen: 70.3% | ID: V-202604-0010"
+    },
+    {
+      "id": "V-202604-0011",
+      "fecha": "2026-04-04",
+      "fechaDisplay": "04/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 70000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 70000,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "Tienda Nube",
+      "cliente": "Lucas Diaz",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 5,
+        "precioHongos": 14000,
+        "totalHongos": 70000,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-hong",
+            "varId": null,
+            "qty": 5,
+            "precio": 14000,
+            "subtotal": 70000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 0,
+        "totalHongos": 70000,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 70000,
+        "subtotalBruto": 70000,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 70000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 70000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 10000,
+      "margen": 85.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0011\n📅 Fecha: 04/04/2026\n👤 Cliente: Lucas Diaz\n\n🛒 Pedido\n\n🍄 5 g × $ 14,000 = $ 70,000\n\n💰 Total: $ 70,000 ARS\n📝 Nota: Tienda Nube",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 70,000 | Ajuste: +$ 0 | Total: $ 70,000 | Pago: ARS | Costo: $ 10,000 | Margen: 85.7% | ID: V-202604-0011"
     }
   ],
   "egresos": [
