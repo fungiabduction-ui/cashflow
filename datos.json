@@ -140,7 +140,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Nicolas Penna",
-      "cliente": null,
+      "cliente": "Nicolas Penna",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -160,7 +160,16 @@
         "totalCristales": 220500,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 3,
+            "precio": 73500,
+            "subtotal": 220500
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -169,12 +178,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 220500,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 220500,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 220500,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 23925,
       "margen": 89.1,
       "ticketText": "🧾 Orden de Venta: V-202603-0004\n📅 Fecha: 04/03/2026\n[Importado]\n💰 Total: $ 220,500\n📝 Nicolas Penna",
-      "auditText": "[Importado] V-202603-0004"
+      "auditText": "[Importado] V-202603-0004",
+      "payment": {
+        "ars": 220500,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 220500,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0005",
@@ -266,7 +297,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Julián Gómez a las 10:20 am",
-      "cliente": null,
+      "cliente": "Julián Gómez",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -286,7 +317,16 @@
         "totalCristales": 79968,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -295,12 +335,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 79968,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 79968,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 79968,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 7975,
       "margen": 90,
       "ticketText": "🧾 Orden de Venta: V-202603-0006\n📅 Fecha: 06/03/2026\n[Importado]\n💰 Total: $ 79,968\n📝 Julián Gómez a las 10:20 am",
-      "auditText": "[Importado] V-202603-0006"
+      "auditText": "[Importado] V-202603-0006",
+      "payment": {
+        "ars": 79968,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 79968,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0007",
@@ -310,7 +372,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "surtidos para Luisa fuentes a las 10:40",
-      "cliente": null,
+      "cliente": "Luisa Fuentes",
       "productos": {
         "calaveras": 0,
         "teddy": 5,
@@ -330,7 +392,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 113925,
@@ -339,12 +410,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 113925,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 113925,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 113925,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 25375,
       "margen": 77.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0007\n📅 Fecha: 07/03/2026\n[Importado]\n💰 Total: $ 113,925\n📝 surtidos para Luisa fuentes a las 10:40",
-      "auditText": "[Importado] V-202603-0007"
+      "auditText": "[Importado] V-202603-0007",
+      "payment": {
+        "ars": 113925,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 113925,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0008",
@@ -354,7 +447,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Matías Nicolás 11:30 am",
-      "cliente": null,
+      "cliente": "Matías Nicolás",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -374,7 +467,16 @@
         "totalCristales": 79968,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -383,12 +485,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 79968,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 79968,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 79968,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 7975,
       "margen": 90,
       "ticketText": "🧾 Orden de Venta: V-202603-0008\n📅 Fecha: 07/03/2026\n[Importado]\n💰 Total: $ 79,968\n📝 para Matías Nicolás 11:30 am",
-      "auditText": "[Importado] V-202603-0008"
+      "auditText": "[Importado] V-202603-0008",
+      "payment": {
+        "ars": 79968,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 79968,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0009",
@@ -398,7 +522,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Juan Perez Monsalvo - me pago con 120.000 - a las 11:40 am",
-      "cliente": null,
+      "cliente": "Juan Perez Monsalvo",
       "productos": {
         "calaveras": 0,
         "teddy": 5,
@@ -418,7 +542,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 113925,
@@ -427,12 +560,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 113925,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 113925,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 113925,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 25375,
       "margen": 77.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0009\n📅 Fecha: 07/03/2026\n[Importado]\n💰 Total: $ 113,925\n📝 para Juan Perez Monsalvo - me pago con 120.000 - a las 11:40 am",
-      "auditText": "[Importado] V-202603-0009"
+      "auditText": "[Importado] V-202603-0009",
+      "payment": {
+        "ars": 113925,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 113925,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0010",
@@ -442,7 +597,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "mixtos para Juanmi a las 15:30",
-      "cliente": null,
+      "cliente": "Juanmi",
       "productos": {
         "calaveras": 0,
         "teddy": 10,
@@ -462,7 +617,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 10,
+            "precio": 21735,
+            "subtotal": 217350
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 217350,
@@ -471,12 +635,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 217350,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 217350,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 217350,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 50750,
       "margen": 76.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0010\n📅 Fecha: 07/03/2026\n[Importado]\n💰 Total: $ 217,350\n📝 mixtos para Juanmi a las 15:30",
-      "auditText": "[Importado] V-202603-0010"
+      "auditText": "[Importado] V-202603-0010",
+      "payment": {
+        "ars": 217350,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 217350,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0011",
@@ -485,8 +671,8 @@
       "mesActual": "202603",
       "tipoPago": "ARS",
       "tc": null,
-      "nota": "@Carpy_420",
-      "cliente": null,
+      "nota": "@Carpy_420 Telegram",
+      "cliente": "@Carpy_420",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -506,7 +692,16 @@
         "totalCristales": 0,
         "totalHongos": 70000,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-hong",
+            "varId": null,
+            "qty": 5,
+            "precio": 14000,
+            "subtotal": 70000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -515,12 +710,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 70000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 70000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 70000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 10000,
       "margen": 85.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0011\n📅 Fecha: 11/03/2026\n[Importado]\n💰 Total: $ 70,000\n📝 @Carpy_420",
-      "auditText": "[Importado] V-202603-0011"
+      "auditText": "[Importado] V-202603-0011",
+      "payment": {
+        "ars": 70000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 70000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0012",
@@ -530,7 +747,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Para Manu",
-      "cliente": null,
+      "cliente": "Manu",
       "productos": {
         "calaveras": 5,
         "teddy": 0,
@@ -550,7 +767,23 @@
         "totalCristales": 79968,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 113925,
@@ -559,12 +792,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 193893,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 193893,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 193893,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 33350,
       "margen": 82.8,
       "ticketText": "🧾 Orden de Venta: V-202603-0012\n📅 Fecha: 14/03/2026\n[Importado]\n💰 Total: $ 193,893\n📝 Para Manu",
-      "auditText": "[Importado] V-202603-0012"
+      "auditText": "[Importado] V-202603-0012",
+      "payment": {
+        "ars": 193893,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 193893,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0013",
@@ -574,7 +829,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Para Maxi (Mario)",
-      "cliente": null,
+      "cliente": "Maxi (Mario)",
       "productos": {
         "calaveras": 2,
         "teddy": 3,
@@ -594,7 +849,30 @@
         "totalCristales": 79968,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 2,
+            "precio": 22785,
+            "subtotal": 45570
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 3,
+            "precio": 22785,
+            "subtotal": 68355
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 113925,
@@ -603,12 +881,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 193893,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 193893,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 193893,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 33350,
       "margen": 82.8,
       "ticketText": "🧾 Orden de Venta: V-202603-0013\n📅 Fecha: 14/03/2026\n[Importado]\n💰 Total: $ 193,893\n📝 Para Maxi (Mario)",
-      "auditText": "[Importado] V-202603-0013"
+      "auditText": "[Importado] V-202603-0013",
+      "payment": {
+        "ars": 193893,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 193893,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0014",
@@ -618,7 +918,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Para Bernardo D Ribas",
-      "cliente": null,
+      "cliente": "Bernardo D Ribas",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -638,7 +938,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 85000,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-got",
+            "varId": null,
+            "qty": 1,
+            "precio": 85000,
+            "subtotal": 85000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -647,12 +956,34 @@
         "totalGoteros": 85000,
         "totalPetri": 0,
         "totalGeneral": 85000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 85000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 85000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 5000,
       "margen": 94.1,
       "ticketText": "🧾 Orden de Venta: V-202603-0014\n📅 Fecha: 14/03/2026\n[Importado]\n💰 Total: $ 85,000\n📝 Para Bernardo D Ribas",
-      "auditText": "[Importado] V-202603-0014"
+      "auditText": "[Importado] V-202603-0014",
+      "payment": {
+        "ars": 85000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 85000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0015",
@@ -662,7 +993,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "María Florencia Saracino — DNI 30.278.737 — +541169516122 — marsaracino@abc.gob.ar",
-      "cliente": null,
+      "cliente": "María Florencia Saracino",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -682,7 +1013,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 112000
+        "totalPetri": 112000,
+        "_lineas": [
+          {
+            "prodId": "p-pet",
+            "varId": null,
+            "qty": 2,
+            "precio": 56000,
+            "subtotal": 112000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -691,12 +1031,34 @@
         "totalGoteros": 0,
         "totalPetri": 112000,
         "totalGeneral": 112000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 112000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 112000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 4000,
       "margen": 96.4,
       "ticketText": "🧾 Orden de Venta: V-202603-0015\n📅 Fecha: 14/03/2026\n[Importado]\n💰 Total: $ 112,000\n📝 María Florencia Saracino — DNI 30.278.737 — +541169516122 — marsaracino@abc.gob.ar",
-      "auditText": "[Importado] V-202603-0015"
+      "auditText": "[Importado] V-202603-0015",
+      "payment": {
+        "ars": 112000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 112000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0016",
@@ -706,7 +1068,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Maria Victoria Muracciole — DNI 18.651.370 — +541141750700 — mavymavy@gmail.com",
-      "cliente": null,
+      "cliente": "Maria Victoria Muracciole",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -726,7 +1088,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 56000
+        "totalPetri": 56000,
+        "_lineas": [
+          {
+            "prodId": "p-pet",
+            "varId": null,
+            "qty": 1,
+            "precio": 56000,
+            "subtotal": 56000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -735,12 +1106,34 @@
         "totalGoteros": 0,
         "totalPetri": 56000,
         "totalGeneral": 56000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 56000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 56000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 2000,
       "margen": 96.4,
       "ticketText": "🧾 Orden de Venta: V-202603-0016\n📅 Fecha: 14/03/2026\n[Importado]\n💰 Total: $ 56,000\n📝 Maria Victoria Muracciole — DNI 18.651.370 — +541141750700 — mavymavy@gmail.com",
-      "auditText": "[Importado] V-202603-0016"
+      "auditText": "[Importado] V-202603-0016",
+      "payment": {
+        "ars": 56000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 56000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0017",
@@ -750,7 +1143,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Ale B a la tarde del día de hoy",
-      "cliente": null,
+      "cliente": "Ale Bondaruc",
       "productos": {
         "calaveras": 5,
         "teddy": 0,
@@ -770,7 +1163,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 113925,
@@ -779,12 +1181,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 113925,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 113925,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 113925,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 25375,
       "margen": 77.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0017\n📅 Fecha: 18/03/2026\n[Importado]\n💰 Total: $ 113,925\n📝 para Ale B a la tarde del día de hoy",
-      "auditText": "[Importado] V-202603-0017"
+      "auditText": "[Importado] V-202603-0017",
+      "payment": {
+        "ars": 113925,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 113925,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0018",
@@ -794,7 +1218,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Juan Sabato (Dani) a las 11:20 am",
-      "cliente": null,
+      "cliente": "Juan Sabato (Dani)",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -814,7 +1238,16 @@
         "totalCristales": 79968,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -823,12 +1256,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 79968,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 79968,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 79968,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 7975,
       "margen": 90,
       "ticketText": "🧾 Orden de Venta: V-202603-0018\n📅 Fecha: 18/03/2026\n[Importado]\n💰 Total: $ 79,968\n📝 para Juan Sabato (Dani) a las 11:20 am",
-      "auditText": "[Importado] V-202603-0018"
+      "auditText": "[Importado] V-202603-0018",
+      "payment": {
+        "ars": 79968,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 79968,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0019",
@@ -838,7 +1293,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Octavio",
-      "cliente": null,
+      "cliente": "Octavio",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -858,7 +1313,16 @@
         "totalCristales": 0,
         "totalHongos": 70000,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-hong",
+            "varId": null,
+            "qty": 5,
+            "precio": 14000,
+            "subtotal": 70000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -867,12 +1331,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 70000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 70000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 70000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 10000,
       "margen": 85.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0019\n📅 Fecha: 18/03/2026\n[Importado]\n💰 Total: $ 70,000\n📝 Octavio",
-      "auditText": "[Importado] V-202603-0019"
+      "auditText": "[Importado] V-202603-0019",
+      "payment": {
+        "ars": 70000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 70000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0020",
@@ -882,7 +1368,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Dolores",
-      "cliente": null,
+      "cliente": "Dolores",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -902,7 +1388,16 @@
         "totalCristales": 0,
         "totalHongos": 70000,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-hong",
+            "varId": null,
+            "qty": 5,
+            "precio": 14000,
+            "subtotal": 70000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -911,12 +1406,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 70000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 70000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 70000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 10000,
       "margen": 85.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0020\n📅 Fecha: 18/03/2026\n[Importado]\n💰 Total: $ 70,000\n📝 Dolores",
-      "auditText": "[Importado] V-202603-0020"
+      "auditText": "[Importado] V-202603-0020",
+      "payment": {
+        "ars": 70000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 70000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0021",
@@ -926,7 +1443,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Nicolas Penna",
-      "cliente": null,
+      "cliente": "Nicolas Penna",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -946,7 +1463,16 @@
         "totalCristales": 220500,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 3,
+            "precio": 73500,
+            "subtotal": 220500
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -955,12 +1481,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 220500,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 220500,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 220500,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 23925,
       "margen": 89.1,
       "ticketText": "🧾 Orden de Venta: V-202603-0021\n📅 Fecha: 19/03/2026\n[Importado]\n💰 Total: $ 220,500\n📝 para Nicolas Penna",
-      "auditText": "[Importado] V-202603-0021"
+      "auditText": "[Importado] V-202603-0021",
+      "payment": {
+        "ars": 220500,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 220500,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0022",
@@ -970,7 +1518,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Noyer Abril Celeste",
-      "cliente": null,
+      "cliente": "Noyer Abril Celeste",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -990,7 +1538,16 @@
         "totalCristales": 0,
         "totalHongos": 425000,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-hong",
+            "varId": null,
+            "qty": 50,
+            "precio": 8500,
+            "subtotal": 425000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -999,12 +1556,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 425000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 425000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 425000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 100000,
       "margen": 76.5,
       "ticketText": "🧾 Orden de Venta: V-202603-0022\n📅 Fecha: 19/03/2026\n[Importado]\n💰 Total: $ 425,000\n📝 para Noyer Abril Celeste",
-      "auditText": "[Importado] V-202603-0022"
+      "auditText": "[Importado] V-202603-0022",
+      "payment": {
+        "ars": 425000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 425000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0023",
@@ -1014,7 +1593,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Nicolás Monzó",
-      "cliente": null,
+      "cliente": "Nicolás Monzó",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -1034,7 +1613,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 56000
+        "totalPetri": 56000,
+        "_lineas": [
+          {
+            "prodId": "p-pet",
+            "varId": null,
+            "qty": 1,
+            "precio": 56000,
+            "subtotal": 56000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -1043,12 +1631,34 @@
         "totalGoteros": 0,
         "totalPetri": 56000,
         "totalGeneral": 56000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 56000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 56000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 2000,
       "margen": 96.4,
       "ticketText": "🧾 Orden de Venta: V-202603-0023\n📅 Fecha: 19/03/2026\n[Importado]\n💰 Total: $ 56,000\n📝 para Nicolás Monzó",
-      "auditText": "[Importado] V-202603-0023"
+      "auditText": "[Importado] V-202603-0023",
+      "payment": {
+        "ars": 56000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 56000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0024",
@@ -1058,7 +1668,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Nicolás monzó (2 sellos de esporas)",
-      "cliente": null,
+      "cliente": "Nicolás Monzó",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -1078,7 +1688,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "__var",
+            "varId": null,
+            "qty": 1,
+            "precio": 80000,
+            "subtotal": 80000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -1087,12 +1706,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 80000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 80000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 80000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 0,
       "margen": 100,
       "ticketText": "🧾 Orden de Venta: V-202603-0024\n📅 Fecha: 19/03/2026\n[Importado]\n💰 Total: $ 80,000\n📝 para Nicolás monzó (2 sellos de esporas)",
-      "auditText": "[Importado] V-202603-0024"
+      "auditText": "[Importado] V-202603-0024",
+      "payment": {
+        "ars": 80000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 80000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0025",
@@ -1102,7 +1743,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Leandro Bondaruk",
-      "cliente": null,
+      "cliente": "Leandro Bondaruk",
       "productos": {
         "calaveras": 5,
         "teddy": 0,
@@ -1122,7 +1763,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 113925,
@@ -1131,12 +1781,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 113925,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 113925,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 113925,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 25375,
       "margen": 77.7,
       "ticketText": "🧾 Orden de Venta: V-202603-0025\n📅 Fecha: 20/03/2026\n[Importado]\n💰 Total: $ 113,925\n📝 Leandro Bondaruk",
-      "auditText": "[Importado] V-202603-0025"
+      "auditText": "[Importado] V-202603-0025",
+      "payment": {
+        "ars": 113925,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 113925,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0026",
@@ -1146,7 +1818,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Juana peroni fraccionados de a 15 y 5 gr",
-      "cliente": null,
+      "cliente": "Juana Peroni",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -1166,7 +1838,16 @@
         "totalCristales": 0,
         "totalHongos": 200000,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-hong",
+            "varId": null,
+            "qty": 20,
+            "precio": 10000,
+            "subtotal": 200000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -1175,12 +1856,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 200000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 200000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 200000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 40000,
       "margen": 80,
       "ticketText": "🧾 Orden de Venta: V-202603-0026\n📅 Fecha: 20/03/2026\n[Importado]\n💰 Total: $ 200,000\n📝 Juana peroni fraccionados de a 15 y 5 gr",
-      "auditText": "[Importado] V-202603-0026"
+      "auditText": "[Importado] V-202603-0026",
+      "payment": {
+        "ars": 200000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 200000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0027",
@@ -1190,7 +1893,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Jero M",
-      "cliente": null,
+      "cliente": "Jeronimo Macri",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -1210,7 +1913,16 @@
         "totalCristales": 0,
         "totalHongos": 144000,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-hong",
+            "varId": null,
+            "qty": 12,
+            "precio": 12000,
+            "subtotal": 144000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -1219,56 +1931,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 144000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 144000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 144000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 24000,
       "margen": 83.3,
       "ticketText": "🧾 Orden de Venta: V-202603-0027\n📅 Fecha: 20/03/2026\n[Importado]\n💰 Total: $ 144,000\n📝 Jero M",
-      "auditText": "[Importado] V-202603-0027"
-    },
-    {
-      "id": "V-202603-0028",
-      "fecha": "2026-03-20",
-      "fechaDisplay": "20/03/2026",
-      "mesActual": "202603",
-      "tipoPago": "ARS",
-      "tc": null,
-      "nota": "para Pancho Lacoste",
-      "cliente": null,
-      "productos": {
-        "calaveras": 5,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 5,
-        "precioPastilla": 22785,
-        "tramoInfo": null,
-        "cristales": 5,
-        "precioCristales": 67972,
-        "hongos": 0,
-        "precioHongos": null,
-        "goteros": 0,
-        "petri": 0,
-        "variable": 0,
-        "totalPastillasLinea": 113925,
-        "totalCristales": 339860,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0
-      },
-      "totales": {
-        "totalPastillasLinea": 113925,
-        "totalCristales": 339860,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 453785,
-        "totalUSDT": null
-      },
-      "costo": 65250,
-      "margen": 85.6,
-      "ticketText": "🧾 Orden de Venta: V-202603-0028\n📅 Fecha: 20/03/2026\n[Importado]\n💰 Total: $ 453,785\n📝 para Pancho Lacoste",
-      "auditText": "[Importado] V-202603-0028"
+      "auditText": "[Importado] V-202603-0027",
+      "payment": {
+        "ars": 144000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 144000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0029",
@@ -1278,7 +1968,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "para Facu (Ari)",
-      "cliente": null,
+      "cliente": "Facu (Ari)",
       "productos": {
         "calaveras": 3,
         "teddy": 2,
@@ -1298,7 +1988,30 @@
         "totalCristales": 79968,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 3,
+            "precio": 22785,
+            "subtotal": 68355
+          },
+          {
+            "prodId": "p-past",
+            "varId": "v-ted",
+            "qty": 2,
+            "precio": 22785,
+            "subtotal": 45570
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 113925,
@@ -1307,12 +2020,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 193893,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 193893,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 193893,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 33350,
       "margen": 82.8,
       "ticketText": "🧾 Orden de Venta: V-202603-0029\n📅 Fecha: 20/03/2026\n[Importado]\n💰 Total: $ 193,893\n📝 para Facu (Ari)",
-      "auditText": "[Importado] V-202603-0029"
+      "auditText": "[Importado] V-202603-0029",
+      "payment": {
+        "ars": 193893,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 193893,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0030",
@@ -1322,7 +2057,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Pancho Lacoste 12:00",
-      "cliente": null,
+      "cliente": "Pancho Lacoste",
       "productos": {
         "calaveras": 5,
         "teddy": 0,
@@ -1342,7 +2077,23 @@
         "totalCristales": 407832,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-past",
+            "varId": "v-cal",
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 6,
+            "precio": 67972,
+            "subtotal": 407832
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 113925,
@@ -1351,12 +2102,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 521757,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 521757,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 521757,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 73225,
       "margen": 86,
       "ticketText": "🧾 Orden de Venta: V-202603-0030\n📅 Fecha: 21/03/2026\n[Importado]\n💰 Total: $ 521,757\n📝 Pancho Lacoste 12:00",
-      "auditText": "[Importado] V-202603-0030"
+      "auditText": "[Importado] V-202603-0030",
+      "payment": {
+        "ars": 521757,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 521757,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0031",
@@ -1366,7 +2139,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": "Nico Veintemilla 20:00",
-      "cliente": null,
+      "cliente": "Nico Veintemilla",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -1386,7 +2159,16 @@
         "totalCristales": 79968,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -1395,12 +2177,34 @@
         "totalGoteros": 0,
         "totalPetri": 0,
         "totalGeneral": 79968,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 79968,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 79968,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 7975,
       "margen": 90,
       "ticketText": "🧾 Orden de Venta: V-202603-0031\n📅 Fecha: 21/03/2026\n[Importado]\n💰 Total: $ 79,968\n📝 Nico Veintemilla 20:00",
-      "auditText": "[Importado] V-202603-0031"
+      "auditText": "[Importado] V-202603-0031",
+      "payment": {
+        "ars": 79968,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 79968,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0032",
@@ -3767,6 +4571,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-04T05:14:21.767Z",
+      "tipo": "AJUSTE",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": 437,
+      "antes": 63,
+      "despues": 500,
+      "nota": "Ajuste desde tabla"
+    },
+    {
       "fecha": "2026-04-03T20:54:33.194Z",
       "tipo": "VENTA",
       "prodId": "grp-p-past",
@@ -4219,8 +5034,8 @@
     }
   ],
   "stock": {
-    "v-cal": 63,
-    "grp-p-past": 1333,
+    "v-cal": 500,
+    "grp-p-past": 1770,
     "v-ted": 1270,
     "p-cris": 787,
     "p-hong": 200,
