@@ -8,7 +8,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": null,
-      "cliente": null,
+      "cliente": "Eric Tulle",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -28,7 +28,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 170000,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-got",
+            "varId": null,
+            "qty": 2,
+            "precio": 85000,
+            "subtotal": 170000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -37,12 +46,34 @@
         "totalGoteros": 170000,
         "totalPetri": 0,
         "totalGeneral": 170000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 170000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 170000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 10000,
       "margen": 94.1,
       "ticketText": "🧾 Orden de Venta: V-202603-0001\n📅 Fecha: 01/03/2026\n[Importado]\n💰 Total: $ 170,000",
-      "auditText": "[Importado] V-202603-0001"
+      "auditText": "[Importado] V-202603-0001",
+      "payment": {
+        "ars": 170000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 170000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0002",
@@ -52,7 +83,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": null,
-      "cliente": null,
+      "cliente": "Ezequiel Ledesma",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -72,7 +103,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 85000,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-got",
+            "varId": null,
+            "qty": 1,
+            "precio": 85000,
+            "subtotal": 85000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -81,12 +121,34 @@
         "totalGoteros": 85000,
         "totalPetri": 0,
         "totalGeneral": 85000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 85000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 85000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 5000,
       "margen": 94.1,
       "ticketText": "🧾 Orden de Venta: V-202603-0002\n📅 Fecha: 03/03/2026\n[Importado]\n💰 Total: $ 85,000",
-      "auditText": "[Importado] V-202603-0002"
+      "auditText": "[Importado] V-202603-0002",
+      "payment": {
+        "ars": 85000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 85000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0003",
@@ -96,7 +158,7 @@
       "tipoPago": "ARS",
       "tc": null,
       "nota": null,
-      "cliente": null,
+      "cliente": "Martin B (Damu)",
       "productos": {
         "calaveras": 0,
         "teddy": 0,
@@ -116,7 +178,16 @@
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 170000,
-        "totalPetri": 0
+        "totalPetri": 0,
+        "_lineas": [
+          {
+            "prodId": "p-got",
+            "varId": null,
+            "qty": 2,
+            "precio": 85000,
+            "subtotal": 170000
+          }
+        ]
       },
       "totales": {
         "totalPastillasLinea": 0,
@@ -125,12 +196,34 @@
         "totalGoteros": 170000,
         "totalPetri": 0,
         "totalGeneral": 170000,
-        "totalUSDT": null
+        "totalUSDT": null,
+        "payment": {
+          "ars": 170000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 170000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
       },
       "costo": 10000,
       "margen": 94.1,
       "ticketText": "🧾 Orden de Venta: V-202603-0003\n📅 Fecha: 03/03/2026\n[Importado]\n💰 Total: $ 170,000",
-      "auditText": "[Importado] V-202603-0003"
+      "auditText": "[Importado] V-202603-0003",
+      "payment": {
+        "ars": 170000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 170000,
+        "total_usdt": null,
+        "modo": "ARS"
+      }
     },
     {
       "id": "V-202603-0004",
