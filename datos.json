@@ -3685,95 +3685,6 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0011\n📅 Fecha: 04/04/2026\n👤 Cliente: Lucas Diaz\n\n🛒 Pedido\n\n🍄 5 g × $ 14,000 = $ 70,000\n\n💰 Total: $ 70,000 ARS\n📝 Nota: Tienda Nube",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 70,000 | Ajuste: +$ 0 | Total: $ 70,000 | Pago: ARS | Costo: $ 10,000 | Margen: 85.7% | ID: V-202604-0011"
-    },
-    {
-      "id": "V-202604-0012",
-      "fecha": "2026-04-05",
-      "fechaDisplay": "05/04/2026",
-      "mesActual": "202604",
-      "tipoPago": "ARS",
-      "tc": null,
-      "payment": {
-        "ars": 91140,
-        "usd": 0,
-        "usdt": 0,
-        "tc": 0,
-        "tc_usd": 0,
-        "tc_usdt": 0,
-        "total_ars": 91140,
-        "total_usdt": null,
-        "modo": "ARS"
-      },
-      "nota": null,
-      "cliente": null,
-      "productos": {
-        "calaveras": 4,
-        "teddy": 0,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 4,
-        "precioPastilla": 22785,
-        "tramoInfo": 5,
-        "totalPastillasLinea": 91140,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "v-cal",
-            "varId": null,
-            "qty": 4,
-            "precio": 22785,
-            "subtotal": 91140
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 91140,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 91140,
-        "subtotalBruto": 91140,
-        "ajusteNeto": 0,
-        "totalUSDT": null,
-        "payment": {
-          "ars": 91140,
-          "usd": 0,
-          "usdt": 0,
-          "tc": 0,
-          "tc_usd": 0,
-          "tc_usdt": 0,
-          "total_ars": 91140,
-          "total_usdt": null,
-          "modo": "ARS"
-        }
-      },
-      "costo": 20300,
-      "margen": 77.7,
-      "ajuste": {
-        "recargoPct": 0,
-        "recargoFijo": 0,
-        "descPct": 0,
-        "descFijo": 0,
-        "recargoPctMonto": 0,
-        "recargoFijoMonto": 0,
-        "descPctMonto": 0,
-        "descFijoMonto": 0,
-        "ajusteNeto": 0
-      },
-      "ticketText": "🧾 Orden de Venta: V-202604-0012\n📅 Fecha: 05/04/2026\n\n🛒 Pedido\n\n💀 4 ud × $ 22,785 = $ 91,140\n\n💰 Total: $ 91,140 ARS",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 91,140 | Ajuste: +$ 0 | Total: $ 91,140 | Pago: ARS | Costo: $ 20,300 | Margen: 77.7% | ID: V-202604-0012",
-      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -4643,6 +4554,23 @@
       "medio": "Débito automático",
       "obs": "20 usd x 1405 pagados con grabrfi",
       "ticketText": "📅 Fecha: 04/04/2026\nID Egreso: E-202604-0003\n\n📉 Egreso:\nConcepto: CLAUDE\nMonto: $ 28,100\nMedio de pago: Débito automático\n📝 Observaciones: 20 usd x 1405 pagados con grabrfi\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 28,100\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0004",
+      "fecha": "2026-04-05",
+      "fechaDisplay": "05/04/2026",
+      "mesActual": "202604",
+      "concepto": "Merienda Devoto",
+      "montoTotal": 30000,
+      "cuotaBase": 30000,
+      "ultimaCuota": 30000,
+      "impactoCaja": 30000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 05/04/2026\nID Egreso: E-202604-0004\n\n📉 Egreso:\nConcepto: Merienda Devoto\nMonto: $ 30,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 30,000\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -4819,7 +4747,8 @@
       ],
       "activo": true,
       "maxConsulta": 60,
-      "legacyKey": "cristales"
+      "legacyKey": "cristales",
+      "listaPrecioId": "lp-cris"
     },
     {
       "id": "p-hong",
@@ -4865,7 +4794,8 @@
         }
       ],
       "activo": true,
-      "legacyKey": "hongos"
+      "legacyKey": "hongos",
+      "listaPrecioId": "lp-hong"
     },
     {
       "id": "p-got",
@@ -4883,7 +4813,8 @@
         }
       ],
       "activo": true,
-      "legacyKey": "goteros"
+      "legacyKey": "goteros",
+      "listaPrecioId": "lp-got"
     },
     {
       "id": "p-pet",
@@ -4901,12 +4832,90 @@
         }
       ],
       "activo": true,
-      "legacyKey": "petri"
+      "legacyKey": "petri",
+      "listaPrecioId": "lp-pet"
     }
   ],
   "inversiones": [],
   "liquidezExterna": [],
   "stockMovs": [
+    {
+      "fecha": "2026-04-05T20:26:58.915Z",
+      "tipo": "S-TICKET",
+      "prodId": "p-pet",
+      "nombre": "Petri",
+      "emoji": "🧫",
+      "delta": 20,
+      "antes": 0,
+      "despues": 20,
+      "nota": "Lote inicial ING-202604-0006"
+    },
+    {
+      "fecha": "2026-04-05T20:26:39.050Z",
+      "tipo": "S-TICKET",
+      "prodId": "p-got",
+      "nombre": "Goteros",
+      "emoji": "💧",
+      "delta": 5,
+      "antes": 0,
+      "despues": 5,
+      "nota": "Lote inicial ING-202604-0005"
+    },
+    {
+      "fecha": "2026-04-05T20:26:14.688Z",
+      "tipo": "S-TICKET",
+      "prodId": "p-hong",
+      "nombre": "Hongos",
+      "emoji": "🍄",
+      "delta": 200,
+      "antes": 0,
+      "despues": 200,
+      "nota": "Lote inicial ING-202604-0004"
+    },
+    {
+      "fecha": "2026-04-05T20:25:37.889Z",
+      "tipo": "S-TICKET",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": 700,
+      "antes": 0,
+      "despues": 700,
+      "nota": "Lote inicial ING-202604-0003"
+    },
+    {
+      "fecha": "2026-04-05T20:25:21.775Z",
+      "tipo": "S-TICKET",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": 1400,
+      "antes": 0,
+      "despues": 1400,
+      "nota": "Lote inicial ING-202604-0002"
+    },
+    {
+      "fecha": "2026-04-05T20:25:04.681Z",
+      "tipo": "S-TICKET",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": 650,
+      "antes": 0,
+      "despues": 650,
+      "nota": "Lote inicial ING-202604-0001"
+    },
+    {
+      "fecha": "2026-04-05T19:52:03.851Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -4,
+      "antes": 496,
+      "despues": 492,
+      "nota": "Ticket generado"
+    },
     {
       "fecha": "2026-04-05T17:36:05.158Z",
       "tipo": "VENTA",
@@ -5393,7 +5402,7 @@
     }
   ],
   "stock": {
-    "v-cal": 496,
+    "v-cal": 492,
     "grp-p-past": 1770,
     "v-ted": 1270,
     "p-cris": 787,
@@ -5503,10 +5512,155 @@
       "proveedor": "Stock inicial",
       "nota": "Seed automático",
       "lote_id": "ING-202501-0006-L1"
+    },
+    {
+      "id": "ING-202604-0001",
+      "fecha": "2026-04-05T20:25:04.681Z",
+      "fecha_display": "05/04/2026 20:25",
+      "prod_id": "v-cal",
+      "qty": 650,
+      "costo_unitario": 5075,
+      "total": 3298750,
+      "proveedor": "Stock Inicial",
+      "nota": "Lote inicial",
+      "lote_id": "ING-202604-0001-L1"
+    },
+    {
+      "id": "ING-202604-0002",
+      "fecha": "2026-04-05T20:25:21.775Z",
+      "fecha_display": "05/04/2026 20:25",
+      "prod_id": "v-ted",
+      "qty": 1400,
+      "costo_unitario": 5075,
+      "total": 7105000,
+      "proveedor": "Stock Inicial",
+      "nota": "Lote inicial",
+      "lote_id": "ING-202604-0002-L1"
+    },
+    {
+      "id": "ING-202604-0003",
+      "fecha": "2026-04-05T20:25:37.889Z",
+      "fecha_display": "05/04/2026 20:25",
+      "prod_id": "p-cris",
+      "qty": 700,
+      "costo_unitario": 7975,
+      "total": 5582500,
+      "proveedor": "Stock Inicial",
+      "nota": "Lote inicial",
+      "lote_id": "ING-202604-0003-L1"
+    },
+    {
+      "id": "ING-202604-0004",
+      "fecha": "2026-04-05T20:26:14.688Z",
+      "fecha_display": "05/04/2026 20:26",
+      "prod_id": "p-hong",
+      "qty": 200,
+      "costo_unitario": 2000,
+      "total": 400000,
+      "proveedor": "Stock Inicial",
+      "nota": "Lote inicial",
+      "lote_id": "ING-202604-0004-L1"
+    },
+    {
+      "id": "ING-202604-0005",
+      "fecha": "2026-04-05T20:26:39.050Z",
+      "fecha_display": "05/04/2026 20:26",
+      "prod_id": "p-got",
+      "qty": 5,
+      "costo_unitario": 5000,
+      "total": 25000,
+      "proveedor": "Stock Inicial",
+      "nota": "Lote inicial",
+      "lote_id": "ING-202604-0005-L1"
+    },
+    {
+      "id": "ING-202604-0006",
+      "fecha": "2026-04-05T20:26:58.915Z",
+      "fecha_display": "05/04/2026 20:26",
+      "prod_id": "p-pet",
+      "qty": 20,
+      "costo_unitario": 2000,
+      "total": 40000,
+      "proveedor": "Stock Inicial",
+      "nota": "Lote inicial",
+      "lote_id": "ING-202604-0006-L1"
     }
   ],
   "stockSeedDone": true,
-  "lotes": {},
+  "lotes": {
+    "v-cal": [
+      {
+        "id": "ING-202604-0001-L1",
+        "ingreso_id": "ING-202604-0001",
+        "fecha": "2026-04-05T20:25:04.681Z",
+        "qty_inicial": 650,
+        "qty_restante": 650,
+        "costo_unitario": 5075,
+        "proveedor": "Stock Inicial",
+        "nota": "Lote inicial"
+      }
+    ],
+    "v-ted": [
+      {
+        "id": "ING-202604-0002-L1",
+        "ingreso_id": "ING-202604-0002",
+        "fecha": "2026-04-05T20:25:21.775Z",
+        "qty_inicial": 1400,
+        "qty_restante": 1400,
+        "costo_unitario": 5075,
+        "proveedor": "Stock Inicial",
+        "nota": "Lote inicial"
+      }
+    ],
+    "p-cris": [
+      {
+        "id": "ING-202604-0003-L1",
+        "ingreso_id": "ING-202604-0003",
+        "fecha": "2026-04-05T20:25:37.889Z",
+        "qty_inicial": 700,
+        "qty_restante": 700,
+        "costo_unitario": 7975,
+        "proveedor": "Stock Inicial",
+        "nota": "Lote inicial"
+      }
+    ],
+    "p-hong": [
+      {
+        "id": "ING-202604-0004-L1",
+        "ingreso_id": "ING-202604-0004",
+        "fecha": "2026-04-05T20:26:14.688Z",
+        "qty_inicial": 200,
+        "qty_restante": 200,
+        "costo_unitario": 2000,
+        "proveedor": "Stock Inicial",
+        "nota": "Lote inicial"
+      }
+    ],
+    "p-got": [
+      {
+        "id": "ING-202604-0005-L1",
+        "ingreso_id": "ING-202604-0005",
+        "fecha": "2026-04-05T20:26:39.050Z",
+        "qty_inicial": 5,
+        "qty_restante": 5,
+        "costo_unitario": 5000,
+        "proveedor": "Stock Inicial",
+        "nota": "Lote inicial"
+      }
+    ],
+    "p-pet": [
+      {
+        "id": "ING-202604-0006-L1",
+        "ingreso_id": "ING-202604-0006",
+        "fecha": "2026-04-05T20:26:58.915Z",
+        "qty_inicial": 20,
+        "qty_restante": 20,
+        "costo_unitario": 2000,
+        "proveedor": "Stock Inicial",
+        "nota": "Lote inicial"
+      }
+    ]
+  },
   "_distSlices": [
     {
       "id": "sd0",
@@ -5548,14 +5702,14 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-05T19:52:03.837Z",
+  "_savedAt": "2026-04-05T22:52:18.133Z",
   "_meta": {
-    "orders": 50,
-    "egresos": 51,
+    "orders": 49,
+    "egresos": 52,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
-    "ingresos": 6,
-    "lotesItems": 0
+    "ingresos": 12,
+    "lotesItems": 6
   }
 }
