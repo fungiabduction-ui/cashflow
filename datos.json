@@ -3773,7 +3773,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0012\n📅 Fecha: 05/04/2026\n👤 Cliente: Jorge Fedele\n\n🛒 Pedido\n\n🍄 5 g × $ 14,000 = $ 70,000\n\n💰 Total: $ 70,000 ARS\n📝 Nota: 5 Gr hongos + garantía de bolsa",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 70,000 | Ajuste: +$ 0 | Total: $ 70,000 | Pago: ARS | Costo: $ 10,000 | Margen: 85.7% | ID: V-202604-0012",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-05T22:56:15.710Z"
     }
   ],
   "egresos": [
@@ -4946,6 +4947,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-05T22:56:10.200Z",
+      "tipo": "VENTA",
+      "prodId": "p-hong",
+      "nombre": "Hongos",
+      "emoji": "🍄",
+      "delta": -5,
+      "antes": 195,
+      "despues": 190,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-05T20:26:58.915Z",
       "tipo": "S-TICKET",
       "prodId": "p-pet",
@@ -5512,7 +5524,7 @@
     "grp-p-past": 1770,
     "v-ted": 1270,
     "p-cris": 787,
-    "p-hong": 195,
+    "p-hong": 190,
     "p-got": 20,
     "p-pet": 20
   },
@@ -5808,7 +5820,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-05T22:56:10.192Z",
+  "_savedAt": "2026-04-05T22:56:15.712Z",
   "_meta": {
     "orders": 50,
     "egresos": 53,
