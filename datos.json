@@ -4908,6 +4908,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-05T17:36:05.158Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -4,
+      "antes": 500,
+      "despues": 496,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-04T16:41:41.862Z",
       "tipo": "VENTA",
       "prodId": "p-hong",
@@ -5382,7 +5393,7 @@
     }
   ],
   "stock": {
-    "v-cal": 500,
+    "v-cal": 496,
     "grp-p-past": 1770,
     "v-ted": 1270,
     "p-cris": 787,
@@ -5537,7 +5548,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-05T17:36:05.145Z",
+  "_savedAt": "2026-04-05T19:52:03.837Z",
   "_meta": {
     "orders": 50,
     "egresos": 51,
