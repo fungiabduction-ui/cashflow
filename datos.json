@@ -3777,102 +3777,6 @@
       "fechaConfirmacion": "2026-04-05T22:56:15.710Z"
     },
     {
-      "id": "V-202604-0013",
-      "fecha": "2026-04-06",
-      "fechaDisplay": "06/04/2026",
-      "mesActual": "202604",
-      "tipoPago": "ARS",
-      "tc": null,
-      "payment": {
-        "ars": 399630,
-        "usd": 0,
-        "usdt": 0,
-        "tc": 0,
-        "tc_usd": 0,
-        "tc_usdt": 0,
-        "total_ars": 399630,
-        "total_usdt": null,
-        "modo": "ARS"
-      },
-      "nota": "Miercoles",
-      "cliente": "Damu (Alan Talmaski)",
-      "productos": {
-        "calaveras": 10,
-        "teddy": 8,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 18,
-        "precioPastilla": 22785,
-        "tramoInfo": 5,
-        "totalPastillasLinea": 399630,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "v-cal",
-            "varId": null,
-            "qty": 10,
-            "precio": 21735,
-            "subtotal": 217350
-          },
-          {
-            "prodId": "v-ted",
-            "varId": null,
-            "qty": 8,
-            "precio": 22785,
-            "subtotal": 182280
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 399630,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 399630,
-        "subtotalBruto": 399630,
-        "ajusteNeto": 0,
-        "totalUSDT": null,
-        "payment": {
-          "ars": 399630,
-          "usd": 0,
-          "usdt": 0,
-          "tc": 0,
-          "tc_usd": 0,
-          "tc_usdt": 0,
-          "total_ars": 399630,
-          "total_usdt": null,
-          "modo": "ARS"
-        }
-      },
-      "costo": 91350,
-      "margen": 77.1,
-      "ajuste": {
-        "recargoPct": 0,
-        "recargoFijo": 0,
-        "descPct": 0,
-        "descFijo": 0,
-        "recargoPctMonto": 0,
-        "recargoFijoMonto": 0,
-        "descPctMonto": 0,
-        "descFijoMonto": 0,
-        "ajusteNeto": 0
-      },
-      "ticketText": "🧾 Orden de Venta: V-202604-0013\n📅 Fecha: 06/04/2026\n👤 Cliente: Damu (Alan Talmaski)\n\n🛒 Pedido\n\n💀 10 ud × $ 21,735 = $ 217,350\n🧸 8 ud × $ 22,785 = $ 182,280\n\n💰 Total: $ 399,630 ARS\n📝 Nota: Miercoles",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 399,630 | Ajuste: +$ 0 | Total: $ 399,630 | Pago: ARS | Costo: $ 91,350 | Margen: 77.1% | ID: V-202604-0013",
-      "estado": "pendiente"
-    },
-    {
       "id": "V-202604-0014",
       "fecha": "2026-04-06",
       "fechaDisplay": "06/04/2026",
@@ -3966,6 +3870,102 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0014\n📅 Fecha: 06/04/2026\n👤 Cliente: Damu (Alan Talmaski)\n\n🛒 Pedido\n\n💀 10 ud × $ 20,580 = $ 205,800\n🧸 8 ud × $ 20,580 = $ 164,640\n\n💰 Total: $ 370,440 ARS\n📝 Nota: Miércoles",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 370,440 | Ajuste: +$ 0 | Total: $ 370,440 | Pago: ARS | Costo: $ 91,350 | Margen: 75.3% | ID: V-202604-0014",
+      "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0015",
+      "fecha": "2026-04-06",
+      "fechaDisplay": "06/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 853273,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 853273,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "Jueves por la tarde",
+      "cliente": "Cristian Gonzalez Soriano @crisgsoriano",
+      "productos": {
+        "calaveras": 23,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 23,
+        "precioPastilla": 19367,
+        "tramoInfo": 20,
+        "totalPastillasLinea": 445441,
+        "cristales": 6,
+        "precioCristales": 67972,
+        "totalCristales": 407832,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 23,
+            "precio": 19367,
+            "subtotal": 445441
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 6,
+            "precio": 67972,
+            "subtotal": 407832
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 445441,
+        "totalCristales": 407832,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 853273,
+        "subtotalBruto": 853273,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 853273,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 853273,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 164575,
+      "margen": 80.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0015\n📅 Fecha: 06/04/2026\n👤 Cliente: Cristian Gonzalez Soriano @crisgsoriano\n\n🛒 Pedido\n\n💀 23 ud × $ 19,367 = $ 445,441\n💎 6 g × $ 67,972 = $ 407,832\n\n💰 Total: $ 853,273 ARS\n📝 Nota: Jueves por la tarde",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 853,273 | Ajuste: +$ 0 | Total: $ 853,273 | Pago: ARS | Costo: $ 164,575 | Margen: 80.7% | ID: V-202604-0015",
       "estado": "pendiente"
     }
   ],
@@ -5139,6 +5139,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-06T15:50:10.850Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -8,
+      "antes": 1262,
+      "despues": 1254,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-06T15:50:10.850Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -10,
+      "antes": 482,
+      "despues": 472,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-06T14:25:33.191Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -5756,9 +5778,9 @@
     }
   ],
   "stock": {
-    "v-cal": 482,
+    "v-cal": 472,
     "grp-p-past": 1770,
-    "v-ted": 1262,
+    "v-ted": 1254,
     "p-cris": 787,
     "p-hong": 190,
     "p-got": 17,
@@ -6056,7 +6078,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-06T15:50:10.840Z",
+  "_savedAt": "2026-04-06T22:19:27.383Z",
   "_meta": {
     "orders": 52,
     "egresos": 53,
