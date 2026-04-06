@@ -3784,27 +3784,27 @@
       "tipoPago": "ARS",
       "tc": null,
       "payment": {
-        "ars": 113925,
+        "ars": 56000,
         "usd": 0,
         "usdt": 0,
         "tc": 0,
         "tc_usd": 0,
         "tc_usdt": 0,
-        "total_ars": 113925,
+        "total_ars": 56000,
         "total_usdt": null,
         "modo": "ARS"
       },
       "nota": null,
       "cliente": null,
       "productos": {
-        "calaveras": 5,
+        "calaveras": 0,
         "teddy": 0,
         "lucky": 0,
         "genericas": 0,
-        "totalPastillas": 5,
-        "precioPastilla": 22785,
-        "tramoInfo": 5,
-        "totalPastillasLinea": 113925,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
         "cristales": 0,
         "precioCristales": null,
         "totalCristales": 0,
@@ -3813,43 +3813,43 @@
         "totalHongos": 0,
         "goteros": 0,
         "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
+        "petri": 1,
+        "totalPetri": 56000,
         "variable": 0,
         "_lineas": [
           {
-            "prodId": "v-cal",
+            "prodId": "p-pet",
             "varId": null,
-            "qty": 5,
-            "precio": 22785,
-            "subtotal": 113925
+            "qty": 1,
+            "precio": 56000,
+            "subtotal": 56000
           }
         ]
       },
       "totales": {
-        "totalPastillasLinea": 113925,
+        "totalPastillasLinea": 0,
         "totalCristales": 0,
         "totalHongos": 0,
         "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 113925,
-        "subtotalBruto": 113925,
+        "totalPetri": 56000,
+        "totalGeneral": 56000,
+        "subtotalBruto": 56000,
         "ajusteNeto": 0,
         "totalUSDT": null,
         "payment": {
-          "ars": 113925,
+          "ars": 56000,
           "usd": 0,
           "usdt": 0,
           "tc": 0,
           "tc_usd": 0,
           "tc_usdt": 0,
-          "total_ars": 113925,
+          "total_ars": 56000,
           "total_usdt": null,
           "modo": "ARS"
         }
       },
-      "costo": 25375,
-      "margen": 77.7,
+      "costo": 2000,
+      "margen": 96.4,
       "ajuste": {
         "recargoPct": 0,
         "recargoFijo": 0,
@@ -3861,8 +3861,97 @@
         "descFijoMonto": 0,
         "ajusteNeto": 0
       },
-      "ticketText": "🧾 Orden de Venta: V-202604-0013\n📅 Fecha: 05/04/2026\n\n🛒 Pedido\n\n💀 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925 ARS",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: ARS | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0013",
+      "ticketText": "🧾 Orden de Venta: V-202604-0013\n📅 Fecha: 05/04/2026\n\n🛒 Pedido\n\n🧫 1 ud × $ 56,000 = $ 56,000\n\n💰 Total: $ 56,000 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 56,000 | Ajuste: +$ 0 | Total: $ 56,000 | Pago: ARS | Costo: $ 2,000 | Margen: 96.4% | ID: V-202604-0013",
+      "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0014",
+      "fecha": "2026-04-06",
+      "fechaDisplay": "06/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 255000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 255000,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 3,
+        "totalGoteros": 255000,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-got",
+            "varId": null,
+            "qty": 3,
+            "precio": 85000,
+            "subtotal": 255000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 255000,
+        "totalPetri": 0,
+        "totalGeneral": 255000,
+        "subtotalBruto": 255000,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 255000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 255000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 15000,
+      "margen": 94.1,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0014\n📅 Fecha: 06/04/2026\n\n🛒 Pedido\n\n💧 3 ud × $ 85,000 = $ 255,000\n\n💰 Total: $ 255,000 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 255,000 | Ajuste: +$ 0 | Total: $ 255,000 | Pago: ARS | Costo: $ 15,000 | Margen: 94.1% | ID: V-202604-0014",
       "estado": "pendiente"
     }
   ],
@@ -5036,6 +5125,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-05T23:30:59.367Z",
+      "tipo": "VENTA",
+      "prodId": "p-pet",
+      "nombre": "Petri",
+      "emoji": "🧫",
+      "delta": -1,
+      "antes": 20,
+      "despues": 19,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-05T22:56:10.200Z",
       "tipo": "VENTA",
       "prodId": "p-hong",
@@ -5615,7 +5715,7 @@
     "p-cris": 787,
     "p-hong": 190,
     "p-got": 20,
-    "p-pet": 20
+    "p-pet": 19
   },
   "stockUmbrales": {
     "grp-p-past": {
@@ -5909,9 +6009,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-05T23:43:18.990Z",
+  "_savedAt": "2026-04-06T04:39:16.632Z",
   "_meta": {
-    "orders": 51,
+    "orders": 52,
     "egresos": 53,
     "inversiones": 0,
     "productos": 6,
