@@ -3871,6 +3871,102 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0013\n📅 Fecha: 06/04/2026\n👤 Cliente: Damu (Alan Talmaski)\n\n🛒 Pedido\n\n💀 10 ud × $ 21,735 = $ 217,350\n🧸 8 ud × $ 22,785 = $ 182,280\n\n💰 Total: $ 399,630 ARS\n📝 Nota: Miercoles",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 399,630 | Ajuste: +$ 0 | Total: $ 399,630 | Pago: ARS | Costo: $ 91,350 | Margen: 77.1% | ID: V-202604-0013",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0014",
+      "fecha": "2026-04-06",
+      "fechaDisplay": "06/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 370440,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 370440,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "Miércoles",
+      "cliente": "Damu (Alan Talmaski)",
+      "productos": {
+        "calaveras": 10,
+        "teddy": 8,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 18,
+        "precioPastilla": 20580,
+        "tramoInfo": 15,
+        "totalPastillasLinea": 370440,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 10,
+            "precio": 20580,
+            "subtotal": 205800
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 8,
+            "precio": 20580,
+            "subtotal": 164640
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 370440,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 370440,
+        "subtotalBruto": 370440,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 370440,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 370440,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 91350,
+      "margen": 75.3,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0014\n📅 Fecha: 06/04/2026\n👤 Cliente: Damu (Alan Talmaski)\n\n🛒 Pedido\n\n💀 10 ud × $ 20,580 = $ 205,800\n🧸 8 ud × $ 20,580 = $ 164,640\n\n💰 Total: $ 370,440 ARS\n📝 Nota: Miércoles",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 370,440 | Ajuste: +$ 0 | Total: $ 370,440 | Pago: ARS | Costo: $ 91,350 | Margen: 75.3% | ID: V-202604-0014",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -5043,6 +5139,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-06T14:25:33.191Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -8,
+      "antes": 1270,
+      "despues": 1262,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-06T14:25:33.191Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -10,
+      "antes": 492,
+      "despues": 482,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-06T04:39:16.644Z",
       "tipo": "VENTA",
       "prodId": "p-got",
@@ -5638,9 +5756,9 @@
     }
   ],
   "stock": {
-    "v-cal": 492,
+    "v-cal": 482,
     "grp-p-past": 1770,
-    "v-ted": 1270,
+    "v-ted": 1262,
     "p-cris": 787,
     "p-hong": 190,
     "p-got": 17,
@@ -5938,9 +6056,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-06T14:25:33.178Z",
+  "_savedAt": "2026-04-06T15:50:10.840Z",
   "_meta": {
-    "orders": 51,
+    "orders": 52,
     "egresos": 53,
     "inversiones": 0,
     "productos": 6,
