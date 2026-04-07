@@ -4055,7 +4055,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0016\n📅 Fecha: 06/04/2026\n👤 Cliente: Maria Victoria Muracciole\n\n🛒 Pedido\n\n🧫 1 ud × $ 56,000 = $ 56,000\n\n💰 Total: $ 56,000 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 56,000 | Ajuste: +$ 0 | Total: $ 56,000 | Pago: ARS | Costo: $ 2,000 | Margen: 96.4% | ID: V-202604-0016",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-07T12:51:22.291Z"
     },
     {
       "id": "V-202604-0017",
@@ -6319,7 +6320,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-07T12:51:15.218Z",
+  "_savedAt": "2026-04-07T12:51:22.293Z",
   "_meta": {
     "orders": 54,
     "egresos": 53,
