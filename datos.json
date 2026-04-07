@@ -3870,7 +3870,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0014\n📅 Fecha: 06/04/2026\n👤 Cliente: Damu (Alan Talmaski)\n\n🛒 Pedido\n\n💀 10 ud × $ 20,580 = $ 205,800\n🧸 8 ud × $ 20,580 = $ 164,640\n\n💰 Total: $ 370,440 ARS\n📝 Nota: Miércoles",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 370,440 | Ajuste: +$ 0 | Total: $ 370,440 | Pago: ARS | Costo: $ 91,350 | Margen: 75.3% | ID: V-202604-0014",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-07T20:12:27.320Z"
     },
     {
       "id": "V-202604-0015",
@@ -6320,7 +6321,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-07T12:51:22.293Z",
+  "_savedAt": "2026-04-07T20:12:27.323Z",
   "_meta": {
     "orders": 54,
     "egresos": 53,
