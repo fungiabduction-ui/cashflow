@@ -3967,6 +3967,95 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0015\n📅 Fecha: 06/04/2026\n👤 Cliente: Cristian Gonzalez Soriano @crisgsoriano\n\n🛒 Pedido\n\n💀 23 ud × $ 19,367 = $ 445,441\n💎 6 g × $ 67,972 = $ 407,832\n\n💰 Total: $ 853,273 ARS\n📝 Nota: Jueves por la tarde",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 853,273 | Ajuste: +$ 0 | Total: $ 853,273 | Pago: ARS | Costo: $ 164,575 | Margen: 80.7% | ID: V-202604-0015",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0016",
+      "fecha": "2026-04-06",
+      "fechaDisplay": "06/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 56000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 56000,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Maria Victoria Muracciole",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 1,
+        "totalPetri": 56000,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-pet",
+            "varId": null,
+            "qty": 1,
+            "precio": 56000,
+            "subtotal": 56000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 56000,
+        "totalGeneral": 56000,
+        "subtotalBruto": 56000,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 56000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 56000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 2000,
+      "margen": 96.4,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0016\n📅 Fecha: 06/04/2026\n👤 Cliente: Maria Victoria Muracciole\n\n🛒 Pedido\n\n🧫 1 ud × $ 56,000 = $ 56,000\n\n💰 Total: $ 56,000 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 56,000 | Ajuste: +$ 0 | Total: $ 56,000 | Pago: ARS | Costo: $ 2,000 | Margen: 96.4% | ID: V-202604-0016",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -5139,6 +5228,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-06T22:19:27.407Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -6,
+      "antes": 787,
+      "despues": 781,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-06T22:19:27.407Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -23,
+      "antes": 472,
+      "despues": 449,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-06T15:50:10.850Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -5778,10 +5889,10 @@
     }
   ],
   "stock": {
-    "v-cal": 472,
+    "v-cal": 449,
     "grp-p-past": 1770,
     "v-ted": 1254,
-    "p-cris": 787,
+    "p-cris": 781,
     "p-hong": 190,
     "p-got": 17,
     "p-pet": 19
@@ -6078,9 +6189,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-06T22:19:27.383Z",
+  "_savedAt": "2026-04-07T12:49:11.833Z",
   "_meta": {
-    "orders": 52,
+    "orders": 53,
     "egresos": 53,
     "inversiones": 0,
     "productos": 6,
