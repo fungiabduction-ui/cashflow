@@ -4155,6 +4155,95 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 126,000 | Ajuste: +$ 0 | Total: $ 126,000 | Pago: ARS | Costo: $ 12,000 | Margen: 90.5% | ID: V-202604-0017",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-07T12:51:15.216Z"
+    },
+    {
+      "id": "V-202604-0018",
+      "fecha": "2026-04-08",
+      "fechaDisplay": "08/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 1503225,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 1503225,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "Dto 10%",
+      "cliente": null,
+      "productos": {
+        "calaveras": 131,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 131,
+        "precioPastilla": 12750,
+        "tramoInfo": 100,
+        "totalPastillasLinea": 1670250,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 131,
+            "precio": 12750,
+            "subtotal": 1670250
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 1670250,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 1503225,
+        "subtotalBruto": 1670250,
+        "ajusteNeto": -167025,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 1503225,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 1503225,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 664825,
+      "margen": 55.8,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 10,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 167025,
+        "descFijoMonto": 0,
+        "ajusteNeto": -167025
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0018\n📅 Fecha: 08/04/2026\n\n🛒 Pedido\n\n💀 131 ud × $ 12,750 = $ 1,670,250\n\n📉 Descuento 10%: -$ 167,025\n━━━━━━━━━━━━━━━━━━━━━\n\n💰 Total: $ 1,503,225 ARS\n   (subtotal $ 1,670,250 - ajuste $ 167,025)\n📝 Nota: Dto 10%",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,670,250 | Ajuste: $ -167,025 | Total: $ 1,503,225 | Pago: ARS | Costo: $ 664,825 | Margen: 55.8% | ID: V-202604-0018",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -5075,6 +5164,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 07/04/2026\nID Egreso: E-202604-0006\n\n📉 Egreso:\nConcepto: Supermercado\nMonto: $ 20,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 20,000\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0007",
+      "fecha": "2026-04-08",
+      "fechaDisplay": "08/04/2026",
+      "mesActual": "202604",
+      "concepto": "Tu Sonrisa Dentista",
+      "montoTotal": 146000,
+      "cuotaBase": 146000,
+      "ultimaCuota": 146000,
+      "impactoCaja": 146000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Efectivo",
+      "obs": "Cambio alineadores 25/4",
+      "ticketText": "📅 Fecha: 08/04/2026\nID Egreso: E-202604-0007\n\n📉 Egreso:\nConcepto: Tu Sonrisa Dentista\nMonto: $ 146,000\nMedio de pago: Efectivo\n📝 Observaciones: Cambio alineadores 25/4\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 146,000\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -6338,10 +6444,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-08T13:00:42.518Z",
+  "_savedAt": "2026-04-08T18:22:17.368Z",
   "_meta": {
-    "orders": 54,
-    "egresos": 54,
+    "orders": 55,
+    "egresos": 55,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
