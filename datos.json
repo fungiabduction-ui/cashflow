@@ -4538,6 +4538,95 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0023\n📅 Fecha: 09/04/2026\n👤 Cliente: Alexander\n\n🛒 Pedido\n\n🧸 3 ud × $ 22,785 = $ 68,355\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 148,323 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 148,323 | Ajuste: +$ 0 | Total: $ 148,323 | Pago: ARS | Costo: $ 23,200 | Margen: 84.4% | ID: V-202604-0023",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0024",
+      "fecha": "2026-04-09",
+      "fechaDisplay": "09/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 217350,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 217350,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Gaston Hiza",
+      "productos": {
+        "calaveras": 10,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 10,
+        "precioPastilla": 21735,
+        "tramoInfo": 10,
+        "totalPastillasLinea": 217350,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 10,
+            "precio": 21735,
+            "subtotal": 217350
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 217350,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 217350,
+        "subtotalBruto": 217350,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 217350,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 217350,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 50750,
+      "margen": 76.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0024\n📅 Fecha: 09/04/2026\n👤 Cliente: Gaston Hiza\n\n🛒 Pedido\n\n💀 10 ud × $ 21,735 = $ 217,350\n\n💰 Total: $ 217,350 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 217,350 | Ajuste: +$ 0 | Total: $ 217,350 | Pago: ARS | Costo: $ 50,750 | Margen: 76.7% | ID: V-202604-0024",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -6893,9 +6982,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T21:54:17.615Z",
+  "_savedAt": "2026-04-09T23:59:35.821Z",
   "_meta": {
-    "orders": 58,
+    "orders": 59,
     "egresos": 57,
     "inversiones": 0,
     "productos": 6,
