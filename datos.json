@@ -4254,6 +4254,102 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 467,308 | Ajuste: +$ 0 | Total: $ 467,308 | Pago: ARS | Costo: $ 109,475 | Margen: 76.6% | ID: V-202604-0020",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-09T00:15:45.060Z"
+    },
+    {
+      "id": "V-202604-0021",
+      "fecha": "2026-04-09",
+      "fechaDisplay": "09/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 1617975,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 1617975,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "Dto 10%",
+      "cliente": "Fede Cappelleti",
+      "productos": {
+        "calaveras": 14,
+        "teddy": 127,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 141,
+        "precioPastilla": 12750,
+        "tramoInfo": 100,
+        "totalPastillasLinea": 1797750,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 14,
+            "precio": 12750,
+            "subtotal": 178500
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 127,
+            "precio": 12750,
+            "subtotal": 1619250
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 1797750,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 1617975,
+        "subtotalBruto": 1797750,
+        "ajusteNeto": -179775,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 1617975,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 1617975,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 715575,
+      "margen": 55.8,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 10,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 179775,
+        "descFijoMonto": 0,
+        "ajusteNeto": -179775
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0021\n📅 Fecha: 09/04/2026\n👤 Cliente: Fede Cappelleti\n\n🛒 Pedido\n\n💀 14 ud × $ 12,750 = $ 178,500\n🧸 127 ud × $ 12,750 = $ 1,619,250\n\n📉 Descuento 10%: -$ 179,775\n━━━━━━━━━━━━━━━━━━━━━\n\n💰 Total: $ 1,617,975 ARS\n   (subtotal $ 1,797,750 - ajuste $ 179,775)\n📝 Nota: Dto 10%",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,797,750 | Ajuste: $ -179,775 | Total: $ 1,617,975 | Pago: ARS | Costo: $ 715,575 | Margen: 55.8% | ID: V-202604-0021",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -6520,9 +6616,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T00:15:45.062Z",
+  "_savedAt": "2026-04-09T14:19:24.349Z",
   "_meta": {
-    "orders": 55,
+    "orders": 56,
     "egresos": 55,
     "inversiones": 0,
     "productos": 6,
