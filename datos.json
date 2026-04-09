@@ -4351,6 +4351,95 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,797,750 | Ajuste: $ -179,775 | Total: $ 1,617,975 | Pago: ARS | Costo: $ 715,575 | Margen: 55.8% | ID: V-202604-0021",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-09T14:43:16.664Z"
+    },
+    {
+      "id": "V-202604-0022",
+      "fecha": "2026-04-09",
+      "fechaDisplay": "09/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 79968,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 79968,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Bruno Emiliano Borelli (peugeot) (Juanmi)",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 79968,
+        "subtotalBruto": 79968,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 79968,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 79968,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 7975,
+      "margen": 90,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0022\n📅 Fecha: 09/04/2026\n👤 Cliente: Bruno Emiliano Borelli (peugeot) (Juanmi)\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0022",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -6673,9 +6762,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T18:30:24.597Z",
+  "_savedAt": "2026-04-09T19:41:14.183Z",
   "_meta": {
-    "orders": 56,
+    "orders": 57,
     "egresos": 57,
     "inversiones": 0,
     "productos": 6,
