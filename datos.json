@@ -4349,7 +4349,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0021\n📅 Fecha: 09/04/2026\n👤 Cliente: Fede Cappelleti\n\n🛒 Pedido\n\n💀 14 ud × $ 12,750 = $ 178,500\n🧸 127 ud × $ 12,750 = $ 1,619,250\n\n📉 Descuento 10%: -$ 179,775\n━━━━━━━━━━━━━━━━━━━━━\n\n💰 Total: $ 1,617,975 ARS\n   (subtotal $ 1,797,750 - ajuste $ 179,775)\n📝 Nota: Dto 10%",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,797,750 | Ajuste: $ -179,775 | Total: $ 1,617,975 | Pago: ARS | Costo: $ 715,575 | Margen: 55.8% | ID: V-202604-0021",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-09T14:43:16.664Z"
     }
   ],
   "egresos": [
@@ -5556,6 +5557,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-09T14:19:24.363Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -127,
+      "antes": 1243,
+      "despues": 1116,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-09T14:19:24.363Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -14,
+      "antes": 304,
+      "despues": 290,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-09T00:14:50.167Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -6316,9 +6339,9 @@
     }
   ],
   "stock": {
-    "v-cal": 304,
+    "v-cal": 290,
     "grp-p-past": 1770,
-    "v-ted": 1243,
+    "v-ted": 1116,
     "p-cris": 780,
     "p-hong": 185,
     "p-got": 17,
@@ -6616,7 +6639,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T14:19:24.349Z",
+  "_savedAt": "2026-04-09T14:43:16.669Z",
   "_meta": {
     "orders": 56,
     "egresos": 55,
