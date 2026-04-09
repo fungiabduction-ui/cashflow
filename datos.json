@@ -5305,6 +5305,23 @@
       "medio": "Débito",
       "obs": "POLIZASP 250040577242 00000000000007204",
       "ticketText": "📅 Fecha: 08/04/2026\nID Egreso: E-202604-0008\n\n📉 Egreso:\nConcepto: ALLIANZ\nMonto: $ 207,820\nMedio de pago: Débito\n📝 Observaciones: POLIZASP 250040577242 00000000000007204\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 207,820\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0009",
+      "fecha": "2026-04-09",
+      "fechaDisplay": "09/04/2026",
+      "mesActual": "202604",
+      "concepto": "GALENO",
+      "montoTotal": 275390,
+      "cuotaBase": 275390,
+      "ultimaCuota": 275390,
+      "impactoCaja": 275390,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Débito",
+      "obs": null,
+      "ticketText": "📅 Fecha: 09/04/2026\nID Egreso: E-202604-0009\n\n📉 Egreso:\nConcepto: GALENO\nMonto: $ 275,390\nMedio de pago: Débito\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 275,390\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -6656,10 +6673,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T18:29:29.042Z",
+  "_savedAt": "2026-04-09T18:30:24.597Z",
   "_meta": {
     "orders": 56,
-    "egresos": 56,
+    "egresos": 57,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
