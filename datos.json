@@ -3872,7 +3872,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0015\n📅 Fecha: 06/04/2026\n👤 Cliente: Cristian Gonzalez Soriano @crisgsoriano\n\n🛒 Pedido\n\n💀 23 ud × $ 19,367 = $ 445,441\n💎 6 g × $ 67,972 = $ 407,832\n\n💰 Total: $ 853,273 ARS\n📝 Nota: Jueves por la tarde",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 853,273 | Ajuste: +$ 0 | Total: $ 853,273 | Pago: ARS | Costo: $ 164,575 | Margen: 80.7% | ID: V-202604-0015",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-09T21:53:49.998Z"
     },
     {
       "id": "V-202604-0016",
@@ -5777,6 +5778,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-09T20:16:24.739Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 779,
+      "despues": 778,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-09T20:16:24.739Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -3,
+      "antes": 1116,
+      "despues": 1113,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-09T19:41:14.198Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -6572,8 +6595,8 @@
   "stock": {
     "v-cal": 290,
     "grp-p-past": 1770,
-    "v-ted": 1116,
-    "p-cris": 779,
+    "v-ted": 1113,
+    "p-cris": 778,
     "p-hong": 185,
     "p-got": 17,
     "p-pet": 17
@@ -6870,7 +6893,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T20:16:24.720Z",
+  "_savedAt": "2026-04-09T21:53:50.002Z",
   "_meta": {
     "orders": 58,
     "egresos": 57,
