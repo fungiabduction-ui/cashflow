@@ -5288,6 +5288,23 @@
       "medio": "Efectivo",
       "obs": "Cambio alineadores 25/4",
       "ticketText": "📅 Fecha: 08/04/2026\nID Egreso: E-202604-0007\n\n📉 Egreso:\nConcepto: Tu Sonrisa Dentista\nMonto: $ 146,000\nMedio de pago: Efectivo\n📝 Observaciones: Cambio alineadores 25/4\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 146,000\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0008",
+      "fecha": "2026-04-08",
+      "fechaDisplay": "08/04/2026",
+      "mesActual": "202604",
+      "concepto": "ALLIANZ",
+      "montoTotal": 207820,
+      "cuotaBase": 207820,
+      "ultimaCuota": 207820,
+      "impactoCaja": 207820,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Débito",
+      "obs": "POLIZASP 250040577242 00000000000007204",
+      "ticketText": "📅 Fecha: 08/04/2026\nID Egreso: E-202604-0008\n\n📉 Egreso:\nConcepto: ALLIANZ\nMonto: $ 207,820\nMedio de pago: Débito\n📝 Observaciones: POLIZASP 250040577242 00000000000007204\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 207,820\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -6639,10 +6656,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T14:43:16.669Z",
+  "_savedAt": "2026-04-09T18:29:29.042Z",
   "_meta": {
     "orders": 56,
-    "egresos": 55,
+    "egresos": 56,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
