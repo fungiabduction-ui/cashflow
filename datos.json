@@ -4439,6 +4439,103 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0022\n📅 Fecha: 09/04/2026\n👤 Cliente: Bruno Emiliano Borelli (peugeot) (Juanmi)\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0022",
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-09T19:41:16.167Z"
+    },
+    {
+      "id": "V-202604-0023",
+      "fecha": "2026-04-09",
+      "fechaDisplay": "09/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 148323,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 148323,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Alexander",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 3,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 3,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 68355,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 3,
+            "precio": 22785,
+            "subtotal": 68355
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 68355,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 148323,
+        "subtotalBruto": 148323,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 148323,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 148323,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 23200,
+      "margen": 84.4,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0023\n📅 Fecha: 09/04/2026\n👤 Cliente: Alexander\n\n🛒 Pedido\n\n🧸 3 ud × $ 22,785 = $ 68,355\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 148,323 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 148,323 | Ajuste: +$ 0 | Total: $ 148,323 | Pago: ARS | Costo: $ 23,200 | Margen: 84.4% | ID: V-202604-0023",
       "estado": "pendiente"
     }
   ],
@@ -5680,6 +5777,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-09T19:41:14.198Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 780,
+      "despues": 779,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-09T14:19:24.363Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -6465,7 +6573,7 @@
     "v-cal": 290,
     "grp-p-past": 1770,
     "v-ted": 1116,
-    "p-cris": 780,
+    "p-cris": 779,
     "p-hong": 185,
     "p-got": 17,
     "p-pet": 17
@@ -6762,9 +6870,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T19:41:14.183Z",
+  "_savedAt": "2026-04-09T20:16:24.720Z",
   "_meta": {
-    "orders": 57,
+    "orders": 58,
     "egresos": 57,
     "inversiones": 0,
     "productos": 6,
