@@ -4628,6 +4628,95 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0024\n📅 Fecha: 09/04/2026\n👤 Cliente: Gaston Hiza\n\n🛒 Pedido\n\n💀 10 ud × $ 21,735 = $ 217,350\n\n💰 Total: $ 217,350 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 217,350 | Ajuste: +$ 0 | Total: $ 217,350 | Pago: ARS | Costo: $ 50,750 | Margen: 76.7% | ID: V-202604-0024",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0025",
+      "fecha": "2026-04-10",
+      "fechaDisplay": "10/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 136710,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 136710,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Sergio Battaglia (Alan España)",
+      "productos": {
+        "calaveras": 6,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 6,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 136710,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 6,
+            "precio": 22785,
+            "subtotal": 136710
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 136710,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 136710,
+        "subtotalBruto": 136710,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 136710,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 136710,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 30450,
+      "margen": 77.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0025\n📅 Fecha: 10/04/2026\n👤 Cliente: Sergio Battaglia (Alan España)\n\n🛒 Pedido\n\n💀 6 ud × $ 22,785 = $ 136,710\n\n💰 Total: $ 136,710 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 136,710 | Ajuste: +$ 0 | Total: $ 136,710 | Pago: ARS | Costo: $ 30,450 | Margen: 77.7% | ID: V-202604-0025",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -6994,9 +7083,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-10T00:00:47.627Z",
+  "_savedAt": "2026-04-10T14:12:32.652Z",
   "_meta": {
-    "orders": 59,
+    "orders": 60,
     "egresos": 57,
     "inversiones": 0,
     "productos": 6,
