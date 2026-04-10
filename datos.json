@@ -4717,6 +4717,95 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0025\n📅 Fecha: 10/04/2026\n👤 Cliente: Sergio Battaglia (Alan España)\n\n🛒 Pedido\n\n💀 6 ud × $ 22,785 = $ 136,710\n\n💰 Total: $ 136,710 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 136,710 | Ajuste: +$ 0 | Total: $ 136,710 | Pago: ARS | Costo: $ 30,450 | Margen: 77.7% | ID: V-202604-0025",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0026",
+      "fecha": "2026-04-10",
+      "fechaDisplay": "10/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 308700,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 308700,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "14:00",
+      "cliente": "Maxi Saez DJ",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 15,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 15,
+        "precioPastilla": 20580,
+        "tramoInfo": 15,
+        "totalPastillasLinea": 308700,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 15,
+            "precio": 20580,
+            "subtotal": 308700
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 308700,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 308700,
+        "subtotalBruto": 308700,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 308700,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 308700,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 76125,
+      "margen": 75.3,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0026\n📅 Fecha: 10/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n🧸 15 ud × $ 20,580 = $ 308,700\n\n💰 Total: $ 308,700 ARS\n📝 Nota: 14:00",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 308,700 | Ajuste: +$ 0 | Total: $ 308,700 | Pago: ARS | Costo: $ 76,125 | Margen: 75.3% | ID: V-202604-0026",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -5957,6 +6046,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-10T14:12:32.664Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -6,
+      "antes": 280,
+      "despues": 274,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-09T23:59:35.836Z",
       "tipo": "VENTA",
       "prodId": "v-cal",
@@ -6783,7 +6883,7 @@
     }
   ],
   "stock": {
-    "v-cal": 280,
+    "v-cal": 274,
     "grp-p-past": 1770,
     "v-ted": 1113,
     "p-cris": 778,
@@ -7083,9 +7183,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-10T14:12:32.652Z",
+  "_savedAt": "2026-04-10T14:13:47.022Z",
   "_meta": {
-    "orders": 60,
+    "orders": 61,
     "egresos": 57,
     "inversiones": 0,
     "productos": 6,
