@@ -4894,7 +4894,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0027\n📅 Fecha: 10/04/2026\n👤 Cliente: Esteban Damian Giglio (Mariana Castoldi)\n\n🛒 Pedido\n\n💧 1 ud × $ 85,000 = $ 85,000\n\n💰 Total: $ 85,000 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 85,000 | Ajuste: +$ 0 | Total: $ 85,000 | Pago: ARS | Costo: $ 5,000 | Margen: 94.1% | ID: V-202604-0027",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-10T14:15:15.815Z"
     }
   ],
   "egresos": [
@@ -6135,6 +6136,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-10T14:15:01.921Z",
+      "tipo": "VENTA",
+      "prodId": "p-got",
+      "nombre": "Goteros",
+      "emoji": "💧",
+      "delta": -1,
+      "antes": 17,
+      "despues": 16,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-10T14:13:47.033Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -6988,7 +7000,7 @@
     "v-ted": 1098,
     "p-cris": 778,
     "p-hong": 185,
-    "p-got": 17,
+    "p-got": 16,
     "p-pet": 17
   },
   "stockUmbrales": {
@@ -7283,7 +7295,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-10T14:15:01.910Z",
+  "_savedAt": "2026-04-10T14:15:15.817Z",
   "_meta": {
     "orders": 62,
     "egresos": 57,
