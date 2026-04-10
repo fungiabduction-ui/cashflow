@@ -4462,16 +4462,16 @@
         "modo": "ARS"
       },
       "nota": null,
-      "cliente": "Alexander",
+      "cliente": "Alexander (Matias Nicolas)",
       "productos": {
         "calaveras": 0,
-        "teddy": 3,
+        "teddy": 0,
         "lucky": 0,
         "genericas": 0,
-        "totalPastillas": 3,
+        "totalPastillas": 0,
         "precioPastilla": 22785,
         "tramoInfo": 5,
-        "totalPastillasLinea": 68355,
+        "totalPastillasLinea": 0,
         "cristales": 1,
         "precioCristales": 79968,
         "totalCristales": 79968,
@@ -4537,7 +4537,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0023\n📅 Fecha: 09/04/2026\n👤 Cliente: Alexander\n\n🛒 Pedido\n\n🧸 3 ud × $ 22,785 = $ 68,355\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 148,323 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 148,323 | Ajuste: +$ 0 | Total: $ 148,323 | Pago: ARS | Costo: $ 23,200 | Margen: 84.4% | ID: V-202604-0023",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-10T00:00:47.624Z"
     },
     {
       "id": "V-202604-0024",
@@ -5867,6 +5868,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-09T23:59:35.836Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -10,
+      "antes": 290,
+      "despues": 280,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-09T20:16:24.739Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -6682,7 +6694,7 @@
     }
   ],
   "stock": {
-    "v-cal": 290,
+    "v-cal": 280,
     "grp-p-past": 1770,
     "v-ted": 1113,
     "p-cris": 778,
@@ -6982,7 +6994,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-09T23:59:35.821Z",
+  "_savedAt": "2026-04-10T00:00:47.627Z",
   "_meta": {
     "orders": 59,
     "egresos": 57,
