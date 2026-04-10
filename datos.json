@@ -4805,7 +4805,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0026\n📅 Fecha: 10/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n🧸 15 ud × $ 20,580 = $ 308,700\n\n💰 Total: $ 308,700 ARS\n📝 Nota: 14:00",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 308,700 | Ajuste: +$ 0 | Total: $ 308,700 | Pago: ARS | Costo: $ 76,125 | Margen: 75.3% | ID: V-202604-0026",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-10T17:27:26.530Z"
     },
     {
       "id": "V-202604-0027",
@@ -7295,7 +7296,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-10T14:15:15.817Z",
+  "_savedAt": "2026-04-10T17:27:26.535Z",
   "_meta": {
     "orders": 62,
     "egresos": 57,
