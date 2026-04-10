@@ -4806,6 +4806,95 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0026\n📅 Fecha: 10/04/2026\n👤 Cliente: Maxi Saez DJ\n\n🛒 Pedido\n\n🧸 15 ud × $ 20,580 = $ 308,700\n\n💰 Total: $ 308,700 ARS\n📝 Nota: 14:00",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 308,700 | Ajuste: +$ 0 | Total: $ 308,700 | Pago: ARS | Costo: $ 76,125 | Margen: 75.3% | ID: V-202604-0026",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0027",
+      "fecha": "2026-04-10",
+      "fechaDisplay": "10/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 85000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 85000,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Esteban Damian Giglio (Mariana Castoldi)",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 1,
+        "totalGoteros": 85000,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-got",
+            "varId": null,
+            "qty": 1,
+            "precio": 85000,
+            "subtotal": 85000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 85000,
+        "totalPetri": 0,
+        "totalGeneral": 85000,
+        "subtotalBruto": 85000,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 85000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 85000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 5000,
+      "margen": 94.1,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0027\n📅 Fecha: 10/04/2026\n👤 Cliente: Esteban Damian Giglio (Mariana Castoldi)\n\n🛒 Pedido\n\n💧 1 ud × $ 85,000 = $ 85,000\n\n💰 Total: $ 85,000 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 85,000 | Ajuste: +$ 0 | Total: $ 85,000 | Pago: ARS | Costo: $ 5,000 | Margen: 94.1% | ID: V-202604-0027",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -6046,6 +6135,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-10T14:13:47.033Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -15,
+      "antes": 1113,
+      "despues": 1098,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-10T14:12:32.664Z",
       "tipo": "VENTA",
       "prodId": "v-cal",
@@ -6885,7 +6985,7 @@
   "stock": {
     "v-cal": 274,
     "grp-p-past": 1770,
-    "v-ted": 1113,
+    "v-ted": 1098,
     "p-cris": 778,
     "p-hong": 185,
     "p-got": 17,
@@ -7183,9 +7283,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-10T14:13:47.022Z",
+  "_savedAt": "2026-04-10T14:15:01.910Z",
   "_meta": {
-    "orders": 61,
+    "orders": 62,
     "egresos": 57,
     "inversiones": 0,
     "productos": 6,
