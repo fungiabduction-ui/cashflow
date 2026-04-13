@@ -4987,7 +4987,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0028\n📅 Fecha: 13/04/2026\n👤 Cliente: Facundo Franco Dhanur\n\n🛒 Pedido\n\n🧫 1 ud × $ 56,000 = $ 56,000\n\n📉 Descuento fijo: -$ 11,000\n━━━━━━━━━━━━━━━━━━━━━\n\n💰 Total: $ 45,000 ARS\n   (subtotal $ 56,000 - ajuste $ 11,000)\n📝 Nota: Dto fijo $ 11,000",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 56,000 | Ajuste: $ -11,000 | Total: $ 45,000 | Pago: ARS | Costo: $ 2,000 | Margen: 95.6% | ID: V-202604-0028",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-13T23:03:49.196Z"
     },
     {
       "id": "V-202604-0029",
@@ -6334,6 +6335,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-13T23:03:38.944Z",
+      "tipo": "VENTA",
+      "prodId": "p-hong",
+      "nombre": "Hongos",
+      "emoji": "🍄",
+      "delta": -10,
+      "antes": 185,
+      "despues": 175,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-13T23:02:25.678Z",
       "tipo": "VENTA",
       "prodId": "p-pet",
@@ -7208,7 +7220,7 @@
     "grp-p-past": 1770,
     "v-ted": 1098,
     "p-cris": 778,
-    "p-hong": 185,
+    "p-hong": 175,
     "p-got": 16,
     "p-pet": 16
   },
@@ -7504,7 +7516,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-13T23:03:38.933Z",
+  "_savedAt": "2026-04-13T23:03:49.199Z",
   "_meta": {
     "orders": 64,
     "egresos": 58,
