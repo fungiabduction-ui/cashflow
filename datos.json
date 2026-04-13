@@ -5077,7 +5077,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0029\n📅 Fecha: 13/04/2026\n👤 Cliente: Sergio Ahumada\n\n🛒 Pedido\n\n🍄 10 g × $ 12,000 = $ 120,000\n\n💰 Total: $ 120,000 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 120,000 | Ajuste: +$ 0 | Total: $ 120,000 | Pago: ARS | Costo: $ 20,000 | Margen: 83.3% | ID: V-202604-0029",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-13T23:03:52.943Z"
     }
   ],
   "egresos": [
@@ -7516,7 +7517,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-13T23:03:49.199Z",
+  "_savedAt": "2026-04-13T23:03:52.945Z",
   "_meta": {
     "orders": 64,
     "egresos": 58,
