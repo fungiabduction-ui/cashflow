@@ -5079,6 +5079,102 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 120,000 | Ajuste: +$ 0 | Total: $ 120,000 | Pago: ARS | Costo: $ 20,000 | Margen: 83.3% | ID: V-202604-0029",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-13T23:03:52.943Z"
+    },
+    {
+      "id": "V-202604-0030",
+      "fecha": "2026-04-14",
+      "fechaDisplay": "14/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 297318,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 297318,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "Sábado por la mañana",
+      "cliente": "Joa 👻",
+      "productos": {
+        "calaveras": 10,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 10,
+        "precioPastilla": 21735,
+        "tramoInfo": 10,
+        "totalPastillasLinea": 217350,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 10,
+            "precio": 21735,
+            "subtotal": 217350
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 217350,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 297318,
+        "subtotalBruto": 297318,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 297318,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 297318,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 58725,
+      "margen": 80.2,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0030\n📅 Fecha: 14/04/2026\n👤 Cliente: Joa 👻\n\n🛒 Pedido\n\n💀 10 ud × $ 21,735 = $ 217,350\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 297,318 ARS\n📝 Nota: Sábado por la mañana",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 297,318 | Ajuste: +$ 0 | Total: $ 297,318 | Pago: ARS | Costo: $ 58,725 | Margen: 80.2% | ID: V-202604-0030",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -7534,9 +7630,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-13T23:07:41.140Z",
+  "_savedAt": "2026-04-14T17:30:29.808Z",
   "_meta": {
-    "orders": 64,
+    "orders": 65,
     "egresos": 59,
     "inversiones": 0,
     "productos": 6,
