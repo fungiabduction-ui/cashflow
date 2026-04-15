@@ -6303,6 +6303,23 @@
       "medio": "Tarjeta crédito",
       "obs": null,
       "ticketText": "📅 Fecha: 15/04/2026\nID Egreso: E-202604-0013\n\n📉 Egreso:\nConcepto: Cafe\nMonto: $ 21,700\nMedio de pago: Tarjeta crédito\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 21,700\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0014",
+      "fecha": "2026-04-15",
+      "fechaDisplay": "15/04/2026",
+      "mesActual": "202604",
+      "concepto": "Movistar",
+      "montoTotal": 13648,
+      "cuotaBase": 13648,
+      "ultimaCuota": 13648,
+      "impactoCaja": 13648,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 15/04/2026\nID Egreso: E-202604-0014\n\n📉 Egreso:\nConcepto: Movistar\nMonto: $ 13,648\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 13,648\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -7786,10 +7803,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-15T14:10:36.420Z",
+  "_savedAt": "2026-04-15T14:52:55.662Z",
   "_meta": {
     "orders": 66,
-    "egresos": 61,
+    "egresos": 62,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
