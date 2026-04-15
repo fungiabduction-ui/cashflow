@@ -6269,6 +6269,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 12/04/2026\nID Egreso: E-202604-0011\n\n📉 Egreso:\nConcepto: Vea Supermercado\nMonto: $ 32,714\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 32,714\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0012",
+      "fecha": "2026-04-15",
+      "fechaDisplay": "15/04/2026",
+      "mesActual": "202604",
+      "concepto": "Now Foods Vitamina D3 10000 IU 120 Caps",
+      "montoTotal": 33335,
+      "cuotaBase": 33335,
+      "ultimaCuota": 33335,
+      "impactoCaja": 33335,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 15/04/2026\nID Egreso: E-202604-0012\n\n📉 Egreso:\nConcepto: Now Foods Vitamina D3 10000 IU 120 Caps\nMonto: $ 33,335\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 33,335\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -6537,6 +6554,17 @@
   "inversiones": [],
   "liquidezExterna": [],
   "stockMovs": [
+    {
+      "fecha": "2026-04-15T00:28:57.609Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 777,
+      "despues": 776,
+      "nota": "Ticket generado"
+    },
     {
       "fecha": "2026-04-14T17:30:29.824Z",
       "tipo": "VENTA",
@@ -7444,7 +7472,7 @@
     "v-cal": 264,
     "grp-p-past": 1770,
     "v-ted": 1098,
-    "p-cris": 777,
+    "p-cris": 776,
     "p-hong": 175,
     "p-got": 16,
     "p-pet": 16
@@ -7741,10 +7769,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-15T00:28:57.598Z",
+  "_savedAt": "2026-04-15T13:20:01.842Z",
   "_meta": {
     "orders": 66,
-    "egresos": 59,
+    "egresos": 60,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
