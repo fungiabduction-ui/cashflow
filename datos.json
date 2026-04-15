@@ -6320,6 +6320,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 15/04/2026\nID Egreso: E-202604-0014\n\n📉 Egreso:\nConcepto: Movistar\nMonto: $ 13,648\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 13,648\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0015",
+      "fecha": "2026-04-15",
+      "fechaDisplay": "15/04/2026",
+      "mesActual": "202604",
+      "concepto": "Peluqueria",
+      "montoTotal": 15000,
+      "cuotaBase": 15000,
+      "ultimaCuota": 15000,
+      "impactoCaja": 15000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 15/04/2026\nID Egreso: E-202604-0015\n\n📉 Egreso:\nConcepto: Peluqueria\nMonto: $ 15,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 15,000\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -7803,10 +7820,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-15T14:52:55.662Z",
+  "_savedAt": "2026-04-15T14:53:17.054Z",
   "_meta": {
     "orders": 66,
-    "egresos": 62,
+    "egresos": 63,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
