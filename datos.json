@@ -5263,7 +5263,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0031\n📅 Fecha: 15/04/2026\n👤 Cliente: Franco Nicollini Manuel (Leita)\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0031",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-16T17:56:06.879Z"
     },
     {
       "id": "V-202604-0032",
@@ -6801,6 +6802,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-16T13:33:13.568Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 776,
+      "despues": 775,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-16T13:32:23.652Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -7729,7 +7741,7 @@
     "v-cal": 264,
     "grp-p-past": 1770,
     "v-ted": 1093,
-    "p-cris": 776,
+    "p-cris": 775,
     "p-hong": 175,
     "p-got": 16,
     "p-pet": 16
@@ -8026,7 +8038,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-16T13:33:13.558Z",
+  "_savedAt": "2026-04-16T17:56:06.882Z",
   "_meta": {
     "orders": 68,
     "egresos": 64,
