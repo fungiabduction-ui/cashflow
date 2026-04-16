@@ -5442,7 +5442,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0033\n📅 Fecha: 16/04/2026\n👤 Cliente: Anto💕\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0033",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-16T17:56:18.491Z"
     }
   ],
   "egresos": [
@@ -8038,7 +8039,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-16T17:56:06.882Z",
+  "_savedAt": "2026-04-16T17:56:18.494Z",
   "_meta": {
     "orders": 68,
     "egresos": 64,
