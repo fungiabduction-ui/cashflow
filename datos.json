@@ -6337,6 +6337,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 15/04/2026\nID Egreso: E-202604-0015\n\n📉 Egreso:\nConcepto: Peluqueria\nMonto: $ 15,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 15,000\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0016",
+      "fecha": "2026-04-16",
+      "fechaDisplay": "16/04/2026",
+      "mesActual": "202604",
+      "concepto": "Helado",
+      "montoTotal": 11300,
+      "cuotaBase": 11300,
+      "ultimaCuota": 11300,
+      "impactoCaja": 11300,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 16/04/2026\nID Egreso: E-202604-0016\n\n📉 Egreso:\nConcepto: Helado\nMonto: $ 11,300\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 11,300\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -7820,10 +7837,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-15T14:53:17.054Z",
+  "_savedAt": "2026-04-16T01:58:38.469Z",
   "_meta": {
     "orders": 66,
-    "egresos": 63,
+    "egresos": 64,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
