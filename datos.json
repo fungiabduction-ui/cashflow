@@ -5713,7 +5713,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0036\n📅 Fecha: 17/04/2026\n👤 Cliente: Rey Chan To Gonzalez\n\n🛒 Pedido\n\n🍄 100 g × $ 8,000 = $ 800,000\n\n📉 Descuento fijo: -$ 100,000\n━━━━━━━━━━━━━━━━━━━━━\n\n💰 Total: $ 700,000 ARS\n   (subtotal $ 800,000 - ajuste $ 100,000)\n📝 Nota: Dto fijo $ 100,000",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 800,000 | Ajuste: $ -100,000 | Total: $ 700,000 | Pago: ARS | Costo: $ 200,000 | Margen: 71.4% | ID: V-202604-0036",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-17T14:40:17.856Z"
     }
   ],
   "egresos": [
@@ -8342,7 +8343,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-17T14:07:23.181Z",
+  "_savedAt": "2026-04-17T14:40:17.860Z",
   "_meta": {
     "orders": 71,
     "egresos": 64,
