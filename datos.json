@@ -5914,6 +5914,95 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0038\n📅 Fecha: 17/04/2026\n\n🛒 Pedido\n\n💀 16 ud × $ 19,367 = $ 309,872\n🧸 6 ud × $ 19,367 = $ 116,202\n\n💰 Total: $ 426,074 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 426,074 | Ajuste: +$ 0 | Total: $ 426,074 | Pago: ARS | Costo: $ 111,650 | Margen: 73.8% | ID: V-202604-0038",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0039",
+      "fecha": "2026-04-17",
+      "fechaDisplay": "17/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 79968,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 79968,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Roro (Jona Ann)",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 79968,
+        "subtotalBruto": 79968,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 79968,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 79968,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 7975,
+      "margen": 90,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0039\n📅 Fecha: 17/04/2026\n👤 Cliente: Roro (Jona Ann)\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0039",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -7273,6 +7362,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-17T15:18:06.441Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -6,
+      "antes": 1087,
+      "despues": 1081,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-17T15:18:06.441Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -16,
+      "antes": 248,
+      "despues": 232,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-17T15:02:42.799Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -8275,9 +8386,9 @@
     }
   ],
   "stock": {
-    "v-cal": 248,
+    "v-cal": 232,
     "grp-p-past": 1770,
-    "v-ted": 1087,
+    "v-ted": 1081,
     "p-cris": 767,
     "p-hong": 75,
     "p-got": 16,
@@ -8575,9 +8686,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-17T15:18:06.425Z",
+  "_savedAt": "2026-04-17T18:13:33.495Z",
   "_meta": {
-    "orders": 73,
+    "orders": 74,
     "egresos": 64,
     "inversiones": 0,
     "productos": 6,
