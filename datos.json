@@ -5623,7 +5623,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0035\n📅 Fecha: 17/04/2026\n👤 Cliente: Nicolas Penna\n\n🛒 Pedido\n\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 220,500 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 220,500 | Ajuste: +$ 0 | Total: $ 220,500 | Pago: ARS | Costo: $ 23,925 | Margen: 89.1% | ID: V-202604-0035",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-17T14:07:23.178Z"
     },
     {
       "id": "V-202604-0036",
@@ -7072,6 +7073,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-17T14:07:16.420Z",
+      "tipo": "VENTA",
+      "prodId": "p-hong",
+      "nombre": "Hongos",
+      "emoji": "🍄",
+      "delta": -100,
+      "antes": 175,
+      "despues": 75,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-17T12:31:11.086Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -8034,7 +8046,7 @@
     "grp-p-past": 1770,
     "v-ted": 1093,
     "p-cris": 771,
-    "p-hong": 175,
+    "p-hong": 75,
     "p-got": 16,
     "p-pet": 16
   },
@@ -8330,7 +8342,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-17T14:07:16.403Z",
+  "_savedAt": "2026-04-17T14:07:23.181Z",
   "_meta": {
     "orders": 71,
     "egresos": 64,
