@@ -5715,6 +5715,205 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 800,000 | Ajuste: $ -100,000 | Total: $ 700,000 | Pago: ARS | Costo: $ 200,000 | Margen: 71.4% | ID: V-202604-0036",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-17T14:40:17.856Z"
+    },
+    {
+      "id": "V-202604-0037",
+      "fecha": "2026-04-17",
+      "fechaDisplay": "17/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 720074,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 720074,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Guido Racaro",
+      "productos": {
+        "calaveras": 16,
+        "teddy": 6,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 22,
+        "precioPastilla": 19367,
+        "tramoInfo": 20,
+        "totalPastillasLinea": 426074,
+        "cristales": 4,
+        "precioCristales": 73500,
+        "totalCristales": 294000,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 16,
+            "precio": 19367,
+            "subtotal": 309872
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 6,
+            "precio": 19367,
+            "subtotal": 116202
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 4,
+            "precio": 73500,
+            "subtotal": 294000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 426074,
+        "totalCristales": 294000,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 720074,
+        "subtotalBruto": 720074,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 720074,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 720074,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 143550,
+      "margen": 80.1,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0037\n📅 Fecha: 17/04/2026\n👤 Cliente: Guido Racaro\n\n🛒 Pedido\n\n💀 16 ud × $ 19,367 = $ 309,872\n🧸 6 ud × $ 19,367 = $ 116,202\n💎 4 g × $ 73,500 = $ 294,000\n\n💰 Total: $ 720,074 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 720,074 | Ajuste: +$ 0 | Total: $ 720,074 | Pago: ARS | Costo: $ 143,550 | Margen: 80.1% | ID: V-202604-0037",
+      "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0038",
+      "fecha": "2026-04-17",
+      "fechaDisplay": "17/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 426074,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 426074,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 16,
+        "teddy": 6,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 22,
+        "precioPastilla": 19367,
+        "tramoInfo": 20,
+        "totalPastillasLinea": 426074,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 16,
+            "precio": 19367,
+            "subtotal": 309872
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 6,
+            "precio": 19367,
+            "subtotal": 116202
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 426074,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 426074,
+        "subtotalBruto": 426074,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 426074,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 426074,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 111650,
+      "margen": 73.8,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0038\n📅 Fecha: 17/04/2026\n\n🛒 Pedido\n\n💀 16 ud × $ 19,367 = $ 309,872\n🧸 6 ud × $ 19,367 = $ 116,202\n\n💰 Total: $ 426,074 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 426,074 | Ajuste: +$ 0 | Total: $ 426,074 | Pago: ARS | Costo: $ 111,650 | Margen: 73.8% | ID: V-202604-0038",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -7074,6 +7273,39 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-17T15:02:42.799Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -4,
+      "antes": 771,
+      "despues": 767,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-17T15:02:42.799Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -6,
+      "antes": 1093,
+      "despues": 1087,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-17T15:02:42.799Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -16,
+      "antes": 264,
+      "despues": 248,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-17T14:07:16.420Z",
       "tipo": "VENTA",
       "prodId": "p-hong",
@@ -8043,10 +8275,10 @@
     }
   ],
   "stock": {
-    "v-cal": 264,
+    "v-cal": 248,
     "grp-p-past": 1770,
-    "v-ted": 1093,
-    "p-cris": 771,
+    "v-ted": 1087,
+    "p-cris": 767,
     "p-hong": 75,
     "p-got": 16,
     "p-pet": 16
@@ -8343,9 +8575,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-17T14:40:17.860Z",
+  "_savedAt": "2026-04-17T15:18:06.425Z",
   "_meta": {
-    "orders": 71,
+    "orders": 73,
     "egresos": 64,
     "inversiones": 0,
     "productos": 6,
