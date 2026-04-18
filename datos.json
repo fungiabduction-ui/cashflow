@@ -5817,103 +5817,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0037\n📅 Fecha: 17/04/2026\n👤 Cliente: Guido Racaro\n\n🛒 Pedido\n\n💀 16 ud × $ 19,367 = $ 309,872\n🧸 6 ud × $ 19,367 = $ 116,202\n💎 4 g × $ 73,500 = $ 294,000\n\n💰 Total: $ 720,074 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 720,074 | Ajuste: +$ 0 | Total: $ 720,074 | Pago: ARS | Costo: $ 143,550 | Margen: 80.1% | ID: V-202604-0037",
-      "estado": "pendiente"
-    },
-    {
-      "id": "V-202604-0038",
-      "fecha": "2026-04-17",
-      "fechaDisplay": "17/04/2026",
-      "mesActual": "202604",
-      "tipoPago": "ARS",
-      "tc": null,
-      "payment": {
-        "ars": 426074,
-        "usd": 0,
-        "usdt": 0,
-        "tc": 0,
-        "tc_usd": 0,
-        "tc_usdt": 0,
-        "total_ars": 426074,
-        "total_usdt": null,
-        "modo": "ARS"
-      },
-      "nota": null,
-      "cliente": null,
-      "productos": {
-        "calaveras": 16,
-        "teddy": 6,
-        "lucky": 0,
-        "genericas": 0,
-        "totalPastillas": 22,
-        "precioPastilla": 19367,
-        "tramoInfo": 20,
-        "totalPastillasLinea": 426074,
-        "cristales": 0,
-        "precioCristales": null,
-        "totalCristales": 0,
-        "hongos": 0,
-        "precioHongos": null,
-        "totalHongos": 0,
-        "goteros": 0,
-        "totalGoteros": 0,
-        "petri": 0,
-        "totalPetri": 0,
-        "variable": 0,
-        "_lineas": [
-          {
-            "prodId": "v-cal",
-            "varId": null,
-            "qty": 16,
-            "precio": 19367,
-            "subtotal": 309872
-          },
-          {
-            "prodId": "v-ted",
-            "varId": null,
-            "qty": 6,
-            "precio": 19367,
-            "subtotal": 116202
-          }
-        ]
-      },
-      "totales": {
-        "totalPastillasLinea": 426074,
-        "totalCristales": 0,
-        "totalHongos": 0,
-        "totalGoteros": 0,
-        "totalPetri": 0,
-        "totalGeneral": 426074,
-        "subtotalBruto": 426074,
-        "ajusteNeto": 0,
-        "totalUSDT": null,
-        "payment": {
-          "ars": 426074,
-          "usd": 0,
-          "usdt": 0,
-          "tc": 0,
-          "tc_usd": 0,
-          "tc_usdt": 0,
-          "total_ars": 426074,
-          "total_usdt": null,
-          "modo": "ARS"
-        }
-      },
-      "costo": 111650,
-      "margen": 73.8,
-      "ajuste": {
-        "recargoPct": 0,
-        "recargoFijo": 0,
-        "descPct": 0,
-        "descFijo": 0,
-        "recargoPctMonto": 0,
-        "recargoFijoMonto": 0,
-        "descPctMonto": 0,
-        "descFijoMonto": 0,
-        "ajusteNeto": 0
-      },
-      "ticketText": "🧾 Orden de Venta: V-202604-0038\n📅 Fecha: 17/04/2026\n\n🛒 Pedido\n\n💀 16 ud × $ 19,367 = $ 309,872\n🧸 6 ud × $ 19,367 = $ 116,202\n\n💰 Total: $ 426,074 ARS",
-      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 426,074 | Ajuste: +$ 0 | Total: $ 426,074 | Pago: ARS | Costo: $ 111,650 | Margen: 73.8% | ID: V-202604-0038",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-18T01:54:57.836Z"
     },
     {
       "id": "V-202604-0039",
@@ -8732,9 +8637,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-18T01:43:17.132Z",
+  "_savedAt": "2026-04-18T01:54:57.840Z",
   "_meta": {
-    "orders": 74,
+    "orders": 73,
     "egresos": 66,
     "inversiones": 0,
     "productos": 6,
