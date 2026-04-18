@@ -5174,7 +5174,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0030\n📅 Fecha: 14/04/2026\n👤 Cliente: Joa 👻\n\n🛒 Pedido\n\n💀 10 ud × $ 21,735 = $ 217,350\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 297,318 ARS\n📝 Nota: Sábado por la mañana",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 297,318 | Ajuste: +$ 0 | Total: $ 297,318 | Pago: ARS | Costo: $ 58,725 | Margen: 80.2% | ID: V-202604-0030",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-18T14:51:21.007Z"
     },
     {
       "id": "V-202604-0031",
@@ -7391,6 +7392,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-18T13:35:13.916Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -5,
+      "antes": 1081,
+      "despues": 1076,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-17T18:13:33.513Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -8428,7 +8440,7 @@
   "stock": {
     "v-cal": 232,
     "grp-p-past": 1770,
-    "v-ted": 1081,
+    "v-ted": 1076,
     "p-cris": 766,
     "p-hong": 75,
     "p-got": 16,
@@ -8726,7 +8738,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-18T13:35:13.899Z",
+  "_savedAt": "2026-04-18T14:51:21.011Z",
   "_meta": {
     "orders": 74,
     "egresos": 66,
