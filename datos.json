@@ -7111,6 +7111,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 18/04/2026\nID Egreso: E-202604-0017\n\n📉 Egreso:\nConcepto: PedidosYa PLUS\nMonto: $ 2,396\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 2,396\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0018",
+      "fecha": "2026-04-18",
+      "fechaDisplay": "18/04/2026",
+      "mesActual": "202604",
+      "concepto": "Supermercado",
+      "montoTotal": 47000,
+      "cuotaBase": 47000,
+      "ultimaCuota": 47000,
+      "impactoCaja": 47000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Efectivo",
+      "obs": "Varios días",
+      "ticketText": "📅 Fecha: 18/04/2026\nID Egreso: E-202604-0018\n\n📉 Egreso:\nConcepto: Supermercado\nMonto: $ 47,000\nMedio de pago: Efectivo\n📝 Observaciones: Varios días\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 47,000\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -8715,10 +8732,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-18T01:42:19.677Z",
+  "_savedAt": "2026-04-18T01:43:17.132Z",
   "_meta": {
     "orders": 74,
-    "egresos": 65,
+    "egresos": 66,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
