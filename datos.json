@@ -5909,6 +5909,95 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0039",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-17T19:40:49.086Z"
+    },
+    {
+      "id": "V-202604-0040",
+      "fecha": "2026-04-18",
+      "fechaDisplay": "18/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 113925,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 113925,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Facu (Seba)",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 5,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 5,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 113925,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 113925,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 113925,
+        "subtotalBruto": 113925,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 113925,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 113925,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 25375,
+      "margen": 77.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0040\n📅 Fecha: 18/04/2026\n👤 Cliente: Facu (Seba)\n\n🛒 Pedido\n\n🧸 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: ARS | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0040",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -8637,9 +8726,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-18T01:54:57.840Z",
+  "_savedAt": "2026-04-18T13:35:13.899Z",
   "_meta": {
-    "orders": 73,
+    "orders": 74,
     "egresos": 66,
     "inversiones": 0,
     "productos": 6,
