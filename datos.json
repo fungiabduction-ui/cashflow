@@ -6087,7 +6087,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0041\n📅 Fecha: 18/04/2026\n👤 Cliente: Brian\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0041",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-19T00:19:50.350Z"
     }
   ],
   "egresos": [
@@ -7481,6 +7482,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-18T23:16:04.324Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 766,
+      "despues": 765,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-18T13:35:13.916Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -8530,7 +8542,7 @@
     "v-cal": 232,
     "grp-p-past": 1770,
     "v-ted": 1076,
-    "p-cris": 766,
+    "p-cris": 765,
     "p-hong": 75,
     "p-got": 16,
     "p-pet": 16
@@ -8827,7 +8839,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-18T23:16:04.309Z",
+  "_savedAt": "2026-04-19T00:19:50.356Z",
   "_meta": {
     "orders": 75,
     "egresos": 66,
