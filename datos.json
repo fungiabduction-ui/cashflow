@@ -6178,7 +6178,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0042\n📅 Fecha: 21/04/2026\n👤 Cliente: Nestor Ermocida nestore6@gmail.com\n\n🛒 Pedido\n\n💧 1 ud × $ 85,000 = $ 85,000\n\n💰 Total: $ 85,000 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 85,000 | Ajuste: +$ 0 | Total: $ 85,000 | Pago: ARS | Costo: $ 5,000 | Margen: 94.1% | ID: V-202604-0042",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-21T15:15:16.757Z"
     }
   ],
   "egresos": [
@@ -7606,6 +7607,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-21T15:15:13.628Z",
+      "tipo": "VENTA",
+      "prodId": "p-got",
+      "nombre": "Goteros",
+      "emoji": "💧",
+      "delta": -1,
+      "antes": 16,
+      "despues": 15,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-18T23:16:04.324Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -8668,7 +8680,7 @@
     "v-ted": 1076,
     "p-cris": 765,
     "p-hong": 75,
-    "p-got": 16,
+    "p-got": 15,
     "p-pet": 16
   },
   "stockUmbrales": {
@@ -8963,7 +8975,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-21T15:15:13.616Z",
+  "_savedAt": "2026-04-21T15:15:16.760Z",
   "_meta": {
     "orders": 76,
     "egresos": 68,
