@@ -6448,7 +6448,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0045\n📅 Fecha: 25/04/2026\n👤 Cliente: Maico\n\n🛒 Pedido\n\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 79,968 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0045",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-25T14:49:12.440Z"
     }
   ],
   "egresos": [
@@ -7876,6 +7877,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-25T14:49:07.156Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 765,
+      "despues": 764,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-21T17:46:51.845Z",
       "tipo": "VENTA",
       "prodId": "p-hong",
@@ -8969,7 +8981,7 @@
     "v-cal": 232,
     "grp-p-past": 1770,
     "v-ted": 1076,
-    "p-cris": 765,
+    "p-cris": 764,
     "p-hong": 55,
     "p-got": 15,
     "p-pet": 16
@@ -9266,7 +9278,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-25T14:49:07.146Z",
+  "_savedAt": "2026-04-25T14:49:12.443Z",
   "_meta": {
     "orders": 79,
     "egresos": 68,
