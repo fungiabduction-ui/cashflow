@@ -6268,7 +6268,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0043\n📅 Fecha: 21/04/2026\n👤 Cliente: Victoria Mielke mielkevictoria@gmail.com\n\n🛒 Pedido\n\n🍄 10 g × $ 12,000 = $ 120,000\n\n💰 Total: $ 120,000 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 120,000 | Ajuste: +$ 0 | Total: $ 120,000 | Pago: ARS | Costo: $ 20,000 | Margen: 83.3% | ID: V-202604-0043",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-25T14:48:44.502Z"
     },
     {
       "id": "V-202604-0044",
@@ -9176,7 +9177,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-25T14:48:42.338Z",
+  "_savedAt": "2026-04-25T14:48:44.504Z",
   "_meta": {
     "orders": 78,
     "egresos": 68,
