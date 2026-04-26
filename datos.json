@@ -7608,6 +7608,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 20/04/2026\nID Egreso: E-202604-0020\n\n📉 Egreso:\nConcepto: Agar Agar 1 Kg\nMonto: $ 77,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 77,000\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0021",
+      "fecha": "2026-04-26",
+      "fechaDisplay": "26/04/2026",
+      "mesActual": "202604",
+      "concepto": "Edenor",
+      "montoTotal": 64195,
+      "cuotaBase": 64195,
+      "ultimaCuota": 64195,
+      "impactoCaja": 64195,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 26/04/2026\nID Egreso: E-202604-0021\n\n📉 Egreso:\nConcepto: Edenor\nMonto: $ 64,195\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 64,195\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -9278,10 +9295,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-25T14:49:12.443Z",
+  "_savedAt": "2026-04-26T22:30:55.707Z",
   "_meta": {
     "orders": 79,
-    "egresos": 68,
+    "egresos": 69,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
