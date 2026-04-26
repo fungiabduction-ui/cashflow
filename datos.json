@@ -7642,6 +7642,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 26/04/2026\nID Egreso: E-202604-0022\n\n📉 Egreso:\nConcepto: Semana 3 global de gastos\nMonto: $ 165,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 165,000\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0023",
+      "fecha": "2026-04-26",
+      "fechaDisplay": "26/04/2026",
+      "mesActual": "202604",
+      "concepto": "Pago tarjeta MP",
+      "montoTotal": 297574,
+      "cuotaBase": 297574,
+      "ultimaCuota": 297574,
+      "impactoCaja": 297574,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 26/04/2026\nID Egreso: E-202604-0023\n\n📉 Egreso:\nConcepto: Pago tarjeta MP\nMonto: $ 297,574\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 297,574\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -9312,10 +9329,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-26T22:34:08.780Z",
+  "_savedAt": "2026-04-26T22:35:42.452Z",
   "_meta": {
     "orders": 79,
-    "egresos": 70,
+    "egresos": 71,
     "inversiones": 0,
     "productos": 6,
     "listasPrecios": 0,
