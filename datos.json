@@ -6450,6 +6450,95 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 79,968 | Ajuste: +$ 0 | Total: $ 79,968 | Pago: ARS | Costo: $ 7,975 | Margen: 90% | ID: V-202604-0045",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-25T14:49:12.440Z"
+    },
+    {
+      "id": "V-202604-0046",
+      "fecha": "2026-04-27",
+      "fechaDisplay": "27/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 56000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 56000,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Santos Micologo - Santiago Vega santifloydside@gmail.com",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 1,
+        "totalPetri": 56000,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-pet",
+            "varId": null,
+            "qty": 1,
+            "precio": 56000,
+            "subtotal": 56000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 56000,
+        "totalGeneral": 56000,
+        "subtotalBruto": 56000,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 56000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 56000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 2000,
+      "margen": 96.4,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0046\n📅 Fecha: 27/04/2026\n👤 Cliente: Santos Micologo - Santiago Vega santifloydside@gmail.com\n\n🛒 Pedido\n\n🧫 1 ud × $ 56,000 = $ 56,000\n\n💰 Total: $ 56,000 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 56,000 | Ajuste: +$ 0 | Total: $ 56,000 | Pago: ARS | Costo: $ 2,000 | Margen: 96.4% | ID: V-202604-0046",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -9352,9 +9441,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-27T16:38:49.510Z",
+  "_savedAt": "2026-04-27T20:58:35.400Z",
   "_meta": {
-    "orders": 79,
+    "orders": 80,
     "egresos": 71,
     "inversiones": 1,
     "productos": 6,
