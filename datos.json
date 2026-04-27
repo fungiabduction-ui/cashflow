@@ -7924,7 +7924,30 @@
       "listaPrecioId": "lp-pet"
     }
   ],
-  "inversiones": [],
+  "inversiones": [
+    {
+      "id": "I-202604-0001",
+      "fecha": "2026-04-27",
+      "fechaDisplay": "27/04/2026",
+      "mesActual": "202604",
+      "activo": "USD",
+      "fuente": "distribucion",
+      "modalidad": "COMPRA",
+      "monedaOrigen": "ARS",
+      "monedaDestino": "USD",
+      "monto": 14250000,
+      "moneda": "ARS",
+      "montoARS": 14250000,
+      "precioCompra": 1425,
+      "cantidad": "10.000 USD",
+      "precioActual": 1420,
+      "resultadoFlotante": 0,
+      "estado": "ACTIVA",
+      "fechaCierre": null,
+      "nota": null,
+      "ticketText": "📅 Fecha: 27/04/2026\nID Inversión: I-202604-0001\n📈 Inversión:\n  Activo: OTRO\n  Fuente: distribucion\n  Monto invertido: $ 14,250,000\n  Precio de compra: $ 1,425 ARS\n  Cantidad adquirida: 10.000 USD\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en fuente: -$ 14,250,000\n🔗 Ref. EGRESOS: 🟡 INVERSIÓN — OTRO\n"
+    }
+  ],
   "liquidezExterna": [],
   "stockMovs": [
     {
@@ -9292,21 +9315,21 @@
     {
       "id": "sd0",
       "label": "Fondo Reposicion",
-      "pct": 34.3,
+      "pct": 33.9,
       "color": "#00e5a0",
       "activo": "STOCK"
     },
     {
       "id": "sd1",
       "label": "Bitcoin",
-      "pct": 32.9,
+      "pct": 33,
       "color": "#ff6b35",
       "activo": "BTC"
     },
     {
       "id": "sd2",
       "label": "Dolar Blue",
-      "pct": 32.8,
+      "pct": 33.1,
       "color": "#ffaa00",
       "activo": "USD_BLUE"
     }
@@ -9329,11 +9352,11 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-26T22:36:36.357Z",
+  "_savedAt": "2026-04-27T16:38:23.927Z",
   "_meta": {
     "orders": 79,
     "egresos": 71,
-    "inversiones": 0,
+    "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
     "ingresos": 12,
