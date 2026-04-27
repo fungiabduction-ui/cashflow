@@ -6628,7 +6628,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0047\n📅 Fecha: 27/04/2026\n👤 Cliente: Uriel antonio Unrein pokerunrein@gmail.com\n\n🛒 Pedido\n\n💧 1 ud × $ 85,000 = $ 85,000\n\n💰 Total: $ 85,000 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 85,000 | Ajuste: +$ 0 | Total: $ 85,000 | Pago: ARS | Costo: $ 5,000 | Margen: 94.1% | ID: V-202604-0047",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-27T20:59:04.675Z"
     }
   ],
   "egresos": [
@@ -7838,6 +7839,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 26/04/2026\nID Egreso: E-202604-0023\n\n📉 Egreso:\nConcepto: Pago tarjeta MP\nMonto: $ 297,574\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 297,574\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0024",
+      "fecha": "2026-04-27",
+      "fechaDisplay": "27/04/2026",
+      "mesActual": "202604",
+      "concepto": "PedidosYa",
+      "montoTotal": 37600,
+      "cuotaBase": 37600,
+      "ultimaCuota": 37600,
+      "impactoCaja": 37600,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 27/04/2026\nID Egreso: E-202604-0024\n\n📉 Egreso:\nConcepto: PedidosYa\nMonto: $ 37,600\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 37,600\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -8129,6 +8147,17 @@
   ],
   "liquidezExterna": [],
   "stockMovs": [
+    {
+      "fecha": "2026-04-27T20:59:03.757Z",
+      "tipo": "VENTA",
+      "prodId": "p-got",
+      "nombre": "Goteros",
+      "emoji": "💧",
+      "delta": -1,
+      "antes": 15,
+      "despues": 14,
+      "nota": "Ticket generado"
+    },
     {
       "fecha": "2026-04-27T20:58:35.412Z",
       "tipo": "VENTA",
@@ -9247,7 +9276,7 @@
     "v-ted": 1076,
     "p-cris": 764,
     "p-hong": 55,
-    "p-got": 15,
+    "p-got": 14,
     "p-pet": 15
   },
   "stockUmbrales": {
@@ -9542,10 +9571,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-27T20:59:03.741Z",
+  "_savedAt": "2026-04-27T21:00:11.191Z",
   "_meta": {
     "orders": 81,
-    "egresos": 71,
+    "egresos": 72,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
