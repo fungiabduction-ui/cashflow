@@ -6538,6 +6538,96 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0046\n📅 Fecha: 27/04/2026\n👤 Cliente: Santos Micologo - Santiago Vega santifloydside@gmail.com\n\n🛒 Pedido\n\n🧫 1 ud × $ 56,000 = $ 56,000\n\n💰 Total: $ 56,000 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 56,000 | Ajuste: +$ 0 | Total: $ 56,000 | Pago: ARS | Costo: $ 2,000 | Margen: 96.4% | ID: V-202604-0046",
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-27T20:58:37.130Z"
+    },
+    {
+      "id": "V-202604-0047",
+      "fecha": "2026-04-27",
+      "fechaDisplay": "27/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 85000,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 85000,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Uriel antonio Unrein pokerunrein@gmail.com",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 1,
+        "totalGoteros": 85000,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-got",
+            "varId": null,
+            "qty": 1,
+            "precio": 85000,
+            "subtotal": 85000
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 85000,
+        "totalPetri": 0,
+        "totalGeneral": 85000,
+        "subtotalBruto": 85000,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 85000,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 85000,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 5000,
+      "margen": 94.1,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0047\n📅 Fecha: 27/04/2026\n👤 Cliente: Uriel antonio Unrein pokerunrein@gmail.com\n\n🛒 Pedido\n\n💧 1 ud × $ 85,000 = $ 85,000\n\n💰 Total: $ 85,000 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 85,000 | Ajuste: +$ 0 | Total: $ 85,000 | Pago: ARS | Costo: $ 5,000 | Margen: 94.1% | ID: V-202604-0047",
       "estado": "pendiente"
     }
   ],
@@ -8040,6 +8130,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-27T20:58:35.412Z",
+      "tipo": "VENTA",
+      "prodId": "p-pet",
+      "nombre": "Petri",
+      "emoji": "🧫",
+      "delta": -1,
+      "antes": 16,
+      "despues": 15,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-25T14:49:07.156Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -9147,7 +9248,7 @@
     "p-cris": 764,
     "p-hong": 55,
     "p-got": 15,
-    "p-pet": 16
+    "p-pet": 15
   },
   "stockUmbrales": {
     "grp-p-past": {
@@ -9441,9 +9542,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-27T20:58:35.400Z",
+  "_savedAt": "2026-04-27T20:59:03.741Z",
   "_meta": {
-    "orders": 80,
+    "orders": 81,
     "egresos": 71,
     "inversiones": 1,
     "productos": 6,
