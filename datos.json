@@ -8041,6 +8041,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 27/04/2026\nID Egreso: E-202604-0024\n\n📉 Egreso:\nConcepto: PedidosYa\nMonto: $ 37,600\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 37,600\nFinaliza: 04/2026"
+    },
+    {
+      "id": "E-202604-0025",
+      "fecha": "2026-04-29",
+      "fechaDisplay": "29/04/2026",
+      "mesActual": "202604",
+      "concepto": "Dentista",
+      "montoTotal": 120000,
+      "cuotaBase": 120000,
+      "ultimaCuota": 120000,
+      "impactoCaja": 120000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "04/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 29/04/2026\nID Egreso: E-202604-0025\n\n📉 Egreso:\nConcepto: Dentista\nMonto: $ 120,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 120,000\nFinaliza: 04/2026"
     }
   ],
   "precios": null,
@@ -8332,6 +8349,17 @@
   ],
   "liquidezExterna": [],
   "stockMovs": [
+    {
+      "fecha": "2026-04-29T20:08:43.528Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -5,
+      "antes": 201,
+      "despues": 196,
+      "nota": "Ticket generado"
+    },
     {
       "fecha": "2026-04-29T13:35:09.720Z",
       "tipo": "VENTA",
@@ -9478,7 +9506,7 @@
     }
   ],
   "stock": {
-    "v-cal": 201,
+    "v-cal": 196,
     "grp-p-past": 1770,
     "v-ted": 1076,
     "p-cris": 761,
@@ -9778,10 +9806,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-29T20:08:43.512Z",
+  "_savedAt": "2026-04-29T22:34:07.771Z",
   "_meta": {
     "orders": 83,
-    "egresos": 72,
+    "egresos": 73,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
