@@ -6726,6 +6726,95 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0048\n📅 Fecha: 29/04/2026\n👤 Cliente: Maurito (Locha)\n\n🛒 Pedido\n\n💀 31 ud × $ 18,228 = $ 565,068\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 785,568 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 785,568 | Ajuste: +$ 0 | Total: $ 785,568 | Pago: ARS | Costo: $ 181,250 | Margen: 76.9% | ID: V-202604-0048",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0049",
+      "fecha": "2026-04-29",
+      "fechaDisplay": "29/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 113925,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 113925,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Dave",
+      "productos": {
+        "calaveras": 5,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 5,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 113925,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 113925,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 113925,
+        "subtotalBruto": 113925,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 113925,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 113925,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 25375,
+      "margen": 77.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0049\n📅 Fecha: 29/04/2026\n👤 Cliente: Dave\n\n🛒 Pedido\n\n💀 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: ARS | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0049",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -8244,6 +8333,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-29T13:35:09.720Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -3,
+      "antes": 764,
+      "despues": 761,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-29T13:35:09.720Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -31,
+      "antes": 232,
+      "despues": 201,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-27T20:59:03.757Z",
       "tipo": "VENTA",
       "prodId": "p-got",
@@ -9367,10 +9478,10 @@
     }
   ],
   "stock": {
-    "v-cal": 232,
+    "v-cal": 201,
     "grp-p-past": 1770,
     "v-ted": 1076,
-    "p-cris": 764,
+    "p-cris": 761,
     "p-hong": 55,
     "p-got": 14,
     "p-pet": 15
@@ -9667,9 +9778,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-29T13:35:09.704Z",
+  "_savedAt": "2026-04-29T20:08:43.512Z",
   "_meta": {
-    "orders": 82,
+    "orders": 83,
     "egresos": 72,
     "inversiones": 1,
     "productos": 6,
