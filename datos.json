@@ -6630,6 +6630,102 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 85,000 | Ajuste: +$ 0 | Total: $ 85,000 | Pago: ARS | Costo: $ 5,000 | Margen: 94.1% | ID: V-202604-0047",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-27T20:59:04.675Z"
+    },
+    {
+      "id": "V-202604-0048",
+      "fecha": "2026-04-29",
+      "fechaDisplay": "29/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 785568,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 785568,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Maurito (Locha)",
+      "productos": {
+        "calaveras": 31,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 31,
+        "precioPastilla": 18228,
+        "tramoInfo": 30,
+        "totalPastillasLinea": 565068,
+        "cristales": 3,
+        "precioCristales": 73500,
+        "totalCristales": 220500,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 31,
+            "precio": 18228,
+            "subtotal": 565068
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 3,
+            "precio": 73500,
+            "subtotal": 220500
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 565068,
+        "totalCristales": 220500,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 785568,
+        "subtotalBruto": 785568,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 785568,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 785568,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 181250,
+      "margen": 76.9,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0048\n📅 Fecha: 29/04/2026\n👤 Cliente: Maurito (Locha)\n\n🛒 Pedido\n\n💀 31 ud × $ 18,228 = $ 565,068\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 785,568 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 785,568 | Ajuste: +$ 0 | Total: $ 785,568 | Pago: ARS | Costo: $ 181,250 | Margen: 76.9% | ID: V-202604-0048",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -9571,9 +9667,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-27T21:00:36.306Z",
+  "_savedAt": "2026-04-29T13:35:09.704Z",
   "_meta": {
-    "orders": 81,
+    "orders": 82,
     "egresos": 72,
     "inversiones": 1,
     "productos": 6,
