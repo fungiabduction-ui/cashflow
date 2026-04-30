@@ -6725,7 +6725,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0048\n📅 Fecha: 29/04/2026\n👤 Cliente: Maurito (Locha)\n\n🛒 Pedido\n\n💀 31 ud × $ 18,228 = $ 565,068\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 785,568 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 785,568 | Ajuste: +$ 0 | Total: $ 785,568 | Pago: ARS | Costo: $ 181,250 | Margen: 76.9% | ID: V-202604-0048",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-30T21:56:52.834Z"
     },
     {
       "id": "V-202604-0049",
@@ -8727,6 +8728,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-30T21:16:30.227Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -2,
+      "antes": 1069,
+      "despues": 1067,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-30T21:16:30.227Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -3,
+      "antes": 183,
+      "despues": 180,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-30T20:09:38.116Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -9938,9 +9961,9 @@
     }
   ],
   "stock": {
-    "v-cal": 183,
+    "v-cal": 180,
     "grp-p-past": 1770,
-    "v-ted": 1069,
+    "v-ted": 1067,
     "p-cris": 761,
     "p-hong": 55,
     "p-got": 14,
@@ -10238,7 +10261,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-30T21:16:30.211Z",
+  "_savedAt": "2026-04-30T21:56:52.841Z",
   "_meta": {
     "orders": 87,
     "egresos": 73,
