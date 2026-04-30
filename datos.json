@@ -7096,6 +7096,102 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0052\n📅 Fecha: 30/04/2026\n👤 Cliente: Mica 💕 (Angel)\n\n🛒 Pedido\n\n💀 3 ud × $ 22,785 = $ 68,355\n🧸 2 ud × $ 22,785 = $ 45,570\n\n💰 Total: $ 113,925 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: ARS | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0052",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0053",
+      "fecha": "2026-04-30",
+      "fechaDisplay": "30/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "USD",
+      "tc": 1380,
+      "payment": {
+        "ars": 0,
+        "usd": 82.55,
+        "usdt": 0,
+        "tc": 1380,
+        "tc_usd": 1380,
+        "tc_usdt": 0,
+        "total_ars": 113919,
+        "total_usdt": null,
+        "modo": "USD"
+      },
+      "nota": null,
+      "cliente": "Mica 💕 (Angel)",
+      "productos": {
+        "calaveras": 3,
+        "teddy": 2,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 5,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 113925,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 3,
+            "precio": 22785,
+            "subtotal": 68355
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 2,
+            "precio": 22785,
+            "subtotal": 45570
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 113925,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 113925,
+        "subtotalBruto": 113925,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 0,
+          "usd": 82.55,
+          "usdt": 0,
+          "tc": 1380,
+          "tc_usd": 1380,
+          "tc_usdt": 0,
+          "total_ars": 113919,
+          "total_usdt": null,
+          "modo": "USD"
+        }
+      },
+      "costo": 25375,
+      "margen": 77.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0053\n📅 Fecha: 30/04/2026\n👤 Cliente: Mica 💕 (Angel)\n\n🛒 Pedido\n\n💀 3 ud × $ 22,785 = $ 68,355\n🧸 2 ud × $ 22,785 = $ 45,570\n\n💰 Total: $ 113,925 ARS\n💵 Total USD: 82.55 (TC 1,380)",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: USD | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0053",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -8631,6 +8727,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-30T20:09:38.116Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -2,
+      "antes": 1071,
+      "despues": 1069,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-04-30T20:09:38.116Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -3,
+      "antes": 186,
+      "despues": 183,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-30T15:48:22.157Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -9820,9 +9938,9 @@
     }
   ],
   "stock": {
-    "v-cal": 186,
+    "v-cal": 183,
     "grp-p-past": 1770,
-    "v-ted": 1071,
+    "v-ted": 1069,
     "p-cris": 761,
     "p-hong": 55,
     "p-got": 14,
@@ -10120,9 +10238,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-30T20:09:38.097Z",
+  "_savedAt": "2026-04-30T21:16:30.211Z",
   "_meta": {
-    "orders": 86,
+    "orders": 87,
     "egresos": 73,
     "inversiones": 1,
     "productos": 6,
