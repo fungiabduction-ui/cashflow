@@ -6904,6 +6904,102 @@
       "ticketText": "🧾 Orden de Venta: V-202604-0050\n📅 Fecha: 30/04/2026\n👤 Cliente: Her Barletta @hernan.barletta\n\n🛒 Pedido\n\n💀 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: ARS | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0050",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202604-0051",
+      "fecha": "2026-04-30",
+      "fechaDisplay": "30/04/2026",
+      "mesActual": "202604",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 217350,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 217350,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Emma",
+      "productos": {
+        "calaveras": 5,
+        "teddy": 5,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 10,
+        "precioPastilla": 21735,
+        "tramoInfo": 10,
+        "totalPastillasLinea": 217350,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 5,
+            "precio": 21735,
+            "subtotal": 108675
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 5,
+            "precio": 21735,
+            "subtotal": 108675
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 217350,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 217350,
+        "subtotalBruto": 217350,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 217350,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 217350,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 50750,
+      "margen": 76.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202604-0051\n📅 Fecha: 30/04/2026\n👤 Cliente: Emma\n\n🛒 Pedido\n\n💀 5 ud × $ 21,735 = $ 108,675\n🧸 5 ud × $ 21,735 = $ 108,675\n\n💰 Total: $ 217,350 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 217,350 | Ajuste: +$ 0 | Total: $ 217,350 | Pago: ARS | Costo: $ 50,750 | Margen: 76.7% | ID: V-202604-0051",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -8439,6 +8535,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-04-30T13:55:38.900Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -5,
+      "antes": 196,
+      "despues": 191,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-29T20:08:43.528Z",
       "tipo": "VENTA",
       "prodId": "v-cal",
@@ -9595,7 +9702,7 @@
     }
   ],
   "stock": {
-    "v-cal": 196,
+    "v-cal": 191,
     "grp-p-past": 1770,
     "v-ted": 1076,
     "p-cris": 761,
@@ -9895,9 +10002,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-30T13:55:38.887Z",
+  "_savedAt": "2026-04-30T15:48:22.142Z",
   "_meta": {
-    "orders": 84,
+    "orders": 85,
     "egresos": 73,
     "inversiones": 1,
     "productos": 6,
