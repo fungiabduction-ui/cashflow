@@ -6815,7 +6815,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202604-0049\n📅 Fecha: 29/04/2026\n👤 Cliente: Dave\n\n🛒 Pedido\n\n💀 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: ARS | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0049",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-04-30T21:56:57.438Z"
     },
     {
       "id": "V-202604-0050",
@@ -10261,7 +10262,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-30T21:56:52.841Z",
+  "_savedAt": "2026-04-30T21:56:57.441Z",
   "_meta": {
     "orders": 87,
     "egresos": 73,
