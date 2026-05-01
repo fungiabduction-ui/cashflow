@@ -7101,6 +7101,95 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: USD | Costo: $ 25,375 | Margen: 77.7% | ID: V-202604-0053",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-04-30T21:57:20.426Z"
+    },
+    {
+      "id": "V-202605-0001",
+      "fecha": "2026-05-01",
+      "fechaDisplay": "01/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 387340,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 387340,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Juanmi",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 20,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 20,
+        "precioPastilla": 19367,
+        "tramoInfo": 20,
+        "totalPastillasLinea": 387340,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 20,
+            "precio": 19367,
+            "subtotal": 387340
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 387340,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 387340,
+        "subtotalBruto": 387340,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 387340,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 387340,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 101500,
+      "margen": 73.8,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0001\n📅 Fecha: 01/05/2026\n👤 Cliente: Juanmi\n\n🛒 Pedido\n\n🧸 20 ud × $ 19,367 = $ 387,340\n\n💰 Total: $ 387,340 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 387,340 | Ajuste: +$ 0 | Total: $ 387,340 | Pago: ARS | Costo: $ 101,500 | Margen: 73.8% | ID: V-202605-0001",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -8625,8 +8714,8 @@
       "montoARS": 14250000,
       "precioCompra": 1425,
       "cantidad": "10.000 USD",
-      "precioActual": 1430,
-      "resultadoFlotante": 50000,
+      "precioActual": 1400,
+      "resultadoFlotante": -250000,
       "estado": "ACTIVA",
       "fechaCierre": null,
       "nota": null,
@@ -10169,9 +10258,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-04-30T21:57:20.428Z",
+  "_savedAt": "2026-05-01T17:20:07.830Z",
   "_meta": {
-    "orders": 86,
+    "orders": 87,
     "egresos": 73,
     "inversiones": 1,
     "productos": 6,
