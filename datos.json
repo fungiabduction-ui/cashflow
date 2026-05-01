@@ -7189,7 +7189,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0001\n📅 Fecha: 01/05/2026\n👤 Cliente: Juanmi\n\n🛒 Pedido\n\n🧸 20 ud × $ 19,367 = $ 387,340\n\n💰 Total: $ 387,340 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 387,340 | Ajuste: +$ 0 | Total: $ 387,340 | Pago: ARS | Costo: $ 101,500 | Margen: 73.8% | ID: V-202605-0001",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-01T18:24:34.721Z"
     }
   ],
   "egresos": [
@@ -8725,6 +8726,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-01T17:20:07.848Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -20,
+      "antes": 1067,
+      "despues": 1047,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-04-30T21:16:30.227Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -9960,7 +9972,7 @@
   "stock": {
     "v-cal": 180,
     "grp-p-past": 1770,
-    "v-ted": 1067,
+    "v-ted": 1047,
     "p-cris": 761,
     "p-hong": 55,
     "p-got": 14,
@@ -10258,7 +10270,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-01T17:20:07.830Z",
+  "_savedAt": "2026-05-01T18:24:34.726Z",
   "_meta": {
     "orders": 87,
     "egresos": 73,
