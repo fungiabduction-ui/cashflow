@@ -8451,6 +8451,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 02/05/2026\nID Egreso: E-202605-0001\n\n📉 Egreso:\nConcepto: Pangua\nMonto: $ 10,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 10,000\nFinaliza: 05/2026"
+    },
+    {
+      "id": "E-202605-0002",
+      "fecha": "2026-05-02",
+      "fechaDisplay": "02/05/2026",
+      "mesActual": "202605",
+      "concepto": "YPF",
+      "montoTotal": 107000,
+      "cuotaBase": 107000,
+      "ultimaCuota": 107000,
+      "impactoCaja": 107000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "05/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 02/05/2026\nID Egreso: E-202605-0002\n\n📉 Egreso:\nConcepto: YPF\nMonto: $ 107,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 107,000\nFinaliza: 05/2026"
     }
   ],
   "precios": null,
@@ -10287,10 +10304,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-03T21:31:21.199Z",
+  "_savedAt": "2026-05-03T21:31:33.265Z",
   "_meta": {
     "orders": 87,
-    "egresos": 74,
+    "egresos": 75,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
