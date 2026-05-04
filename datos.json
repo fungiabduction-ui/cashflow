@@ -8485,6 +8485,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 04/05/2026\nID Egreso: E-202605-0003\n\n📉 Egreso:\nConcepto: Cafe\nMonto: $ 43,400\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 43,400\nFinaliza: 05/2026"
+    },
+    {
+      "id": "E-202605-0004",
+      "fecha": "2026-05-04",
+      "fechaDisplay": "04/05/2026",
+      "mesActual": "202605",
+      "concepto": "Spotify",
+      "montoTotal": 4300,
+      "cuotaBase": 4300,
+      "ultimaCuota": 4300,
+      "impactoCaja": 4300,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "05/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 04/05/2026\nID Egreso: E-202605-0004\n\n📉 Egreso:\nConcepto: Spotify\nMonto: $ 4,300\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 4,300\nFinaliza: 05/2026"
     }
   ],
   "precios": null,
@@ -10321,10 +10338,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-04T13:53:32.284Z",
+  "_savedAt": "2026-05-04T14:36:54.769Z",
   "_meta": {
     "orders": 87,
-    "egresos": 76,
+    "egresos": 77,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
