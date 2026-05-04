@@ -8468,6 +8468,23 @@
       "medio": "Efectivo",
       "obs": null,
       "ticketText": "📅 Fecha: 02/05/2026\nID Egreso: E-202605-0002\n\n📉 Egreso:\nConcepto: YPF\nMonto: $ 107,000\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 107,000\nFinaliza: 05/2026"
+    },
+    {
+      "id": "E-202605-0003",
+      "fecha": "2026-05-04",
+      "fechaDisplay": "04/05/2026",
+      "mesActual": "202605",
+      "concepto": "Cafe",
+      "montoTotal": 43400,
+      "cuotaBase": 43400,
+      "ultimaCuota": 43400,
+      "impactoCaja": 43400,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "05/2026",
+      "medio": "Efectivo",
+      "obs": null,
+      "ticketText": "📅 Fecha: 04/05/2026\nID Egreso: E-202605-0003\n\n📉 Egreso:\nConcepto: Cafe\nMonto: $ 43,400\nMedio de pago: Efectivo\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 43,400\nFinaliza: 05/2026"
     }
   ],
   "precios": null,
@@ -10304,10 +10321,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-03T21:32:08.875Z",
+  "_savedAt": "2026-05-04T13:53:32.284Z",
   "_meta": {
     "orders": 87,
-    "egresos": 75,
+    "egresos": 76,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
