@@ -7191,6 +7191,109 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 387,340 | Ajuste: +$ 0 | Total: $ 387,340 | Pago: ARS | Costo: $ 101,500 | Margen: 73.8% | ID: V-202605-0001",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-05-01T18:24:34.721Z"
+    },
+    {
+      "id": "V-202605-0002",
+      "fecha": "2026-05-06",
+      "fechaDisplay": "06/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 297318,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 297318,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 7,
+        "teddy": 3,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 10,
+        "precioPastilla": 21735,
+        "tramoInfo": 10,
+        "totalPastillasLinea": 217350,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 7,
+            "precio": 21735,
+            "subtotal": 152145
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 3,
+            "precio": 21735,
+            "subtotal": 65205
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 217350,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 297318,
+        "subtotalBruto": 297318,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 297318,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 297318,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 58725,
+      "margen": 80.2,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0002\n📅 Fecha: 06/05/2026\n\n🛒 Pedido\n\n💀 7 ud × $ 21,735 = $ 152,145\n🧸 3 ud × $ 21,735 = $ 65,205\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 297,318 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 297,318 | Ajuste: +$ 0 | Total: $ 297,318 | Pago: ARS | Costo: $ 58,725 | Margen: 80.2% | ID: V-202605-0002",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -10338,9 +10441,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-04T14:36:54.769Z",
+  "_savedAt": "2026-05-06T17:27:27.890Z",
   "_meta": {
-    "orders": 87,
+    "orders": 88,
     "egresos": 77,
     "inversiones": 1,
     "productos": 6,
