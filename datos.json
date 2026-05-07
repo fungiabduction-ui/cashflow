@@ -7397,6 +7397,109 @@
       "ticketText": "🧾 Orden de Venta: V-202605-0003\n📅 Fecha: 06/05/2026\n👤 Cliente: Patricio\n\n🛒 Pedido\n\n💀 7 ud × $ 21,735 = $ 152,145\n🧸 3 ud × $ 21,735 = $ 65,205\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 297,318 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 297,318 | Ajuste: +$ 0 | Total: $ 297,318 | Pago: ARS | Costo: $ 58,725 | Margen: 80.2% | ID: V-202605-0003",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202605-0004",
+      "fecha": "2026-05-07",
+      "fechaDisplay": "07/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 262248,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 262248,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": null,
+      "productos": {
+        "calaveras": 4,
+        "teddy": 4,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 8,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 182280,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 4,
+            "precio": 22785,
+            "subtotal": 91140
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 4,
+            "precio": 22785,
+            "subtotal": 91140
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 182280,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 262248,
+        "subtotalBruto": 262248,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 262248,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 262248,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 48575,
+      "margen": 81.5,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0004\n📅 Fecha: 07/05/2026\n\n🛒 Pedido\n\n💀 4 ud × $ 22,785 = $ 91,140\n🧸 4 ud × $ 22,785 = $ 91,140\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 262,248 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 262,248 | Ajuste: +$ 0 | Total: $ 262,248 | Pago: ARS | Costo: $ 48,575 | Margen: 81.5% | ID: V-202605-0004",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -9000,6 +9103,39 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-06T17:27:46.063Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 760,
+      "despues": 759,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-05-06T17:27:46.063Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -3,
+      "antes": 1044,
+      "despues": 1041,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-05-06T17:27:46.063Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -7,
+      "antes": 173,
+      "despues": 166,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-05-06T17:27:27.905Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -10277,10 +10413,10 @@
     }
   ],
   "stock": {
-    "v-cal": 173,
+    "v-cal": 166,
     "grp-p-past": 1770,
-    "v-ted": 1044,
-    "p-cris": 760,
+    "v-ted": 1041,
+    "p-cris": 759,
     "p-hong": 55,
     "p-got": 14,
     "p-pet": 15
@@ -10577,9 +10713,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-06T17:27:46.050Z",
+  "_savedAt": "2026-05-07T00:06:26.355Z",
   "_meta": {
-    "orders": 89,
+    "orders": 90,
     "egresos": 77,
     "inversiones": 1,
     "productos": 6,
