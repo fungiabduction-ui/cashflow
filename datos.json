@@ -7577,6 +7577,102 @@
       "ticketText": "🧾 Orden de Venta: V-202605-0007\n📅 Fecha: 08/05/2026\n👤 Cliente: Cristian Moron\n\n🛒 Pedido\n\n🧸 7 ud × $ 22,785 = $ 159,495\n\n💰 Total: $ 159,495 ARS\n📝 Nota: Solo rosas",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 159,495 | Ajuste: +$ 0 | Total: $ 159,495 | Pago: ARS | Costo: $ 35,525 | Margen: 77.7% | ID: V-202605-0007",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202605-0008",
+      "fecha": "2026-05-08",
+      "fechaDisplay": "08/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 193893,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 193893,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Thomi Fuentes",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 5,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 5,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 113925,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 5,
+            "precio": 22785,
+            "subtotal": 113925
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 113925,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 193893,
+        "subtotalBruto": 193893,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 193893,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 193893,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 33350,
+      "margen": 82.8,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0008\n📅 Fecha: 08/05/2026\n👤 Cliente: Thomi Fuentes\n\n🛒 Pedido\n\n🧸 5 ud × $ 22,785 = $ 113,925\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 193,893 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 193,893 | Ajuste: +$ 0 | Total: $ 193,893 | Pago: ARS | Costo: $ 33,350 | Margen: 82.8% | ID: V-202605-0008",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -9180,6 +9276,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-08T17:42:24.784Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -7,
+      "antes": 1033,
+      "despues": 1026,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-05-08T16:51:02.983Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -10569,7 +10676,7 @@
   "stock": {
     "v-cal": 158,
     "grp-p-past": 1770,
-    "v-ted": 1033,
+    "v-ted": 1026,
     "p-cris": 755,
     "p-hong": 55,
     "p-got": 14,
@@ -10867,9 +10974,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-08T17:42:24.766Z",
+  "_savedAt": "2026-05-08T20:29:15.915Z",
   "_meta": {
-    "orders": 91,
+    "orders": 92,
     "egresos": 77,
     "inversiones": 1,
     "productos": 6,
