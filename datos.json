@@ -7399,6 +7399,95 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 262,248 | Ajuste: +$ 0 | Total: $ 262,248 | Pago: USD | Costo: $ 48,575 | Margen: 81.5% | ID: V-202605-0005",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-05-08T16:02:17.703Z"
+    },
+    {
+      "id": "V-202605-0006",
+      "fecha": "2026-05-08",
+      "fechaDisplay": "08/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 159936,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 159936,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Yago",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 2,
+        "precioCristales": 79968,
+        "totalCristales": 159936,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 2,
+            "precio": 79968,
+            "subtotal": 159936
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 159936,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 159936,
+        "subtotalBruto": 159936,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 159936,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 159936,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 15950,
+      "margen": 90,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0006\n📅 Fecha: 08/05/2026\n👤 Cliente: Yago\n\n🛒 Pedido\n\n💎 2 g × $ 79,968 = $ 159,936\n\n💰 Total: $ 159,936 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 159,936 | Ajuste: +$ 0 | Total: $ 159,936 | Pago: ARS | Costo: $ 15,950 | Margen: 90% | ID: V-202605-0006",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -10678,9 +10767,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-08T16:02:17.706Z",
+  "_savedAt": "2026-05-08T16:51:02.966Z",
   "_meta": {
-    "orders": 89,
+    "orders": 90,
     "egresos": 77,
     "inversiones": 1,
     "productos": 6,
