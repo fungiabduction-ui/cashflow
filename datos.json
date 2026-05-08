@@ -7488,6 +7488,95 @@
       "ticketText": "🧾 Orden de Venta: V-202605-0006\n📅 Fecha: 08/05/2026\n👤 Cliente: Yago\n\n🛒 Pedido\n\n💎 2 g × $ 79,968 = $ 159,936\n\n💰 Total: $ 159,936 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 159,936 | Ajuste: +$ 0 | Total: $ 159,936 | Pago: ARS | Costo: $ 15,950 | Margen: 90% | ID: V-202605-0006",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202605-0007",
+      "fecha": "2026-05-08",
+      "fechaDisplay": "08/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 159495,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 159495,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "Solo rosas",
+      "cliente": "Cristian Moron",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 7,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 7,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 159495,
+        "cristales": 0,
+        "precioCristales": null,
+        "totalCristales": 0,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 7,
+            "precio": 22785,
+            "subtotal": 159495
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 159495,
+        "totalCristales": 0,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 159495,
+        "subtotalBruto": 159495,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 159495,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 159495,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 35525,
+      "margen": 77.7,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0007\n📅 Fecha: 08/05/2026\n👤 Cliente: Cristian Moron\n\n🛒 Pedido\n\n🧸 7 ud × $ 22,785 = $ 159,495\n\n💰 Total: $ 159,495 ARS\n📝 Nota: Solo rosas",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 159,495 | Ajuste: +$ 0 | Total: $ 159,495 | Pago: ARS | Costo: $ 35,525 | Margen: 77.7% | ID: V-202605-0007",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -9091,6 +9180,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-08T16:51:02.983Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -2,
+      "antes": 757,
+      "despues": 755,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-05-07T21:26:15.810Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -10470,7 +10570,7 @@
     "v-cal": 158,
     "grp-p-past": 1770,
     "v-ted": 1033,
-    "p-cris": 757,
+    "p-cris": 755,
     "p-hong": 55,
     "p-got": 14,
     "p-pet": 15
@@ -10767,9 +10867,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-08T16:51:02.966Z",
+  "_savedAt": "2026-05-08T17:42:24.766Z",
   "_meta": {
-    "orders": 90,
+    "orders": 91,
     "egresos": 77,
     "inversiones": 1,
     "productos": 6,
