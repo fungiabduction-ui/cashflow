@@ -7397,7 +7397,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0005\n📅 Fecha: 07/05/2026\n👤 Cliente: Emiliano Ciaschini\n\n🛒 Pedido\n\n💀 4 ud × $ 22,785 = $ 91,140\n🧸 4 ud × $ 22,785 = $ 91,140\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 262,248 ARS\n💵 Total USD: 190.03 (TC 1,380)",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 262,248 | Ajuste: +$ 0 | Total: $ 262,248 | Pago: USD | Costo: $ 48,575 | Margen: 81.5% | ID: V-202605-0005",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-08T16:02:17.703Z"
     }
   ],
   "egresos": [
@@ -10677,7 +10678,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-08T16:02:13.707Z",
+  "_savedAt": "2026-05-08T16:02:17.706Z",
   "_meta": {
     "orders": 89,
     "egresos": 77,
