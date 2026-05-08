@@ -7577,7 +7577,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0007\n📅 Fecha: 08/05/2026\n👤 Cliente: Cristian Moron\n\n🛒 Pedido\n\n🧸 7 ud × $ 22,785 = $ 159,495\n\n💰 Total: $ 159,495 ARS\n📝 Nota: Solo rosas",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 159,495 | Ajuste: +$ 0 | Total: $ 159,495 | Pago: ARS | Costo: $ 35,525 | Margen: 77.7% | ID: V-202605-0007",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-08T21:03:30.177Z"
     },
     {
       "id": "V-202605-0008",
@@ -10998,7 +10999,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-08T21:03:25.534Z",
+  "_savedAt": "2026-05-08T21:03:30.181Z",
   "_meta": {
     "orders": 92,
     "egresos": 77,
