@@ -7672,7 +7672,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0008\n📅 Fecha: 08/05/2026\n👤 Cliente: Thomi Fuentes\n\n🛒 Pedido\n\n🧸 5 ud × $ 22,785 = $ 113,925\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 193,893 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 193,893 | Ajuste: +$ 0 | Total: $ 193,893 | Pago: ARS | Costo: $ 33,350 | Margen: 82.8% | ID: V-202605-0008",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-08T21:03:17.642Z"
     }
   ],
   "egresos": [
@@ -9276,6 +9277,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-08T20:29:15.931Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 755,
+      "despues": 754,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-05-08T20:29:15.931Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -5,
+      "antes": 1026,
+      "despues": 1021,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-05-08T17:42:24.784Z",
       "tipo": "VENTA",
       "prodId": "v-ted",
@@ -10676,8 +10699,8 @@
   "stock": {
     "v-cal": 158,
     "grp-p-past": 1770,
-    "v-ted": 1026,
-    "p-cris": 755,
+    "v-ted": 1021,
+    "p-cris": 754,
     "p-hong": 55,
     "p-got": 14,
     "p-pet": 15
@@ -10974,7 +10997,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-08T20:29:15.915Z",
+  "_savedAt": "2026-05-08T21:03:17.647Z",
   "_meta": {
     "orders": 92,
     "egresos": 77,
