@@ -7487,7 +7487,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0006\n📅 Fecha: 08/05/2026\n👤 Cliente: Yago\n\n🛒 Pedido\n\n💎 2 g × $ 79,968 = $ 159,936\n\n💰 Total: $ 159,936 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 159,936 | Ajuste: +$ 0 | Total: $ 159,936 | Pago: ARS | Costo: $ 15,950 | Margen: 90% | ID: V-202605-0006",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-08T21:03:25.530Z"
     },
     {
       "id": "V-202605-0007",
@@ -10997,7 +10998,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-08T21:03:17.647Z",
+  "_savedAt": "2026-05-08T21:03:25.534Z",
   "_meta": {
     "orders": 92,
     "egresos": 77,
