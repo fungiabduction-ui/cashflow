@@ -9213,6 +9213,23 @@
       "medio": "Débito automático",
       "obs": null,
       "ticketText": "📅 Fecha: 06/05/2026\nID Egreso: E-202605-0012\n\n📉 Egreso:\nConcepto: Súper del 6 al 10 de mayo.\nMonto: $ 102,716\nMedio de pago: Débito automático\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 102,716\nFinaliza: 05/2026"
+    },
+    {
+      "id": "E-202605-0013",
+      "fecha": "2026-05-06",
+      "fechaDisplay": "06/05/2026",
+      "mesActual": "202605",
+      "concepto": "Cuota Alchool",
+      "montoTotal": 8276,
+      "cuotaBase": 8276,
+      "ultimaCuota": 8276,
+      "impactoCaja": 8276,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "05/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 06/05/2026\nID Egreso: E-202605-0013\n\n📉 Egreso:\nConcepto: Cuota Alchool\nMonto: $ 8,276\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 8,276\nFinaliza: 05/2026"
     }
   ],
   "precios": null,
@@ -11236,10 +11253,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-13T02:49:44.378Z",
+  "_savedAt": "2026-05-13T02:50:23.512Z",
   "_meta": {
     "orders": 93,
-    "egresos": 85,
+    "egresos": 86,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
