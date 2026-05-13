@@ -9230,6 +9230,23 @@
       "medio": "Mercado Pago",
       "obs": null,
       "ticketText": "📅 Fecha: 06/05/2026\nID Egreso: E-202605-0013\n\n📉 Egreso:\nConcepto: Cuota Alchool\nMonto: $ 8,276\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 8,276\nFinaliza: 05/2026"
+    },
+    {
+      "id": "E-202605-0014",
+      "fecha": "2026-05-11",
+      "fechaDisplay": "11/05/2026",
+      "mesActual": "202605",
+      "concepto": "Electricista",
+      "montoTotal": 60000,
+      "cuotaBase": 60000,
+      "ultimaCuota": 60000,
+      "impactoCaja": 60000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "05/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 11/05/2026\nID Egreso: E-202605-0014\n\n📉 Egreso:\nConcepto: Electricista\nMonto: $ 60,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 60,000\nFinaliza: 05/2026"
     }
   ],
   "precios": null,
@@ -11253,10 +11270,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-13T02:50:23.512Z",
+  "_savedAt": "2026-05-13T02:50:44.654Z",
   "_meta": {
     "orders": 93,
-    "egresos": 86,
+    "egresos": 87,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
