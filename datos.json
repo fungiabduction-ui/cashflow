@@ -7766,6 +7766,95 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 70,000 | Ajuste: +$ 0 | Total: $ 70,000 | Pago: ARS | Costo: $ 10,000 | Margen: 85.7% | ID: V-202605-0009",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-05-12T02:55:58.935Z"
+    },
+    {
+      "id": "V-202605-0010",
+      "fecha": "2026-05-13",
+      "fechaDisplay": "13/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 220500,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 220500,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Nicolas Penna",
+      "productos": {
+        "calaveras": 0,
+        "teddy": 0,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 0,
+        "precioPastilla": null,
+        "tramoInfo": null,
+        "totalPastillasLinea": 0,
+        "cristales": 3,
+        "precioCristales": 73500,
+        "totalCristales": 220500,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 3,
+            "precio": 73500,
+            "subtotal": 220500
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 0,
+        "totalCristales": 220500,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 220500,
+        "subtotalBruto": 220500,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 220500,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 220500,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 23925,
+      "margen": 89.1,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0010\n📅 Fecha: 13/05/2026\n👤 Cliente: Nicolas Penna\n\n🛒 Pedido\n\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 220,500 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 220,500 | Ajuste: +$ 0 | Total: $ 220,500 | Pago: ARS | Costo: $ 23,925 | Margen: 89.1% | ID: V-202605-0010",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -11270,9 +11359,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-13T03:31:00.302Z",
+  "_savedAt": "2026-05-13T19:45:50.310Z",
   "_meta": {
-    "orders": 93,
+    "orders": 94,
     "egresos": 87,
     "inversiones": 1,
     "productos": 6,
