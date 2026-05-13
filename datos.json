@@ -9111,6 +9111,23 @@
       "medio": "Débito",
       "obs": null,
       "ticketText": "📅 Fecha: 07/05/2026\nID Egreso: E-202605-0006\n\n📉 Egreso:\nConcepto: Allianz\nMonto: $ 210,000\nMedio de pago: Débito\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 210,000\nFinaliza: 05/2026"
+    },
+    {
+      "id": "E-202605-0007",
+      "fecha": "2026-05-07",
+      "fechaDisplay": "07/05/2026",
+      "mesActual": "202605",
+      "concepto": "Galeno",
+      "montoTotal": 288000,
+      "cuotaBase": 288000,
+      "ultimaCuota": 288000,
+      "impactoCaja": 288000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "05/2026",
+      "medio": "Débito",
+      "obs": null,
+      "ticketText": "📅 Fecha: 07/05/2026\nID Egreso: E-202605-0007\n\n📉 Egreso:\nConcepto: Galeno\nMonto: $ 288,000\nMedio de pago: Débito\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 288,000\nFinaliza: 05/2026"
     }
   ],
   "precios": null,
@@ -11134,10 +11151,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-13T02:41:12.496Z",
+  "_savedAt": "2026-05-13T02:41:35.346Z",
   "_meta": {
     "orders": 93,
-    "egresos": 79,
+    "egresos": 80,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
