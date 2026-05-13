@@ -9145,6 +9145,23 @@
       "medio": "Débito",
       "obs": null,
       "ticketText": "📅 Fecha: 08/05/2026\nID Egreso: E-202605-0008\n\n📉 Egreso:\nConcepto: Visa Galicia\nMonto: $ 9,000\nMedio de pago: Débito\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 9,000\nFinaliza: 05/2026"
+    },
+    {
+      "id": "E-202605-0009",
+      "fecha": "2026-05-03",
+      "fechaDisplay": "03/05/2026",
+      "mesActual": "202605",
+      "concepto": "Carrefour",
+      "montoTotal": 101000,
+      "cuotaBase": 101000,
+      "ultimaCuota": 101000,
+      "impactoCaja": 101000,
+      "cuotasTotales": 1,
+      "cuotasRestantes": 0,
+      "finaliza": "05/2026",
+      "medio": "Mercado Pago",
+      "obs": null,
+      "ticketText": "📅 Fecha: 03/05/2026\nID Egreso: E-202605-0009\n\n📉 Egreso:\nConcepto: Carrefour\nMonto: $ 101,000\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -$ 101,000\nFinaliza: 05/2026"
     }
   ],
   "precios": null,
@@ -11168,10 +11185,10 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-13T02:42:22.342Z",
+  "_savedAt": "2026-05-13T02:46:47.362Z",
   "_meta": {
     "orders": 93,
-    "egresos": 81,
+    "egresos": 82,
     "inversiones": 1,
     "productos": 6,
     "listasPrecios": 0,
