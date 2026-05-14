@@ -8053,7 +8053,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0012\n📅 Fecha: 14/05/2026\n👤 Cliente: Evangelina Fossati\n\n🛒 Pedido\n\n🧸 120 ud × $ 12,750 = $ 1,530,000\n💎 6 g × $ 67,972 = $ 407,832\n\n💰 Total: $ 1,937,832 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,937,832 | Ajuste: +$ 0 | Total: $ 1,937,832 | Pago: ARS | Costo: $ 656,850 | Margen: 66.1% | ID: V-202605-0012",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-14T18:08:51.231Z"
     }
   ],
   "egresos": [
@@ -9827,6 +9828,28 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-14T14:55:29.810Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -6,
+      "antes": 750,
+      "despues": 744,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-05-14T14:55:29.810Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -120,
+      "antes": 1019,
+      "despues": 899,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-05-14T14:51:56.270Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -11304,8 +11327,8 @@
   "stock": {
     "v-cal": 154,
     "grp-p-past": 1770,
-    "v-ted": 1019,
-    "p-cris": 750,
+    "v-ted": 899,
+    "p-cris": 744,
     "p-hong": 50,
     "p-got": 14,
     "p-pet": 15
@@ -11602,7 +11625,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-14T14:55:29.798Z",
+  "_savedAt": "2026-05-14T18:08:51.237Z",
   "_meta": {
     "orders": 96,
     "egresos": 87,
