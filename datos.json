@@ -7855,6 +7855,109 @@
       "ticketText": "🧾 Orden de Venta: V-202605-0010\n📅 Fecha: 13/05/2026\n👤 Cliente: Nicolas Penna\n\n🛒 Pedido\n\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 220,500 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 220,500 | Ajuste: +$ 0 | Total: $ 220,500 | Pago: ARS | Costo: $ 23,925 | Margen: 89.1% | ID: V-202605-0010",
       "estado": "pendiente"
+    },
+    {
+      "id": "V-202605-0011",
+      "fecha": "2026-05-14",
+      "fechaDisplay": "14/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 216678,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 216678,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": "Viernes Desp del mediodía",
+      "cliente": "Tano (Omar Vacca)",
+      "productos": {
+        "calaveras": 4,
+        "teddy": 2,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 6,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 136710,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 4,
+            "precio": 22785,
+            "subtotal": 91140
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 2,
+            "precio": 22785,
+            "subtotal": 45570
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 136710,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 216678,
+        "subtotalBruto": 216678,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 216678,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 216678,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 38425,
+      "margen": 82.3,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0011\n📅 Fecha: 14/05/2026\n👤 Cliente: Tano (Omar Vacca)\n\n🛒 Pedido\n\n💀 4 ud × $ 22,785 = $ 91,140\n🧸 2 ud × $ 22,785 = $ 45,570\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 216,678 ARS\n📝 Nota: Viernes Desp del mediodía",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 216,678 | Ajuste: +$ 0 | Total: $ 216,678 | Pago: ARS | Costo: $ 38,425 | Margen: 82.3% | ID: V-202605-0011",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -9628,6 +9731,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-13T19:45:50.326Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -3,
+      "antes": 754,
+      "despues": 751,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-05-11T20:44:42.036Z",
       "tipo": "VENTA",
       "prodId": "p-hong",
@@ -11062,7 +11176,7 @@
     "v-cal": 158,
     "grp-p-past": 1770,
     "v-ted": 1021,
-    "p-cris": 754,
+    "p-cris": 751,
     "p-hong": 50,
     "p-got": 14,
     "p-pet": 15
@@ -11359,9 +11473,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-13T19:45:50.310Z",
+  "_savedAt": "2026-05-14T14:51:56.251Z",
   "_meta": {
-    "orders": 94,
+    "orders": 95,
     "egresos": 87,
     "inversiones": 1,
     "productos": 6,
