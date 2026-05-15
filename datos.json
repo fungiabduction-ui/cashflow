@@ -8055,6 +8055,109 @@
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 1,937,832 | Ajuste: +$ 0 | Total: $ 1,937,832 | Pago: ARS | Costo: $ 656,850 | Margen: 66.1% | ID: V-202605-0012",
       "estado": "confirmada",
       "fechaConfirmacion": "2026-05-14T18:08:51.231Z"
+    },
+    {
+      "id": "V-202605-0013",
+      "fecha": "2026-05-15",
+      "fechaDisplay": "15/05/2026",
+      "mesActual": "202605",
+      "tipoPago": "ARS",
+      "tc": null,
+      "payment": {
+        "ars": 262248,
+        "usd": 0,
+        "usdt": 0,
+        "tc": 0,
+        "tc_usd": 0,
+        "tc_usdt": 0,
+        "total_ars": 262248,
+        "total_usdt": null,
+        "modo": "ARS"
+      },
+      "nota": null,
+      "cliente": "Tano (Omar Vacca)",
+      "productos": {
+        "calaveras": 6,
+        "teddy": 2,
+        "lucky": 0,
+        "genericas": 0,
+        "totalPastillas": 8,
+        "precioPastilla": 22785,
+        "tramoInfo": 5,
+        "totalPastillasLinea": 182280,
+        "cristales": 1,
+        "precioCristales": 79968,
+        "totalCristales": 79968,
+        "hongos": 0,
+        "precioHongos": null,
+        "totalHongos": 0,
+        "goteros": 0,
+        "totalGoteros": 0,
+        "petri": 0,
+        "totalPetri": 0,
+        "variable": 0,
+        "_lineas": [
+          {
+            "prodId": "v-cal",
+            "varId": null,
+            "qty": 6,
+            "precio": 22785,
+            "subtotal": 136710
+          },
+          {
+            "prodId": "v-ted",
+            "varId": null,
+            "qty": 2,
+            "precio": 22785,
+            "subtotal": 45570
+          },
+          {
+            "prodId": "p-cris",
+            "varId": null,
+            "qty": 1,
+            "precio": 79968,
+            "subtotal": 79968
+          }
+        ]
+      },
+      "totales": {
+        "totalPastillasLinea": 182280,
+        "totalCristales": 79968,
+        "totalHongos": 0,
+        "totalGoteros": 0,
+        "totalPetri": 0,
+        "totalGeneral": 262248,
+        "subtotalBruto": 262248,
+        "ajusteNeto": 0,
+        "totalUSDT": null,
+        "payment": {
+          "ars": 262248,
+          "usd": 0,
+          "usdt": 0,
+          "tc": 0,
+          "tc_usd": 0,
+          "tc_usdt": 0,
+          "total_ars": 262248,
+          "total_usdt": null,
+          "modo": "ARS"
+        }
+      },
+      "costo": 48575,
+      "margen": 81.5,
+      "ajuste": {
+        "recargoPct": 0,
+        "recargoFijo": 0,
+        "descPct": 0,
+        "descFijo": 0,
+        "recargoPctMonto": 0,
+        "recargoFijoMonto": 0,
+        "descPctMonto": 0,
+        "descFijoMonto": 0,
+        "ajusteNeto": 0
+      },
+      "ticketText": "🧾 Orden de Venta: V-202605-0013\n📅 Fecha: 15/05/2026\n👤 Cliente: Tano (Omar Vacca)\n\n🛒 Pedido\n\n💀 6 ud × $ 22,785 = $ 136,710\n🧸 2 ud × $ 22,785 = $ 45,570\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 262,248 ARS",
+      "auditText": "--- AUDITORÍA ---\nSubtotal: $ 262,248 | Ajuste: +$ 0 | Total: $ 262,248 | Pago: ARS | Costo: $ 48,575 | Margen: 81.5% | ID: V-202605-0013",
+      "estado": "pendiente"
     }
   ],
   "egresos": [
@@ -11625,9 +11728,9 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-14T18:09:06.383Z",
+  "_savedAt": "2026-05-15T00:45:47.827Z",
   "_meta": {
-    "orders": 96,
+    "orders": 97,
     "egresos": 87,
     "inversiones": 1,
     "productos": 6,
