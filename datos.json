@@ -7854,7 +7854,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0010\n📅 Fecha: 13/05/2026\n👤 Cliente: Nicolas Penna\n\n🛒 Pedido\n\n💎 3 g × $ 73,500 = $ 220,500\n\n💰 Total: $ 220,500 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 220,500 | Ajuste: +$ 0 | Total: $ 220,500 | Pago: ARS | Costo: $ 23,925 | Margen: 89.1% | ID: V-202605-0010",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-15T14:55:50.999Z"
     },
     {
       "id": "V-202605-0011",
@@ -9931,6 +9932,39 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-15T00:45:47.842Z",
+      "tipo": "VENTA",
+      "prodId": "p-cris",
+      "nombre": "Cristales",
+      "emoji": "💎",
+      "delta": -1,
+      "antes": 744,
+      "despues": 743,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-05-15T00:45:47.842Z",
+      "tipo": "VENTA",
+      "prodId": "v-ted",
+      "nombre": "Teddy",
+      "emoji": "🧸",
+      "delta": -2,
+      "antes": 899,
+      "despues": 897,
+      "nota": "Ticket generado"
+    },
+    {
+      "fecha": "2026-05-15T00:45:47.842Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -6,
+      "antes": 154,
+      "despues": 148,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-05-14T14:55:29.810Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -11428,10 +11462,10 @@
     }
   ],
   "stock": {
-    "v-cal": 154,
+    "v-cal": 148,
     "grp-p-past": 1770,
-    "v-ted": 899,
-    "p-cris": 744,
+    "v-ted": 897,
+    "p-cris": 743,
     "p-hong": 50,
     "p-got": 14,
     "p-pet": 15
@@ -11728,7 +11762,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-15T00:45:47.827Z",
+  "_savedAt": "2026-05-15T14:55:51.005Z",
   "_meta": {
     "orders": 97,
     "egresos": 87,
