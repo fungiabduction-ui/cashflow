@@ -8145,7 +8145,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0014\n📅 Fecha: 15/05/2026\n👤 Cliente: Ale Osti (Sergio Alan)\n\n🛒 Pedido\n\n💀 5 ud × $ 22,785 = $ 113,925\n\n💰 Total: $ 113,925 ARS\n🔵 Total USDT: 77.61 (TC 1,468)",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 113,925 | Ajuste: +$ 0 | Total: $ 113,925 | Pago: USDT | Costo: $ 25,375 | Margen: 77.7% | ID: V-202605-0014",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-16T14:21:10.581Z"
     }
   ],
   "egresos": [
@@ -11760,7 +11761,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-16T14:21:03.907Z",
+  "_savedAt": "2026-05-16T14:21:10.584Z",
   "_meta": {
     "orders": 97,
     "egresos": 87,
