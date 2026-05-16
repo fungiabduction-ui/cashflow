@@ -8055,7 +8055,8 @@
       },
       "ticketText": "🧾 Orden de Venta: V-202605-0013\n📅 Fecha: 15/05/2026\n👤 Cliente: Tano (Omar Vacca)\n\n🛒 Pedido\n\n💀 6 ud × $ 22,785 = $ 136,710\n🧸 2 ud × $ 22,785 = $ 45,570\n💎 1 g × $ 79,968 = $ 79,968\n\n💰 Total: $ 262,248 ARS",
       "auditText": "--- AUDITORÍA ---\nSubtotal: $ 262,248 | Ajuste: +$ 0 | Total: $ 262,248 | Pago: ARS | Costo: $ 48,575 | Margen: 81.5% | ID: V-202605-0013",
-      "estado": "pendiente"
+      "estado": "confirmada",
+      "fechaConfirmacion": "2026-05-16T14:21:03.902Z"
     },
     {
       "id": "V-202605-0014",
@@ -9918,6 +9919,17 @@
   "liquidezExterna": [],
   "stockMovs": [
     {
+      "fecha": "2026-05-15T15:01:59.694Z",
+      "tipo": "VENTA",
+      "prodId": "v-cal",
+      "nombre": "Calaveras",
+      "emoji": "💀",
+      "delta": -5,
+      "antes": 148,
+      "despues": 143,
+      "nota": "Ticket generado"
+    },
+    {
       "fecha": "2026-05-15T00:45:47.842Z",
       "tipo": "VENTA",
       "prodId": "p-cris",
@@ -11448,7 +11460,7 @@
     }
   ],
   "stock": {
-    "v-cal": 148,
+    "v-cal": 143,
     "grp-p-past": 1770,
     "v-ted": 897,
     "p-cris": 743,
@@ -11748,7 +11760,7 @@
   ],
   "_distKpiHidden": {},
   "_version": "motoredge_v5",
-  "_savedAt": "2026-05-15T15:01:59.674Z",
+  "_savedAt": "2026-05-16T14:21:03.907Z",
   "_meta": {
     "orders": 97,
     "egresos": 87,
