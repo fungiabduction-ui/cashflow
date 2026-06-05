@@ -5,43 +5,58 @@ SPA vanilla JS sin framework, sin bundler externo, sin backend.
 
 ---
 
-## ⚠️ Reglas para agentes — GitHub repo
+## ⚠️ Reglas para agentes — GitHub repos
 
-**Repo de código fuente:** `https://github.com/fungiabduction-ui/cashflow`
+### Arquitectura de dos repos
 
-**Credenciales GitHub:**
+| Repo | Visibilidad | Contenido |
+|---|---|---|
+| `fungiabduction-ui/cashflow` | 🌍 Público | Solo código fuente. NUNCA datos financieros. |
+| `fungiabduction-ui/motoredge-data` | 🔒 Privado | `datos.json` + `backups/` — sincronización de la app. |
+
+**`datos.json` y `backups/` están en `.gitignore` del repo `cashflow`.** No los agregues nunca al repo público.
+
+**NUNCA hacer commits con datos financieros en `cashflow`.** Si aparece `datos.json` en `git status`, ignorarlo — está correctamente excluido por `.gitignore`.
+
+### Credenciales GitHub
+
 - Usuario/Org: `fungiabduction-ui`
-- Repo: `cashflow`
 - Email git: `jetdatalog@gmail.com`
-- Personal Access Token: guardado en `token github.txt` (gitignored, en el directorio raíz del proyecto).
-  Leer ese archivo al inicio de cada sesión para obtener el token actual.
-  Si no existe, pedirle al usuario que lo comparta — va a settings.github.com/tokens
+- Personal Access Token: leerlo desde `token github.txt` (en raíz del proyecto, gitignored).
+  Si no existe, pedirle al usuario — va a `github.com/settings/tokens`
 
-**NUNCA eliminar la carpeta `backups/` del repo.** Contiene históricos de data sync que el usuario preserva. Cualquier `git rm`, force push o reescritura de historia que elimine esa carpeta está prohibida.
+### Workflow para agentes que hacen cambios en código fuente
 
-**Workflow para agentes que hacen cambios:**
-1. Leer el token desde `token github.txt` (en raíz del proyecto, gitignored)
-2. Editar archivos fuente en `core/`, `modules/`, `ui/`, `styles/`
-3. Correr `build.bat` → regenera `bundle.js`
-4. `git add .` + `git commit -m "descripción del cambio"`
-5. `git push "https://$TOKEN@github.com/fungiabduction-ui/cashflow.git" main`
-
-Si el repo no está inicializado localmente:
 ```powershell
-# Leer token desde archivo local
+# 1. Leer token
+$TOKEN = (Get-Content "token github.txt" -Raw).Trim()
+
+# 2. Editar archivos fuente en core/, modules/, ui/, styles/
+
+# 3. Regenerar bundle
+.\build.bat
+
+# 4. Commit y push
+git add .
+git commit -m "descripción del cambio"
+git push "https://$TOKEN@github.com/fungiabduction-ui/cashflow.git" main
+```
+
+Si el repo local no está inicializado (primera vez en una máquina nueva):
+```powershell
 $TOKEN = (Get-Content "token github.txt" -Raw).Trim()
 git init
 git config user.email "jetdatalog@gmail.com"
 git config user.name "JET"
 git remote add origin "https://$TOKEN@github.com/fungiabduction-ui/cashflow.git"
-git fetch origin
-git reset --soft origin/main
-git add .
-git commit -m "descripción"
-git push "https://$TOKEN@github.com/fungiabduction-ui/cashflow.git" main
+git fetch origin main
+git checkout -b main --track origin/main
+# Ya tenés el código fuente descargado. Editá y hacé push normalmente.
 ```
 
-El archivo `datos.json` en el repo es regenerado automáticamente por `ghAutoPush`. No lo edites ni lo borres manualmente.
+### PIN gate de la app
+
+La app tiene un PIN de 4 dígitos implementado en `index.html` (antes de que cargue el app). El PIN se guarda hasheado en `localStorage['me_pin_h']`. La sesión dura 24h (`localStorage['me_pin_s']`). Para resetear el PIN: borrar `me_pin_h` del localStorage. No tocar ni remover el bloque `<!-- ══ PIN GATE ══ -->` de `index.html`.
 
 ---
 
