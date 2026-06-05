@@ -81,6 +81,7 @@ App de un solo usuario que corre en el navegador. Gestiona:
 - **Inversiones** (BTC, USD Blue, USDT, ARS) con seguimiento de flotante
 - **Inventario FIFO** por lotes con costo promedio ponderado
 - **Dashboard** con balance multimoneda y cash flow chart
+- **Contactos** con trazabilidad completa: historial de compras, stats, datos de contacto
 - **Sincronización GitHub** como backup en la nube
 
 Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencioso puede corromper historial financiero completo.
@@ -126,6 +127,8 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── productos.js    ← getProductos(), saveProductos(), guardarProductoModal(), updateClientesDatalist()
 │   ├── listas-precios.js ← getListasPrecios(), getTramosProducto(), renderListasPrecios()
 │   ├── settings.js     ← renderSettings(), guardarPrecios(), resetPrecios()
+│   ├── contactos.js    ← normNombre(), autoRegistrarContacto(), mostrarMigracionContactos(),
+│   │                     ejecutarMigracionContactos(), renderContactos(), abrirContacto()
 │   ├── github.js       ← ghAutoPush(), ghPush(), ghPull(), ghInit(), safeB64Encode/Decode()
 │   ├── apariencia.js   ← applyApariencia(), PRESETS, guardarApariencia()
 │   └── io.js           ← expJSON(), expCSV(), expXLSX(), impJSONFile(), hardReset()
@@ -168,6 +171,8 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
   costos: null,        // Costos legacy { past, cris, hong, got, pet }.
   listasPrecios: [],   // Listas de precios nombradas y reutilizables.
   stockSeedDone: bool, // Flag one-shot. Si se pierde, seedStockInicial() duplica el stock.
+  contactos: [],       // Directorio de clientes. Ver ContactRecord abajo.
+  contactosMigDone: bool, // Flag one-shot. Si se pierde, mostrarMigracionContactos() es idempotente.
 }
 ```
 
@@ -182,6 +187,31 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
 
 ---
 
+## ContactRecord
+
+```js
+{
+  id: "CT-202603-0001",      // Formato CT-AAAAMM-NNNN. Inmutable. Math.max invariant.
+  nombre: "Ale Bondaruc",    // Nombre canónico editable. Fuente de verdad de display.
+  nombreNorm: "ale bondaruc",// Normalizado: lowercase + sin tildes. Se regenera al editar nombre.
+                              // NUNCA editar directamente — siempre via normNombre(nombre).
+  tel: null,                 // String o null.
+  email: null,               // String o null.
+  instagram: null,           // String o null.
+  notas: null,               // String libre o null.
+  fechaAlta: "2026-03-01T00:00:00.000Z", // ISO timestamp completo. Siempre con tiempo.
+  mergedFrom: []             // Nombres originales que se fusionaron en este contacto durante migración.
+}
+```
+
+**Resolución de historial de un contacto (dual — defensiva):**
+```js
+orders.filter(o => o.clienteId === ct.id || (!o.clienteId && normNombre(o.cliente) === ct.nombreNorm))
+```
+Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resuelven por `nombreNorm` como fallback.
+
+---
+
 ## Formato de una orden (venta)
 
 ```js
@@ -189,7 +219,8 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
   id: "V-202506-0001",          // Inmutable. Formato V-AAAAMM-NNNN.
   fecha: "2025-06-04",
   fechaDisplay: "04/06/2025",
-  cliente: "Juan",
+  cliente: "Juan",              // String original. Inmutable. Siempre presente.
+  clienteId: "CT-202603-0001", // NUEVO. Null en órdenes pre-migración. Siempre presente en órdenes nuevas.
   nota: "",
   estado: "confirmada",         // "pendiente" | "confirmada". Pendientes NO cuentan en dashboard.
   fechaConfirmacion: "...",     // ISO string. Solo en confirmadas.
@@ -267,6 +298,14 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
 
 12. **Dos sistemas de stock coexisten**: `d.stock` (plano, fuente de verdad histórica) y `d.lotes` (FIFO moderno). Pueden divergir si lotes fueron seeded incorrectamente. Para sincronizar: `reconcileLotesConStock()` en Inventario → Stock. Es idempotente y registra movimientos AJUSTE en stockMovs. La UI muestra un warning de divergencia automáticamente.
 
+13. **`contactosMigDone`**: flag one-shot. La migración histórica se dispara al abrir la pestaña Contactos si aún no corrió. `ejecutarMigracionContactos()` es el único writer — hace un único `sd(d)` atómico con `contactos`, `contactosMigDone=true`, y los `clienteId` en todas las órdenes históricas. No invocar a medias.
+
+14. **`autoRegistrarContacto(nombre, fechaOrden)`**: llamado desde `generarTicket()` ANTES de `sO()`. Crea el contacto si no existe (single `sd()`), retorna `clienteId` que se guarda en la orden. El `ticketText` almacenado en la orden tiene el nombre real. La UI de `#tkOut` muestra el nombre ofuscado (random, solo display, no persistido).
+
+15. **`normNombre(s)`**: normalización canónica para dedup y lookup de contactos. NFD + strip diacríticos + lowercase + colapso de espacios. Toda comparación de nombres de clientes DEBE pasar por esta función. Nunca comparar strings raw de `o.cliente` con `ct.nombre` directamente.
+
+16. **`clienteId` en órdenes**: campo opcional hacia atrás. Órdenes pre-migración tienen `clienteId: null`. El historial de un contacto se resuelve con resolución dual: `o.clienteId === ct.id || (!o.clienteId && normNombre(o.cliente) === ct.nombreNorm)`. No cambiar esta lógica.
+
 ---
 
 ## Catálogo de productos (DEFAULT_PRODUCTS)
@@ -306,10 +345,11 @@ egresos    ←── storage, notif, formatters, ids, github
 ventas     ←── storage, notif, formatters, ids, github, productos
 inventario ←── storage, notif, formatters, productos, stock, ids, config, listas-precios
 settings   ←── storage, notif, formatters, productos
+contactos  ←── storage, notif, formatters, github, productos
 liquidez   ←── storage, notif, formatters, github
 inversiones←── storage, notif, formatters, ids, github, stock, productos
 dashboard  ←── storage, formatters, config, inversiones, inventario
-ticket     ←── storage, notif, formatters, config, ids, ventas, productos, listas-precios, inventario, stock
+ticket     ←── storage, notif, formatters, config, ids, ventas, productos, listas-precios, inventario, stock, contactos
 io         ←── storage, notif, formatters, productos, stock, inventario, listas-precios
 modal      ←── storage, notif
 tabs       ←── storage, formatters, inversiones, dashboard, ventas, egresos, settings, inventario, github

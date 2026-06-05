@@ -108,6 +108,7 @@ export function expJSON(){
     ingresos:(d.ingresos||[]).length,
     lotesItems:Object.keys(d.lotes||{}).length,
     stockSeedDone:!!d.stockSeedDone,
+    contactos:(d.contactos||[]).length,
   };
   const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');

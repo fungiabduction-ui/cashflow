@@ -8,6 +8,18 @@ import { getProductos } from './productos.js';
 import { getTramosProducto } from './listas-precios.js';
 import { descontarStockPorTicket, renderStockMiniPanel } from './inventario.js';
 import { getActualQty, getStockStatus } from './stock.js';
+import { autoRegistrarContacto } from './contactos.js';
+
+// Ofusca el nombre del cliente para el ticket visible (DOM only — ticketText almacenado siempre tiene nombre real)
+function obfuscarNombreTicket(nombre){
+  if(!nombre)return nombre;
+  const pool='!@#$%&*0123456789';
+  return nombre.split(' ').map((w,i)=>{
+    const keep=i===0?2:1;
+    if(w.length<=keep)return w;
+    return w.slice(0,keep)+Array.from({length:w.length-keep},()=>pool[Math.floor(Math.random()*pool.length)]).join('');
+  }).join(' ');
+}
 
 // ── TICKET DINÁMICO ──
 let tipoPago='ARS';
@@ -373,11 +385,14 @@ export function generarTicket(){
     tk+='\n⚠ STOCK INSUFICIENTE:'+oversold.map(ln=>{const avail=getActualQty(ln.varId||ln.prodId);return` ${ln.emoji} ${ln.nombre} (pide ${ln.qty}, hay ${avail})`;}).join(' |');
   }
 
-  sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:payment.tc_usdt||payment.tc_usd||null,payment,nota:notaFinal||null,cliente:cliente||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'});
+  const clienteId=autoRegistrarContacto(cliente,fecha);
+  sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:payment.tc_usdt||payment.tc_usd||null,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'});
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
-  document.getElementById('tkOut').textContent=tk;
+  // tkOut muestra nombre ofuscado — ticketText guardado tiene el nombre real
+  const tkDisplay=cliente?tk.replace(`👤 Cliente: ${cliente}`,`👤 Cliente: ${obfuscarNombreTicket(cliente)}`):tk;
+  document.getElementById('tkOut').textContent=tkDisplay;
   document.getElementById('audOut').textContent=aud;
   document.getElementById('outA').style.display='block';
   // Store ID for confirm button + show pendiente state

@@ -20,6 +20,7 @@ import { setTP, buildTicketUI, updStockHints, adj, rst, rstDel, gn, resetTodo, g
 import { xlsxCell, xlsxSetCell, xlsxAoaToSheet, expJSON, expCSV, expXLSX, getStockUmbObj, impJSONFile, hardReset } from './modules/io.js';
 import { showInputModal, vTk, vEgr, clM, cpM } from './ui/modal.js';
 import { showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange } from './ui/tabs.js';
+import { normNombre, getContactos, getContactoById, getHistorialContacto, autoRegistrarContacto, guardarInfoContacto, renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort, mostrarMigracionContactos, ejecutarMigracionContactos } from './modules/contactos.js';
 import { setupDelegation, setupDrop, invSubTab, toggleStockGroup, onVariantInput } from './ui/delegacion.js';
 // =====================================================================
 // MOTOR EDGE 3.8-E — Sistema dinámico de productos
@@ -155,6 +156,10 @@ Object.assign(window, {
   toggleAparienciaAvanzada, loadAparienciaForm, updateThemeCards,
   // settings
   renderSettings,
+  // contactos
+  getContactos, getContactoById, autoRegistrarContacto, guardarInfoContacto,
+  renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort,
+  mostrarMigracionContactos, ejecutarMigracionContactos,
   // tabs / ui
   showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange,
   // modals

@@ -109,6 +109,7 @@
   <button class="tab-btn" data-tab="dashboard" onclick="showTab('dashboard',this)">📊 Dashboard</button>
   <button class="tab-btn" data-tab="inventario" onclick="showTab('inventario',this)">📦 Inventario</button>
   <button class="tab-btn" data-tab="settings" onclick="showTab('settings',this)">⚙️ Config</button>
+  <button class="tab-btn" data-tab="contactos" onclick="showTab('contactos',this)">📋 Contactos</button>
 </div>
 
 <!-- ══ TICKET ══ -->
@@ -912,6 +913,25 @@
     </button>
   </div>
 
+</div>
+
+<!-- ══ CONTACTOS 📋 ══ -->
+<div class="panel" id="tab-contactos">
+  <div class="card">
+    <div class="ct" style="justify-content:space-between">
+      <span>📋 Contactos</span>
+      <span id="ct-count" style="font-family:var(--mo);font-size:9px;color:var(--tx3)"></span>
+    </div>
+    <div id="ct-search-wrap">
+      <input type="text" id="ct-search" placeholder="Buscar por nombre, tel, instagram, email..." oninput="filtrarContactos()" style="width:100%;background:var(--bg);border:1px solid var(--br);color:var(--tx);font-family:var(--mo);font-size:12px;padding:9px 11px;outline:none;min-height:44px;box-sizing:border-box">
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button id="ct-sort-ultima" onclick="setCtSort('ultima')" class="pm-btn" style="font-size:9px;padding:4px 10px;color:var(--ac)">↓ Última compra</button>
+        <button id="ct-sort-total" onclick="setCtSort('total')" class="pm-btn" style="font-size:9px;padding:4px 10px;color:var(--tx3)">↓ Mayor compra</button>
+      </div>
+    </div>
+  </div>
+  <div id="ct-lista" style="border:1px solid var(--br);border-top:none;background:var(--s1)"></div>
+  <div id="ct-detalle" style="display:none"></div>
 </div>
 
 <!-- MODAL GENÉRICO -->

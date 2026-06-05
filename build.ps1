@@ -24,6 +24,7 @@ $files = @(
     "modules/liquidez.js",
     "modules/inversiones.js",
     "modules/dashboard.js",
+    "modules/contactos.js",
     "modules/ticket.js",
     "modules/io.js",
     "ui/modal.js",

@@ -167,6 +167,7 @@ export async function ghPush(showNotif){
       listasPrecios:(data.listasPrecios||[]).length,
       ingresos:(data.ingresos||[]).length,
       lotesItems:Object.keys(data.lotes||{}).length,
+      contactos:(data.contactos||[]).length,
     };
     const jsonStr=JSON.stringify(data,null,2);
     const encoded=safeB64Encode(jsonStr);

@@ -1,4 +1,4 @@
-import { gOConf, gO, gE } from '../core/storage.js';
+import { gOConf, gO, gE, ld } from '../core/storage.js';
 import { mLong, d2m, hoy } from '../core/formatters.js';
 import { rfInvM, renderInvAll, invSelFuente, fetchPrecios } from '../modules/inversiones.js';
 import { destroyCharts, onDashMesChange, renderDashFlowChart } from '../modules/dashboard.js';
@@ -101,6 +101,14 @@ export function showTab(n,btn){
   if(n==='inversiones'){renderInvAll();document.getElementById('inv-fecha').value=hoy();if(!document.getElementById('liq-fecha').value)document.getElementById('liq-fecha').value=hoy();invSelFuente('distribucion');fetchPrecios();}
   if(n==='settings'){renderSettings();ghInit();renderIOStatus();}
   if(n==='inventario'){renderInventario();}
+  if(n==='contactos'){
+    const _d=ld();
+    if(!_d.contactosMigDone&&(_d.orders||[]).some(o=>o.cliente)){
+      window.mostrarMigracionContactos?.();
+    } else {
+      window.renderContactos?.();
+    }
+  }
 }
 
 export function uhd(){const d=new Date();const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear(),hh=String(d.getHours()).padStart(2,'0'),mi=String(d.getMinutes()).padStart(2,'0'),ss=String(d.getSeconds()).padStart(2,'0');document.getElementById('hm').innerHTML=`${dd}/${mm}/${yyyy} ${hh}:${mi}:${ss}<br>${gO().length}v · ${gE().length}e`;}
