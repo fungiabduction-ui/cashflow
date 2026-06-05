@@ -56,7 +56,20 @@ git checkout -b main --track origin/main
 
 ### PIN gate de la app
 
-La app tiene un PIN de 4 dígitos implementado en `index.html` (antes de que cargue el app). El PIN se guarda hasheado en `localStorage['me_pin_h']`. La sesión dura 24h (`localStorage['me_pin_s']`). Para resetear el PIN: borrar `me_pin_h` del localStorage. No tocar ni remover el bloque `<!-- ══ PIN GATE ══ -->` de `index.html`.
+Bloque `<!-- ══ PIN GATE ══ -->` en `index.html`. Se ejecuta antes de que cargue la app. **No tocar ni remover ese bloque.**
+
+**Cómo funciona:**
+- **Primera vez** (sin PIN guardado): el usuario ingresa 4 dígitos → se guardan como su PIN. No hay verificación previa — los 4 números que eligió quedan establecidos.
+- **Usos siguientes**: ingresa 4 dígitos → se hashean → se comparan con el hash guardado → si coinciden, entra.
+- **Sesión de 24h**: al entrar, guarda `localStorage['me_pin_s']` con timestamp+24h. Mientras la sesión sea válida, no pide PIN al recargar.
+
+**Dónde vive el PIN (localStorage del navegador):**
+- `me_pin_h` — hash del PIN (función: `btoa('me39e' + PIN + 'jet')` invertido)
+- `me_pin_s` — timestamp de expiración de sesión (Date.now() + 86400000)
+
+**Resetear PIN olvidado:** DevTools → Application → LocalStorage → borrar `me_pin_h`. La próxima apertura pide elegir PIN nuevo.
+
+**El PIN gate está en el repo local Y en GitHub** — son el mismo archivo `index.html`. Cualquier cambio en código fuente requiere correr `build.bat` y hacer push. Para usar la app localmente, basta con abrir `index.html` directo (o via `serve.bat`).
 
 ---
 
