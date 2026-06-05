@@ -85,7 +85,7 @@ function ld(){
     return{orders:[],egresos:[],precios:null,costos:null,productos:null};
   }
 }
-function sd(d){try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){sN('Error al guardar',true);}}
+function sd(d){try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){if(e.name==='QuotaExceededError'||e.code===22)sN('⚠ Storage LLENO — exportá un backup JSON y borrá meses viejos desde Configuración',true);else sN('Error al guardar',true);}}
 function gO(){return ld().orders||[];}
 function gOConf(){return gO().filter(o=>o.estado!=='pendiente');}
 function gE(){return ld().egresos||[];}
@@ -422,12 +422,15 @@ async function ghPull(showNotif){
   }
 }
 
-// Auto-push silencioso — siempre muestra error en la UI si falla
+// Auto-push silencioso con debounce — agrupa operaciones rápidas en un solo push
+let _autoPushTimer=null;
 function ghAutoPush(){
   const cfg=ghCfg();
   if(!cfg.token||!cfg.repo)return;
-  // fire and forget but surface errors to ghStatus
-  ghPush(false).catch(function(e){console.error('ghAutoPush failed:',e);});
+  clearTimeout(_autoPushTimer);
+  _autoPushTimer=setTimeout(function(){
+    ghPush(false).catch(function(e){console.error('ghAutoPush failed:',e);});
+  },8000);
 }
 
 // ── BACKUP DE SEGURIDAD POR FECHA ──
@@ -1661,14 +1664,17 @@ function saveEditEgr(id){
   const d=ld();if(!d.egresos)return;const idx=d.egresos.findIndex(x=>x.id===id);if(idx<0)return;
   const nuevaFecha=document.getElementById('edit-e-fecha').value;
   const nuevoConcepto=document.getElementById('edit-e-concepto').value.trim();
-  const nuevoMonto=parseFloat(document.getElementById('edit-e-monto').value)||d.egresos[idx].montoTotal;
-  const nuevoImpacto=parseFloat(document.getElementById('edit-e-impacto').value)||d.egresos[idx].impactoCaja;
+  const nuevoMonto=parseFloat(document.getElementById('edit-e-monto').value);
+  const nuevoImpacto=parseFloat(document.getElementById('edit-e-impacto').value);
   const nuevoMedio=document.getElementById('edit-e-medio').value.trim();
   const nuevoObs=document.getElementById('edit-e-obs').value.trim();
+  if(!nuevoConcepto){sN('ERROR: Concepto requerido',true);return;}
+  if(isNaN(nuevoMonto)||nuevoMonto<=0){sN('ERROR: Monto inválido',true);return;}
   if(nuevaFecha){d.egresos[idx].fecha=nuevaFecha;d.egresos[idx].fechaDisplay=d2s(nuevaFecha);d.egresos[idx].mesActual=d2m(nuevaFecha);}
-  if(nuevoConcepto)d.egresos[idx].concepto=nuevoConcepto;
-  d.egresos[idx].montoTotal=nuevoMonto;d.egresos[idx].impactoCaja=nuevoImpacto;
-  if(nuevoMedio)d.egresos[idx].medio=nuevoMedio;d.egresos[idx].obs=nuevoObs||null;
+  d.egresos[idx].concepto=nuevoConcepto;
+  d.egresos[idx].montoTotal=nuevoMonto;
+  d.egresos[idx].impactoCaja=isNaN(nuevoImpacto)||nuevoImpacto<=0?nuevoMonto:nuevoImpacto;
+  d.egresos[idx].medio=nuevoMedio||d.egresos[idx].medio;d.egresos[idx].obs=nuevoObs||null;
   sd(d);window.rfM?.();rEH();rES();window.renderDash?.();window.clM?.();sN(`✓ ${id} actualizado`);window.uhd?.();
 }
 
@@ -1777,10 +1783,10 @@ function toggleTotals(){showTotalsRow=!showTotalsRow;rS();}
 // ── MAPA DE PRODUCTOS FIJO ──
 // Define las columnas que siempre se muestran
 const PRODUCT_COLUMNS=[
-  {id:'v-cal',label:'💀',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-cal').reduce((s,l)=>s+(l.qty||0),0);return p.calaveras||0;}},
-  {id:'v-ted',label:'🧸',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-ted').reduce((s,l)=>s+(l.qty||0),0);return p.teddy||0;}},
-  {id:'v-lck',label:'🐱',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-lck').reduce((s,l)=>s+(l.qty||0),0);return p.lucky||0;}},
-  {id:'v-gen',label:'💊',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-gen').reduce((s,l)=>s+(l.qty||0),0);return p.genericas||0;}},
+  {id:'v-cal',label:'💀',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-cal'||l.prodId==='v-cal').reduce((s,l)=>s+(l.qty||0),0);return p.calaveras||0;}},
+  {id:'v-ted',label:'🧸',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-ted'||l.prodId==='v-ted').reduce((s,l)=>s+(l.qty||0),0);return p.teddy||0;}},
+  {id:'v-lck',label:'🐱',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-lck'||l.prodId==='v-lck').reduce((s,l)=>s+(l.qty||0),0);return p.lucky||0;}},
+  {id:'v-gen',label:'💊',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-gen'||l.prodId==='v-gen').reduce((s,l)=>s+(l.qty||0),0);return p.genericas||0;}},
   {id:'p-cris',label:'💎',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.prodId==='p-cris').reduce((s,l)=>s+(l.qty||0),0);return p.cristales||0;}},
   {id:'p-hong',label:'🍄',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.prodId==='p-hong').reduce((s,l)=>s+(l.qty||0),0);return p.hongos||0;}},
   {id:'p-got',label:'💧',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.prodId==='p-got').reduce((s,l)=>s+(l.qty||0),0);return p.goteros||0;}},
@@ -1928,14 +1934,14 @@ function openEditVenta(id){
       </div>
       <div id="em-usd" style="display:${modoActual==='USD'?'block':'none'}">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div><label style="${LB}">TC ARS/USD</label><input type="number" id="edit-tc-usd" value="${tcUsdVal||_blueARS||''}" placeholder="ej: 1400" style="${IS}"></div>
+          <div><label style="${LB}">TC ARS/USD</label><input type="number" id="edit-tc-usd" value="${tcUsdVal||window._blueARS||''}" placeholder="ej: 1400" style="${IS}"></div>
           <div><label style="${LB}">Equivalente USD</label><input type="text" id="edit-eq-usd" value="${fu(eqUsd)}" style="${IS};background:var(--s3);color:var(--wn)" readonly></div>
         </div>
         <div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:6px">Total en ARS se calcula desde productos</div>
       </div>
       <div id="em-usdt" style="display:${modoActual==='USDT'?'block':'none'}">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div><label style="${LB}">TC ARS/USDT</label><input type="number" id="edit-tc-usdt" value="${tcUsdtVal||_usdtARS||''}" placeholder="ej: 1450" style="${IS}"></div>
+          <div><label style="${LB}">TC ARS/USDT</label><input type="number" id="edit-tc-usdt" value="${tcUsdtVal||window._usdtARS||''}" placeholder="ej: 1450" style="${IS}"></div>
           <div><label style="${LB}">Equivalente USDT</label><input type="text" id="edit-eq-usdt" value="${fu(eqUsdt)}" style="${IS};background:var(--s3);color:var(--wn)" readonly></div>
         </div>
         <div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:6px">Total en ARS se calcula desde productos</div>
@@ -2010,10 +2016,10 @@ function saveEditVenta(id){
   // Recalcular campos legacy para compatibilidad
   const p=o.productos;
   if(p&&p._lineas){
-    p.calaveras=p._lineas.filter(l=>l.varId==='v-cal').reduce((a,l)=>a+(l.qty||0),0);
-    p.teddy=p._lineas.filter(l=>l.varId==='v-ted').reduce((a,l)=>a+(l.qty||0),0);
-    p.lucky=p._lineas.filter(l=>l.varId==='v-lck').reduce((a,l)=>a+(l.qty||0),0);
-    p.genericas=p._lineas.filter(l=>l.varId==='v-gen').reduce((a,l)=>a+(l.qty||0),0);
+    p.calaveras=p._lineas.filter(l=>l.varId==='v-cal'||l.prodId==='v-cal').reduce((a,l)=>a+(l.qty||0),0);
+    p.teddy=p._lineas.filter(l=>l.varId==='v-ted'||l.prodId==='v-ted').reduce((a,l)=>a+(l.qty||0),0);
+    p.lucky=p._lineas.filter(l=>l.varId==='v-lck'||l.prodId==='v-lck').reduce((a,l)=>a+(l.qty||0),0);
+    p.genericas=p._lineas.filter(l=>l.varId==='v-gen'||l.prodId==='v-gen').reduce((a,l)=>a+(l.qty||0),0);
     p.cristales=p._lineas.filter(l=>l.prodId==='p-cris').reduce((a,l)=>a+(l.qty||0),0);
     p.hongos=p._lineas.filter(l=>l.prodId==='p-hong').reduce((a,l)=>a+(l.qty||0),0);
     p.goteros=p._lineas.filter(l=>l.prodId==='p-got').reduce((a,l)=>a+(l.qty||0),0);
@@ -4954,9 +4960,11 @@ function autoFillTC(){
 function syncAjuste(){
   const tipo=document.getElementById('ajuste-tipo')?.value||'ninguno';
   const val=parseFloat(document.getElementById('ajuste-valor')?.value)||0;
+  const valInput=document.getElementById('ajuste-valor');
+  if(valInput)valInput.placeholder=tipo==='libre'?'monto final':'0';
   const fields=['rec-pct','rec-fijo','desc-pct','desc-fijo'];
   fields.forEach(id=>{const el=document.getElementById(id);if(el)el.value='0';});
-  if(tipo!=='ninguno'){const el=document.getElementById(tipo);if(el)el.value=val||0;}
+  if(tipo!=='ninguno'&&tipo!=='libre'){const el=document.getElementById(tipo);if(el)el.value=val||0;}
 }
 
 // ── HELPER: leer composición de pago según modo ──
@@ -5024,7 +5032,8 @@ function calc(){
   const qV=gn('q-var');
   tot+=qV;
 
-  // Ajuste recargo/descuento
+  // Ajuste recargo/descuento/libre
+  const _ajusteTipo=document.getElementById('ajuste-tipo')?.value||'ninguno';
   const recargoPct  = parseFloat(document.getElementById('rec-pct')?.value)  || 0;
   const recargoFijo = parseFloat(document.getElementById('rec-fijo')?.value) || 0;
   const descPct     = parseFloat(document.getElementById('desc-pct')?.value) || 0;
@@ -5033,9 +5042,15 @@ function calc(){
   const recargoFijoMonto = recargoFijo;
   const descPctMonto     = tot * (descPct / 100);
   const descFijoMonto    = descFijo;
-  const ajusteNeto = recargoPctMonto + recargoFijoMonto - descPctMonto - descFijoMonto;
-  const totalFinal = tot + ajusteNeto;
-  const ajuste = {recargoPct,recargoFijo,descPct,descFijo,recargoPctMonto,recargoFijoMonto,descPctMonto,descFijoMonto,ajusteNeto};
+  let ajusteNeto = recargoPctMonto + recargoFijoMonto - descPctMonto - descFijoMonto;
+  let totalFinal = tot + ajusteNeto;
+  let libreTotal = 0;
+  if(_ajusteTipo==='libre'){
+    libreTotal=parseFloat(document.getElementById('ajuste-valor')?.value)||tot;
+    totalFinal=libreTotal;
+    ajusteNeto=libreTotal-tot;
+  }
+  const ajuste = {recargoPct,recargoFijo,descPct,descFijo,recargoPctMonto,recargoFijoMonto,descPctMonto,descFijoMonto,ajusteNeto,libreTotal,tipo:_ajusteTipo};
 
   return{lineas,tot,totalFinal,costo,qV,legacyMap,ajuste};
 }
@@ -5070,10 +5085,13 @@ function upd(){
   const prev=document.getElementById('ajuste-preview');
   if(prev){
     const lineasAj=[];
-    if(ajuste.recargoPctMonto>0) lineasAj.push(`📈 Recargo ${ajuste.recargoPct}% → +${fv(ajuste.recargoPctMonto)}`);
-    if(ajuste.recargoFijoMonto>0) lineasAj.push(`📈 Recargo fijo → +${fv(ajuste.recargoFijoMonto)}`);
-    if(ajuste.descPctMonto>0)     lineasAj.push(`📉 Descuento ${ajuste.descPct}% → -${fv(ajuste.descPctMonto)}`);
-    if(ajuste.descFijoMonto>0)    lineasAj.push(`📉 Descuento fijo → -${fv(ajuste.descFijoMonto)}`);
+    if(ajuste.tipo==='libre'&&ajuste.libreTotal>0){lineasAj.push(`✏️ Total libre: ${fv(ajuste.libreTotal)}`);}
+    else{
+      if(ajuste.recargoPctMonto>0) lineasAj.push(`📈 Recargo ${ajuste.recargoPct}% → +${fv(ajuste.recargoPctMonto)}`);
+      if(ajuste.recargoFijoMonto>0) lineasAj.push(`📈 Recargo fijo → +${fv(ajuste.recargoFijoMonto)}`);
+      if(ajuste.descPctMonto>0)     lineasAj.push(`📉 Descuento ${ajuste.descPct}% → -${fv(ajuste.descPctMonto)}`);
+      if(ajuste.descFijoMonto>0)    lineasAj.push(`📉 Descuento fijo → -${fv(ajuste.descFijoMonto)}`);
+    }
     if(lineasAj.length){
       prev.style.display='block';
       prev.innerHTML=`<span style="color:var(--tx3)">Subtotal: ${fv(tot)}</span><br>`+lineasAj.join('<br>')+`<br><span style="color:var(--ac);font-weight:700">Total final: ${fv(totalFinal)}</span>`;
@@ -5129,10 +5147,13 @@ function generarTicket(){
 
   // Ajuste
   const lineasAjTk=[];
-  if(ajuste.recargoPctMonto>0) lineasAjTk.push(`📈 Recargo ${ajuste.recargoPct}%: +${fv(ajuste.recargoPctMonto)}`);
-  if(ajuste.recargoFijoMonto>0) lineasAjTk.push(`📈 Recargo fijo: +${fv(ajuste.recargoFijoMonto)}`);
-  if(ajuste.descPctMonto>0)     lineasAjTk.push(`📉 Descuento ${ajuste.descPct}%: -${fv(ajuste.descPctMonto)}`);
-  if(ajuste.descFijoMonto>0)    lineasAjTk.push(`📉 Descuento fijo: -${fv(ajuste.descFijoMonto)}`);
+  if(ajuste.tipo==='libre'&&ajuste.libreTotal>0){lineasAjTk.push(`✏️ Total libre: ${fv(ajuste.libreTotal)}`);}
+  else{
+    if(ajuste.recargoPctMonto>0) lineasAjTk.push(`📈 Recargo ${ajuste.recargoPct}%: +${fv(ajuste.recargoPctMonto)}`);
+    if(ajuste.recargoFijoMonto>0) lineasAjTk.push(`📈 Recargo fijo: +${fv(ajuste.recargoFijoMonto)}`);
+    if(ajuste.descPctMonto>0)     lineasAjTk.push(`📉 Descuento ${ajuste.descPct}%: -${fv(ajuste.descPctMonto)}`);
+    if(ajuste.descFijoMonto>0)    lineasAjTk.push(`📉 Descuento fijo: -${fv(ajuste.descFijoMonto)}`);
+  }
   let tkLineas=lns.join('\n');
   if(lineasAjTk.length) tkLineas+=`\n\n${lineasAjTk.join('\n')}\n━━━━━━━━━━━━━━━━━━━━━`;
   tk+=tkLineas+`\n\n💰 Total: ${fv(totalFinal)} ARS`;
@@ -5152,10 +5173,13 @@ function generarTicket(){
 
   // Nota
   const notaAjParts=[];
-  if(ajuste.recargoPct>0)  notaAjParts.push(`Recargo ${ajuste.recargoPct}%`);
-  if(ajuste.recargoFijo>0) notaAjParts.push(`Recargo fijo ${fv(ajuste.recargoFijo)}`);
-  if(ajuste.descPct>0)     notaAjParts.push(`Dto ${ajuste.descPct}%`);
-  if(ajuste.descFijo>0)    notaAjParts.push(`Dto fijo ${fv(ajuste.descFijo)}`);
+  if(ajuste.tipo==='libre'&&ajuste.libreTotal>0) notaAjParts.push(`Total libre ${fv(ajuste.libreTotal)}`);
+  else{
+    if(ajuste.recargoPct>0)  notaAjParts.push(`Recargo ${ajuste.recargoPct}%`);
+    if(ajuste.recargoFijo>0) notaAjParts.push(`Recargo fijo ${fv(ajuste.recargoFijo)}`);
+    if(ajuste.descPct>0)     notaAjParts.push(`Dto ${ajuste.descPct}%`);
+    if(ajuste.descFijo>0)    notaAjParts.push(`Dto fijo ${fv(ajuste.descFijo)}`);
+  }
   const notaFinal=[nota, notaAjParts.join(' | ')].filter(Boolean).join(' | ');
   if(notaFinal)tk+=`\n📝 Nota: ${notaFinal}`;
 
@@ -5850,7 +5874,7 @@ function uhd(){const d=new Date();const dd=String(d.getDate()).padStart(2,'0'),m
 // ===== ui/delegacion.js =====
 
 function setupDelegation(){
-  ['hCont','eCont'].forEach(cid=>{
+  ['hCont','eCont','tSeg'].forEach(cid=>{
     const el=document.getElementById(cid);if(!el)return;
     el.addEventListener('click',function(e){
       const delBtn=e.target.closest('[data-del]');

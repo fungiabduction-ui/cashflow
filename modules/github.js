@@ -267,12 +267,15 @@ export async function ghPull(showNotif){
   }
 }
 
-// Auto-push silencioso — siempre muestra error en la UI si falla
+// Auto-push silencioso con debounce — agrupa operaciones rápidas en un solo push
+let _autoPushTimer=null;
 export function ghAutoPush(){
   const cfg=ghCfg();
   if(!cfg.token||!cfg.repo)return;
-  // fire and forget but surface errors to ghStatus
-  ghPush(false).catch(function(e){console.error('ghAutoPush failed:',e);});
+  clearTimeout(_autoPushTimer);
+  _autoPushTimer=setTimeout(function(){
+    ghPush(false).catch(function(e){console.error('ghAutoPush failed:',e);});
+  },8000);
 }
 
 // ── BACKUP DE SEGURIDAD POR FECHA ──

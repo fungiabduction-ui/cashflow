@@ -9,7 +9,7 @@ export function ld(){
     return{orders:[],egresos:[],precios:null,costos:null,productos:null};
   }
 }
-export function sd(d){try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){sN('Error al guardar',true);}}
+export function sd(d){try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){if(e.name==='QuotaExceededError'||e.code===22)sN('⚠ Storage LLENO — exportá un backup JSON y borrá meses viejos desde Configuración',true);else sN('Error al guardar',true);}}
 export function gO(){return ld().orders||[];}
 export function gOConf(){return gO().filter(o=>o.estado!=='pendiente');}
 export function gE(){return ld().egresos||[];}

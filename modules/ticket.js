@@ -122,9 +122,11 @@ export function autoFillTC(){
 export function syncAjuste(){
   const tipo=document.getElementById('ajuste-tipo')?.value||'ninguno';
   const val=parseFloat(document.getElementById('ajuste-valor')?.value)||0;
+  const valInput=document.getElementById('ajuste-valor');
+  if(valInput)valInput.placeholder=tipo==='libre'?'monto final':'0';
   const fields=['rec-pct','rec-fijo','desc-pct','desc-fijo'];
   fields.forEach(id=>{const el=document.getElementById(id);if(el)el.value='0';});
-  if(tipo!=='ninguno'){const el=document.getElementById(tipo);if(el)el.value=val||0;}
+  if(tipo!=='ninguno'&&tipo!=='libre'){const el=document.getElementById(tipo);if(el)el.value=val||0;}
 }
 
 // ── HELPER: leer composición de pago según modo ──
@@ -192,7 +194,8 @@ export function calc(){
   const qV=gn('q-var');
   tot+=qV;
 
-  // Ajuste recargo/descuento
+  // Ajuste recargo/descuento/libre
+  const _ajusteTipo=document.getElementById('ajuste-tipo')?.value||'ninguno';
   const recargoPct  = parseFloat(document.getElementById('rec-pct')?.value)  || 0;
   const recargoFijo = parseFloat(document.getElementById('rec-fijo')?.value) || 0;
   const descPct     = parseFloat(document.getElementById('desc-pct')?.value) || 0;
@@ -201,9 +204,15 @@ export function calc(){
   const recargoFijoMonto = recargoFijo;
   const descPctMonto     = tot * (descPct / 100);
   const descFijoMonto    = descFijo;
-  const ajusteNeto = recargoPctMonto + recargoFijoMonto - descPctMonto - descFijoMonto;
-  const totalFinal = tot + ajusteNeto;
-  const ajuste = {recargoPct,recargoFijo,descPct,descFijo,recargoPctMonto,recargoFijoMonto,descPctMonto,descFijoMonto,ajusteNeto};
+  let ajusteNeto = recargoPctMonto + recargoFijoMonto - descPctMonto - descFijoMonto;
+  let totalFinal = tot + ajusteNeto;
+  let libreTotal = 0;
+  if(_ajusteTipo==='libre'){
+    libreTotal=parseFloat(document.getElementById('ajuste-valor')?.value)||tot;
+    totalFinal=libreTotal;
+    ajusteNeto=libreTotal-tot;
+  }
+  const ajuste = {recargoPct,recargoFijo,descPct,descFijo,recargoPctMonto,recargoFijoMonto,descPctMonto,descFijoMonto,ajusteNeto,libreTotal,tipo:_ajusteTipo};
 
   return{lineas,tot,totalFinal,costo,qV,legacyMap,ajuste};
 }
@@ -238,10 +247,13 @@ export function upd(){
   const prev=document.getElementById('ajuste-preview');
   if(prev){
     const lineasAj=[];
-    if(ajuste.recargoPctMonto>0) lineasAj.push(`📈 Recargo ${ajuste.recargoPct}% → +${fv(ajuste.recargoPctMonto)}`);
-    if(ajuste.recargoFijoMonto>0) lineasAj.push(`📈 Recargo fijo → +${fv(ajuste.recargoFijoMonto)}`);
-    if(ajuste.descPctMonto>0)     lineasAj.push(`📉 Descuento ${ajuste.descPct}% → -${fv(ajuste.descPctMonto)}`);
-    if(ajuste.descFijoMonto>0)    lineasAj.push(`📉 Descuento fijo → -${fv(ajuste.descFijoMonto)}`);
+    if(ajuste.tipo==='libre'&&ajuste.libreTotal>0){lineasAj.push(`✏️ Total libre: ${fv(ajuste.libreTotal)}`);}
+    else{
+      if(ajuste.recargoPctMonto>0) lineasAj.push(`📈 Recargo ${ajuste.recargoPct}% → +${fv(ajuste.recargoPctMonto)}`);
+      if(ajuste.recargoFijoMonto>0) lineasAj.push(`📈 Recargo fijo → +${fv(ajuste.recargoFijoMonto)}`);
+      if(ajuste.descPctMonto>0)     lineasAj.push(`📉 Descuento ${ajuste.descPct}% → -${fv(ajuste.descPctMonto)}`);
+      if(ajuste.descFijoMonto>0)    lineasAj.push(`📉 Descuento fijo → -${fv(ajuste.descFijoMonto)}`);
+    }
     if(lineasAj.length){
       prev.style.display='block';
       prev.innerHTML=`<span style="color:var(--tx3)">Subtotal: ${fv(tot)}</span><br>`+lineasAj.join('<br>')+`<br><span style="color:var(--ac);font-weight:700">Total final: ${fv(totalFinal)}</span>`;
@@ -297,10 +309,13 @@ export function generarTicket(){
 
   // Ajuste
   const lineasAjTk=[];
-  if(ajuste.recargoPctMonto>0) lineasAjTk.push(`📈 Recargo ${ajuste.recargoPct}%: +${fv(ajuste.recargoPctMonto)}`);
-  if(ajuste.recargoFijoMonto>0) lineasAjTk.push(`📈 Recargo fijo: +${fv(ajuste.recargoFijoMonto)}`);
-  if(ajuste.descPctMonto>0)     lineasAjTk.push(`📉 Descuento ${ajuste.descPct}%: -${fv(ajuste.descPctMonto)}`);
-  if(ajuste.descFijoMonto>0)    lineasAjTk.push(`📉 Descuento fijo: -${fv(ajuste.descFijoMonto)}`);
+  if(ajuste.tipo==='libre'&&ajuste.libreTotal>0){lineasAjTk.push(`✏️ Total libre: ${fv(ajuste.libreTotal)}`);}
+  else{
+    if(ajuste.recargoPctMonto>0) lineasAjTk.push(`📈 Recargo ${ajuste.recargoPct}%: +${fv(ajuste.recargoPctMonto)}`);
+    if(ajuste.recargoFijoMonto>0) lineasAjTk.push(`📈 Recargo fijo: +${fv(ajuste.recargoFijoMonto)}`);
+    if(ajuste.descPctMonto>0)     lineasAjTk.push(`📉 Descuento ${ajuste.descPct}%: -${fv(ajuste.descPctMonto)}`);
+    if(ajuste.descFijoMonto>0)    lineasAjTk.push(`📉 Descuento fijo: -${fv(ajuste.descFijoMonto)}`);
+  }
   let tkLineas=lns.join('\n');
   if(lineasAjTk.length) tkLineas+=`\n\n${lineasAjTk.join('\n')}\n━━━━━━━━━━━━━━━━━━━━━`;
   tk+=tkLineas+`\n\n💰 Total: ${fv(totalFinal)} ARS`;
@@ -320,10 +335,13 @@ export function generarTicket(){
 
   // Nota
   const notaAjParts=[];
-  if(ajuste.recargoPct>0)  notaAjParts.push(`Recargo ${ajuste.recargoPct}%`);
-  if(ajuste.recargoFijo>0) notaAjParts.push(`Recargo fijo ${fv(ajuste.recargoFijo)}`);
-  if(ajuste.descPct>0)     notaAjParts.push(`Dto ${ajuste.descPct}%`);
-  if(ajuste.descFijo>0)    notaAjParts.push(`Dto fijo ${fv(ajuste.descFijo)}`);
+  if(ajuste.tipo==='libre'&&ajuste.libreTotal>0) notaAjParts.push(`Total libre ${fv(ajuste.libreTotal)}`);
+  else{
+    if(ajuste.recargoPct>0)  notaAjParts.push(`Recargo ${ajuste.recargoPct}%`);
+    if(ajuste.recargoFijo>0) notaAjParts.push(`Recargo fijo ${fv(ajuste.recargoFijo)}`);
+    if(ajuste.descPct>0)     notaAjParts.push(`Dto ${ajuste.descPct}%`);
+    if(ajuste.descFijo>0)    notaAjParts.push(`Dto fijo ${fv(ajuste.descFijo)}`);
+  }
   const notaFinal=[nota, notaAjParts.join(' | ')].filter(Boolean).join(' | ');
   if(notaFinal)tk+=`\n📝 Nota: ${notaFinal}`;
 

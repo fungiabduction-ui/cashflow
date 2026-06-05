@@ -105,10 +105,10 @@ export function toggleTotals(){showTotalsRow=!showTotalsRow;rS();}
 // ── MAPA DE PRODUCTOS FIJO ──
 // Define las columnas que siempre se muestran
 const PRODUCT_COLUMNS=[
-  {id:'v-cal',label:'💀',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-cal').reduce((s,l)=>s+(l.qty||0),0);return p.calaveras||0;}},
-  {id:'v-ted',label:'🧸',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-ted').reduce((s,l)=>s+(l.qty||0),0);return p.teddy||0;}},
-  {id:'v-lck',label:'🐱',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-lck').reduce((s,l)=>s+(l.qty||0),0);return p.lucky||0;}},
-  {id:'v-gen',label:'💊',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-gen').reduce((s,l)=>s+(l.qty||0),0);return p.genericas||0;}},
+  {id:'v-cal',label:'💀',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-cal'||l.prodId==='v-cal').reduce((s,l)=>s+(l.qty||0),0);return p.calaveras||0;}},
+  {id:'v-ted',label:'🧸',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-ted'||l.prodId==='v-ted').reduce((s,l)=>s+(l.qty||0),0);return p.teddy||0;}},
+  {id:'v-lck',label:'🐱',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-lck'||l.prodId==='v-lck').reduce((s,l)=>s+(l.qty||0),0);return p.lucky||0;}},
+  {id:'v-gen',label:'💊',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.varId==='v-gen'||l.prodId==='v-gen').reduce((s,l)=>s+(l.qty||0),0);return p.genericas||0;}},
   {id:'p-cris',label:'💎',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.prodId==='p-cris').reduce((s,l)=>s+(l.qty||0),0);return p.cristales||0;}},
   {id:'p-hong',label:'🍄',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.prodId==='p-hong').reduce((s,l)=>s+(l.qty||0),0);return p.hongos||0;}},
   {id:'p-got',label:'💧',getQty:o=>{const p=o.productos||{};if(p._lineas)return p._lineas.filter(l=>l.prodId==='p-got').reduce((s,l)=>s+(l.qty||0),0);return p.goteros||0;}},
@@ -256,14 +256,14 @@ export function openEditVenta(id){
       </div>
       <div id="em-usd" style="display:${modoActual==='USD'?'block':'none'}">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div><label style="${LB}">TC ARS/USD</label><input type="number" id="edit-tc-usd" value="${tcUsdVal||_blueARS||''}" placeholder="ej: 1400" style="${IS}"></div>
+          <div><label style="${LB}">TC ARS/USD</label><input type="number" id="edit-tc-usd" value="${tcUsdVal||window._blueARS||''}" placeholder="ej: 1400" style="${IS}"></div>
           <div><label style="${LB}">Equivalente USD</label><input type="text" id="edit-eq-usd" value="${fu(eqUsd)}" style="${IS};background:var(--s3);color:var(--wn)" readonly></div>
         </div>
         <div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:6px">Total en ARS se calcula desde productos</div>
       </div>
       <div id="em-usdt" style="display:${modoActual==='USDT'?'block':'none'}">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div><label style="${LB}">TC ARS/USDT</label><input type="number" id="edit-tc-usdt" value="${tcUsdtVal||_usdtARS||''}" placeholder="ej: 1450" style="${IS}"></div>
+          <div><label style="${LB}">TC ARS/USDT</label><input type="number" id="edit-tc-usdt" value="${tcUsdtVal||window._usdtARS||''}" placeholder="ej: 1450" style="${IS}"></div>
           <div><label style="${LB}">Equivalente USDT</label><input type="text" id="edit-eq-usdt" value="${fu(eqUsdt)}" style="${IS};background:var(--s3);color:var(--wn)" readonly></div>
         </div>
         <div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:6px">Total en ARS se calcula desde productos</div>
@@ -338,10 +338,10 @@ export function saveEditVenta(id){
   // Recalcular campos legacy para compatibilidad
   const p=o.productos;
   if(p&&p._lineas){
-    p.calaveras=p._lineas.filter(l=>l.varId==='v-cal').reduce((a,l)=>a+(l.qty||0),0);
-    p.teddy=p._lineas.filter(l=>l.varId==='v-ted').reduce((a,l)=>a+(l.qty||0),0);
-    p.lucky=p._lineas.filter(l=>l.varId==='v-lck').reduce((a,l)=>a+(l.qty||0),0);
-    p.genericas=p._lineas.filter(l=>l.varId==='v-gen').reduce((a,l)=>a+(l.qty||0),0);
+    p.calaveras=p._lineas.filter(l=>l.varId==='v-cal'||l.prodId==='v-cal').reduce((a,l)=>a+(l.qty||0),0);
+    p.teddy=p._lineas.filter(l=>l.varId==='v-ted'||l.prodId==='v-ted').reduce((a,l)=>a+(l.qty||0),0);
+    p.lucky=p._lineas.filter(l=>l.varId==='v-lck'||l.prodId==='v-lck').reduce((a,l)=>a+(l.qty||0),0);
+    p.genericas=p._lineas.filter(l=>l.varId==='v-gen'||l.prodId==='v-gen').reduce((a,l)=>a+(l.qty||0),0);
     p.cristales=p._lineas.filter(l=>l.prodId==='p-cris').reduce((a,l)=>a+(l.qty||0),0);
     p.hongos=p._lineas.filter(l=>l.prodId==='p-hong').reduce((a,l)=>a+(l.qty||0),0);
     p.goteros=p._lineas.filter(l=>l.prodId==='p-got').reduce((a,l)=>a+(l.qty||0),0);

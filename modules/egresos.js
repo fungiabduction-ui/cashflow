@@ -109,14 +109,17 @@ export function saveEditEgr(id){
   const d=ld();if(!d.egresos)return;const idx=d.egresos.findIndex(x=>x.id===id);if(idx<0)return;
   const nuevaFecha=document.getElementById('edit-e-fecha').value;
   const nuevoConcepto=document.getElementById('edit-e-concepto').value.trim();
-  const nuevoMonto=parseFloat(document.getElementById('edit-e-monto').value)||d.egresos[idx].montoTotal;
-  const nuevoImpacto=parseFloat(document.getElementById('edit-e-impacto').value)||d.egresos[idx].impactoCaja;
+  const nuevoMonto=parseFloat(document.getElementById('edit-e-monto').value);
+  const nuevoImpacto=parseFloat(document.getElementById('edit-e-impacto').value);
   const nuevoMedio=document.getElementById('edit-e-medio').value.trim();
   const nuevoObs=document.getElementById('edit-e-obs').value.trim();
+  if(!nuevoConcepto){sN('ERROR: Concepto requerido',true);return;}
+  if(isNaN(nuevoMonto)||nuevoMonto<=0){sN('ERROR: Monto inválido',true);return;}
   if(nuevaFecha){d.egresos[idx].fecha=nuevaFecha;d.egresos[idx].fechaDisplay=d2s(nuevaFecha);d.egresos[idx].mesActual=d2m(nuevaFecha);}
-  if(nuevoConcepto)d.egresos[idx].concepto=nuevoConcepto;
-  d.egresos[idx].montoTotal=nuevoMonto;d.egresos[idx].impactoCaja=nuevoImpacto;
-  if(nuevoMedio)d.egresos[idx].medio=nuevoMedio;d.egresos[idx].obs=nuevoObs||null;
+  d.egresos[idx].concepto=nuevoConcepto;
+  d.egresos[idx].montoTotal=nuevoMonto;
+  d.egresos[idx].impactoCaja=isNaN(nuevoImpacto)||nuevoImpacto<=0?nuevoMonto:nuevoImpacto;
+  d.egresos[idx].medio=nuevoMedio||d.egresos[idx].medio;d.egresos[idx].obs=nuevoObs||null;
   sd(d);window.rfM?.();rEH();rES();window.renderDash?.();window.clM?.();sN(`✓ ${id} actualizado`);window.uhd?.();
 }
 

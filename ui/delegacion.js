@@ -5,7 +5,7 @@ import { getProductos } from '../modules/productos.js';
 import { getStockStatus, skPill } from '../modules/stock.js';
 
 export function setupDelegation(){
-  ['hCont','eCont'].forEach(cid=>{
+  ['hCont','eCont','tSeg'].forEach(cid=>{
     const el=document.getElementById(cid);if(!el)return;
     el.addEventListener('click',function(e){
       const delBtn=e.target.closest('[data-del]');
