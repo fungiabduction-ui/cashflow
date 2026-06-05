@@ -200,6 +200,10 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
     { prodId: "v-cal", varId: null, nombre: "Calaveras", emoji: "💀",
       qty: 10, precioUnit: 21735, subtotal: 217350, costo: 50750 }
   ],
+  // ⚠ GOTCHA varId: generarTicket() guarda _lineas con varId:null para TODOS los productos
+  // (calc() no setea varId). Para filtrar v-cal/v-ted/v-lck/v-gen SIEMPRE usar:
+  //   l.varId==='v-cal' || l.prodId==='v-cal'   ← NO solo l.varId (siempre null en órdenes modernas)
+  // p-cris/p-hong/p-got/p-pet: filtrar por l.prodId directamente (nunca tuvieron varId).
   // Formato legacy (órdenes antiguas): { pastillas: N, cristales: N, hongos: N, goteros: N, petri: N }
   // Ambos formatos coexisten. _getLineasOrden(o) es el bridge.
   totales: {
@@ -253,7 +257,7 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
 
 7. **`stockSeedDone`**: flag de un solo disparo. Si se pierde, `seedStockInicial()` duplica el stock inicial de producción.
 
-8. **`ghAutoPush()`**: se llama automáticamente después de `sO()`, `sE()`, `sLiqExterna()`, `sInv()`. No sacarlo de esas funciones.
+8. **`ghAutoPush()`**: se llama automáticamente después de `sO()`, `sE()`, `sLiqExterna()`, `sInv()`. No sacarlo de esas funciones. Tiene debounce de 8 segundos (`_autoPushTimer`) — múltiples operaciones rápidas se agrupan en un solo push para evitar race conditions con el SHA de GitHub.
 
 9. **Compatibilidad legacy**: órdenes antiguas tienen `{pastillas, cristales, hongos}`. Nuevas usan `lineas[]`. Ambos formatos conviven. `_getLineasOrden(o)` en `modules/io.js` es el bridge. No tocarlo. `getInvPeriodoSoldMap()` maneja ambos formatos.
 
