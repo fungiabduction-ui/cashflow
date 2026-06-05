@@ -1,0 +1,15 @@
+# Datos financieros — solo van al repo privado motoredge-data
+datos.json
+backups/
+Data backup/
+
+# Credenciales y tokens — NUNCA al repo
+token*.txt
+*.token
+.env*
+secrets*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

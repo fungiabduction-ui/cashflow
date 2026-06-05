@@ -1,0 +1,6 @@
+/* Theme transition */
+body,header,.card,.kpi,.tab-btn,.gbtn,.btn,.notif,.nav-tabs,input,select,textarea{
+  transition:background .25s,color .25s,border-color .25s,box-shadow .25s;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 5px var(--ac),0 0 10px var(--ac)}50%{box-shadow:0 0 15px var(--ac),0 0 25px var(--ac)}}
+@keyframes pulse-border{0%,100%{border-color:rgba(255,68,85,.4)}50%{border-color:rgba(255,68,85,.9)}}

@@ -1,0 +1,933 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MOTOR EDGE 3.9-E</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏴‍☠️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/themes.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/animations.css">
+</head>
+<body>
+
+<!-- ══ PIN GATE ══ -->
+<div id="pin-gate" style="position:fixed;inset:0;background:#0a0a14;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;gap:0">
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#444;margin-bottom:32px;text-transform:uppercase">Motor Edge</div>
+  <div style="font-size:40px;margin-bottom:28px">🏴‍☠️</div>
+  <div id="pin-dots" style="display:flex;gap:10px;margin-bottom:28px">
+    <span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pd"></span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,64px);gap:10px">
+    <button class="pk" onclick="pinKey('1')">1</button><button class="pk" onclick="pinKey('2')">2</button><button class="pk" onclick="pinKey('3')">3</button>
+    <button class="pk" onclick="pinKey('4')">4</button><button class="pk" onclick="pinKey('5')">5</button><button class="pk" onclick="pinKey('6')">6</button>
+    <button class="pk" onclick="pinKey('7')">7</button><button class="pk" onclick="pinKey('8')">8</button><button class="pk" onclick="pinKey('9')">9</button>
+    <button class="pk del" onclick="pinKey('del')" style="font-size:18px">⌫</button><button class="pk" onclick="pinKey('0')">0</button><button class="pk ok" onclick="pinKey('ok')" style="color:#00e5a0">✓</button>
+  </div>
+  <div id="pin-msg" style="font-family:'Space Mono',monospace;font-size:10px;color:#ff4455;margin-top:20px;min-height:16px;letter-spacing:1px"></div>
+  <div id="pin-set-hint" style="font-family:'Space Mono',monospace;font-size:9px;color:#444;margin-top:8px"></div>
+</div>
+<style>
+.pd{width:12px;height:12px;border-radius:50%;background:#1e1e2e;border:1px solid #333;transition:background .15s}
+.pd.on{background:#00e5a0;border-color:#00e5a0}
+.pk{width:64px;height:64px;background:#111122;border:1px solid #222;color:#ccc;font-family:'Space Mono',monospace;font-size:20px;cursor:pointer;border-radius:4px;transition:background .1s}
+.pk:hover{background:#1a1a2e;border-color:#00e5a0}
+.pk:active{background:#00e5a015}
+.pk.del{color:#888}
+</style>
+<script>
+(function(){
+  var _pin='';
+  var _stored=localStorage.getItem('me_pin_h');
+  var _sess=localStorage.getItem('me_pin_s');
+  // Sesion valida 24h — no pedir pin de vuelta
+  if(_stored&&_sess&&parseInt(_sess)>Date.now()){
+    document.getElementById('pin-gate').remove();return;
+  }
+  if(!_stored){
+    document.getElementById('pin-set-hint').textContent='Primera vez: elegí tu PIN de 4 dígitos';
+  }
+  function _hash(p){
+    // Obfuscacion simple — suficiente para acceso casual
+    var s='me39e'+p+'jet';var r=0;
+    for(var i=0;i<s.length;i++)r=(r<<5)-r+s.charCodeAt(i)|0;
+    return r.toString(36);
+  }
+  function _render(){
+    var dots=document.querySelectorAll('.pd');
+    dots.forEach(function(d,i){d.classList.toggle('on',i<_pin.length);});
+  }
+  window.pinKey=function(k){
+    var msg=document.getElementById('pin-msg');
+    if(k==='del'){_pin=_pin.slice(0,-1);msg.textContent='';_render();return;}
+    if(k==='ok'||_pin.length>=4){
+      if(_pin.length<4){msg.textContent='4 dígitos requeridos';return;}
+      if(!_stored){
+        // Primer uso — establecer PIN
+        localStorage.setItem('me_pin_h',_hash(_pin));
+        localStorage.setItem('me_pin_s',Date.now()+86400000+'');
+        document.getElementById('pin-gate').remove();
+        return;
+      }
+      if(_hash(_pin)===_stored){
+        localStorage.setItem('me_pin_s',Date.now()+86400000+'');
+        document.getElementById('pin-gate').remove();
+      } else {
+        msg.textContent='PIN incorrecto';
+        _pin='';_render();
+      }
+      return;
+    }
+    if(_pin.length<4){_pin+=k;_render();}
+    if(_pin.length===4&&!_stored){pinKey('ok');}
+    else if(_pin.length===4){pinKey('ok');}
+  };
+  // Teclado fisico
+  document.addEventListener('keydown',function(e){
+    if(e.key>='0'&&e.key<='9')pinKey(e.key);
+    else if(e.key==='Backspace')pinKey('del');
+    else if(e.key==='Enter')pinKey('ok');
+  });
+})();
+</script>
+
+<div class="app">
+<header>
+  <div class="logo"><div class="lb">V3.9-E</div><h1>MOTOR <span>EDGE</span></h1></div>
+  <div class="hdr-btns"></div>
+  <div class="hm" id="hm">—</div>
+</header>
+<div class="nav-tabs">
+  <button class="tab-btn active" data-tab="ticket" onclick="showTab('ticket',this)">🧾 Ticket</button>
+  <button class="tab-btn" data-tab="ventas" onclick="showTab('ventas',this)">🟢 Ventas</button>
+  <button class="tab-btn" data-tab="egresos" onclick="showTab('egresos',this)">🔴 Egresos</button>
+  <button class="tab-btn" data-tab="inversiones" onclick="showTab('inversiones',this)">🟡 Inversiones</button>
+  <button class="tab-btn" data-tab="dashboard" onclick="showTab('dashboard',this)">📊 Dashboard</button>
+  <button class="tab-btn" data-tab="inventario" onclick="showTab('inventario',this)">📦 Inventario</button>
+  <button class="tab-btn" data-tab="settings" onclick="showTab('settings',this)">⚙️ Config</button>
+</div>
+
+<!-- ══ TICKET ══ -->
+  <div class="panel active" id="tab-ticket">
+  <div class="card">
+    <div class="ct">🧾 Parámetros</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div><label>Fecha</label><input type="date" id="fecha"></div>
+      <div><label>Cliente</label><input type="text" id="cliente" placeholder="Cliente" list="clientes-list"></div>
+      <datalist id="clientes-list"></datalist>
+      <div><label>Nota</label><input type="text" id="nota" placeholder="Nota"></div>
+      <div><label>Tipo de pago</label>
+        <select id="selTP" onchange="setTP(this.value)" style="font-size:13px;min-height:var(--touch)">
+          <option value="ARS">ARS — Pesos</option>
+          <option value="USD">USD — Dólar</option>
+          <option value="USDT">USDT — Cripto</option>
+        </select>
+      </div>
+    </div>
+    <!-- TC: solo aparece cuando la moneda no es ARS -->
+    <div id="tcBlock" style="display:none;margin-top:8px;display:none">
+      <label id="tcLabel">TC — ARS por 1 USD</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="number" id="tc-valor" placeholder="ej: 1200" oninput="upd()" style="flex:1;min-height:42px;font-size:14px;font-weight:700">
+        <button onclick="autoFillTC()" style="background:var(--s2);border:1px solid var(--br);color:var(--ac);font-family:var(--mo);font-size:9px;padding:0 10px;height:42px;cursor:pointer;white-space:nowrap;flex-shrink:0">↺ Auto</button>
+      </div>
+      <div id="tcPreview" style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:4px"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">🛒 Productos</div>
+    <div id="prodRows"><!-- generado dinámicamente --></div>
+  </div>
+  <div class="card">
+    <div class="ct">Ajuste</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <select id="ajuste-tipo" onchange="upd()" style="flex:0 0 auto;width:auto;min-height:var(--touch);font-size:12px;padding:8px 10px">
+        <option value="ninguno">Sin ajuste</option>
+        <option value="desc-pct">📉 Descuento %</option>
+        <option value="desc-fijo">📉 Descuento $ fijo</option>
+        <option value="rec-pct">📈 Recargo %</option>
+        <option value="rec-fijo">📈 Recargo $ fijo</option>
+      </select>
+      <input type="number" id="ajuste-valor" min="0" step="any" placeholder="0" oninput="upd()" style="flex:1;min-height:var(--touch);font-size:16px;font-weight:700;text-align:right">
+    </div>
+    <div id="ajuste-preview" style="display:none;margin-top:8px;font-family:var(--mo);font-size:10px;line-height:1.8;padding:8px;background:var(--s2);border:1px solid var(--br)"></div>
+    <!-- campos legacy ocultos para compatibilidad con calc() -->
+    <input type="hidden" id="rec-pct" value="0">
+    <input type="hidden" id="rec-fijo" value="0">
+    <input type="hidden" id="desc-pct" value="0">
+    <input type="hidden" id="desc-fijo" value="0">
+  </div>
+  <div class="tbar">
+    <div><div class="tlbl">Total</div><div class="tamt" id="totD">$ 0</div><div class="tusdt" id="totU" style="display:none"></div><div id="trI"></div></div>
+    <button class="btn btn-s" onclick="resetTodo()">↺ Reset</button>
+  </div>
+  <button class="gbtn" onclick="generarTicket()">🧾 GENERAR TICKET</button>
+  <div id="outA" style="display:none">
+    <div class="card" style="border-top:2px solid var(--wn)">
+      <div class="ct" style="justify-content:space-between">
+        <span>🧾 Ticket Generado</span>
+        <span id="outA-estado-badge" style="font-family:var(--mo);font-size:8px;font-weight:700;color:var(--wn);background:rgba(255,170,0,.12);border:1px solid rgba(255,170,0,.3);padding:3px 10px">🕐 PENDIENTE</span>
+      </div>
+      <div style="padding:10px 14px;background:rgba(255,170,0,.05);border-bottom:1px solid rgba(255,170,0,.2);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-family:var(--mo);font-size:9px;color:var(--tx3)">Esta orden está pendiente de confirmación. No impacta en dashboard ni métricas hasta que confirmes el pago.</span>
+        <button id="outA-confirmar-btn" onclick="confirmarDesdeOutput()" style="font-family:var(--mo);font-size:10px;font-weight:700;height:36px;padding:0 16px;background:rgba(0,229,160,.15);border:1px solid var(--ac);color:var(--ac);cursor:pointer;white-space:nowrap">✓ CONFIRMAR PAGO</button>
+      </div>
+      <div class="tkout" id="tkOut"></div>
+      <div class="tkact"><button class="cpb" onclick="cpTk()">⎘ Copiar</button><button class="cpb" onclick="limpiar()">↺ Nuevo</button></div>
+    </div>
+    <div class="card"><div class="ct">🔒 Auditoría</div><div class="audout" id="audOut"></div></div>
+  </div>
+</div>
+
+<!-- ══ VENTAS 🟢 ══ -->
+<div class="panel" id="tab-ventas">
+  <!-- Período global ventas -->
+  <div class="card" style="padding:10px 14px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <div style="flex:1;min-width:140px"><label>Período</label><select id="ventasMes" onchange="onVentasMesChange()" style="width:100%"><option value="all">Todo el período</option></select></div>
+      <div style="flex:1;min-width:110px;display:none" id="ventasDesdeWrap"><label>Desde</label><input type="date" id="ventasDesde" onchange="rS();rH()"></div>
+      <div style="flex:1;min-width:110px;display:none" id="ventasHastaWrap"><label>Hasta</label><input type="date" id="ventasHasta" onchange="rS();rH()"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">🟢 Seguimiento Acumulativo de Ventas</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-s" style="font-size:9px;padding:0 10px" onclick="toggleTotals()">∑ Totales</button>
+    </div>
+    <div class="tw" id="tSeg"><div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:24px">Sin datos</div></div>
+  </div>
+  <div class="card">
+    <div class="ct">🟢 Historial de Órdenes</div>
+    <div class="sbar"><input type="text" id="buscar" placeholder="Buscar ID, cliente, nota..." oninput="rH()"></div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <button class="btn btn-d" onclick="anularByIdModal()" style="padding:0 10px;font-size:9px">🗑 Anular ID</button>
+      <button class="btn btn-d" onclick="confirLimpiar()" style="padding:0 10px;font-size:9px">⚠ Limpiar todo</button>
+    </div>
+    <div id="hCont"><div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:24px">Sin órdenes</div></div>
+  </div>
+</div>
+
+<!-- ══ STOCK 📦 ══ -->
+<div class="panel" id="tab-stock" style="display:none!important"></div>
+
+<!-- ══ INVENTARIO (fusión Stock + Productos) ══ -->
+<!-- ══ INVENTARIO 📦 (TABLA UNIFICADA) ══ -->
+<div class="panel" id="tab-inventario">
+
+  <!-- Sub-navegación Inventario -->
+  <div style="display:flex;border-bottom:1px solid var(--br);background:var(--s1);flex-shrink:0;overflow-x:auto">
+    <button class="inv-sub-btn active" id="isb-ingresos" onclick="invSubNav('ingresos')">📥 Ingresos</button>
+    <button class="inv-sub-btn"        id="isb-precios"  onclick="invSubNav('precios')">💲 Lista de Precios</button>
+    <button class="inv-sub-btn"        id="isb-stock"    onclick="invSubNav('stock')">📦 Stock</button>
+    <button class="inv-sub-btn"        id="isb-movs"     onclick="invSubNav('movs')">📋 Historial</button>
+  </div>
+
+  <!-- ── SUB: INGRESOS ── -->
+  <div id="inv-sub-ingresos" class="inv-sub-pane">
+    <div class="inv-module">
+      <div class="inv-module-hdr">
+        <span>📥 Nuevo Ingreso de Stock</span>
+        <span style="font-family:var(--mo);font-size:8px;color:var(--tx3)">Cada ingreso crea un lote con ID único trazable</span>
+      </div>
+      <div id="inv-ingreso-form"></div>
+    </div>
+    <div class="inv-module">
+      <div class="inv-module-hdr" style="justify-content:space-between">
+        <span>📦 Productos Registrados</span>
+        <button class="btn btn-p" onclick="abrirNuevoProducto()" style="font-size:9px;height:32px;padding:0 14px;flex-shrink:0">➕ Nuevo Producto</button>
+      </div>
+      <div id="inv-productos-registrados"></div>
+    </div>
+  </div><!-- /inv-sub-ingresos -->
+
+  <!-- ── SUB: LISTA DE PRECIOS ── -->
+  <div id="inv-sub-precios" class="inv-sub-pane" style="display:none">
+    <!-- Módulo: listas registradas -->
+    <div class="inv-module">
+      <div class="inv-module-hdr" style="justify-content:space-between">
+        <span>💲 Listas de Precios</span>
+        <button class="btn btn-p" onclick="abrirNuevaLista()" style="font-size:9px;height:32px;padding:0 12px">➕ Nueva lista</button>
+      </div>
+      <div id="inv-listas-body"></div>
+    </div>
+    <!-- Módulo: asignación por producto -->
+    <div class="inv-module">
+      <div class="inv-module-hdr">
+        <span>🔗 Asignación por Producto</span>
+        <span style="font-family:var(--mo);font-size:8px;color:var(--tx3)">Seleccioná qué lista usa cada producto</span>
+      </div>
+      <div id="inv-asignacion-body"></div>
+    </div>
+  </div><!-- /inv-sub-precios -->
+
+  <!-- ── SUB: STOCK & UMBRALES ── -->
+  <div id="inv-sub-stock" class="inv-sub-pane" style="display:none">
+    <!-- Barra superior -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;padding:12px 0 0">
+      <div style="flex:1;min-width:160px">
+        <label>Período vendido</label>
+        <select id="invPeriodo" onchange="onInvPeriodoChange()" style="width:100%">
+          <option value="all">Todo el período</option>
+        </select>
+      </div>
+      <div style="flex:1;min-width:110px;display:none" id="invPeriodoDesdeWrap">
+        <label>Desde</label><input type="date" id="invPeriodoDesde" onchange="renderInvStock()">
+      </div>
+      <div style="flex:1;min-width:110px;display:none" id="invPeriodoHastaWrap">
+        <label>Hasta</label><input type="date" id="invPeriodoHasta" onchange="renderInvStock()">
+      </div>
+    </div>
+
+    <!-- MÓDULO: STOCK Y UMBRALES -->
+    <div class="inv-module" id="inv-mod-stock">
+      <div class="inv-module-hdr">
+        <span>📦 Stock y Umbrales</span>
+        <span style="font-family:var(--mo);font-size:8px;color:var(--tx3)">Stock calculado desde lotes activos · Costo promedio ponderado</span>
+      </div>
+      <div id="inv-stock-body"></div>
+    </div>
+
+    <!-- PANEL DE LOTES (expandible) -->
+    <div id="inv-lotes-panel" style="display:none">
+      <div class="inv-module">
+        <div class="inv-module-hdr" style="justify-content:space-between">
+          <span id="inv-lotes-title">📦 Lotes</span>
+          <button onclick="cerrarLotesPanel()" style="background:none;border:1px solid var(--br);color:var(--tx3);font-family:var(--mo);font-size:9px;padding:4px 10px;cursor:pointer">✕ Cerrar</button>
+        </div>
+        <div id="inv-lotes-body"></div>
+      </div>
+    </div>
+  </div><!-- /inv-sub-stock -->
+
+  <!-- ── SUB: HISTORIAL MOVIMIENTOS ── -->
+  <div id="inv-sub-movs" class="inv-sub-pane" style="display:none">
+    <div class="inv-module">
+      <div class="inv-module-hdr" style="justify-content:space-between">
+        <span>📋 Historial de Movimientos</span>
+        <div style="display:flex;gap:6px">
+          <select id="filtSMov" onchange="renderStockHistorial()" style="font-family:var(--mo);font-size:9px;height:28px;background:var(--bg);border:1px solid var(--br);color:var(--tx)">
+            <option value="all">Todos</option>
+            <option value="S-TICKET">Solo ingresos</option>
+            <option value="VENTA">Solo ventas</option>
+            <option value="AJUSTE">Solo ajustes</option>
+          </select>
+          <button class="btn btn-d" onclick="limpiarMovsStock()" style="font-size:9px;padding:0 10px">🗗 Limpiar</button>
+        </div>
+      </div>
+      <div id="stockHistorial"></div>
+    </div>
+  </div><!-- /inv-sub-movs -->
+
+</div>
+
+<!-- ══ EGRESOS 🔴 ══ -->
+<div class="panel" id="tab-egresos">
+  <!-- Período global egresos -->
+  <div class="card" style="padding:10px 14px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <div style="flex:1;min-width:140px"><label>Período</label><select id="egresosMes" onchange="onEgresosMesChange()" style="width:100%"><option value="all">Todo el período</option></select></div>
+      <div style="flex:1;min-width:110px;display:none" id="egresosDesdeWrap"><label>Desde</label><input type="date" id="egresosDesde" onchange="rES();rEH()"></div>
+      <div style="flex:1;min-width:110px;display:none" id="egresosHastaWrap"><label>Hasta</label><input type="date" id="egresosHasta" onchange="rES();rEH()"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct red">🔴 Nuevo Egreso</div>
+    <div class="fr2">
+      <div><label>Fecha</label><input type="date" id="e-fecha"></div>
+      <div><label>Concepto</label><input type="text" id="e-concepto" placeholder="ej: Alquiler local"></div>
+      <div><label>Monto Total (ARS)</label><input type="number" id="e-monto" placeholder="0" oninput="updEgreso()"></div>
+      <div><label>Medio de Pago</label>
+        <select id="e-medio"><option>Efectivo</option><option>Transferencia</option><option>Débito</option><option>Tarjeta crédito</option><option>Débito automático</option><option>Mercado Pago</option><option>Lemon</option><option>Otro</option></select>
+      </div>
+      <div><label>Cuotas (1 = único)</label><input type="number" id="e-cuotas" placeholder="1" min="1" value="1" oninput="updEgreso()"></div>
+      <div><label>Observaciones</label><input type="text" id="e-obs" placeholder="opcional"></div>
+    </div>
+    <div id="e-preview" style="background:var(--s2);border:1px solid var(--br);padding:12px;font-family:var(--mo);font-size:10px;line-height:1.9;display:none"></div>
+  </div>
+  <button class="gbtn red" onclick="generarEgreso()">🔴 REGISTRAR EGRESO</button>
+  <div id="e-outA" style="display:none">
+    <div class="card"><div class="ct red">🔴 Egreso Registrado</div><div class="tkout red" id="e-tkOut"></div><div class="tkact"><button class="cpb" onclick="cpEgr()">⎘ Copiar</button><button class="cpb" onclick="limpiarEgr()">↺ Nuevo</button></div></div>
+  </div>
+  <div class="card">
+    <div class="ct red">🔴 Tabla Estructural de Egresos</div>
+    <div class="tw" id="eStruc"><div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Sin datos</div></div>
+  </div>
+  <div class="card">
+    <div class="ct red">🔴 Historial de Egresos</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <button class="btn btn-d" onclick="anularEgresoByIdModal()" style="padding:0 10px;font-size:9px">🗑 Anular ID</button>
+      <button class="btn btn-d" onclick="limpiarEgresos()" style="padding:0 10px;font-size:9px">⚠ Limpiar todo</button>
+    </div>
+    <div id="eCont"><div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Sin egresos</div></div>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div class="panel" id="tab-dashboard">
+  <div class="card">
+    <div class="ct">📊 Dashboard Financiero</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px">
+      <div style="flex:1;min-width:140px"><label>Período</label><select id="dashMes" onchange="onDashMesChange()" style="width:100%"><option value="all">Todo el período</option></select></div>
+      <div style="flex:1;min-width:110px" id="dashDesdeWrap"><label>Desde</label><input type="date" id="dashDesde" onchange="renderDash()"></div>
+      <div style="flex:1;min-width:110px" id="dashHastaWrap"><label>Hasta</label><input type="date" id="dashHasta" onchange="renderDash()"></div>
+    </div>
+    <div id="dashContent"><div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:30px">Sin datos</div></div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <!-- Chart header row 1: title + period + toggles -->
+    <div style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--br);background:var(--s2)">
+      <span style="font-family:var(--mo);font-size:9px;font-weight:700;color:var(--ac);letter-spacing:1px;flex-shrink:0">📈 FLUJO</span>
+      <div style="display:flex;gap:1px;border:1px solid var(--br);overflow:hidden;flex-shrink:0">
+        <button id="fcPer7"  onclick="setFlowPer(7)"  style="font-family:var(--mo);font-size:8px;padding:4px 9px;background:var(--bg);border:none;color:var(--tx3);cursor:pointer">7D</button>
+        <button id="fcPer30" onclick="setFlowPer(30)" style="font-family:var(--mo);font-size:8px;padding:4px 9px;background:var(--ac);border:none;color:#000;cursor:pointer;font-weight:700">30D</button>
+        <button id="fcPer90" onclick="setFlowPer(90)" style="font-family:var(--mo);font-size:8px;padding:4px 9px;background:var(--bg);border:none;color:var(--tx3);cursor:pointer">90D</button>
+        <button id="fcPerAll" onclick="setFlowPer(0)" style="font-family:var(--mo);font-size:8px;padding:4px 9px;background:var(--bg);border:none;color:var(--tx3);cursor:pointer">ALL</button>
+      </div>
+      <div id="fc-series-toggles" style="display:flex;gap:4px;flex-wrap:wrap;flex:1"></div>
+    </div>
+    <!-- Chart header row 2: display options -->
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 14px;border-bottom:1px solid var(--br);background:var(--s1)">
+      <select id="fcGlobalType" onchange="renderDashFlowChart()" style="font-family:var(--mo);font-size:9px;height:24px;background:var(--bg);border:1px solid var(--br);color:var(--tx);padding:0 6px">
+        <option value="mixed">Mixto</option>
+        <option value="line">Líneas</option>
+        <option value="bar">Barras</option>
+        <option value="area">Área</option>
+      </select>
+      <span style="width:1px;height:14px;background:var(--br);flex-shrink:0"></span>
+      <label style="font-family:var(--mo);font-size:9px;color:var(--tx2);display:flex;align-items:center;gap:4px;cursor:pointer">
+        <input type="checkbox" id="fcSmooth" checked onchange="renderDashFlowChart()"> Suave
+      </label>
+      <label style="font-family:var(--mo);font-size:9px;color:var(--tx2);display:flex;align-items:center;gap:4px;cursor:pointer">
+        <input type="checkbox" id="fcShowMA" onchange="renderDashFlowChart()"> MA7
+      </label>
+      <label style="font-family:var(--mo);font-size:9px;color:var(--tx2);display:flex;align-items:center;gap:4px;cursor:pointer">
+        <input type="checkbox" id="fcShowNet" checked onchange="renderDashFlowChart()"> Neto
+      </label>
+    </div>
+    <!-- KPI strip -->
+    <div id="fc-kpi-strip" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--br);border-bottom:1px solid var(--br)"></div>
+    <!-- Chart -->
+    <div style="height:260px;position:relative;background:var(--bg)">
+      <canvas id="dashFlowChart"></canvas>
+    </div>
+    <!-- Crosshair info bar -->
+    <div id="fc-crosshair-bar" style="display:flex;gap:12px;padding:6px 14px;background:var(--s2);border-top:1px solid var(--br);min-height:28px;flex-wrap:wrap"></div>
+  </div>
+  <div class="card">
+    <div class="ct">📦 Radar de Inventario</div>
+    <div id="dashStockPanel"><div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Sin datos de stock</div></div>
+  </div>
+</div>
+
+<!-- ══ INVERSIONES 🟡 ══ -->
+<div class="panel" id="tab-inversiones">
+
+  <!-- Período global inversiones -->
+  <div class="card" style="padding:10px 14px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <div style="flex:1;min-width:140px"><label>Período</label><select id="invGlobalMes" onchange="onInvGlobalMesChange()" style="width:100%"><option value="all">Todo el período</option></select></div>
+      <div style="flex:1;min-width:110px;display:none" id="invGlobalDesdeWrap"><label>Desde</label><input type="date" id="invGlobalDesde" onchange="renderInvAll()"></div>
+      <div style="flex:1;min-width:110px;display:none" id="invGlobalHastaWrap"><label>Hasta</label><input type="date" id="invGlobalHasta" onchange="renderInvAll()"></div>
+    </div>
+  </div>
+
+  <!-- DISTRIBUCIÓN -->
+  <div class="card">
+    <div class="ct">📊 Distribución</div>
+    <div id="invDistConfig" style="margin-bottom:12px">
+      <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-bottom:8px;letter-spacing:1px">CONFIGURAR DISTRIBUCIÓN — los % se auto-balancean al 100%</div>
+      <div id="distSlices"></div>
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        <button class="btn btn-s" onclick="addDistSlice()" style="font-size:9px;height:36px;padding:0 10px">+ Agregar</button>
+        <button class="btn btn-s" onclick="resetDistDefaults()" style="font-size:9px;height:36px;padding:0 10px">↺ Restablecer</button>
+        <button class="btn btn-p" onclick="renderInvDist()" style="font-size:9px;height:36px;padding:0 10px">⟳ Recalcular</button>
+        <button class="btn btn-s" onclick="toggleDistEdit()" style="font-size:9px;height:36px;padding:0 10px">✏ Editar</button>
+      </div>
+    </div>
+    <div id="invDistContent"><div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Sin datos</div></div>
+  </div>
+
+  <!-- PRECIOS EN TIEMPO REAL -->
+  <div class="card">
+    <div class="ct">📡 Precios en Tiempo Real</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
+      <button class="btn btn-s" onclick="fetchPrecios()" style="font-size:9px;padding:0 12px">↺ Actualizar</button>
+      <div id="preciosStatus" style="font-family:var(--mo);font-size:9px;color:var(--tx3)"></div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi org"><div class="kicon">₿</div><div class="klbl">Bitcoin (BTC)</div><div class="kval org" id="btcPrecio">—</div><div class="ksub" id="btcCambio">—</div></div>
+      <div class="kpi wn"><div class="kicon">💵</div><div class="klbl">Dólar Blue</div><div class="kval wn" id="bluePrecio">—</div><div class="ksub" id="blueSub">compra / venta</div></div>
+      <div class="kpi pur"><div class="kicon">🪙</div><div class="klbl">USDT (cripto)</div><div class="kval pur" id="usdtPrecio">—</div><div class="ksub" id="usdtSub">compra / venta</div></div>
+    </div>
+  </div>
+
+  <!-- BITCOIN HISTÓRICO -->
+  <div class="card">
+    <div class="ct" style="display:flex;align-items:center;gap:8px">₿ Bitcoin histórico
+      <div style="display:flex;gap:4px;margin-left:auto">
+        <button class="tgb active" id="btcDays30" onclick="setBtcDays(30)" style="font-size:9px;min-height:28px;padding:4px 10px">30d</button>
+        <button class="tgb" id="btcDays60" onclick="setBtcDays(60)" style="font-size:9px;min-height:28px;padding:4px 10px">60d</button>
+        <button class="tgb" id="btcDays90" onclick="setBtcDays(90)" style="font-size:9px;min-height:28px;padding:4px 10px">90d</button>
+      </div>
+    </div>
+    <div class="cw2"><canvas id="cBtcHistorico"></canvas></div>
+    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-top:6px;text-align:center" id="btcChartLabel">30 días · CoinGecko API</div>
+  </div>
+
+  <!-- LIQUIDEZ EXTERNA -->
+  <div class="card">
+    <div class="ct" style="cursor:pointer;user-select:none" onclick="toggleLiqExterna()" id="liq-ct">💰 Liquidez Externa <span id="liq-collapse-icon" style="font-size:10px;color:var(--tx3);margin-left:6px">▼</span></div>
+    <div id="liq-body" style="display:none">
+    <div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-bottom:10px">Ahorros externos al negocio. Base: USD.</div>
+    <div id="liqExternaResumen" style="margin-bottom:10px"></div>
+    <div class="fr2">
+      <div><label>Fecha</label><input type="date" id="liq-fecha"></div>
+      <div><label>Monto (USD)</label><input type="number" id="liq-monto" placeholder="ej: 40000" oninput="updLiqPreview()"></div>
+      <div style="grid-column:1/-1"><label>Descripción</label><input type="text" id="liq-desc" placeholder="ej: ahorros propios"></div>
+    </div>
+    <div id="liq-preview" style="display:none;background:var(--s2);border:1px solid var(--br);padding:9px;font-family:var(--mo);font-size:10px;margin-bottom:10px;line-height:1.8"></div>
+    <button class="gbtn" onclick="registrarLiqExterna()" style="background:#44aaff;color:#000;min-height:44px">💰 REGISTRAR LIQUIDEZ EXTERNA</button>
+    <div style="margin-top:14px">
+      <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-bottom:8px;letter-spacing:1px">VER COMO</div>
+      <div style="display:flex;gap:6px;margin-bottom:12px">
+        <button class="tgb active" id="liqViewARS" onclick="setLiqView('ars')">🪙 ARS</button>
+        <button class="tgb" id="liqViewBTC" onclick="setLiqView('btc')">₿ BTC</button>
+        <button class="tgb" id="liqViewUSD" onclick="setLiqView('usd')">💵 USD</button>
+      </div>
+      <div id="liqValoresContent"></div>
+    </div>
+    <div style="margin-top:14px">
+      <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-bottom:8px;letter-spacing:1px">DISTRIBUCIÓN LIQUIDEZ EXTERNA</div>
+      <div id="liqDistSlices" style="margin-bottom:8px"></div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+        <button class="btn btn-s" onclick="addLiqSlice()" style="font-size:9px;height:36px;padding:0 10px">+ Agregar</button>
+        <button class="btn btn-p" onclick="renderLiqExterna()" style="font-size:9px;height:36px;padding:0 10px">↺ Recalcular</button>
+      </div>
+      <div id="liqDistContent"></div>
+    </div>
+    </div><!-- /liq-body -->
+  </div>
+
+  <!-- ══ TICKET INVERSIÓN ══ -->
+  <div class="card">
+    <div class="ct">🟡 Parámetros</div>
+
+    <!-- FUENTE: dos botones siempre visibles con capital disponible -->
+    <div style="margin-bottom:14px">
+      <label style="font-family:var(--mo);font-size:8px;letter-spacing:.8px;color:var(--tx2);text-transform:uppercase;display:block;margin-bottom:6px">Fuente de capital</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div id="inv-fuente-dist" onclick="invSelFuente('distribucion')"
+          style="cursor:pointer;border:2px solid var(--ac);background:var(--s2);padding:10px 12px;transition:all .15s">
+          <div style="font-family:var(--mo);font-size:8px;color:var(--ac);letter-spacing:1px;margin-bottom:4px">📊 DISTRIBUCIÓN</div>
+          <div id="inv-dist-disp" style="font-family:var(--mo);font-size:15px;font-weight:700;color:var(--ac)">—</div>
+          <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-top:2px">ARS disponible</div>
+        </div>
+        <div id="inv-fuente-lext" onclick="invSelFuente('liquidez_externa')"
+          style="cursor:pointer;border:2px solid var(--br);background:var(--s2);padding:10px 12px;transition:all .15s;opacity:.6">
+          <div style="font-family:var(--mo);font-size:8px;color:var(--tx2);letter-spacing:1px;margin-bottom:4px">💰 LIQ. EXTERNA</div>
+          <div id="inv-lext-disp" style="font-family:var(--mo);font-size:15px;font-weight:700;color:var(--tx)">—</div>
+          <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-top:2px">USD disponible</div>
+        </div>
+      </div>
+      <input type="hidden" id="inv-fuente" value="distribucion">
+    </div>
+
+    <div class="fr2">
+      <!-- FECHA -->
+      <div><label>Fecha</label><input type="date" id="inv-fecha"></div>
+
+      <!-- MONEDA ORIGEN (solo muestra lo disponible en la fuente seleccionada) -->
+      <div>
+        <label id="inv-lbl-moneda-origen">Moneda disponible</label>
+        <select id="inv-moneda-origen" onchange="invActualizarCampos()">
+          <option value="ARS">🪙 ARS</option>
+        </select>
+      </div>
+
+      <!-- MONTO -->
+      <div style="grid-column:1/-1">
+        <label id="inv-lbl-monto">Monto a usar</label>
+        <div style="display:flex;gap:5px;margin-bottom:6px;flex-wrap:wrap">
+          <button class="tgb" style="font-size:9px;min-height:30px;padding:2px 10px;flex:1" onclick="invUsarPct(25)">25%</button>
+          <button class="tgb" style="font-size:9px;min-height:30px;padding:2px 10px;flex:1" onclick="invUsarPct(50)">50%</button>
+          <button class="tgb" style="font-size:9px;min-height:30px;padding:2px 10px;flex:1" onclick="invUsarPct(75)">75%</button>
+          <button class="tgb" style="font-size:9px;min-height:30px;padding:2px 10px;flex:1" onclick="invUsarPct(100)">100%</button>
+        </div>
+        <input type="number" id="inv-monto" placeholder="0" min="0" step="any" oninput="invCalcular();invMostrarPct()">
+        <div id="inv-pct-display" style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:4px;height:14px"></div>
+      </div>
+
+      <!-- ACTIVO DESTINO -->
+      <div>
+        <label>Activo destino</label>
+        <select id="inv-moneda-destino" onchange="invActualizarCampos()">
+          <option value="BTC">₿ BTC</option>
+          <option value="USD">💵 USD</option>
+          <option value="USDT">🔵 USDT</option>
+          <option value="ARS">🪙 ARS</option>
+        </select>
+      </div>
+
+      <!-- PRECIO DE COMPRA -->
+      <div id="inv-wrap-precio" style="grid-column:1/-1">
+        <label id="inv-lbl-precio">Precio de compra</label>
+        <input type="number" id="inv-precio" placeholder="0" min="0" step="any" oninput="invCalcular()">
+      </div>
+
+      <!-- NOTA -->
+      <div style="grid-column:1/-1"><label>Nota (opcional)</label>
+        <input type="text" id="inv-nota" placeholder="ej: compra DCA">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">🟡 Resultado</div>
+    <div id="inv-resultado" style="font-family:var(--mo);font-size:11px;color:var(--tx3);padding:8px">Completá los campos para ver el resultado.</div>
+    <div class="tbar" id="inv-tbar" style="display:none">
+      <div>
+        <div class="tlbl">Cantidad adquirida</div>
+        <div class="tamt" id="inv-cantidad" style="color:var(--wn)">—</div>
+        <div class="tusdt" id="inv-impacto" style="color:var(--tx2)"></div>
+      </div>
+      <button class="btn btn-s" onclick="invReset()">↺ Reset</button>
+    </div>
+  </div>
+  <button class="gbtn" onclick="invGenerar()" style="background:var(--wn);color:#000">🟡 REGISTRAR INVERSIÓN</button>
+  <div id="inv-outA" style="display:none">
+    <div class="card">
+      <div class="ct">🟡 Inversión Registrada</div>
+      <div class="tkout" id="inv-tkOut" style="border-left-color:var(--wn)"></div>
+      <div class="tkact">
+        <button class="cpb" onclick="navigator.clipboard.writeText(document.getElementById('inv-tkOut').textContent).then(function(){sN('Copiado');});">⎘ Copiar</button>
+        <button class="cpb" onclick="invReset()">↺ Nueva</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORIAL DE INVERSIONES -->
+  <div class="card">
+    <div class="ct">🟡 Historial de Inversiones</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <select id="filtInvActivo" onchange="invRenderHistorial()" style="flex:1;min-width:110px">
+        <option value="all">Todos los activos</option>
+        <option value="BTC">₿ Bitcoin</option>
+        <option value="USD_BLUE">💵 Dólar Blue</option>
+        <option value="REPO">📦 REPO</option>
+      </select>
+      <select id="filtInvEstado" onchange="invRenderHistorial()" style="flex:1;min-width:110px">
+        <option value="all">Todos los estados</option>
+        <option value="ACTIVA">🟢 Activa</option>
+        <option value="LIQUIDADA">⚫ Liquidada</option>
+      </select>
+      <button class="btn btn-d" onclick="invAnularModal()" style="padding:0 10px;font-size:9px">🗑 Anular ID</button>
+      <button class="btn btn-d" onclick="invLimpiar()" style="padding:0 10px;font-size:9px">⚠ Limpiar todo</button>
+    </div>
+    <div id="invHistorial"><div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Sin inversiones registradas</div></div>
+  </div>
+
+</div>
+
+
+<!-- ══ PRODUCTOS 🔧 ══ -->
+<div class="panel" id="tab-productos" style="display:none!important">
+  <!-- contenido movido a tab-inventario -->
+</div>
+
+<!-- ══ SETTINGS ══ -->
+<div class="panel" id="tab-settings">
+  <div class="card">
+    <div class="ct">🎨 Tema Visual</div>
+    <p style="font-family:var(--mo);font-size:9px;color:var(--tx2);margin-bottom:16px;line-height:1.6">Cambiá el estilo visual del sistema con un solo click. El tema se guarda automáticamente.</p>
+
+    <!-- THEME CARDS -->
+    <div id="themeCards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+
+      <!-- CARD: DARK (default) -->
+      <div class="theme-card" id="tc-dark" onclick="applyPreset('dark')" style="cursor:pointer;border:2px solid var(--br);border-radius:8px;overflow:hidden;transition:all .2s;position:relative">
+        <div style="background:#0a0a0f;padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:10px;height:10px;border-radius:2px;background:#00e5a0"></div>
+            <span style="font-family:'Space Mono',monospace;font-size:9px;color:#00e5a0;letter-spacing:1px">MOTOR EDGE</span>
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:6px">
+            <div style="flex:1;height:18px;background:#111118;border:1px solid #2a2a3a;border-radius:2px"></div>
+            <div style="flex:1;height:18px;background:#111118;border:1px solid #2a2a3a;border-radius:2px"></div>
+          </div>
+          <div style="height:2px;background:linear-gradient(90deg,#00e5a0,transparent);border-radius:1px"></div>
+        </div>
+        <div style="background:#0d0d14;padding:8px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Space Mono',monospace;font-size:9px;color:#8888a0">🌑 Dark <span style="font-size:8px;opacity:.6">(Legacy)</span></span>
+          <span id="tc-dark-badge" style="font-family:'Space Mono',monospace;font-size:7px;color:#00e5a0;background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.2);padding:2px 6px;border-radius:3px;display:none">● ACTIVO</span>
+        </div>
+      </div>
+
+      <!-- CARD: MODERN (BTC style) -->
+      <div class="theme-card" id="tc-modern" onclick="applyPreset('modern')" style="cursor:pointer;border:2px solid var(--br);border-radius:8px;overflow:hidden;transition:all .2s;position:relative">
+        <div style="background:#050a0e;padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:10px;height:10px;border-radius:2px;background:linear-gradient(135deg,#f5a623,#ffd166)"></div>
+            <span style="font-family:'Syne',sans-serif;font-size:9px;color:#f5a623;font-weight:700;letter-spacing:.5px">MOTOR EDGE</span>
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:6px">
+            <div style="flex:1;height:18px;background:#0d1e2d;border:1px solid #1a3a52;border-radius:6px"></div>
+            <div style="flex:1;height:18px;background:#0d1e2d;border:1px solid #1a3a52;border-radius:6px"></div>
+          </div>
+          <div style="height:2px;background:linear-gradient(90deg,#f5a623,transparent);border-radius:1px"></div>
+        </div>
+        <div style="background:#040810;padding:8px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#6b8fa8">✦ Modern <span style="font-size:8px;color:#f5a623;opacity:.8">(BTC Style)</span></span>
+          <span id="tc-modern-badge" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:#f5a623;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);padding:2px 6px;border-radius:3px;display:none">● ACTIVO</span>
+        </div>
+      </div>
+
+      <!-- CARD: LIGHT -->
+      <div class="theme-card" id="tc-light" onclick="applyPreset('light')" style="cursor:pointer;border:2px solid var(--br);border-radius:8px;overflow:hidden;transition:all .2s">
+        <div style="background:#f0f0f5;padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:10px;height:10px;border-radius:2px;background:#00c888"></div>
+            <span style="font-family:'Space Mono',monospace;font-size:9px;color:#00c888;letter-spacing:1px">MOTOR EDGE</span>
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:6px">
+            <div style="flex:1;height:18px;background:#fff;border:1px solid #c8c8d8;border-radius:2px"></div>
+            <div style="flex:1;height:18px;background:#fff;border:1px solid #c8c8d8;border-radius:2px"></div>
+          </div>
+          <div style="height:2px;background:linear-gradient(90deg,#00c888,transparent);border-radius:1px"></div>
+        </div>
+        <div style="background:#e8e8f0;padding:8px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Space Mono',monospace;font-size:9px;color:#44445a">☀️ Light</span>
+          <span id="tc-light-badge" style="font-family:'Space Mono',monospace;font-size:7px;color:#00c888;background:rgba(0,200,136,.1);border:1px solid rgba(0,200,136,.2);padding:2px 6px;border-radius:3px;display:none">● ACTIVO</span>
+        </div>
+      </div>
+
+      <!-- CARD: BLUE -->
+      <div class="theme-card" id="tc-blue" onclick="applyPreset('blue')" style="cursor:pointer;border:2px solid var(--br);border-radius:8px;overflow:hidden;transition:all .2s">
+        <div style="background:#080c18;padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:10px;height:10px;border-radius:2px;background:#4488ff"></div>
+            <span style="font-family:'Space Mono',monospace;font-size:9px;color:#4488ff;letter-spacing:1px">MOTOR EDGE</span>
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:6px">
+            <div style="flex:1;height:18px;background:#0e1428;border:1px solid #1a2a44;border-radius:2px"></div>
+            <div style="flex:1;height:18px;background:#0e1428;border:1px solid #1a2a44;border-radius:2px"></div>
+          </div>
+          <div style="height:2px;background:linear-gradient(90deg,#4488ff,transparent);border-radius:1px"></div>
+        </div>
+        <div style="background:#060a14;padding:8px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Space Mono',monospace;font-size:9px;color:#6688aa">🔵 Blue</span>
+          <span id="tc-blue-badge" style="font-family:'Space Mono',monospace;font-size:7px;color:#4488ff;background:rgba(68,136,255,.1);border:1px solid rgba(68,136,255,.2);padding:2px 6px;border-radius:3px;display:none">● ACTIVO</span>
+        </div>
+      </div>
+
+      <!-- CARD: RED -->
+      <div class="theme-card" id="tc-red" onclick="applyPreset('red')" style="cursor:pointer;border:2px solid var(--br);border-radius:8px;overflow:hidden;transition:all .2s">
+        <div style="background:#0f0808;padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:10px;height:10px;border-radius:2px;background:#ff4455"></div>
+            <span style="font-family:'Space Mono',monospace;font-size:9px;color:#ff4455;letter-spacing:1px">MOTOR EDGE</span>
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:6px">
+            <div style="flex:1;height:18px;background:#1a0e0e;border:1px solid #3a1a1a;border-radius:2px"></div>
+            <div style="flex:1;height:18px;background:#1a0e0e;border:1px solid #3a1a1a;border-radius:2px"></div>
+          </div>
+          <div style="height:2px;background:linear-gradient(90deg,#ff4455,transparent);border-radius:1px"></div>
+        </div>
+        <div style="background:#0c0606;padding:8px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Space Mono',monospace;font-size:9px;color:#aa7070">🔴 Red</span>
+          <span id="tc-red-badge" style="font-family:'Space Mono',monospace;font-size:7px;color:#ff4455;background:rgba(255,68,85,.1);border:1px solid rgba(255,68,85,.2);padding:2px 6px;border-radius:3px;display:none">● ACTIVO</span>
+        </div>
+      </div>
+
+      <!-- CARD: PURPLE -->
+      <div class="theme-card" id="tc-purple" onclick="applyPreset('purple')" style="cursor:pointer;border:2px solid var(--br);border-radius:8px;overflow:hidden;transition:all .2s">
+        <div style="background:#0a080f;padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+            <div style="width:10px;height:10px;border-radius:2px;background:#b066ff"></div>
+            <span style="font-family:'Space Mono',monospace;font-size:9px;color:#b066ff;letter-spacing:1px">MOTOR EDGE</span>
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:6px">
+            <div style="flex:1;height:18px;background:#130e1a;border:1px solid #2a1a3a;border-radius:2px"></div>
+            <div style="flex:1;height:18px;background:#130e1a;border:1px solid #2a1a3a;border-radius:2px"></div>
+          </div>
+          <div style="height:2px;background:linear-gradient(90deg,#b066ff,transparent);border-radius:1px"></div>
+        </div>
+        <div style="background:#080610;padding:8px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Space Mono',monospace;font-size:9px;color:#9977bb">🟣 Purple</span>
+          <span id="tc-purple-badge" style="font-family:'Space Mono',monospace;font-size:7px;color:#b066ff;background:rgba(176,102,255,.1);border:1px solid rgba(176,102,255,.2);padding:2px 6px;border-radius:3px;display:none">● ACTIVO</span>
+        </div>
+      </div>
+
+    </div><!-- /themeCards -->
+
+    <div id="apRes" style="font-family:var(--mo);font-size:10px;margin-bottom:10px"></div>
+  </div>
+
+  <!-- CUSTOMIZACIÓN AVANZADA -->
+  <div class="card">
+    <div class="ct" style="cursor:pointer;user-select:none" onclick="toggleAparienciaAvanzada()">⚙️ Personalización Avanzada <span id="ap-adv-icon" style="font-size:10px;color:var(--tx3);margin-left:6px">▼</span></div>
+    <div id="ap-avanzada" style="display:none">
+      <p style="font-family:var(--mo);font-size:9px;color:var(--tx2);margin-bottom:12px;line-height:1.6">Ajustá colores individualmente. Los cambios se aplican de inmediato.</p>
+      <div class="fr2" style="margin-bottom:10px">
+        <div><label>Nombre del sistema</label><input type="text" id="ap-nombre" placeholder="MOTOR EDGE" maxlength="24"></div>
+        <div><label>Subtítulo / versión</label><input type="text" id="ap-version" placeholder="3.9-E" maxlength="12"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label>Color de acento</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="color" id="ap-ac" style="width:48px;height:48px;padding:2px;cursor:pointer;min-height:unset">
+            <input type="text" id="ap-ac-hex" placeholder="#00e5a0" maxlength="7" style="flex:1;font-size:12px" oninput="syncColorFromHex('ap-ac','ap-ac-hex')">
+          </div>
+        </div>
+        <div>
+          <label>Color de fondo</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="color" id="ap-bg" style="width:48px;height:48px;padding:2px;cursor:pointer;min-height:unset">
+            <input type="text" id="ap-bg-hex" placeholder="#0a0a0f" maxlength="7" style="font-size:12px;flex:1" oninput="syncColorFromHex('ap-bg','ap-bg-hex')">
+          </div>
+        </div>
+        <div>
+          <label>Texto principal</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="color" id="ap-tx" style="width:48px;height:48px;padding:2px;cursor:pointer;min-height:unset">
+            <input type="text" id="ap-tx-hex" placeholder="#e8e8f0" maxlength="7" style="font-size:12px;flex:1" oninput="syncColorFromHex('ap-tx','ap-tx-hex')">
+          </div>
+        </div>
+        <div>
+          <label>Texto secundario</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="color" id="ap-tx2" style="width:48px;height:48px;padding:2px;cursor:pointer;min-height:unset">
+            <input type="text" id="ap-tx2-hex" placeholder="#8888a0" maxlength="7" style="font-size:12px;flex:1" oninput="syncColorFromHex('ap-tx2','ap-tx2-hex')">
+          </div>
+        </div>
+        <div>
+          <label>Color de superficie</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="color" id="ap-s1" style="width:48px;height:48px;padding:2px;cursor:pointer;min-height:unset">
+            <input type="text" id="ap-s1-hex" placeholder="#111118" maxlength="7" style="font-size:12px;flex:1" oninput="syncColorFromHex('ap-s1','ap-s1-hex')">
+          </div>
+        </div>
+        <div>
+          <label>Borde / separador</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="color" id="ap-br" style="width:48px;height:48px;padding:2px;cursor:pointer;min-height:unset">
+            <input type="text" id="ap-br-hex" placeholder="#2a2a3a" maxlength="7" style="font-size:12px;flex:1" oninput="syncColorFromHex('ap-br','ap-br-hex')">
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-p" onclick="guardarApariencia()">💾 Guardar apariencia</button>
+        <button class="btn btn-s" onclick="resetApariencia()">↺ Restaurar default</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTADO DEL SISTEMA -->
+  <div class="card" id="io-status-card">
+    <div class="ct" style="justify-content:space-between">
+      <span>💾 Estado del Sistema</span>
+      <button class="pm-btn" onclick="renderIOStatus()" style="font-size:8px">⟳ Actualizar</button>
+    </div>
+    <div id="io-status-body" style="padding:4px 0"></div>
+  </div>
+
+  <!-- GITHUB SYNC -->
+  <div class="card">
+    <div class="ct">☁ GitHub Sync</div>
+    <div style="font-family:var(--mo);font-size:9px;color:var(--tx2);margin-bottom:12px;line-height:1.8">
+      Guardá y sincronizá tus datos en GitHub.<br>
+      El token se guarda solo en este dispositivo (localStorage).
+    </div>
+    <div id="ghStatus" style="font-family:var(--mo);font-size:10px;margin-bottom:10px;padding:8px;background:var(--s2);border:1px solid var(--br);display:none"></div>
+    <div class="fr2" style="margin-bottom:10px">
+      <div>
+        <label>GitHub Token (Personal Access Token)</label>
+        <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" style="font-size:11px">
+      </div>
+      <div>
+        <label>Usuario / Repo</label>
+        <input type="text" id="ghRepo" placeholder="fungiabduction-ui/cashflow" value="fungiabduction-ui/cashflow" style="font-size:11px">
+      </div>
+      <div>
+        <label>Archivo de datos</label>
+        <input type="text" id="ghFile" placeholder="datos.json" value="datos.json" style="font-size:11px">
+      </div>
+    </div>
+    <div class="btn-row" style="margin-bottom:10px">
+      <button class="btn btn-s" onclick="ghSaveToken()">🔑 Acceso</button>
+      <button class="btn btn-s" onclick="ghTestConn()">🔌 Probar conexión</button>
+    </div>
+    <div class="dv"></div>
+    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin:10px 0 6px;letter-spacing:1px">SINCRONIZACIÓN</div>
+    <div class="btn-row">
+      <button class="btn btn-s" onclick="ghPush(true)" id="ghPushBtn">⚠️ Guardar en GitHub</button>
+      <button class="btn btn-s" onclick="ghPull(true)" id="ghPullBtn">⬇ Cargar desde GitHub</button>
+    </div>
+    <div id="ghSyncInfo" style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:8px"></div>
+    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-top:10px;line-height:1.8;background:var(--s2);border:1px solid var(--br);padding:8px">
+      Auto-sync: se guarda en GitHub automáticamente cada vez que registrás una venta, egreso o inversión.
+    </div>
+    <div class="dv" style="margin-top:14px"></div>
+    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin:10px 0 6px;letter-spacing:1px">🔒 BACKUP DE SEGURIDAD (INMUTABLE POR FECHA)</div>
+    <div style="font-family:var(--mo);font-size:9px;color:var(--tx2);margin-bottom:10px;line-height:1.7">
+      Copia de seguridad manual que <b>nunca se sobreescribe</b>.<br>
+      Se guarda en una carpeta <code style="background:var(--s3);padding:1px 4px">backups/</code> con fecha en el nombre.
+    </div>
+    <div id="ghBackupStatus" style="font-family:var(--mo);font-size:10px;margin-bottom:10px;padding:8px;background:var(--s2);border:1px solid var(--br);display:none"></div>
+    <div class="btn-row">
+      <button class="btn btn-s-glow" onclick="ghBackupNow()">🔒 Guardar backup ahora</button>
+      <button class="btn btn-s" onclick="ghListBackups()">📋 Ver backups</button>
+    </div>
+    <div id="ghBackupList" style="margin-top:10px"></div>
+  </div>
+
+  <!-- DATOS: BACKUP + RESTORE -->
+  <div class="card">
+    <div class="ct">📂 Datos</div>
+    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-bottom:8px;letter-spacing:1px">BACKUP LOCAL</div>
+    <button class="btn btn-p" onclick="expJSON()" style="width:100%;margin-bottom:6px">⬇ Descargar backup JSON</button>
+    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);padding:6px 8px;background:var(--s2);border:1px solid var(--br);margin-bottom:16px">
+      Incluye todo: ventas, egresos, inversiones, productos, listas de precios, stock y lotes.
+    </div>
+    <div class="dv"></div>
+    <button class="btn btn-s" onclick="document.getElementById('jsonFileInput').click()">📂 Restaurar desde .json</button>
+    <input type="file" id="jsonFileInput" accept=".json" style="display:none" onchange="impJSONFile(this)">
+    <div class="impres" id="impRes"></div>
+  </div>
+
+  <!-- ZONA DE PELIGRO -->
+  <div class="card" style="border-color:rgba(255,68,85,.35)">
+    <div class="ct" style="color:var(--er)">⚠️ Zona de Peligro</div>
+    <p style="font-family:var(--mo);font-size:9px;color:var(--tx2);margin-bottom:14px;line-height:1.7">
+      Borra <strong>todo</strong> el sistema de forma permanente e irreversible.<br>
+      Se descarga un backup automático antes de pedir confirmación.
+    </p>
+    <button class="btn" style="background:rgba(255,68,85,.1);border:1px solid rgba(255,68,85,.6);color:var(--er);font-weight:700;letter-spacing:.5px" onclick="hardReset()">
+      🔴 HARD RESET — Borrar todo
+    </button>
+  </div>
+
+</div>
+
+<!-- MODAL GENÉRICO -->
+<div class="mov" id="modal">
+  <div class="modal" id="modalBox">
+    <div class="mtit" id="mTitEl">Detalle</div>
+    <div class="mtk" id="mTk" style="display:none"></div>
+    <div id="mBody"></div>
+    <div style="display:flex;gap:8px;margin-top:12px" id="mFooter">
+      <button class="btn btn-s" onclick="cpM()">⎘ Copiar</button>
+      <button class="btn btn-s" onclick="clM()">✕ Cerrar</button>
+    </div>
+  </div>
+</div>
+<div class="notif" id="notif"></div>
+
+<script src="bundle.js"></script>
+
+</body>
+</html>
