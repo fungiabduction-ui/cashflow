@@ -65,7 +65,8 @@ export function rEH(){
       <div id="${collapseId}" style="display:${isActual?'block':'none'}">`;
     g[mes].forEach(e=>{
       const eid=e.id;
-      html+=`<div class="hi egr" data-id="${eid}" data-type="egr"><div><div class="hid red">${eid}</div><div class="hdate">${e.fechaDisplay}</div><div class="hclient">${e.concepto}</div></div><span class="badge ber">${e.cuotasTotales>1?e.cuotasTotales+'c':''}</span><div class="htot er">-${fv(e.montoTotal)}</div><button class="hedit" data-edit="${eid}" data-type="egr">EDIT</button><button class="hdel" data-del="${eid}" data-type="egr">×</button></div>`;
+      const mpBadge=e.mpRefId?`<span style="font-family:var(--mo);font-size:8px;background:var(--s2);color:var(--tx3);padding:0 4px;margin-left:4px;border-radius:2px;vertical-align:middle">MP</span>`:'';
+      html+=`<div class="hi egr" data-id="${eid}" data-type="egr"><div><div class="hid red">${eid}</div><div class="hdate">${e.fechaDisplay}</div><div class="hclient">${e.concepto}${mpBadge}</div></div><span class="badge ber">${e.cuotasTotales>1?e.cuotasTotales+'c':''}</span><div class="htot er">-${fv(e.montoTotal)}</div><button class="hedit" data-edit="${eid}" data-type="egr">EDIT</button><button class="hdel" data-del="${eid}" data-type="egr">×</button></div>`;
     });
     html+=`</div></div>`;
   });
