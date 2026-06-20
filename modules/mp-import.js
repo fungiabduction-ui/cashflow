@@ -3,6 +3,11 @@ import { sN } from '../ui/notif.js';
 import { fv, d2s, d2m, addMon } from '../core/formatters.js';
 import { ghAutoPush } from './github.js';
 
+// ── HTML escape helper ──────────────────────────────────────────────────
+function _escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // ── Parser ──────────────────────────────────────────────────────────────
 function parseMPCsv(text) {
   const lines = text.trim().split(/\r?\n/);
@@ -51,7 +56,7 @@ function _mpHandleFile(file) {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => _mpLoadCsv(ev.target.result);
-  reader.readAsText(file, 'UTF-8');
+  reader.readAsText(file, 'ISO-8859-1');
 }
 
 function _mpLoadCsv(text) {
@@ -156,7 +161,7 @@ function _mpPreviewHTML(filas) {
           <input type="checkbox" ${ya ? 'disabled' : `checked onchange="_mpToggleRow()"`} style="accent-color:var(--er)">
         </td>
         <td style="padding:6px 4px;font-family:var(--mo);font-size:10px;color:var(--tx3);white-space:nowrap">${d2s(f.fecha).slice(0,5)}</td>
-        <td style="padding:6px 4px">${badge}<input type="text" value="${f.concepto.replace(/"/g, '&quot;')}" ${ya ? 'disabled' : `onchange="_mpEditConcepto(${i},this.value)"`} style="font-family:var(--mo);font-size:10px;padding:2px 6px;width:90%;border:1px solid;border-radius:2px;outline:none;${inputStyle}"></td>
+        <td style="padding:6px 4px">${badge}<input type="text" value="${_escHtml(f.concepto)}" ${ya ? 'disabled' : `onchange="_mpEditConcepto(${i},this.value)"`} style="font-family:var(--mo);font-size:10px;padding:2px 6px;width:90%;border:1px solid;border-radius:2px;outline:none;${inputStyle}"></td>
         <td style="padding:6px 4px;font-family:var(--mo);font-size:10px;color:var(--er);text-align:right;white-space:nowrap">-${fv(f.monto)}</td>
       </tr>`;
   });
