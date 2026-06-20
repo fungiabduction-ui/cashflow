@@ -332,8 +332,12 @@ export async function ghListBackups(){
     const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/backups',{
       headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
     });
-    if(r.status===404){if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--tx3)">No hay backups guardados todavía.</div>';return;}
-    if(!r.ok){if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--er)">Error al listar backups.</div>';return;}
+    if(r.status===404){
+      const repoR=await fetch('https://api.github.com/repos/'+cfg.repo,{headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}});
+      if(!repoR.ok){if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--er)">ERROR '+repoR.status+': Sin acceso al repo. Verificá el token en la configuración de GitHub.</div>';return;}
+      if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--tx3)">No hay backups guardados todavía.</div>';return;
+    }
+    if(!r.ok){const d=await r.json().catch(()=>({}));if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--er)">Error '+r.status+': '+(d.message||'Error al listar backups.')+'</div>';return;}
     const files=await r.json();
     if(!files.length){if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--tx3)">Sin backups.</div>';return;}
     var html='<div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-bottom:6px;letter-spacing:1px">'+files.length+' BACKUPS GUARDADOS</div>';
