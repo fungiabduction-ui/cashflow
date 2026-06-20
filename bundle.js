@@ -5861,8 +5861,10 @@ function generarTicket(){
 
   const payment=getPayment(totalFinal);
   const mes=d2m(fecha),id=nId(mes),fd=d2s(fecha);
+  const clienteObs=cliente?obfuscarNombreTicket(cliente):null;
   let tk=`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}`;
   if(cliente)tk+=`\n👤 Cliente: ${cliente}`;
+  const _tkHeaderEnd=tk.length;
   tk+=`\n\n🛒 Pedido\n\n`;
   const lns=lineas.map(ln=>`${ln.emoji} ${ln.qty} ${ln.unit} × ${fv(ln.precio)} = ${fv(ln.subtotal)}`);
   if(qV>0)lns.push(`💲 ${fv(qV)}`);
@@ -5938,8 +5940,7 @@ function generarTicket(){
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
-  // tkOut muestra nombre ofuscado — ticketText guardado tiene el nombre real
-  const tkDisplay=cliente?tk.replace(`👤 Cliente: ${cliente}`,`👤 Cliente: ${obfuscarNombreTicket(cliente)}`):tk;
+  const tkDisplay=clienteObs?`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}\n👤 Cliente: ${clienteObs}`+tk.slice(_tkHeaderEnd):tk;
   document.getElementById('tkOut').textContent=tkDisplay;
   document.getElementById('audOut').textContent=aud;
   document.getElementById('outA').style.display='block';
