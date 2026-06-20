@@ -10,6 +10,7 @@ import { getStock, saveStock, getUmbrales, saveUmbrales, getStockMovs, addStockM
 import { getListasPrecios, saveListasPrecios, newListaId, getTramosProducto, renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista, abrirEditarLista, eliminarLista, renderInvPrecios } from './modules/listas-precios.js';
 import { getProductos, saveProductos, updateClientesDatalist, renderPM, aplicarPctTodos, restablecerTramos, renderTramoRows, toggleTramoEditor, updTramoDisc, adjTramoDisc, agregarTramo, eliminarTramo, guardarTramos, toggleActivoProducto, duplicarProducto, abrirNuevoProducto, editarProducto, openProdModal, buildProdModalHTML, onPmListaChange, renderTramosEditor, renderVariantesEditor, setProdTipo, setProdAgrup, syncProdModalUI, addTramoEditor, removeTramoEditor, addVarianteEditor, removeVarianteEditor, updModalDiscs, guardarProductoModal, renderMaestra, abrirTramosEnMaestra, guardarTramosYCerrar, guardarMaestra } from './modules/productos.js';
 import { sE, updEgreso, generarEgreso, limpiarEgr, limpiarEgresos, anularEgresoByIdModal, rEH, rES, openEditEgr, saveEditEgr, bE } from './modules/egresos.js';
+import { renderMPImportModal } from './modules/mp-import.js';
 import { sO, confirmarOrden, rH, rS, toggleHistGrp, toggleTotals, openEditVenta, editRecalcTotal, editUpdateEquiv, editSetMode, saveEditVenta, bO, anularByIdModal, confirLimpiar } from './modules/ventas.js';
 import { getIngresos, saveIngreso, deleteIngreso, consumirStock, renderInvStockTabla, guardarUmbralesDesdeTabla, abrirLotesPanel, cerrarLotesPanel, renderLotesDetalle, renderIngresoForm, ingPreview, registrarIngreso, renderProductosRegistrados, eliminarProductoRegistrado, renderIngresosHistorial, editarIngreso, eliminarIngreso, renderInvStock, renderInventario, renderInventarioTabla, renderStockHistorial, descontarStockPorTicket, renderStockMiniPanel, renderDashStock, renderStockEntryForm, generarStockTicket, invSubNav, onInvPeriodoChange } from './modules/inventario.js';
 import { renderSettings } from './modules/settings.js';
@@ -115,7 +116,7 @@ Object.assign(window, {
   openEditVenta, editRecalcTotal, editUpdateEquiv, editSetMode, saveEditVenta,
   // egresos
   sE, updEgreso, generarEgreso, limpiarEgr, limpiarEgresos, rEH, rES, bE,
-  openEditEgr, saveEditEgr, anularEgresoByIdModal,
+  openEditEgr, saveEditEgr, anularEgresoByIdModal, renderMPImportModal,
   // dashboard
   renderDash, onDashMesChange, renderDashFlowChart, setFlowPer, setBtcDays,
   fetchBtcHistorico, toggleChart,
