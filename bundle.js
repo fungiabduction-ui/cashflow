@@ -1728,7 +1728,7 @@ async function ghSyncCalc(){
 }
 
 // ── UI HELPERS ──
-const fi=n=>n==null?'—':Math.round(n).toLocaleString('es-AR');
+// fi() ya está disponible desde core/formatters.js en el bundle
 const escHtml=s=>s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';
 
 function renderSyncBanner(){
