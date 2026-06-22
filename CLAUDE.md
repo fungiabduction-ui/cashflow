@@ -13,6 +13,7 @@ SPA vanilla JS sin framework, sin bundler externo, sin backend.
 |---|---|---|
 | `fungiabduction-ui/cashflow` | 🌍 Público | Solo código fuente. NUNCA datos financieros. |
 | `fungiabduction-ui/motoredge-data` | 🔒 Privado | `datos.json` + `backups/` — sincronización de la app. |
+| `fungiabduction-ui/calculadora` | 🌍 Público | Calculadora pública (GitHub Pages). Recibe `precios.json` via `ghSyncCalc()` desde MotorEdge. |
 
 **`datos.json` y `backups/` están en `.gitignore` del repo `cashflow`.** No los agregues nunca al repo público.
 
@@ -24,6 +25,28 @@ SPA vanilla JS sin framework, sin bundler externo, sin backend.
 - Email git: `jetdatalog@gmail.com`
 - Personal Access Token: leerlo desde `token github.txt` (en raíz del proyecto, gitignored).
   Si no existe, pedirle al usuario — va a `github.com/settings/tokens`
+  **Formato del archivo** (tiene etiquetas, el token está en línea 2):
+  ```
+  GitHub Token (Personal Access Token)
+  ghp_xxxxxxxxxxxxxxxxxxxx
+  
+  Usuario / Repo
+  fungiabduction-ui/cashflow
+  BACKUP
+  fungiabduction-ui/motoredge-data
+  
+  Archivo de datos
+  datos.json
+  ```
+  Para leerlo correctamente en PowerShell: `(Get-Content "token github.txt")[1].Trim()`
+
+### Verificación de sincronía local ↔ GitHub
+```powershell
+git fetch origin main
+git log HEAD..origin/main --oneline   # commits en remoto que no están en local
+git log origin/main..HEAD --oneline   # commits en local que no están en remoto
+```
+La rama local se llama `clean-main`, el remoto es `origin/main`. Verificado en sync al 2026-06-20 (commit `5a4c5bf`).
 
 ### Workflow para agentes que hacen cambios en código fuente
 
@@ -126,6 +149,10 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── stock.js        ← getLotes(), saveLotes(), getCostoPromedio(), getActualQty(), getStockStatus()
 │   ├── productos.js    ← getProductos(), saveProductos(), guardarProductoModal(), updateClientesDatalist()
 │   ├── listas-precios.js ← getListasPrecios(), getTramosProducto(), renderListasPrecios()
+│   ├── price-manager.js ← applyPriceAdjustment(), previewAjuste(), validarAjuste(), getPriceLog(),
+│   │                      buildPreciosJson(), ghSyncCalc(), renderPriceAdjust(), renderPriceLog()
+│   │                      Log en 'me_price_log' (append-only, IDs PCH-AAAAMM-NNN, Math.trunc)
+│   │                      ghSyncCalc() pushea precios.json a fungiabduction-ui/calculadora
 │   ├── settings.js     ← renderSettings(), guardarPrecios(), resetPrecios()
 │   ├── contactos.js    ← normNombre(), autoRegistrarContacto(), mostrarMigracionContactos(),
 │   │                     ejecutarMigracionContactos(), renderContactos(), abrirContacto()
@@ -133,6 +160,7 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── apariencia.js   ← applyApariencia(), PRESETS, guardarApariencia()
 │   └── io.js           ← expJSON(), expCSV(), expXLSX(), impJSONFile(), hardReset()
 │                         (impJSON, impMerge, handleXlsxFile ELIMINADOS — no reintroducirlos)
+│                         expJSON() incluye _priceLog; impJSONFile() lo restaura; hardReset() lo limpia
 │
 ├── ui/
 │   ├── notif.js        ← sN(msg, err) — notificación toast
@@ -184,6 +212,8 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
 - `me_apariencia` — colores y tema visual
 - `me_theme` — 'light' | 'dark' | 'modern'
 - `me_gh_last_push` — timestamp del último push
+- `me_price_log` — log de cambios de precios (auditoría). Array de `{id, ts, motivo, tipo, valor, scope, cambios}`. Append-only. IDs `PCH-AAAAMM-NNN` con Math.max. Incluido en expJSON() / impJSONFile().
+- `me_gh_calc_last` — timestamp del último sync con la calculadora pública (`ghSyncCalc()`)
 
 ---
 
