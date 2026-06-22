@@ -468,10 +468,6 @@ async function initTracker() {
       const qs = '?action=check_status&ip=' + encodeURIComponent(_cachedIP) + '&session_id=' + encodeURIComponent(getSessionId());
       const res = await fetch(APPS_SCRIPT_URL + qs).then(r => r.json());
       
-      if (res && res.estado === 'BLOQUEADO') {
-        document.body.innerHTML = '<div style="padding:40px;text-align:center;color:var(--er);font-family:var(--mo);margin-top:20vh;font-size:18px;">ACCESO RESTRINGIDO<br><span style="font-size:11px;color:var(--tx3)">Demasiadas solicitudes sospechosas desde esta IP.</span></div>';
-        return;
-      }
       if (res && res.ultima_cotizacion && res.ultima_cotizacion.length > 0) {
         mostrarSmartCart(res.ultima_cotizacion);
       }
