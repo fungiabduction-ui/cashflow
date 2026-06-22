@@ -6409,6 +6409,7 @@ function expJSON(){
   d._distSlices=window._getDistSlices?.();
   d._liqDistSlices=window._getLiqDistSlices?.();
   d._distKpiHidden=window._getDistKpiHidden?.();
+  d._priceLog=JSON.parse(localStorage.getItem('me_price_log')||'[]');
   d._exportedAt=new Date().toISOString();
   d._version='motoredge_v5';
   d._meta={
@@ -6776,7 +6777,8 @@ function impJSONFile(input){
       if(d._distSlices){window._setDistSlices?.(d._distSlices);saveDistSlices();}
       if(d._liqDistSlices){window._setLiqDistSlices?.(d._liqDistSlices);saveLiqSlices();}
       if(d._distKpiHidden){window._setDistKpiHidden?.(d._distKpiHidden);saveKpiHidden();}
-      delete d._distSlices;delete d._liqDistSlices;delete d._distKpiHidden;
+      if(d._priceLog&&Array.isArray(d._priceLog)){localStorage.setItem('me_price_log',JSON.stringify(d._priceLog));}
+      delete d._distSlices;delete d._liqDistSlices;delete d._distKpiHidden;delete d._priceLog;
       delete d._exportedAt;delete d._version;delete d._meta;delete d._savedAt;
       sd(d);
       window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
@@ -6807,6 +6809,8 @@ function hardReset(){
     {k:'me_apariencia',   d:'Colores y tema personalizados'},
     {k:'me_theme',        d:'Preferencia de tema (dark/light/modern)'},
     {k:'me_gh_last_push', d:'Timestamp del último push a GitHub'},
+    {k:'me_price_log',    d:'Log de cambios de precios (auditoría)'},
+    {k:'me_gh_calc_last', d:'Timestamp del último sync con la calculadora'},
   ];
   const present=KEYS.filter(x=>localStorage.getItem(x.k)!==null);
   if(!present.length){sN('No hay datos que borrar');return;}
