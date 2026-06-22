@@ -4,7 +4,7 @@ import { DPT, DCT, DHT, DGP, DPP, DCOSTS, DEFAULT_PRODUCTS, DEFAULT_LISTAS_PRECI
 import { SK, ld, sd, gO, gOConf, gE, dO, dE, gInv, dInv, gLiqExterna, dLiqExterna } from './core/storage.js';
 import { nId, nEId, newIngresoId, invNuevoId } from './core/ids.js';
 import { PT, CT, HT, GP, PP, COSTS, loadConfig, initConfigDeps } from './core/config.js';
-import { renderIOStatus, ghCfg, ghStatus, ghSyncInfo, safeB64Encode, safeB64Decode, ghSaveToken, ghLoadConfig, ghTestConn, ghPush, ghPull, ghAutoPush, ghBackupNow, ghListBackups, ghInit } from './modules/github.js';
+import { renderIOStatus, ghCfg, ghStatus, ghSyncInfo, safeB64Encode, safeB64Decode, ghSaveToken, ghLoadConfig, ghTestConn, ghPush, ghPull, ghAutoPush, ghBackupNow, ghListBackups, ghRestoreBackup, ghInit } from './modules/github.js';
 import { getApariencia, saveApariencia, applyApariencia, lighten, loadAparienciaForm, syncColorFromHex, applyPreset, updateThemeCards, toggleAparienciaAvanzada, guardarApariencia, resetApariencia } from './modules/apariencia.js';
 import { getStock, saveStock, getUmbrales, saveUmbrales, getStockMovs, addStockMov, limpiarMovsStock, eliminarMov, getStockStatus, skPill, stockStatusBadge, getAllStockItems, getLotes, saveLotes, getLotesItem, getLotesActivos, getStockFromLotes, getCostoPromedio, getStockGrupo, getCostoPromedioGrupo, getActualQty } from './modules/stock.js';
 import { getListasPrecios, saveListasPrecios, newListaId, getTramosProducto, renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista, abrirEditarLista, eliminarLista, renderInvPrecios, renderWAText } from './modules/listas-precios.js';
@@ -152,7 +152,7 @@ Object.assign(window, {
   // io
   expJSON, expCSV, expXLSX, impJSONFile, hardReset,
   // github
-  ghSaveToken, ghTestConn, ghPush, ghPull, ghBackupNow, ghListBackups,
+  ghSaveToken, ghTestConn, ghPush, ghPull, ghBackupNow, ghListBackups, ghRestoreBackup,
   // apariencia
   guardarApariencia, resetApariencia, applyPreset, syncColorFromHex,
   toggleAparienciaAvanzada, loadAparienciaForm, updateThemeCards,

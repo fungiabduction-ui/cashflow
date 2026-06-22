@@ -344,11 +344,38 @@ export async function ghListBackups(){
     files.slice().reverse().forEach(function(f){
       html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:var(--s2);border:1px solid var(--br);margin-bottom:4px">'
         +'<span style="font-family:var(--mo);font-size:9px;color:var(--tx)">'+f.name+'</span>'
-        +'<a href="'+f.download_url+'" target="_blank" style="font-family:var(--mo);font-size:8px;color:var(--ac2);text-decoration:none">⬇ descargar</a>'
+        +'<button onclick="ghRestoreBackup(\''+f.path+'\')" style="background:none;border:1px solid var(--ac2);color:var(--ac2);font-family:var(--mo);font-size:8px;padding:3px 8px;cursor:pointer">↩ restaurar</button>'
         +'</div>';
     });
     if(el)el.innerHTML=html;
   }catch(e){if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--er)">ERROR: '+e.message+'</div>';}
+}
+
+export async function ghRestoreBackup(path){
+  const name=path.split('/').pop();
+  if(!confirm('¿Restaurar desde "'+name+'"?\nEsto sobreescribirá los datos actuales.'))return;
+  const cfg=ghCfg();
+  sN('Restaurando...');
+  try{
+    const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+path+'?t='+Date.now(),{
+      headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
+    });
+    if(!r.ok){const d=await r.json().catch(()=>({}));sN('Error '+r.status+': '+(d.message||'No se pudo leer el backup'),true);return;}
+    const meta=await r.json();
+    const jsonStr=safeB64Decode(meta.content.replace(/\n/g,''));
+    const decoded=JSON.parse(jsonStr);
+    if(!decoded.orders||!Array.isArray(decoded.orders))throw new Error('Formato inválido');
+    delete decoded._version;delete decoded._savedAt;delete decoded._meta;
+    sd(decoded);
+    loadConfig();buildTicketUI();upd();
+    rfM();rH();rS();rEH();rES();renderDash();renderSettings();
+    try{renderInventario();}catch(e){}
+    try{if(typeof renderInvAll==='function')renderInvAll();}catch(e){}
+    try{rfInvM();}catch(e){}
+    updateClientesDatalist();uhd();
+    sN('✓ Restaurado desde '+name);
+    ghStatus('OK — restaurado desde backup: <b>'+name+'</b>',false);
+  }catch(e){sN('ERROR al restaurar: '+e.message,true);}
 }
 
 export function ghInit(){
