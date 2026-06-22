@@ -169,6 +169,7 @@ export async function ghSyncCalc(){
 
 // ── UI HELPERS ──
 const fi=n=>n==null?'—':Math.round(n).toLocaleString('es-AR');
+const escHtml=s=>s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';
 
 function renderSyncBanner(){
   const el=document.getElementById('price-sync-banner');if(!el)return;
@@ -233,7 +234,7 @@ export function renderPricePreview(){
   const fi2=n=>('$'+fi(n));
   let html=`<div style="background:var(--s1);border:1px solid var(--ac)30;margin-bottom:12px">
     <div style="background:var(--bg);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--br)">
-      <span style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac)">PREVIEW · ${scope==='all'?'Todas las listas':scope} · ${pct>0?'+':''}${pct}%</span>
+      <span style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac)">PREVIEW · ${scope==='all'?'Todas las listas':(cambios[0]?.listaNombre||scope)} · ${pct>0?'+':''}${pct}%</span>
       <span style="font-family:var(--mo);font-size:8px;background:var(--ac)20;border:1px solid var(--ac)30;color:var(--ac);padding:2px 8px">ANTES DE CONFIRMAR</span>
     </div>
     <table style="width:100%;border-collapse:collapse">
@@ -302,7 +303,7 @@ export function renderPriceLog(){
       <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:10px 14px;cursor:pointer" onclick="togglePriceLogEntry(${idx})">
         <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);white-space:nowrap">${fecha}<br>${hora}</div>
         <div>
-          <div style="font-family:var(--mo);font-size:10px;color:var(--tx)">${entry.motivo||'<em style="color:var(--tx3)">Sin motivo</em>'}</div>
+          <div style="font-family:var(--mo);font-size:10px;color:var(--tx)">${entry.motivo?escHtml(entry.motivo):'<em style="color:var(--tx3)">Sin motivo</em>'}</div>
           <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-top:2px">ID: <span style="color:var(--ac2)">${entry.id}</span> · ${entry.cambios.length} lista(s) · ${tramosTotal} tramos</div>
         </div>
         <div style="font-family:var(--mo);font-size:8px;background:var(--s2);border:1px solid var(--br);color:var(--tx3);padding:2px 8px;white-space:nowrap">${scopeLabel}</div>
