@@ -1666,6 +1666,7 @@ function applyPriceAdjustment(scope,pct,motivo){
 
 // ── CALCULADORA SYNC ──
 const CALC_REPO='fungiabduction-ui/calculadora';
+const CALC_URL='https://fungiabduction-ui.github.io/calculadora/index.html';
 const CALC_KEY='me_gh_calc_last';
 
 // Maps MotorEdge product IDs to precios.json keys
@@ -1741,7 +1742,7 @@ function renderSyncBanner(){
   el.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--s1);border:1px solid var(--ac2)30;margin-bottom:12px">
     <div>
       <div style="font-family:var(--mo);font-size:9px;font-weight:700;color:var(--ac2);margin-bottom:3px">🔗 Calculadora Pública</div>
-      <div style="font-family:var(--mo);font-size:8px;color:var(--tx3)">${last?'Última sync: '+last+' · precios.json · '+CALC_REPO:'Sin sync registrada en este dispositivo'}</div>
+      <div style="font-family:var(--mo);font-size:8px;color:var(--tx3)">${last?'Última sync: '+last+' · precios.json · <a href="'+CALC_URL+'" target="_blank" style="color:var(--ac2);text-decoration:none">'+CALC_REPO+'</a>':'Sin sync registrada en este dispositivo'}</div>
     </div>
     <button id="btn-sync-calc" class="btn btn-s" style="font-size:9px;height:32px;white-space:nowrap" onclick="ghSyncCalc()">↑ SINCRONIZAR CALCULADORA</button>
   </div>`;
@@ -1911,19 +1912,27 @@ function togglePriceLogEntry(idx){
 }
 
 // ── TERMINAL ACTIVITY LOG ──
+function deletePriceLogEntry(id){
+  const log=getPriceLog().filter(e=>e.id!==id);
+  savePriceLog(log);
+  renderPriceTerminal();
+  renderPriceLog();
+}
+
 function renderPriceTerminal(){
   const cont=document.getElementById('price-terminal');if(!cont)return;
-  const log=getPriceLog(); // chronological (oldest first = natural terminal order)
+  const log=getPriceLog();
   if(!log.length){
     cont.innerHTML='<span style="color:#555">sin actividad registrada.</span>';
     return;
   }
+  const DEL=id=>`<span onclick="deletePriceLogEntry('${id}')" title="eliminar" style="color:#484f58;cursor:pointer;margin-left:10px;flex-shrink:0;user-select:none" onmouseover="this.style.color='#f85149'" onmouseout="this.style.color='#484f58'">×</span>`;
   const lines=log.map(e=>{
     const d=new Date(e.ts);
     const ts=d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+
               d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
     if(e.tipo==='sync'){
-      return `<div><span style="color:#484f58">[${ts}]</span> <span style="color:#58a6ff">SYNC ↑</span>  <span style="color:#8b949e">precios.json</span> <span style="color:#484f58">→</span> <span style="color:#8b949e">${escHtml(e.repo||CALC_REPO)}</span>  <span style="color:#3fb950">✓ OK</span>  <span style="color:#484f58">[${e.id}]</span></div>`;
+      return `<div style="display:flex;justify-content:space-between;align-items:baseline"><span><span style="color:#484f58">[${ts}]</span> <span style="color:#58a6ff">SYNC ↑</span>  <span style="color:#8b949e">precios.json → ${escHtml(e.repo||CALC_REPO)}</span>  <span style="color:#3fb950">✓ OK</span>  <span style="color:#484f58">[${e.id}]</span></span>${DEL(e.id)}</div>`;
     }
     const signo=e.valor>0?'+':'';
     const col=e.valor>0?'#3fb950':'#f85149';
@@ -1931,10 +1940,10 @@ function renderPriceTerminal(){
     const tramosTotal=(e.cambios||[]).reduce((a,c)=>a+c.before.length,0);
     const scope=e.scope==='all'?'todas las listas':escHtml(e.cambios[0]?.listaNombre||e.scope||'');
     const mot=e.motivo?`  <span style="color:#e6edf3">"${escHtml(e.motivo)}"</span>`:'';
-    return `<div><span style="color:#484f58">[${ts}]</span> <span style="color:${col};font-weight:700">${signo}${e.valor}%</span> <span style="color:${col}">${tipo}</span>  <span style="color:#8b949e">${scope} · ${(e.cambios||[]).length} lista(s) · ${tramosTotal} tramo(s)</span>${mot}  <span style="color:#484f58">[${e.id}]</span></div>`;
+    return `<div style="display:flex;justify-content:space-between;align-items:baseline"><span><span style="color:#484f58">[${ts}]</span> <span style="color:${col};font-weight:700">${signo}${e.valor}%</span> <span style="color:${col}">${tipo}</span>  <span style="color:#8b949e">${scope} · ${(e.cambios||[]).length} lista(s) · ${tramosTotal} tramo(s)</span>${mot}  <span style="color:#484f58">[${e.id}]</span></span>${DEL(e.id)}</div>`;
   });
   cont.innerHTML=lines.join('');
-  cont.scrollTop=cont.scrollHeight; // newest at bottom
+  cont.scrollTop=cont.scrollHeight;
 }
 
 
@@ -7190,7 +7199,7 @@ Object.assign(window, {
   renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort,
   mostrarMigracionContactos, ejecutarMigracionContactos,
   // price management
-  getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceTerminal,
+  getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceTerminal, deletePriceLogEntry,
   renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry,
   // tabs / ui
   showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange,
