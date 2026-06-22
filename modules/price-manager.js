@@ -154,7 +154,11 @@ export async function ghSyncCalc(){
     if(putR.ok){
       const now=new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
       localStorage.setItem(CALC_KEY,now);
-      renderSyncBanner(); // refresh status
+      // Write sync event to unified log
+      const syncEntry={id:newPriceLogId(),ts:new Date().toISOString(),tipo:'sync',motivo:'Sync calculadora pública',repo:CALC_REPO,valor:null,scope:null,cambios:[]};
+      const sl=getPriceLog();sl.push(syncEntry);savePriceLog(sl);
+      renderSyncBanner();
+      renderPriceTerminal();
       sN('✓ Calculadora sincronizada — precios.json actualizado');
     } else {
       const err=await putR.json();
@@ -216,9 +220,17 @@ export function renderPriceAdjust(){
       <button class="btn btn-p" onclick="applyPriceFromUI()" style="font-size:9px;height:32px">✓ APLICAR CAMBIO</button>
     </div>
   </div>
-  <div id="pa-preview-wrap" style="display:none"></div>`;
+  <div id="pa-preview-wrap" style="display:none"></div>
+  <div style="margin-top:4px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <span style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:#555;text-transform:uppercase">▸ activity log</span>
+      <span style="font-family:var(--mo);font-size:7px;color:#555">scroll para ver historial completo</span>
+    </div>
+    <div id="price-terminal" style="background:#0d1117;border:1px solid #21262d;padding:10px 14px;height:220px;overflow-y:auto;font-family:'Courier New',Courier,monospace;font-size:10px;line-height:1.7;color:#c9d1d9;box-sizing:border-box"><span style="color:#555">cargando...</span></div>
+  </div>`;
 
   renderSyncBanner();
+  renderPriceTerminal();
 }
 
 export function renderPricePreview(){
@@ -275,10 +287,10 @@ export function applyPriceFromUI(){
   if(Math.abs(pct)>50&&!confirm(`Vas a aplicar un ajuste de ${pct>0?'+':''}${pct}%. ¿Confirmar?`))return;
   const res=applyPriceAdjustment(scope,pct,motivo);
   if(res.ok){
-    // Reset preview and motivo
     const wrap=document.getElementById('pa-preview-wrap');if(wrap)wrap.style.display='none';
     const mEl=document.getElementById('pa-motivo');if(mEl)mEl.value='';
-    renderPriceLog(); // refresh historial tab if open
+    renderPriceTerminal();
+    renderPriceLog();
   }
 }
 
@@ -336,4 +348,31 @@ export function renderPriceLog(){
 export function togglePriceLogEntry(idx){
   const el=document.getElementById('ple-'+idx);
   if(el)el.style.display=el.style.display==='none'?'':'none';
+}
+
+// ── TERMINAL ACTIVITY LOG ──
+export function renderPriceTerminal(){
+  const cont=document.getElementById('price-terminal');if(!cont)return;
+  const log=getPriceLog(); // chronological (oldest first = natural terminal order)
+  if(!log.length){
+    cont.innerHTML='<span style="color:#555">sin actividad registrada.</span>';
+    return;
+  }
+  const lines=log.map(e=>{
+    const d=new Date(e.ts);
+    const ts=d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+
+              d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    if(e.tipo==='sync'){
+      return `<div><span style="color:#484f58">[${ts}]</span> <span style="color:#58a6ff">SYNC ↑</span>  <span style="color:#8b949e">precios.json</span> <span style="color:#484f58">→</span> <span style="color:#8b949e">${escHtml(e.repo||CALC_REPO)}</span>  <span style="color:#3fb950">✓ OK</span>  <span style="color:#484f58">[${e.id}]</span></div>`;
+    }
+    const signo=e.valor>0?'+':'';
+    const col=e.valor>0?'#3fb950':'#f85149';
+    const tipo=e.valor>0?'AUMENTO':'DESCUENTO';
+    const tramosTotal=(e.cambios||[]).reduce((a,c)=>a+c.before.length,0);
+    const scope=e.scope==='all'?'todas las listas':escHtml(e.cambios[0]?.listaNombre||e.scope||'');
+    const mot=e.motivo?`  <span style="color:#e6edf3">"${escHtml(e.motivo)}"</span>`:'';
+    return `<div><span style="color:#484f58">[${ts}]</span> <span style="color:${col};font-weight:700">${signo}${e.valor}%</span> <span style="color:${col}">${tipo}</span>  <span style="color:#8b949e">${scope} · ${(e.cambios||[]).length} lista(s) · ${tramosTotal} tramo(s)</span>${mot}  <span style="color:#484f58">[${e.id}]</span></div>`;
+  });
+  cont.innerHTML=lines.join('');
+  cont.scrollTop=cont.scrollHeight; // newest at bottom
 }
