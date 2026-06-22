@@ -2744,7 +2744,7 @@ function onInvPeriodoChange(){
 
 // ── Sub-navegación ──
 function invSubNav(sub){
-  ['ingresos','precios','stock','movs'].forEach(s=>{
+  ['ingresos','precios','stock','movs','price-adjust','price-log'].forEach(s=>{
     const pane=document.getElementById('inv-sub-'+s);
     const btn=document.getElementById('isb-'+s);
     if(pane)pane.style.display=s===sub?'':'none';
@@ -2754,6 +2754,8 @@ function invSubNav(sub){
   if(sub==='precios'){window.renderListasPrecios?.();window.renderAsignacionPrecios?.();}
   if(sub==='stock')renderInvStock();
   if(sub==='movs')renderStockHistorial();
+  if(sub==='price-adjust')window.renderPriceAdjust?.();
+  if(sub==='price-log')window.renderPriceLog?.();
 }
 
 // ── Badge de estado ──
