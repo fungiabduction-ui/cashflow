@@ -150,7 +150,7 @@ export function renderAsignacionPrecios(){
     window.saveProductos?.(prods);window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
     const msg=document.getElementById('asig-msg');
     if(msg){msg.textContent='✓ Guardado';setTimeout(()=>msg.textContent='',2000);}
-    renderAsignacionPrecios();sN('✓ Asignaciones guardadas');
+    renderAsignacionPrecios();window.renderWAText?.();sN('✓ Asignaciones guardadas');
   };
 }
 
@@ -247,7 +247,7 @@ export function abrirEditarLista(lid){
       prods.forEach(p=>{if(p.listaPrecioId===lid){p.tramos=tramos.map(t=>({...t}));}});
       window.saveProductos?.(prods);window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
     }
-    window.clM?.();renderListasPrecios();renderAsignacionPrecios();sN('✓ Lista '+(esNueva?'creada':'actualizada'));
+    window.clM?.();renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();sN('✓ Lista '+(esNueva?'creada':'actualizada'));
   };
   document.getElementById('modal').classList.add('open');
 }
@@ -263,7 +263,7 @@ export function eliminarLista(lid){
   }
   const listas=getListasPrecios().filter(l=>l.id!==lid);
   saveListasPrecios(listas);
-  renderListasPrecios();renderAsignacionPrecios();sN('Lista eliminada');
+  renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();sN('Lista eliminada');
 }
 
 // ── renderInvPrecios mantiene compatibilidad (ya no se usa en sub-stock) ──

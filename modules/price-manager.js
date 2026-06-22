@@ -292,6 +292,9 @@ export function applyPriceFromUI(){
     const mEl=document.getElementById('pa-motivo');if(mEl)mEl.value='';
     renderPriceTerminal();
     renderPriceLog();
+    window.renderListasPrecios?.();
+    window.renderAsignacionPrecios?.();
+    window.renderWAText?.();
   }
 }
 
