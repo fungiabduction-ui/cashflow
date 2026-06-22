@@ -959,21 +959,46 @@ function abrirEditarLista(lid){
   document.getElementById('modalBox').className='modal';
   document.getElementById('mTk').style.display='none';
 
+  function tramosStep(lastT){
+    if(lastT<20)return 5;
+    if(lastT<100)return 10;
+    if(lastT<500)return 100;
+    return 500;
+  }
+
   function renderTramosEditor(){
+    const base=tramos[0]?.p||0;
+    const thS='font-family:var(--mo);font-size:8px;color:var(--tx3);padding:4px 8px;border-bottom:1px solid var(--br)';
     let th='<table style="width:100%;border-collapse:collapse"><thead><tr>'
-      +'<th style="font-family:var(--mo);font-size:8px;color:var(--tx3);padding:4px 8px;text-align:left;border-bottom:1px solid var(--br)">Desde (cant.)</th>'
-      +'<th style="font-family:var(--mo);font-size:8px;color:var(--tx3);padding:4px 8px;text-align:right;border-bottom:1px solid var(--br)">Precio</th>'
+      +'<th style="'+thS+';text-align:left">Desde (cant.)</th>'
+      +'<th style="'+thS+';text-align:right">Precio</th>'
+      +'<th style="'+thS+';text-align:right">% base</th>'
       +'<th style="padding:4px 4px;border-bottom:1px solid var(--br)"></th>'
       +'</tr></thead><tbody id="te-tbody">';
     tramos.forEach((t,i)=>{
+      const pctVal=i===0||!base?null:(1-t.p/base)*100;
+      const pctTxt=pctVal===null?'—':'-'+pctVal.toFixed(1)+'%';
+      const pctColor=pctVal===null?'var(--tx3)':pctVal>30?'var(--ac)':pctVal>15?'var(--wn)':'var(--tx3)';
       th+='<tr>'
         +'<td style="padding:4px 8px"><input type="number" min="1" value="'+t.t+'" style="'+IS+';min-height:36px;font-size:11px" data-ti="'+i+'" data-field="t"></td>'
         +'<td style="padding:4px 8px"><input type="number" min="0" value="'+t.p+'" style="'+IS+';min-height:36px;font-size:11px" data-ti="'+i+'" data-field="p"></td>'
+        +'<td id="pct-'+i+'" style="font-family:var(--mo);font-size:10px;font-weight:700;text-align:right;padding:4px 10px;white-space:nowrap;color:'+pctColor+'">'+pctTxt+'</td>'
         +'<td style="padding:4px 4px;text-align:center"><button class="pm-btn del" data-del-t="'+i+'" style="font-size:9px">×</button></td>'
         +'</tr>';
     });
     th+='</tbody></table>';
     return th;
+  }
+
+  function updatePctColumn(){
+    const base=tramos[0]?.p||0;
+    tramos.forEach((t,i)=>{
+      const el=document.getElementById('pct-'+i);if(!el)return;
+      if(i===0||!base){el.textContent='—';el.style.color='var(--tx3)';return;}
+      const pctVal=(1-t.p/base)*100;
+      el.textContent='-'+pctVal.toFixed(1)+'%';
+      el.style.color=pctVal>30?'var(--ac)':pctVal>15?'var(--wn)':'var(--tx3)';
+    });
   }
 
   document.getElementById('mBody').innerHTML=
@@ -991,7 +1016,8 @@ function abrirEditarLista(lid){
 
   document.getElementById('te-add').onclick=function(){
     const last=tramos[tramos.length-1];
-    tramos.push({t:(last?.t||0)+10,p:Math.round((last?.p||0)*0.9)||0});
+    const lastT=last?.t||0;
+    tramos.push({t:lastT+tramosStep(lastT),p:Math.round((last?.p||0)*0.9)||0});
     document.getElementById('te-wrap').innerHTML=renderTramosEditor();
     bindTramoEvents();
   };
@@ -999,7 +1025,10 @@ function abrirEditarLista(lid){
   function bindTramoEvents(){
     const wrap=document.getElementById('te-wrap');
     wrap.querySelectorAll('input[data-ti]').forEach(inp=>{
-      inp.oninput=function(){tramos[parseInt(inp.getAttribute('data-ti'))][inp.getAttribute('data-field')]=parseFloat(inp.value)||0;};
+      inp.oninput=function(){
+        tramos[parseInt(inp.getAttribute('data-ti'))][inp.getAttribute('data-field')]=parseFloat(inp.value)||0;
+        if(inp.getAttribute('data-field')==='p')updatePctColumn();
+      };
     });
     wrap.querySelectorAll('[data-del-t]').forEach(btn=>{
       btn.onclick=function(){
