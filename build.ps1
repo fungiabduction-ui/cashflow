@@ -17,6 +17,7 @@ $files = @(
     "modules/stock.js",
     "modules/listas-precios.js",
     "modules/productos.js",
+    "modules/price-manager.js",
     "modules/egresos.js",
     "modules/mp-import.js",
     "modules/ventas.js",
