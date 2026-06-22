@@ -7146,6 +7146,9 @@ Object.assign(window, {
   getContactos, getContactoById, autoRegistrarContacto, guardarInfoContacto,
   renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort,
   mostrarMigracionContactos, ejecutarMigracionContactos,
+  // price management
+  getPriceLog, buildPreciosJson, ghSyncCalc,
+  renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry,
   // tabs / ui
   showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange,
   // modals
