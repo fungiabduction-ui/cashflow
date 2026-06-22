@@ -226,8 +226,6 @@
     <button class="inv-sub-btn"        id="isb-precios"  onclick="invSubNav('precios')">💲 Lista de Precios</button>
     <button class="inv-sub-btn"        id="isb-stock"    onclick="invSubNav('stock')">📦 Stock</button>
     <button class="inv-sub-btn"        id="isb-movs"     onclick="invSubNav('movs')">📋 Historial</button>
-    <button class="inv-sub-btn"        id="isb-price-adjust" onclick="invSubNav('price-adjust')">🎚 Ajuste Precios</button>
-    <button class="inv-sub-btn"        id="isb-price-log"    onclick="invSubNav('price-log')">📋 Historial Precios</button>
   </div>
 
   <!-- ── SUB: INGRESOS ── -->
@@ -266,6 +264,12 @@
       </div>
       <div id="inv-asignacion-body"></div>
     </div>
+    <!-- Módulo: cambio de precios -->
+    <div id="inv-price-adjust-wrap"></div>
+    <!-- Módulo: historial de cambios -->
+    <div id="inv-price-log-wrap"></div>
+    <!-- Módulo: WhatsApp -->
+    <div id="inv-wa-wrap"></div>
   </div><!-- /inv-sub-precios -->
 
   <!-- ── SUB: STOCK & UMBRALES ── -->
@@ -325,14 +329,6 @@
       <div id="stockHistorial"></div>
     </div>
   </div><!-- /inv-sub-movs -->
-
-  <!-- ── SUB: AJUSTE DE PRECIOS ── -->
-  <div id="inv-sub-price-adjust" class="inv-sub-pane" style="display:none">
-  </div><!-- /inv-sub-price-adjust -->
-
-  <!-- ── SUB: HISTORIAL DE PRECIOS ── -->
-  <div id="inv-sub-price-log" class="inv-sub-pane" style="display:none">
-  </div><!-- /inv-sub-price-log -->
 
 </div>
 

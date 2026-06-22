@@ -268,3 +268,43 @@ export function eliminarLista(lid){
 
 // ── renderInvPrecios mantiene compatibilidad (ya no se usa en sub-stock) ──
 export function renderInvPrecios(){renderListasPrecios();}
+
+// ── WhatsApp text generator ──
+export function renderWAText(){
+  const cont=document.getElementById('inv-wa-wrap');if(!cont)return;
+  const prods=(window.getProductos?.()||[]).filter(p=>p.activo!==false&&p.listaPrecioId);
+  if(!prods.length){
+    cont.innerHTML='<div class="inv-module"><div style="padding:16px;font-family:var(--mo);font-size:10px;color:var(--tx3);text-align:center">Asigná listas a productos para generar el texto.</div></div>';
+    return;
+  }
+  function waEmoji(i,n){
+    const gs=n-Math.ceil(n/3);
+    if(i===0)return'🔴';
+    if(i>=gs)return'🟢';
+    return'🟡';
+  }
+  const bloques=prods.map(p=>{
+    const tramos=getTramosProducto(p);
+    const n=tramos.length;
+    const lineas=tramos.map((t,i)=>`${waEmoji(i,n)}${t.t} × $${fi(t.p)} = $${fi(t.t*t.p)}`);
+    return`${p.emoji} *${p.nombre}*\n${lineas.join('\n')}`;
+  });
+  const texto=bloques.join('\n\n');
+  cont.innerHTML=`<div class="inv-module">
+    <div class="inv-module-hdr" style="justify-content:space-between">
+      <span>📱 Lista para WhatsApp</span>
+      <button id="btn-wa-copy" class="pm-btn" style="font-size:8px;height:28px;padding:0 12px">📋 Copiar</button>
+    </div>
+    <div style="padding:10px 14px">
+      <textarea id="wa-text" readonly style="width:100%;background:var(--s1);border:1px solid var(--br);color:var(--tx);font-family:'Courier New',Courier,monospace;font-size:10px;line-height:1.6;padding:10px;outline:none;resize:none;box-sizing:border-box"></textarea>
+    </div>
+  </div>`;
+  const ta=document.getElementById('wa-text');
+  if(ta){ta.value=texto;ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
+  document.getElementById('btn-wa-copy').onclick=function(){
+    navigator.clipboard.writeText(texto).then(()=>{
+      this.textContent='✓ Copiado';
+      setTimeout(()=>{this.textContent='📋 Copiar';},2000);
+    });
+  };
+}

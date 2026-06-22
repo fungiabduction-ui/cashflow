@@ -7,7 +7,7 @@ import { PT, CT, HT, GP, PP, COSTS, loadConfig, initConfigDeps } from './core/co
 import { renderIOStatus, ghCfg, ghStatus, ghSyncInfo, safeB64Encode, safeB64Decode, ghSaveToken, ghLoadConfig, ghTestConn, ghPush, ghPull, ghAutoPush, ghBackupNow, ghListBackups, ghInit } from './modules/github.js';
 import { getApariencia, saveApariencia, applyApariencia, lighten, loadAparienciaForm, syncColorFromHex, applyPreset, updateThemeCards, toggleAparienciaAvanzada, guardarApariencia, resetApariencia } from './modules/apariencia.js';
 import { getStock, saveStock, getUmbrales, saveUmbrales, getStockMovs, addStockMov, limpiarMovsStock, eliminarMov, getStockStatus, skPill, stockStatusBadge, getAllStockItems, getLotes, saveLotes, getLotesItem, getLotesActivos, getStockFromLotes, getCostoPromedio, getStockGrupo, getCostoPromedioGrupo, getActualQty } from './modules/stock.js';
-import { getListasPrecios, saveListasPrecios, newListaId, getTramosProducto, renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista, abrirEditarLista, eliminarLista, renderInvPrecios } from './modules/listas-precios.js';
+import { getListasPrecios, saveListasPrecios, newListaId, getTramosProducto, renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista, abrirEditarLista, eliminarLista, renderInvPrecios, renderWAText } from './modules/listas-precios.js';
 import { getProductos, saveProductos, updateClientesDatalist, renderPM, aplicarPctTodos, restablecerTramos, renderTramoRows, toggleTramoEditor, updTramoDisc, adjTramoDisc, agregarTramo, eliminarTramo, guardarTramos, toggleActivoProducto, duplicarProducto, abrirNuevoProducto, editarProducto, openProdModal, buildProdModalHTML, onPmListaChange, renderTramosEditor, renderVariantesEditor, setProdTipo, setProdAgrup, syncProdModalUI, addTramoEditor, removeTramoEditor, addVarianteEditor, removeVarianteEditor, updModalDiscs, guardarProductoModal, renderMaestra, abrirTramosEnMaestra, guardarTramosYCerrar, guardarMaestra } from './modules/productos.js';
 import { sE, updEgreso, generarEgreso, limpiarEgr, limpiarEgresos, anularEgresoByIdModal, rEH, rES, openEditEgr, saveEditEgr, bE } from './modules/egresos.js';
 import { renderMPImportModal } from './modules/mp-import.js';
@@ -148,7 +148,7 @@ Object.assign(window, {
   setProdTipo, onPmListaChange, updModalDiscs,
   // listas de precios
   renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista,
-  abrirEditarLista, eliminarLista, renderInvPrecios,
+  abrirEditarLista, eliminarLista, renderInvPrecios, renderWAText,
   // io
   expJSON, expCSV, expXLSX, impJSONFile, hardReset,
   // github

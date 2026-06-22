@@ -1029,6 +1029,46 @@ function eliminarLista(lid){
 // ── renderInvPrecios mantiene compatibilidad (ya no se usa en sub-stock) ──
 function renderInvPrecios(){renderListasPrecios();}
 
+// ── WhatsApp text generator ──
+function renderWAText(){
+  const cont=document.getElementById('inv-wa-wrap');if(!cont)return;
+  const prods=(window.getProductos?.()||[]).filter(p=>p.activo!==false&&p.listaPrecioId);
+  if(!prods.length){
+    cont.innerHTML='<div class="inv-module"><div style="padding:16px;font-family:var(--mo);font-size:10px;color:var(--tx3);text-align:center">Asigná listas a productos para generar el texto.</div></div>';
+    return;
+  }
+  function waEmoji(i,n){
+    const gs=n-Math.ceil(n/3);
+    if(i===0)return'🔴';
+    if(i>=gs)return'🟢';
+    return'🟡';
+  }
+  const bloques=prods.map(p=>{
+    const tramos=getTramosProducto(p);
+    const n=tramos.length;
+    const lineas=tramos.map((t,i)=>`${waEmoji(i,n)}${t.t} × $${fi(t.p)} = $${fi(t.t*t.p)}`);
+    return`${p.emoji} *${p.nombre}*\n${lineas.join('\n')}`;
+  });
+  const texto=bloques.join('\n\n');
+  cont.innerHTML=`<div class="inv-module">
+    <div class="inv-module-hdr" style="justify-content:space-between">
+      <span>📱 Lista para WhatsApp</span>
+      <button id="btn-wa-copy" class="pm-btn" style="font-size:8px;height:28px;padding:0 12px">📋 Copiar</button>
+    </div>
+    <div style="padding:10px 14px">
+      <textarea id="wa-text" readonly style="width:100%;background:var(--s1);border:1px solid var(--br);color:var(--tx);font-family:'Courier New',Courier,monospace;font-size:10px;line-height:1.6;padding:10px;outline:none;resize:none;box-sizing:border-box"></textarea>
+    </div>
+  </div>`;
+  const ta=document.getElementById('wa-text');
+  if(ta){ta.value=texto;ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
+  document.getElementById('btn-wa-copy').onclick=function(){
+    navigator.clipboard.writeText(texto).then(()=>{
+      this.textContent='✓ Copiado';
+      setTimeout(()=>{this.textContent='📋 Copiar';},2000);
+    });
+  };
+}
+
 
 // ===== modules/productos.js =====
 
@@ -1749,7 +1789,7 @@ function renderSyncBanner(){
 }
 
 function renderPriceAdjust(){
-  const cont=document.getElementById('inv-sub-price-adjust');if(!cont)return;
+  const cont=document.getElementById('inv-price-adjust-wrap');if(!cont)return;
   const listas=getListasPrecios();
   const IS='background:var(--bg);border:1px solid var(--br);color:var(--tx);font-family:var(--mo);font-size:11px;padding:7px 10px;outline:none';
   const LB='font-family:var(--mo);font-size:8px;letter-spacing:.8px;color:var(--tx2);display:block;margin-bottom:4px;text-transform:uppercase';
@@ -1759,7 +1799,7 @@ function renderPriceAdjust(){
 
   cont.innerHTML=`<div id="price-sync-banner"></div>
   <div style="background:var(--s1);border:1px solid var(--br);padding:14px;margin-bottom:12px">
-    <div style="font-family:var(--mo);font-size:9px;letter-spacing:1px;color:var(--ac);text-transform:uppercase;margin-bottom:12px">🎚 Ajustar precios en bulk</div>
+    <div style="font-family:var(--mo);font-size:9px;letter-spacing:1px;color:var(--ac);text-transform:uppercase;margin-bottom:12px">💸 Cambio de precios</div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
       <div><label style="${LB}">Alcance</label><select id="pa-scope" style="${IS};width:100%">${optsScope}</select></div>
       <div><label style="${LB}">Variación %</label>
@@ -1856,7 +1896,7 @@ function applyPriceFromUI(){
 }
 
 function renderPriceLog(){
-  const cont=document.getElementById('inv-sub-price-log');if(!cont)return;
+  const cont=document.getElementById('inv-price-log-wrap');if(!cont)return;
   const log=getPriceLog().slice().reverse(); // más reciente primero
   if(!log.length){
     cont.innerHTML='<div style="padding:20px;font-family:var(--mo);font-size:10px;color:var(--tx3);text-align:center">Sin cambios de precios registrados.</div>';
@@ -2792,18 +2832,22 @@ function onInvPeriodoChange(){
 
 // ── Sub-navegación ──
 function invSubNav(sub){
-  ['ingresos','precios','stock','movs','price-adjust','price-log'].forEach(s=>{
+  ['ingresos','precios','stock','movs'].forEach(s=>{
     const pane=document.getElementById('inv-sub-'+s);
     const btn=document.getElementById('isb-'+s);
     if(pane)pane.style.display=s===sub?'':'none';
     if(btn){btn.classList.toggle('active',s===sub);}
   });
   if(sub==='ingresos'){renderIngresoForm();renderProductosRegistrados();}
-  if(sub==='precios'){window.renderListasPrecios?.();window.renderAsignacionPrecios?.();}
+  if(sub==='precios'){
+    window.renderListasPrecios?.();
+    window.renderAsignacionPrecios?.();
+    window.renderPriceAdjust?.();
+    window.renderPriceLog?.();
+    window.renderWAText?.();
+  }
   if(sub==='stock')renderInvStock();
   if(sub==='movs')renderStockHistorial();
-  if(sub==='price-adjust')window.renderPriceAdjust?.();
-  if(sub==='price-log')window.renderPriceLog?.();
 }
 
 // ── Badge de estado ──
@@ -7184,7 +7228,7 @@ Object.assign(window, {
   setProdTipo, onPmListaChange, updModalDiscs,
   // listas de precios
   renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista,
-  abrirEditarLista, eliminarLista, renderInvPrecios,
+  abrirEditarLista, eliminarLista, renderInvPrecios, renderWAText,
   // io
   expJSON, expCSV, expXLSX, impJSONFile, hardReset,
   // github

@@ -128,18 +128,22 @@ export function onInvPeriodoChange(){
 
 // ── Sub-navegación ──
 export function invSubNav(sub){
-  ['ingresos','precios','stock','movs','price-adjust','price-log'].forEach(s=>{
+  ['ingresos','precios','stock','movs'].forEach(s=>{
     const pane=document.getElementById('inv-sub-'+s);
     const btn=document.getElementById('isb-'+s);
     if(pane)pane.style.display=s===sub?'':'none';
     if(btn){btn.classList.toggle('active',s===sub);}
   });
   if(sub==='ingresos'){renderIngresoForm();renderProductosRegistrados();}
-  if(sub==='precios'){window.renderListasPrecios?.();window.renderAsignacionPrecios?.();}
+  if(sub==='precios'){
+    window.renderListasPrecios?.();
+    window.renderAsignacionPrecios?.();
+    window.renderPriceAdjust?.();
+    window.renderPriceLog?.();
+    window.renderWAText?.();
+  }
   if(sub==='stock')renderInvStock();
   if(sub==='movs')renderStockHistorial();
-  if(sub==='price-adjust')window.renderPriceAdjust?.();
-  if(sub==='price-log')window.renderPriceLog?.();
 }
 
 // ── Badge de estado ──

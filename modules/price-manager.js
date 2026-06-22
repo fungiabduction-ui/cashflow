@@ -189,7 +189,7 @@ function renderSyncBanner(){
 }
 
 export function renderPriceAdjust(){
-  const cont=document.getElementById('inv-sub-price-adjust');if(!cont)return;
+  const cont=document.getElementById('inv-price-adjust-wrap');if(!cont)return;
   const listas=getListasPrecios();
   const IS='background:var(--bg);border:1px solid var(--br);color:var(--tx);font-family:var(--mo);font-size:11px;padding:7px 10px;outline:none';
   const LB='font-family:var(--mo);font-size:8px;letter-spacing:.8px;color:var(--tx2);display:block;margin-bottom:4px;text-transform:uppercase';
@@ -199,7 +199,7 @@ export function renderPriceAdjust(){
 
   cont.innerHTML=`<div id="price-sync-banner"></div>
   <div style="background:var(--s1);border:1px solid var(--br);padding:14px;margin-bottom:12px">
-    <div style="font-family:var(--mo);font-size:9px;letter-spacing:1px;color:var(--ac);text-transform:uppercase;margin-bottom:12px">🎚 Ajustar precios en bulk</div>
+    <div style="font-family:var(--mo);font-size:9px;letter-spacing:1px;color:var(--ac);text-transform:uppercase;margin-bottom:12px">💸 Cambio de precios</div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
       <div><label style="${LB}">Alcance</label><select id="pa-scope" style="${IS};width:100%">${optsScope}</select></div>
       <div><label style="${LB}">Variación %</label>
@@ -296,7 +296,7 @@ export function applyPriceFromUI(){
 }
 
 export function renderPriceLog(){
-  const cont=document.getElementById('inv-sub-price-log');if(!cont)return;
+  const cont=document.getElementById('inv-price-log-wrap');if(!cont)return;
   const log=getPriceLog().slice().reverse(); // más reciente primero
   if(!log.length){
     cont.innerHTML='<div style="padding:20px;font-family:var(--mo);font-size:10px;color:var(--tx3);text-align:center">Sin cambios de precios registrados.</div>';
