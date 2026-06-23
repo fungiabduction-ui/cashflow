@@ -2,16 +2,22 @@ import { ld, sd } from '../core/storage.js';
 import { sN } from '../ui/notif.js';
 import { getListasPrecios, getTramosProducto } from './listas-precios.js';
 import { getProductos } from './productos.js';
-import { ghCfg, safeB64Encode } from './github.js';
+import { ghCfg, safeB64Encode, ghAutoPush } from './github.js';
 
-// ── LOG STORAGE ──
+// ── LOG STORAGE — vive dentro de motoredge_v4 como d.priceLog ──
+// Incluido automáticamente en todos los backup/restore via ld()/sd().
 export function getPriceLog(){
-  try{return JSON.parse(localStorage.getItem('me_price_log')||'[]');}
-  catch(e){return[];}
+  const d=ld();
+  if(!Array.isArray(d.priceLog)){
+    // Migración única desde clave legada me_price_log
+    try{const raw=localStorage.getItem('me_price_log');d.priceLog=raw?JSON.parse(raw):[];}
+    catch(e){d.priceLog=[];}
+    sd(d);
+    localStorage.removeItem('me_price_log');
+  }
+  return d.priceLog;
 }
-function savePriceLog(log){
-  localStorage.setItem('me_price_log',JSON.stringify(log));
-}
+function savePriceLog(log){const d=ld();d.priceLog=log;sd(d);}
 function newPriceLogId(){
   const mes=new Date().toISOString().slice(0,7).replace('-','');
   const log=getPriceLog();
@@ -102,6 +108,7 @@ export function applyPriceAdjustment(scope,pct,motivo){
   log.push(entry);
   savePriceLog(log);
 
+  ghAutoPush();
   sN(`✓ Precios actualizados — ${cambios.length} lista(s) · ${pct>0?'+':''}${pct}%`);
   return{ok:true,entry};
 }
@@ -353,6 +360,7 @@ export function restoreFromPriceLog(entryId){
   window.renderListasPrecios?.();
   window.renderAsignacionPrecios?.();
   window.renderWAText?.();
+  ghAutoPush();
   sN('✓ Precios restaurados al estado anterior a '+entryId);
 }
 

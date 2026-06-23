@@ -97,7 +97,6 @@ export function expJSON(){
   d._distSlices=window._getDistSlices?.();
   d._liqDistSlices=window._getLiqDistSlices?.();
   d._distKpiHidden=window._getDistKpiHidden?.();
-  d._priceLog=JSON.parse(localStorage.getItem('me_price_log')||'[]');
   try{const ap=localStorage.getItem('me_apariencia');if(ap)d._apariencia=JSON.parse(ap);}catch(e){}
   const _th=localStorage.getItem('me_theme');if(_th)d._theme=_th;
   d._exportedAt=new Date().toISOString();
@@ -467,7 +466,8 @@ export function impJSONFile(input){
       if(d._distSlices){window._setDistSlices?.(d._distSlices);saveDistSlices();}
       if(d._liqDistSlices){window._setLiqDistSlices?.(d._liqDistSlices);saveLiqSlices();}
       if(d._distKpiHidden){window._setDistKpiHidden?.(d._distKpiHidden);saveKpiHidden();}
-      if(d._priceLog&&Array.isArray(d._priceLog)){localStorage.setItem('me_price_log',JSON.stringify(d._priceLog));}
+      // Compat: backups viejos tenian _priceLog separado
+      if(d._priceLog&&!d.priceLog){d.priceLog=d._priceLog;}
       if(d._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(d._apariencia));window.applyApariencia?.(d._apariencia);}catch(e){}}
       if(d._theme){try{localStorage.setItem('me_theme',d._theme);}catch(e){}}
       delete d._distSlices;delete d._liqDistSlices;delete d._distKpiHidden;delete d._priceLog;

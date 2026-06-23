@@ -311,7 +311,6 @@ async function ghPush(showNotif){
     data._distSlices=window._getDistSlices?.();
     data._liqDistSlices=window._getLiqDistSlices?.();
     data._distKpiHidden=window._getDistKpiHidden?.();
-    try{const pl=localStorage.getItem('me_price_log');if(pl)data._priceLog=JSON.parse(pl);}catch(e){}
     try{const ap=localStorage.getItem('me_apariencia');if(ap)data._apariencia=JSON.parse(ap);}catch(e){}
     const _th=localStorage.getItem('me_theme');if(_th)data._theme=_th;
     data._version='motoredge_v5';
@@ -399,7 +398,9 @@ async function ghPull(showNotif){
     if(decoded._distSlices){window._setDistSlices?.(decoded._distSlices);saveDistSlices();delete decoded._distSlices;}
     if(decoded._liqDistSlices){window._setLiqDistSlices?.(decoded._liqDistSlices);saveLiqSlices();delete decoded._liqDistSlices;}
     if(decoded._distKpiHidden){window._setDistKpiHidden?.(decoded._distKpiHidden);saveKpiHidden();delete decoded._distKpiHidden;}
-    if(decoded._priceLog){try{localStorage.setItem('me_price_log',JSON.stringify(decoded._priceLog));}catch(e){}delete decoded._priceLog;}
+    // Compat: backups viejos tenian _priceLog separado; moverlo a priceLog dentro de motoredge_v4
+    if(decoded._priceLog&&!decoded.priceLog){decoded.priceLog=decoded._priceLog;}
+    delete decoded._priceLog;
     if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
     if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
@@ -456,7 +457,6 @@ async function ghBackupNow(){
     data._distSlices=window._getDistSlices?.();
     data._liqDistSlices=window._getLiqDistSlices?.();
     data._distKpiHidden=window._getDistKpiHidden?.();
-    try{const pl=localStorage.getItem('me_price_log');if(pl)data._priceLog=JSON.parse(pl);}catch(e){}
     try{const ap=localStorage.getItem('me_apariencia');if(ap)data._apariencia=JSON.parse(ap);}catch(e){}
     const _th2=localStorage.getItem('me_theme');if(_th2)data._theme=_th2;
     const jsonStr=JSON.stringify(data,null,2);
@@ -533,7 +533,8 @@ async function ghRestoreBackup(path){
     const jsonStr=safeB64Decode(meta.content.replace(/\n/g,''));
     const decoded=JSON.parse(jsonStr);
     if(!decoded.orders||!Array.isArray(decoded.orders))throw new Error('Formato inválido');
-    if(decoded._priceLog){try{localStorage.setItem('me_price_log',JSON.stringify(decoded._priceLog));}catch(e){}delete decoded._priceLog;}
+    if(decoded._priceLog&&!decoded.priceLog){decoded.priceLog=decoded._priceLog;}
+    delete decoded._priceLog;
     if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
     if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
@@ -1678,14 +1679,20 @@ function guardarMaestra(){
 
 // ===== modules/price-manager.js =====
 
-// ── LOG STORAGE ──
+// ── LOG STORAGE — vive dentro de motoredge_v4 como d.priceLog ──
+// Incluido automáticamente en todos los backup/restore via ld()/sd().
 function getPriceLog(){
-  try{return JSON.parse(localStorage.getItem('me_price_log')||'[]');}
-  catch(e){return[];}
+  const d=ld();
+  if(!Array.isArray(d.priceLog)){
+    // Migración única desde clave legada me_price_log
+    try{const raw=localStorage.getItem('me_price_log');d.priceLog=raw?JSON.parse(raw):[];}
+    catch(e){d.priceLog=[];}
+    sd(d);
+    localStorage.removeItem('me_price_log');
+  }
+  return d.priceLog;
 }
-function savePriceLog(log){
-  localStorage.setItem('me_price_log',JSON.stringify(log));
-}
+function savePriceLog(log){const d=ld();d.priceLog=log;sd(d);}
 function newPriceLogId(){
   const mes=new Date().toISOString().slice(0,7).replace('-','');
   const log=getPriceLog();
@@ -1776,6 +1783,7 @@ function applyPriceAdjustment(scope,pct,motivo){
   log.push(entry);
   savePriceLog(log);
 
+  ghAutoPush();
   sN(`✓ Precios actualizados — ${cambios.length} lista(s) · ${pct>0?'+':''}${pct}%`);
   return{ok:true,entry};
 }
@@ -2027,6 +2035,7 @@ function restoreFromPriceLog(entryId){
   window.renderListasPrecios?.();
   window.renderAsignacionPrecios?.();
   window.renderWAText?.();
+  ghAutoPush();
   sN('✓ Precios restaurados al estado anterior a '+entryId);
 }
 
@@ -6661,7 +6670,6 @@ function expJSON(){
   d._distSlices=window._getDistSlices?.();
   d._liqDistSlices=window._getLiqDistSlices?.();
   d._distKpiHidden=window._getDistKpiHidden?.();
-  d._priceLog=JSON.parse(localStorage.getItem('me_price_log')||'[]');
   try{const ap=localStorage.getItem('me_apariencia');if(ap)d._apariencia=JSON.parse(ap);}catch(e){}
   const _th=localStorage.getItem('me_theme');if(_th)d._theme=_th;
   d._exportedAt=new Date().toISOString();
@@ -7031,7 +7039,8 @@ function impJSONFile(input){
       if(d._distSlices){window._setDistSlices?.(d._distSlices);saveDistSlices();}
       if(d._liqDistSlices){window._setLiqDistSlices?.(d._liqDistSlices);saveLiqSlices();}
       if(d._distKpiHidden){window._setDistKpiHidden?.(d._distKpiHidden);saveKpiHidden();}
-      if(d._priceLog&&Array.isArray(d._priceLog)){localStorage.setItem('me_price_log',JSON.stringify(d._priceLog));}
+      // Compat: backups viejos tenian _priceLog separado
+      if(d._priceLog&&!d.priceLog){d.priceLog=d._priceLog;}
       if(d._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(d._apariencia));window.applyApariencia?.(d._apariencia);}catch(e){}}
       if(d._theme){try{localStorage.setItem('me_theme',d._theme);}catch(e){}}
       delete d._distSlices;delete d._liqDistSlices;delete d._distKpiHidden;delete d._priceLog;

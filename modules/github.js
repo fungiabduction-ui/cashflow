@@ -156,7 +156,6 @@ export async function ghPush(showNotif){
     data._distSlices=window._getDistSlices?.();
     data._liqDistSlices=window._getLiqDistSlices?.();
     data._distKpiHidden=window._getDistKpiHidden?.();
-    try{const pl=localStorage.getItem('me_price_log');if(pl)data._priceLog=JSON.parse(pl);}catch(e){}
     try{const ap=localStorage.getItem('me_apariencia');if(ap)data._apariencia=JSON.parse(ap);}catch(e){}
     const _th=localStorage.getItem('me_theme');if(_th)data._theme=_th;
     data._version='motoredge_v5';
@@ -244,7 +243,9 @@ export async function ghPull(showNotif){
     if(decoded._distSlices){window._setDistSlices?.(decoded._distSlices);saveDistSlices();delete decoded._distSlices;}
     if(decoded._liqDistSlices){window._setLiqDistSlices?.(decoded._liqDistSlices);saveLiqSlices();delete decoded._liqDistSlices;}
     if(decoded._distKpiHidden){window._setDistKpiHidden?.(decoded._distKpiHidden);saveKpiHidden();delete decoded._distKpiHidden;}
-    if(decoded._priceLog){try{localStorage.setItem('me_price_log',JSON.stringify(decoded._priceLog));}catch(e){}delete decoded._priceLog;}
+    // Compat: backups viejos tenian _priceLog separado; moverlo a priceLog dentro de motoredge_v4
+    if(decoded._priceLog&&!decoded.priceLog){decoded.priceLog=decoded._priceLog;}
+    delete decoded._priceLog;
     if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
     if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
@@ -301,7 +302,6 @@ export async function ghBackupNow(){
     data._distSlices=window._getDistSlices?.();
     data._liqDistSlices=window._getLiqDistSlices?.();
     data._distKpiHidden=window._getDistKpiHidden?.();
-    try{const pl=localStorage.getItem('me_price_log');if(pl)data._priceLog=JSON.parse(pl);}catch(e){}
     try{const ap=localStorage.getItem('me_apariencia');if(ap)data._apariencia=JSON.parse(ap);}catch(e){}
     const _th2=localStorage.getItem('me_theme');if(_th2)data._theme=_th2;
     const jsonStr=JSON.stringify(data,null,2);
@@ -378,7 +378,8 @@ export async function ghRestoreBackup(path){
     const jsonStr=safeB64Decode(meta.content.replace(/\n/g,''));
     const decoded=JSON.parse(jsonStr);
     if(!decoded.orders||!Array.isArray(decoded.orders))throw new Error('Formato inválido');
-    if(decoded._priceLog){try{localStorage.setItem('me_price_log',JSON.stringify(decoded._priceLog));}catch(e){}delete decoded._priceLog;}
+    if(decoded._priceLog&&!decoded.priceLog){decoded.priceLog=decoded._priceLog;}
+    delete decoded._priceLog;
     if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
     if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
