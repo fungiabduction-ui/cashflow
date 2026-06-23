@@ -50,6 +50,7 @@ function toggleTheme(){const isLight=document.body.getAttribute('data-theme')===
 // ── INIT ──
 initConfigDeps(getProductos, updateClientesDatalist);
 loadConfig();
+getPriceLog(); // migración temprana: me_price_log → d.priceLog antes del primer ghAutoPush
 
 // ── Seed stock inicial (corre una sola vez) ──
 function seedStockInicial(){

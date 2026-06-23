@@ -152,7 +152,7 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── price-manager.js ← applyPriceAdjustment(), previewAjuste(), validarAjuste(), getPriceLog(),
 │   │                      buildPreciosJson(), ghSyncCalc(), renderPriceAdjust(), renderPriceLog(),
 │   │                      restoreFromPriceLog(entryId) — aplica before[] de una entrada del log
-│   │                      Log en 'me_price_log' (append-only, IDs PCH-AAAAMM-NNN, Math.trunc)
+│   │                      Log en d.priceLog dentro de motoredge_v4 (append-only, IDs PCH-AAAAMM-NNN, Math.trunc)
 │   │                      Cada entrada tiene tc (tipo de cambio al momento del ajuste, desde window._blueARS)
 │   │                      ghSyncCalc() pushea precios.json a fungiabduction-ui/calculadora
 │   ├── settings.js     ← renderSettings(), guardarPrecios(), resetPrecios()
@@ -162,7 +162,7 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── apariencia.js   ← applyApariencia(), PRESETS, guardarApariencia()
 │   └── io.js           ← expJSON(), expCSV(), expXLSX(), impJSONFile(), hardReset()
 │                         (impJSON, impMerge, handleXlsxFile ELIMINADOS — no reintroducirlos)
-│                         expJSON() incluye _priceLog; impJSONFile() lo restaura; hardReset() lo limpia
+│                         priceLog está en motoredge_v4 (fluye solo con ld()/sd()); impJSONFile() preserva log local si backup no lo tiene
 │
 ├── ui/
 │   ├── notif.js        ← sN(msg, err) — notificación toast
@@ -203,6 +203,13 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
   stockSeedDone: bool, // Flag one-shot. Si se pierde, seedStockInicial() duplica el stock.
   contactos: [],       // Directorio de clientes. Ver ContactRecord abajo.
   contactosMigDone: bool, // Flag one-shot. Si se pierde, mostrarMigracionContactos() es idempotente.
+  priceLog: [],        // Log de cambios de precios (auditoría). Append-only.
+                       // Migrado desde 'me_price_log' (clave legada) al primer getPriceLog().
+                       // IDs PCH-AAAAMM-NNN (Math.max). Restaurable con restoreFromPriceLog(entryId).
+                       // Cada entrada: { id, ts, tc, motivo, tipo, valor, scope, cambios }.
+                       // Tipos: 'pct' (ajuste %), 'restore' (revert), 'sync' (calc pública).
+                       // cambios[]: { listaId, listaNombre, before:[{t,p}], after:[{t,p}] }.
+                       // 'before' es suficiente para revertir cualquier ajuste.
 }
 ```
 
@@ -215,12 +222,7 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
 - `me_theme` — 'light' | 'dark' | 'modern'. ✅ En todos los backups.
 - `me_gh_last_push` — timestamp del último push. **No se respalda** (dato de dispositivo).
 - `me_gh_calc_last` — timestamp del último sync con calculadora. **No se respalda** (dato de dispositivo).
-- `me_price_log` — log de cambios de precios (auditoría). ✅ En todos los backups.
-  Array de `{id, ts, tc, motivo, tipo, valor, scope, cambios}`.
-  Tipos: `'pct'` (ajuste %), `'restore'` (restauración desde log), `'sync'` (sync calculadora pública).
-  Campo `tc`: tipo de cambio (window._blueARS) al momento del ajuste. Null si no había fetch previo.
-  `cambios[]`: `{listaId, listaNombre, before:[{t,p}], after:[{t,p}]}`. `before` permite restaurar.
-  Append-only. IDs `PCH-AAAAMM-NNN` con Math.max. Restaurable con `restoreFromPriceLog(entryId)`.
+- `me_price_log` — **CLAVE LEGADA. Ya no se usa.** Migrada a `d.priceLog` dentro de `motoredge_v4` al primer `getPriceLog()`. Se elimina automáticamente al migrar. `hardReset()` la limpia si aún existe en sesiones viejas.
 
 **Flujos de backup — cobertura completa:**
 | Flujo | Escribe | Lee/restaura |

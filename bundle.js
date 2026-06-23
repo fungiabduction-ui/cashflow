@@ -401,6 +401,12 @@ async function ghPull(showNotif){
     // Compat: backups viejos tenian _priceLog separado; moverlo a priceLog dentro de motoredge_v4
     if(decoded._priceLog&&!decoded.priceLog){decoded.priceLog=decoded._priceLog;}
     delete decoded._priceLog;
+    // Si el backup no tiene priceLog (anterior al feature), preservar el log local en lugar de perderlo
+    if(!Array.isArray(decoded.priceLog)){
+      const _cur=ld();
+      if(Array.isArray(_cur.priceLog)&&_cur.priceLog.length){decoded.priceLog=_cur.priceLog;}
+      else{try{const _r=localStorage.getItem('me_price_log');decoded.priceLog=_r?JSON.parse(_r):[];localStorage.removeItem('me_price_log');}catch(_e){decoded.priceLog=[];}}
+    }
     if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
     if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
@@ -535,6 +541,12 @@ async function ghRestoreBackup(path){
     if(!decoded.orders||!Array.isArray(decoded.orders))throw new Error('Formato inválido');
     if(decoded._priceLog&&!decoded.priceLog){decoded.priceLog=decoded._priceLog;}
     delete decoded._priceLog;
+    // Si el backup no tiene priceLog (anterior al feature), preservar el log local en lugar de perderlo
+    if(!Array.isArray(decoded.priceLog)){
+      const _cur=ld();
+      if(Array.isArray(_cur.priceLog)&&_cur.priceLog.length){decoded.priceLog=_cur.priceLog;}
+      else{try{const _r=localStorage.getItem('me_price_log');decoded.priceLog=_r?JSON.parse(_r):[];localStorage.removeItem('me_price_log');}catch(_e){decoded.priceLog=[];}}
+    }
     if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
     if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
@@ -7041,6 +7053,12 @@ function impJSONFile(input){
       if(d._distKpiHidden){window._setDistKpiHidden?.(d._distKpiHidden);saveKpiHidden();}
       // Compat: backups viejos tenian _priceLog separado
       if(d._priceLog&&!d.priceLog){d.priceLog=d._priceLog;}
+      // Si el backup no tiene priceLog (anterior al feature), preservar el log local en lugar de perderlo
+      if(!Array.isArray(d.priceLog)){
+        const _cur=ld();
+        if(Array.isArray(_cur.priceLog)&&_cur.priceLog.length){d.priceLog=_cur.priceLog;}
+        else{try{const _r=localStorage.getItem('me_price_log');d.priceLog=_r?JSON.parse(_r):[];localStorage.removeItem('me_price_log');}catch(_e){d.priceLog=[];}}
+      }
       if(d._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(d._apariencia));window.applyApariencia?.(d._apariencia);}catch(e){}}
       if(d._theme){try{localStorage.setItem('me_theme',d._theme);}catch(e){}}
       delete d._distSlices;delete d._liqDistSlices;delete d._distKpiHidden;delete d._priceLog;
@@ -7304,6 +7322,7 @@ function toggleTheme(){const isLight=document.body.getAttribute('data-theme')===
 // ── INIT ──
 initConfigDeps(getProductos, updateClientesDatalist);
 loadConfig();
+getPriceLog(); // migración temprana: me_price_log → d.priceLog antes del primer ghAutoPush
 
 // ── Seed stock inicial (corre una sola vez) ──
 function seedStockInicial(){
