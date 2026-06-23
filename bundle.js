@@ -311,6 +311,9 @@ async function ghPush(showNotif){
     data._distSlices=window._getDistSlices?.();
     data._liqDistSlices=window._getLiqDistSlices?.();
     data._distKpiHidden=window._getDistKpiHidden?.();
+    try{const pl=localStorage.getItem('me_price_log');if(pl)data._priceLog=JSON.parse(pl);}catch(e){}
+    try{const ap=localStorage.getItem('me_apariencia');if(ap)data._apariencia=JSON.parse(ap);}catch(e){}
+    const _th=localStorage.getItem('me_theme');if(_th)data._theme=_th;
     data._version='motoredge_v5';
     data._savedAt=new Date().toISOString();
     // Metadata para verificación rápida
@@ -396,6 +399,9 @@ async function ghPull(showNotif){
     if(decoded._distSlices){window._setDistSlices?.(decoded._distSlices);saveDistSlices();delete decoded._distSlices;}
     if(decoded._liqDistSlices){window._setLiqDistSlices?.(decoded._liqDistSlices);saveLiqSlices();delete decoded._liqDistSlices;}
     if(decoded._distKpiHidden){window._setDistKpiHidden?.(decoded._distKpiHidden);saveKpiHidden();delete decoded._distKpiHidden;}
+    if(decoded._priceLog){try{localStorage.setItem('me_price_log',JSON.stringify(decoded._priceLog));}catch(e){}delete decoded._priceLog;}
+    if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
+    if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
     sd(decoded);
     // Full refresh — inventario incluido
@@ -405,6 +411,7 @@ async function ghPull(showNotif){
     try{if(typeof renderInvAll==='function')renderInvAll();}catch(e){}
     try{rfInvM();}catch(e){}
     updateClientesDatalist();uhd();
+    window.renderPriceTerminal?.();window.renderPriceLog?.();
     const now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
     const syncEl=document.getElementById('ghSyncInfo');
     if(syncEl)syncEl.textContent='Cargado desde GitHub: '+now;
@@ -446,6 +453,12 @@ async function ghBackupNow(){
   if(el){el.style.display='';el.style.color='var(--tx2)';el.innerHTML='Guardando backup...';}
   try{
     const data=ld();
+    data._distSlices=window._getDistSlices?.();
+    data._liqDistSlices=window._getLiqDistSlices?.();
+    data._distKpiHidden=window._getDistKpiHidden?.();
+    try{const pl=localStorage.getItem('me_price_log');if(pl)data._priceLog=JSON.parse(pl);}catch(e){}
+    try{const ap=localStorage.getItem('me_apariencia');if(ap)data._apariencia=JSON.parse(ap);}catch(e){}
+    const _th2=localStorage.getItem('me_theme');if(_th2)data._theme=_th2;
     const jsonStr=JSON.stringify(data,null,2);
     const encoded=safeB64Encode(jsonStr);
     const now=new Date();
@@ -520,6 +533,9 @@ async function ghRestoreBackup(path){
     const jsonStr=safeB64Decode(meta.content.replace(/\n/g,''));
     const decoded=JSON.parse(jsonStr);
     if(!decoded.orders||!Array.isArray(decoded.orders))throw new Error('Formato inválido');
+    if(decoded._priceLog){try{localStorage.setItem('me_price_log',JSON.stringify(decoded._priceLog));}catch(e){}delete decoded._priceLog;}
+    if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
+    if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
     sd(decoded);
     loadConfig();buildTicketUI();upd();
@@ -528,6 +544,7 @@ async function ghRestoreBackup(path){
     try{if(typeof renderInvAll==='function')renderInvAll();}catch(e){}
     try{rfInvM();}catch(e){}
     updateClientesDatalist();uhd();
+    window.renderPriceTerminal?.();window.renderPriceLog?.();
     sN('✓ Restaurado desde '+name);
     ghStatus('OK — restaurado desde backup: <b>'+name+'</b>',false);
   }catch(e){sN('ERROR al restaurar: '+e.message,true);}
@@ -1094,10 +1111,11 @@ function renderWAText(){
     return;
   }
   function waEmoji(i,n){
-    const gs=n-Math.ceil(n/3);
-    if(i===0)return'🔴';
-    if(i>=gs)return'🟢';
-    return'🟡';
+    if(i===0)return'⭐';
+    const pos=i-1,third=(n-1)/3;
+    if(pos<third)return'💥';
+    if(pos<third*2)return'🔥';
+    return'🚀';
   }
   const bloques=prods.map(p=>{
     const tramos=getTramosProducto(p);
@@ -1743,6 +1761,7 @@ function applyPriceAdjustment(scope,pct,motivo){
   window.upd?.();
 
   // Write audit log entry (separate key, append-only)
+  const tc=window._blueARS||null;
   const entry={
     id:newPriceLogId(),
     ts:new Date().toISOString(),
@@ -1750,6 +1769,7 @@ function applyPriceAdjustment(scope,pct,motivo){
     tipo:'pct',
     valor:pct,
     scope,
+    tc,
     cambios
   };
   const log=getPriceLog();
@@ -1954,51 +1974,127 @@ function applyPriceFromUI(){
   }
 }
 
+function restoreFromPriceLog(entryId){
+  const log=getPriceLog();
+  const entry=log.find(e=>e.id===entryId);
+  if(!entry||!entry.cambios?.length){sN('Entrada no encontrada en el log',true);return;}
+  const d=new Date(entry.ts);
+  const fechaStr=d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const horaStr=d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  const desc=entry.motivo?`"${entry.motivo}"`:'entrada '+entry.id;
+  if(!confirm(`¿Restaurar precios al estado ANTES del ajuste ${desc} (${fechaStr} ${horaStr})?\n\nEsto sobreescribirá los precios actuales.`))return;
+  const data=ld();
+  const listas=getListasPrecios();
+  // Capturar estado actual ANTES de aplicar (para el audit trail del restore)
+  const cambiosRestore=entry.cambios.map(c=>{
+    const actual=listas.find(l=>l.id===c.listaId);
+    return{listaId:c.listaId,listaNombre:c.listaNombre,
+      before:actual?actual.tramos.map(t=>({...t})):c.after.map(t=>({...t})),
+      after:c.before.map(t=>({...t}))
+    };
+  });
+  // Aplicar el "before" de la entrada original (estado pre-ajuste)
+  entry.cambios.forEach(c=>{
+    const idx=listas.findIndex(l=>l.id===c.listaId);
+    if(idx>=0)listas[idx].tramos=c.before.map(t=>({...t}));
+  });
+  // Sincronizar productos que referencian listas modificadas
+  const modIds=new Set(entry.cambios.map(c=>c.listaId));
+  (data.productos||[]).forEach(p=>{
+    if(p.listaPrecioId&&modIds.has(p.listaPrecioId)){
+      const lista=listas.find(l=>l.id===p.listaPrecioId);
+      if(lista)p.tramos=lista.tramos.map(t=>({...t}));
+    }
+  });
+  data.listasPrecios=listas;
+  sd(data);
+  window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
+  // Registrar la restauración en el log (append-only, trazabilidad completa)
+  const tc=window._blueARS||null;
+  const restoreEntry={
+    id:newPriceLogId(),
+    ts:new Date().toISOString(),
+    tipo:'restore',
+    motivo:'Restauración desde '+entryId,
+    restoreFrom:entryId,
+    tc,
+    scope:entry.scope,
+    cambios:cambiosRestore
+  };
+  const updLog=getPriceLog();updLog.push(restoreEntry);savePriceLog(updLog);
+  renderPriceTerminal();
+  renderPriceLog();
+  window.renderListasPrecios?.();
+  window.renderAsignacionPrecios?.();
+  window.renderWAText?.();
+  sN('✓ Precios restaurados al estado anterior a '+entryId);
+}
+
 function renderPriceLog(){
   const cont=document.getElementById('inv-price-log-wrap');if(!cont)return;
-  const log=getPriceLog().slice().reverse(); // más reciente primero
+  const log=getPriceLog().slice().reverse();
   if(!log.length){
     cont.innerHTML='<div style="padding:20px;font-family:var(--mo);font-size:10px;color:var(--tx3);text-align:center">Sin cambios de precios registrados.</div>';
     return;
   }
   const fi2=n=>('$'+fi(n));
+  const thS='font-family:var(--mo);font-size:7px;color:var(--tx3);padding:4px 8px;border-bottom:1px solid var(--br)';
+  const tdS='font-family:var(--mo);font-size:9px;padding:4px 8px;border-bottom:1px solid var(--s2)';
   let html='';
   log.forEach((entry,idx)=>{
     const d=new Date(entry.ts);
     const fecha=d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
     const hora=d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    const signo=entry.valor>0?'+':'';
-    const color=entry.valor>0?'var(--ac)':'var(--er)';
-    const scopeLabel=entry.scope==='all'?'Todas las listas':(entry.cambios[0]?.listaNombre||entry.scope);
-    const tramosTotal=entry.cambios.reduce((a,c)=>a+c.before.length,0);
+    // Badge derecho según tipo
+    let badge='';
+    if(entry.tipo==='pct'){const signo=entry.valor>0?'+':'';const col=entry.valor>0?'var(--ac)':'var(--er)';badge=`<div style="font-family:var(--mo);font-size:13px;font-weight:700;color:${col};text-align:right;white-space:nowrap">${signo}${entry.valor}%</div>`;}
+    else if(entry.tipo==='restore'){badge='<div style="font-family:var(--mo);font-size:10px;font-weight:700;color:var(--ac2);white-space:nowrap">↩ REVERT</div>';}
+    else if(entry.tipo==='sync'){badge='<div style="font-family:var(--mo);font-size:10px;font-weight:700;color:#58a6ff;white-space:nowrap">↑ SYNC</div>';}
+    const scopeLabel=entry.scope==='all'?'Todas las listas':(entry.cambios?.[0]?.listaNombre||entry.scope||'—');
+    const tramosTotal=(entry.cambios||[]).reduce((a,c)=>a+(c.before?.length||0),0);
+    // Contenido expandido
+    let detail='';
+    if(entry.tipo==='sync'){
+      detail=`<div style="font-family:var(--mo);font-size:9px;color:var(--tx3)">Sync → <b style="color:var(--ac2)">${escHtml(entry.repo||CALC_REPO)}</b></div>`;
+    }else{
+      const hasTC=!!entry.tc;
+      const cambioRows=(entry.cambios||[]).map(c=>{
+        const rows=(c.before||[]).map((b,i)=>{const a=(c.after||[])[i]||b;const dt=a.p-b.p;return`<tr>
+          <td style="${tdS};color:var(--tx3)">≥ ${b.t}</td>
+          <td style="${tdS};color:var(--tx3);text-decoration:line-through;text-align:right">${fi2(b.p)}</td>
+          ${hasTC?`<td style="${tdS};color:var(--tx3);text-align:right">u$s${(b.p/entry.tc).toFixed(2)}</td>`:''}
+          <td style="${tdS};color:var(--ac);font-weight:700;text-align:right">${fi2(a.p)}</td>
+          ${hasTC?`<td style="${tdS};color:var(--ac2);text-align:right">u$s${(a.p/entry.tc).toFixed(2)}</td>`:''}
+          <td style="${tdS};color:${dt>=0?'var(--wn)':'var(--er)'};text-align:right">${dt>=0?'+':''}${fi2(dt)}</td>
+        </tr>`;}).join('');
+        return`<div style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac2);padding:8px 0 4px">${c.listaNombre}</div>
+        <table style="width:100%;border-collapse:collapse"><thead><tr>
+          <th style="${thS};text-align:left">Tramo</th>
+          <th style="${thS};text-align:right">Antes ARS</th>
+          ${hasTC?`<th style="${thS};text-align:right">Antes USD</th>`:''}
+          <th style="${thS};text-align:right">Después ARS</th>
+          ${hasTC?`<th style="${thS};text-align:right">Después USD</th>`:''}
+          <th style="${thS};text-align:right">Δ ARS</th>
+        </tr></thead><tbody>${rows}</tbody></table>`;
+      }).join('');
+      const tcNote=hasTC?`<div style="font-family:var(--mo);font-size:8px;color:var(--tx3);padding:2px 0 8px">TC al ajuste: <b style="color:var(--ac2)">$${fi(entry.tc)}</b> por u$s 1</div>`:'';
+      const footer=entry.tipo==='pct'
+        ?`<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--s2)"><button onclick="restoreFromPriceLog('${entry.id}')" style="background:none;border:1px solid var(--ac2);color:var(--ac2);font-family:var(--mo);font-size:9px;padding:4px 14px;cursor:pointer">↩ Restaurar precios al estado anterior a este ajuste</button></div>`
+        :(entry.restoreFrom?`<div style="margin-top:8px;font-family:var(--mo);font-size:8px;color:var(--tx3)">Restauración desde <span style="color:var(--ac2)">${escHtml(entry.restoreFrom)}</span></div>`:'');
+      detail=tcNote+cambioRows+footer;
+    }
     html+=`<div style="border-bottom:1px solid var(--s2)">
       <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:10px 14px;cursor:pointer" onclick="togglePriceLogEntry(${idx})">
         <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);white-space:nowrap">${fecha}<br>${hora}</div>
         <div>
           <div style="font-family:var(--mo);font-size:10px;color:var(--tx)">${entry.motivo?escHtml(entry.motivo):'<em style="color:var(--tx3)">Sin motivo</em>'}</div>
-          <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-top:2px">ID: <span style="color:var(--ac2)">${entry.id}</span> · ${entry.cambios.length} lista(s) · ${tramosTotal} tramos</div>
+          <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-top:2px">ID: <span style="color:var(--ac2)">${entry.id}</span> · ${(entry.cambios||[]).length} lista(s) · ${tramosTotal} tramos</div>
         </div>
         <div style="font-family:var(--mo);font-size:8px;background:var(--s2);border:1px solid var(--br);color:var(--tx3);padding:2px 8px;white-space:nowrap">${scopeLabel}</div>
-        <div style="font-family:var(--mo);font-size:13px;font-weight:700;color:${color};text-align:right">${signo}${entry.valor}%</div>
+        ${badge}
       </div>
-      <div id="ple-${idx}" style="display:none;border-top:1px solid var(--s2);padding:0 14px 12px">
-        ${entry.cambios.map(c=>`
-          <div style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac2);padding:8px 0 4px">${c.listaNombre}</div>
-          <table style="width:100%;border-collapse:collapse">
-            <thead><tr>
-              <th style="font-family:var(--mo);font-size:7px;color:var(--tx3);padding:4px 8px;text-align:left;border-bottom:1px solid var(--br)">Tramo</th>
-              <th style="font-family:var(--mo);font-size:7px;color:var(--tx3);padding:4px 8px;text-align:right;border-bottom:1px solid var(--br)">Antes</th>
-              <th style="font-family:var(--mo);font-size:7px;color:var(--tx3);padding:4px 8px;text-align:right;border-bottom:1px solid var(--br)">Después</th>
-              <th style="font-family:var(--mo);font-size:7px;color:var(--tx3);padding:4px 8px;text-align:right;border-bottom:1px solid var(--br)">Δ</th>
-            </tr></thead><tbody>
-            ${c.before.map((b,i)=>{const a=c.after[i];const dt=a.p-b.p;return`<tr style="border-bottom:1px solid var(--s2)">
-              <td style="font-family:var(--mo);font-size:9px;color:var(--tx3);padding:4px 8px">≥ ${b.t}</td>
-              <td style="font-family:var(--mo);font-size:9px;color:var(--tx3);text-decoration:line-through;text-align:right;padding:4px 8px">${fi2(b.p)}</td>
-              <td style="font-family:var(--mo);font-size:9px;color:var(--ac);font-weight:700;text-align:right;padding:4px 8px">${fi2(a.p)}</td>
-              <td style="font-family:var(--mo);font-size:9px;color:${dt>=0?'var(--wn)':'var(--er)'};text-align:right;padding:4px 8px">${dt>=0?'+':''}${fi2(dt)}</td>
-            </tr>`;}).join('')}
-            </tbody>
-          </table>`).join('')}
+      <div id="ple-${idx}" style="display:none;border-top:1px solid var(--s2);padding:8px 14px 12px">
+        ${detail}
       </div>
     </div>`;
   });
@@ -2032,6 +2128,11 @@ function renderPriceTerminal(){
               d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
     if(e.tipo==='sync'){
       return `<div style="display:flex;justify-content:space-between;align-items:baseline"><span><span style="color:#484f58">[${ts}]</span> <span style="color:#58a6ff">SYNC ↑</span>  <span style="color:#8b949e">precios.json → ${escHtml(e.repo||CALC_REPO)}</span>  <span style="color:#3fb950">✓ OK</span>  <span style="color:#484f58">[${e.id}]</span></span>${DEL(e.id)}</div>`;
+    }
+    if(e.tipo==='restore'){
+      const rscope=e.scope==='all'?'todas las listas':escHtml(e.cambios?.[0]?.listaNombre||e.scope||'');
+      const rmot=e.motivo?`  <span style="color:#e6edf3">"${escHtml(e.motivo)}"</span>`:'';
+      return `<div style="display:flex;justify-content:space-between;align-items:baseline"><span><span style="color:#484f58">[${ts}]</span> <span style="color:#d2a8ff;font-weight:700">↩ REVERT</span>  <span style="color:#8b949e">← ${escHtml(e.restoreFrom||'?')} · ${rscope}</span>${rmot}  <span style="color:#484f58">[${e.id}]</span></span>${DEL(e.id)}</div>`;
     }
     const signo=e.valor>0?'+':'';
     const col=e.valor>0?'#3fb950':'#f85149';
@@ -6561,6 +6662,8 @@ function expJSON(){
   d._liqDistSlices=window._getLiqDistSlices?.();
   d._distKpiHidden=window._getDistKpiHidden?.();
   d._priceLog=JSON.parse(localStorage.getItem('me_price_log')||'[]');
+  try{const ap=localStorage.getItem('me_apariencia');if(ap)d._apariencia=JSON.parse(ap);}catch(e){}
+  const _th=localStorage.getItem('me_theme');if(_th)d._theme=_th;
   d._exportedAt=new Date().toISOString();
   d._version='motoredge_v5';
   d._meta={
@@ -6929,7 +7032,10 @@ function impJSONFile(input){
       if(d._liqDistSlices){window._setLiqDistSlices?.(d._liqDistSlices);saveLiqSlices();}
       if(d._distKpiHidden){window._setDistKpiHidden?.(d._distKpiHidden);saveKpiHidden();}
       if(d._priceLog&&Array.isArray(d._priceLog)){localStorage.setItem('me_price_log',JSON.stringify(d._priceLog));}
+      if(d._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(d._apariencia));window.applyApariencia?.(d._apariencia);}catch(e){}}
+      if(d._theme){try{localStorage.setItem('me_theme',d._theme);}catch(e){}}
       delete d._distSlices;delete d._liqDistSlices;delete d._distKpiHidden;delete d._priceLog;
+      delete d._apariencia;delete d._theme;
       delete d._exportedAt;delete d._version;delete d._meta;delete d._savedAt;
       sd(d);
       window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
@@ -7304,6 +7410,7 @@ Object.assign(window, {
   // price management
   getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceTerminal, deletePriceLogEntry,
   renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry,
+  restoreFromPriceLog,
   // tabs / ui
   showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange,
   // modals

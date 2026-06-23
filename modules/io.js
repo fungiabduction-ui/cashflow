@@ -98,6 +98,8 @@ export function expJSON(){
   d._liqDistSlices=window._getLiqDistSlices?.();
   d._distKpiHidden=window._getDistKpiHidden?.();
   d._priceLog=JSON.parse(localStorage.getItem('me_price_log')||'[]');
+  try{const ap=localStorage.getItem('me_apariencia');if(ap)d._apariencia=JSON.parse(ap);}catch(e){}
+  const _th=localStorage.getItem('me_theme');if(_th)d._theme=_th;
   d._exportedAt=new Date().toISOString();
   d._version='motoredge_v5';
   d._meta={
@@ -466,7 +468,10 @@ export function impJSONFile(input){
       if(d._liqDistSlices){window._setLiqDistSlices?.(d._liqDistSlices);saveLiqSlices();}
       if(d._distKpiHidden){window._setDistKpiHidden?.(d._distKpiHidden);saveKpiHidden();}
       if(d._priceLog&&Array.isArray(d._priceLog)){localStorage.setItem('me_price_log',JSON.stringify(d._priceLog));}
+      if(d._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(d._apariencia));window.applyApariencia?.(d._apariencia);}catch(e){}}
+      if(d._theme){try{localStorage.setItem('me_theme',d._theme);}catch(e){}}
       delete d._distSlices;delete d._liqDistSlices;delete d._distKpiHidden;delete d._priceLog;
+      delete d._apariencia;delete d._theme;
       delete d._exportedAt;delete d._version;delete d._meta;delete d._savedAt;
       sd(d);
       window.loadConfig?.();window.buildTicketUI?.();window.upd?.();

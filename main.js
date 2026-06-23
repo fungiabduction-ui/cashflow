@@ -23,7 +23,7 @@ import { showInputModal, vTk, vEgr, clM, cpM } from './ui/modal.js';
 import { showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange } from './ui/tabs.js';
 import { normNombre, getContactos, getContactoById, getHistorialContacto, autoRegistrarContacto, guardarInfoContacto, renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort, mostrarMigracionContactos, ejecutarMigracionContactos } from './modules/contactos.js';
 import { setupDelegation, setupDrop, invSubTab, toggleStockGroup, onVariantInput } from './ui/delegacion.js';
-import { getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry, renderPriceTerminal, deletePriceLogEntry } from './modules/price-manager.js';
+import { getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry, renderPriceTerminal, deletePriceLogEntry, restoreFromPriceLog } from './modules/price-manager.js';
 // =====================================================================
 // MOTOR EDGE 3.8-E — Sistema dinámico de productos
 // =====================================================================
@@ -165,6 +165,7 @@ Object.assign(window, {
   // price management
   getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceTerminal, deletePriceLogEntry,
   renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry,
+  restoreFromPriceLog,
   // tabs / ui
   showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange,
   // modals

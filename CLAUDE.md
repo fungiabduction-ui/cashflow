@@ -150,8 +150,10 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── productos.js    ← getProductos(), saveProductos(), guardarProductoModal(), updateClientesDatalist()
 │   ├── listas-precios.js ← getListasPrecios(), getTramosProducto(), renderListasPrecios()
 │   ├── price-manager.js ← applyPriceAdjustment(), previewAjuste(), validarAjuste(), getPriceLog(),
-│   │                      buildPreciosJson(), ghSyncCalc(), renderPriceAdjust(), renderPriceLog()
+│   │                      buildPreciosJson(), ghSyncCalc(), renderPriceAdjust(), renderPriceLog(),
+│   │                      restoreFromPriceLog(entryId) — aplica before[] de una entrada del log
 │   │                      Log en 'me_price_log' (append-only, IDs PCH-AAAAMM-NNN, Math.trunc)
+│   │                      Cada entrada tiene tc (tipo de cambio al momento del ajuste, desde window._blueARS)
 │   │                      ghSyncCalc() pushea precios.json a fungiabduction-ui/calculadora
 │   ├── settings.js     ← renderSettings(), guardarPrecios(), resetPrecios()
 │   ├── contactos.js    ← normNombre(), autoRegistrarContacto(), mostrarMigracionContactos(),
@@ -205,15 +207,30 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
 ```
 
 **Claves separadas** (NO parte de motoredge_v4, tienen localStorage directo propio):
-- `me_gh_config` — token/repo/file de GitHub
-- `me_dist_slices` — slices de distribución de capital (inversiones)
-- `me_liq_dist_slices` — slices de distribución de liquidez
-- `me_dist_kpi_hidden` — KPIs ocultos en panel de distribución
-- `me_apariencia` — colores y tema visual
-- `me_theme` — 'light' | 'dark' | 'modern'
-- `me_gh_last_push` — timestamp del último push
-- `me_price_log` — log de cambios de precios (auditoría). Array de `{id, ts, motivo, tipo, valor, scope, cambios}`. Append-only. IDs `PCH-AAAAMM-NNN` con Math.max. Incluido en expJSON() / impJSONFile().
-- `me_gh_calc_last` — timestamp del último sync con la calculadora pública (`ghSyncCalc()`)
+- `me_gh_config` — token/repo/file de GitHub. **Nunca se respalda** (credencial, solo vive en el dispositivo).
+- `me_dist_slices` — slices de distribución de capital (inversiones). ✅ En todos los backups.
+- `me_liq_dist_slices` — slices de distribución de liquidez. ✅ En todos los backups.
+- `me_dist_kpi_hidden` — KPIs ocultos en panel de distribución. ✅ En todos los backups.
+- `me_apariencia` — colores y tema visual. ✅ En todos los backups.
+- `me_theme` — 'light' | 'dark' | 'modern'. ✅ En todos los backups.
+- `me_gh_last_push` — timestamp del último push. **No se respalda** (dato de dispositivo).
+- `me_gh_calc_last` — timestamp del último sync con calculadora. **No se respalda** (dato de dispositivo).
+- `me_price_log` — log de cambios de precios (auditoría). ✅ En todos los backups.
+  Array de `{id, ts, tc, motivo, tipo, valor, scope, cambios}`.
+  Tipos: `'pct'` (ajuste %), `'restore'` (restauración desde log), `'sync'` (sync calculadora pública).
+  Campo `tc`: tipo de cambio (window._blueARS) al momento del ajuste. Null si no había fetch previo.
+  `cambios[]`: `{listaId, listaNombre, before:[{t,p}], after:[{t,p}]}`. `before` permite restaurar.
+  Append-only. IDs `PCH-AAAAMM-NNN` con Math.max. Restaurable con `restoreFromPriceLog(entryId)`.
+
+**Flujos de backup — cobertura completa:**
+| Flujo | Escribe | Lee/restaura |
+|---|---|---|
+| `ghPush()` | Sube todo al repo privado (`datos.json`) | — |
+| `ghPull()` | — | Restaura todo desde `datos.json` |
+| `ghBackupNow()` | Sube snapshot a `backups/backup_FECHA.json` | — |
+| `ghRestoreBackup(path)` | — | Restaura desde backup puntual |
+| `expJSON()` | Descarga JSON local | — |
+| `impJSONFile(input)` | — | Restaura desde JSON local |
 
 ---
 
