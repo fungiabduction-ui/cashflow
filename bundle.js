@@ -4064,6 +4064,7 @@ function renderSettings(){
   const activePreset=saved?._preset||'dark';
   updateThemeCards(activePreset);
   _renderMigracionTcBtn();
+  _renderMigracionLineasBtn();
 }
 
 function _renderMigracionTcBtn(){
@@ -4081,6 +4082,29 @@ function _renderMigracionTcBtn(){
   btn.onclick=function(){
     const r=window.migrarTcNull?.();
     if(r)sN('✓ TC migrado en '+r.migradas+' órdenes');
+    btn.remove();
+  };
+  cont.appendChild(btn);
+}
+
+function _renderMigracionLineasBtn(){
+  const cont=document.getElementById('settingsMaintTools');
+  if(!cont)return;
+  const d=ld();
+  const count=(d.orders||[]).filter(o=>{
+    const ls=(o.productos?._lineas)||[];
+    return ls.some(l=>!l.nombre||!l.emoji);
+  }).length;
+  const existing=document.getElementById('btnMigraLineas');
+  if(existing)existing.remove();
+  if(count===0)return;
+  const btn=document.createElement('button');
+  btn.id='btnMigraLineas';
+  btn.textContent='⚙ Migrar detalle productos ('+count+' órdenes)';
+  btn.style.cssText='margin-top:8px;font-family:var(--mo);font-size:9px;padding:6px 14px;background:var(--wn);color:#000;border:none;cursor:pointer';
+  btn.onclick=function(){
+    const r=window.migrarLineasYTotales?.();
+    if(r)sN('✓ Migradas: '+r.migradasLineas+' órdenes con productos, '+r.migradasTotales+' con costos');
     btn.remove();
   };
   cont.appendChild(btn);
@@ -7278,6 +7302,35 @@ function migrarTcNull(){
   return{migradas};
 }
 
+// ── MIGRAR LINEAS Y TOTALES — one-shot: agrega nombre/emoji a _lineas y costoTotal a totales ──
+function migrarLineasYTotales(){
+  const d=ld();
+  const prods=getProductos();
+  const orders=d.orders||[];
+  let migradasLineas=0,migradasTotales=0;
+  orders.forEach(o=>{
+    const p=o.productos||{};
+    if(Array.isArray(p._lineas)&&p._lineas.length){
+      let changed=false;
+      p._lineas.forEach(l=>{
+        if(!l.nombre||!l.emoji){
+          const prod=prods.find(x=>x.id===(l.varId||l.prodId)||x.id===l.prodId);
+          if(prod){l.nombre=prod.nombre;l.emoji=prod.emoji;}
+          else if(!l.nombre){l.nombre=l.prodId||'';}
+          changed=true;
+        }
+      });
+      if(changed)migradasLineas++;
+    }
+    if(o.totales&&(o.totales.costoTotal===undefined||o.totales.costoTotal===null)){
+      o.totales.costoTotal=o.costo||0;
+      migradasTotales++;
+    }
+  });
+  if(migradasLineas>0||migradasTotales>0)sd(d);
+  return{migradasLineas,migradasTotales};
+}
+
 // ── HARD RESET — borra todo el localStorage del sistema ──
 function hardReset(){
   const KEYS=[
@@ -7619,7 +7672,7 @@ Object.assign(window, {
   renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista,
   abrirEditarLista, eliminarLista, renderInvPrecios, renderWAText,
   // io
-  expJSON, expCSV, expXLSX, impJSONFile, hardReset, migrarTcNull,
+  expJSON, expCSV, expXLSX, impJSONFile, hardReset, migrarTcNull, migrarLineasYTotales,
   // github
   ghSaveToken, ghTestConn, ghPush, ghPull, ghBackupNow, ghListBackups, ghRestoreBackup,
   // apariencia

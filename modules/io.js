@@ -520,6 +520,35 @@ export function migrarTcNull(){
   return{migradas};
 }
 
+// ── MIGRAR LINEAS Y TOTALES — one-shot: agrega nombre/emoji a _lineas y costoTotal a totales ──
+export function migrarLineasYTotales(){
+  const d=ld();
+  const prods=getProductos();
+  const orders=d.orders||[];
+  let migradasLineas=0,migradasTotales=0;
+  orders.forEach(o=>{
+    const p=o.productos||{};
+    if(Array.isArray(p._lineas)&&p._lineas.length){
+      let changed=false;
+      p._lineas.forEach(l=>{
+        if(!l.nombre||!l.emoji){
+          const prod=prods.find(x=>x.id===(l.varId||l.prodId)||x.id===l.prodId);
+          if(prod){l.nombre=prod.nombre;l.emoji=prod.emoji;}
+          else if(!l.nombre){l.nombre=l.prodId||'';}
+          changed=true;
+        }
+      });
+      if(changed)migradasLineas++;
+    }
+    if(o.totales&&(o.totales.costoTotal===undefined||o.totales.costoTotal===null)){
+      o.totales.costoTotal=o.costo||0;
+      migradasTotales++;
+    }
+  });
+  if(migradasLineas>0||migradasTotales>0)sd(d);
+  return{migradasLineas,migradasTotales};
+}
+
 // ── HARD RESET — borra todo el localStorage del sistema ──
 export function hardReset(){
   const KEYS=[
