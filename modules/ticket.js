@@ -369,13 +369,14 @@ export function generarTicket(){
     goteros:lm.goteros?.qty||0,totalGoteros:lm.goteros?.subtotal||0,
     petri:lm.petri?.qty||0,totalPetri:lm.petri?.subtotal||0,
     variable:qV,
-    _lineas:lineas.map(l=>({prodId:l.prodId,varId:l.varId||null,qty:l.qty,precio:l.precio,subtotal:l.subtotal}))
+    _lineas:lineas.map(l=>({prodId:l.prodId,varId:l.varId||null,nombre:l.nombre||'',emoji:l.emoji||'',qty:l.qty,precio:l.precio,subtotal:l.subtotal}))
   };
   const totales={
     totalPastillasLinea:productos.totalPastillasLinea,totalCristales:productos.totalCristales,
     totalHongos:productos.totalHongos,totalGoteros:productos.totalGoteros,totalPetri:productos.totalPetri,
     totalGeneral:totalFinal,subtotalBruto:tot,ajusteNeto:ajuste.ajusteNeto,
-    totalUSDT:payment.total_usdt,
+    costoTotal:costo,
+    totalUSDT:payment.total_usdt,totalUSD:payment.usd||null,
     payment  // ← objeto completo {ars,usd,usdt,tc,total_ars,total_usdt,modo}
   };
   const margen=totalFinal>0?parseFloat(((totalFinal-costo)/totalFinal*100).toFixed(1)):0;
@@ -388,7 +389,8 @@ export function generarTicket(){
   }
 
   const clienteId=autoRegistrarContacto(cliente,fecha);
-  sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:payment.tc_usdt||payment.tc_usd||null,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'});
+  const tcOrden=tipoPago==='ARS'?1:(payment.tc_usd||payment.tc_usdt||null);
+  sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'});
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();

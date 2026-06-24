@@ -26,9 +26,9 @@
 
 - [ ] **Dato 1** — `d.stock['p-hong'] = 0` pero lotes tienen `qty_restante = 435`. Acción: ejecutar `reconcileLotesConStock()` desde Settings.
 - [ ] **Dato 2** — `d.stock['grp-p-past'] = 1770` sin lotes correspondientes (clave huérfana legacy). Incluida en reconciliación.
-- [ ] **Dato 3** — 135 órdenes con `tc: null`. Migración one-shot que setea TC histórico.
-- [ ] **Dato 4** — Schema real de `totales` ≠ documentado (faltan `totalUSD`, `costoTotal`, `margen`).
-- [ ] **Dato 5** — `_lineas[]` sin `nombre` ni `costo` en todas las órdenes del backup.
+- [x] **Dato 3** — 135 órdenes con `tc: null`. ✓ Botón en Settings + fix en generarTicket() para órdenes nuevas (ARS → tc=1).
+- [x] **Dato 4** — Schema de `totales` incompleto. ✓ Agregados `costoTotal` y `totalUSD` en generarTicket().
+- [x] **Dato 5** — `_lineas[]` sin `nombre` ni `emoji`. ✓ Agregados en generarTicket().
 - [ ] **Dato 6** — `V-202605-0024` sin `clienteId` (no migrada).
 
 ## 4. MEJORAS DE ROBUSTEZ
