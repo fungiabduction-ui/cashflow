@@ -84,6 +84,19 @@ export function renderDash(){
   const gan=totV-totC;const mgp=totV>0?((gan/totV)*100).toFixed(1):0;
   const fondoRepo=totC;const totOrd=orders.length;const tprom=totOrd?totV/totOrd:0;
   const netoReal=neto-totC;
+  // Días del período seleccionado
+  let diasPer=1;
+  if(f==='rango'){
+    const desde=document.getElementById('dashDesde').value;const hasta=document.getElementById('dashHasta').value;
+    if(desde&&hasta)diasPer=Math.max(1,Math.round((new Date(hasta)-new Date(desde))/86400000)+1);
+  } else if(f==='all'){
+    const allF=[...orders.map(o=>o.fecha),...eg.map(e=>e.fecha)].filter(Boolean).sort();
+    if(allF.length>=2)diasPer=Math.max(1,Math.round((new Date(allF[allF.length-1])-new Date(allF[0]))/86400000)+1);
+  } else {
+    diasPer=new Date(parseInt(f.slice(0,4)),parseInt(f.slice(4,6)),0).getDate();
+  }
+  const gastoDiario=diasPer>0?totE/diasPer:0;
+  const ventaDiaria=diasPer>0?totV/diasPer:0;
 
   const byTP={ARS:0,USD:0,USDT:0};
   const ventasEnARS={ARS:0,USD:0,USDT:0};
@@ -174,6 +187,11 @@ export function renderDash(){
       <div class="kpi neg"><div class="klbl">Egresos</div><div class="kval neg">-${fv(totE)}</div><div class="ksub">${eg.length} gastos</div></div>
       <div class="kpi ${neto>=0?'ok':'neg'}" style="border-top:3px solid ${neto>=0?'var(--ac)':'var(--er)'}"><div class="klbl">Resultado Neto</div><div class="kval ${neto>=0?'':'neg'}" style="font-size:20px">${neto>=0?fv(neto):'-'+fv(Math.abs(neto))}</div><div class="ksub">Ingresos - Egresos</div></div>
     </div>
+    ${totE>0||totV>0?`<div class="kpi-grid" style="gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid var(--br)">
+      <div class="kpi"><div class="klbl">Venta Diaria Prom.</div><div class="kval" style="font-size:14px">${fv(ventaDiaria)}</div><div class="ksub">${diasPer} días · ${totOrd} órdenes</div></div>
+      <div class="kpi neg"><div class="klbl">Gasto Diario Prom.</div><div class="kval neg" style="font-size:14px">-${fv(gastoDiario)}</div><div class="ksub">${eg.length} egresos en período</div></div>
+      <div class="kpi ${ventaDiaria>=gastoDiario?'ok':'neg'}"><div class="klbl">Ratio Venta/Gasto</div><div class="kval ${ventaDiaria>=gastoDiario?'':'neg'}" style="font-size:14px">${gastoDiario>0?(ventaDiaria/gastoDiario).toFixed(2)+'x':'—'}</div><div class="ksub">${gastoDiario>0?'Por $1 gastado generás $'+(ventaDiaria/gastoDiario).toFixed(2)+' en ventas':'sin egresos en período'}</div></div>
+    </div>`:''}
   </div>
 
   <!-- Moneda Recibida -->
