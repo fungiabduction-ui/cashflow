@@ -5426,6 +5426,9 @@ function renderDash(){
   }
   const gastoDiario=diasPer>0?totE/diasPer:0;
   const ventaDiaria=diasPer>0?totV/diasPer:0;
+  const diasConVentas=new Set(orders.map(o=>o.fecha).filter(Boolean)).size;
+  const diasSinVentas=Math.max(0,diasPer-diasConVentas);
+  const frecuenciaDias=diasConVentas>0?(diasPer/diasConVentas).toFixed(1):null;
 
   const byTP={ARS:0,USD:0,USDT:0};
   const ventasEnARS={ARS:0,USD:0,USDT:0};
@@ -5517,9 +5520,9 @@ function renderDash(){
       <div class="kpi ${neto>=0?'ok':'neg'}" style="border-top:3px solid ${neto>=0?'var(--ac)':'var(--er)'}"><div class="klbl">Resultado Neto</div><div class="kval ${neto>=0?'':'neg'}" style="font-size:20px">${neto>=0?fv(neto):'-'+fv(Math.abs(neto))}</div><div class="ksub">Ingresos - Egresos</div></div>
     </div>
     ${totE>0||totV>0?`<div class="kpi-grid" style="gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid var(--br)">
-      <div class="kpi"><div class="klbl">Venta Diaria Prom.</div><div class="kval" style="font-size:14px">${fv(ventaDiaria)}</div><div class="ksub">${diasPer} días · ${totOrd} órdenes</div></div>
+      <div class="kpi"><div class="klbl">Venta Diaria Prom.</div><div class="kval" style="font-size:14px">${fv(ventaDiaria)}</div><div class="ksub">${frecuenciaDias?'cada '+frecuenciaDias+' días · ':''} ${totOrd} órdenes</div></div>
       <div class="kpi neg"><div class="klbl">Gasto Diario Prom.</div><div class="kval neg" style="font-size:14px">-${fv(gastoDiario)}</div><div class="ksub">${eg.length} egresos en período</div></div>
-      <div class="kpi ${ventaDiaria>=gastoDiario?'ok':'neg'}"><div class="klbl">Ratio Venta/Gasto</div><div class="kval ${ventaDiaria>=gastoDiario?'':'neg'}" style="font-size:14px">${gastoDiario>0?(ventaDiaria/gastoDiario).toFixed(2)+'x':'—'}</div><div class="ksub">${gastoDiario>0?'Por $1 gastado generás $'+(ventaDiaria/gastoDiario).toFixed(2)+' en ventas':'sin egresos en período'}</div></div>
+      <div class="kpi ${diasSinVentas<diasPer*0.5?'ok':''}"><div class="klbl">Días sin Ventas</div><div class="kval" style="font-size:14px">${diasSinVentas}<span style="font-size:11px;color:var(--tx3)"> / ${diasPer}</span></div><div class="ksub">${diasConVentas} días activos · ${diasPer>0?Math.round(diasConVentas/diasPer*100):0}% del período</div></div>
     </div>`:''}
   </div>
 
