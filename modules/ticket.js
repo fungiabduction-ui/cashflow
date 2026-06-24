@@ -405,6 +405,11 @@ export function generarTicket(){
   if(confirmBtn){confirmBtn.style.display='';infoBar&&(infoBar.style.display='flex');}
   document.getElementById('outA').scrollIntoView({behavior:'smooth'});
   sN(`✓ ${id} generada — pendiente de confirmación`);window.uhd?.();
+  // Reset quantities and fields for next ticket (output stays visible)
+  getProductos().filter(p=>p.activo).forEach(p=>{const el=document.getElementById('q-'+p.id);if(el)el.value='';});
+  const qv=document.getElementById('q-var');if(qv)qv.value='';
+  ['nota','cliente'].forEach(fid=>{const el=document.getElementById(fid);if(el)el.value='';});
+  upd();
 }
 
 export function confirmarDesdeOutput(){
