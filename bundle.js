@@ -5276,16 +5276,22 @@ function renderDashInversiones(cont,f){
   var byA={};
   filtInv.forEach(function(x){
     var k=x.activo&&x.activo.indexOf('STOCK_')===0?'STOCK':x.activo;
-    byA[k]=(byA[k]||0)+(x.montoARS||0);
+    if(!byA[k])byA[k]={ars:0,unidades:0};
+    byA[k].ars+=(x.montoARS||0);
+    byA[k].unidades+=(x.unidad||x.cantidad||0);
   });
   var AC2={BTC:'#ff6b35',USD_BLUE:'#ffaa00',USDT:'#7c6fff',ORO:'#e0c080',STOCK:'#00e5a0',OTRO:'#8888a0'};
-  var AL2={BTC:'BTC',USD_BLUE:'Dolar Blue',USDT:'USDT',ORO:'Oro',STOCK:'Stock',OTRO:'Otro'};
+  var AL2={BTC:'BTC',USD_BLUE:'Dólar Blue',USDT:'USDT',ORO:'Oro',STOCK:'Stock',OTRO:'Otro'};
+  var _extActivos=new Set(['USD_BLUE','USDT','BTC']);
   var html='<div class="ct" style="margin-top:14px;margin-bottom:8px">Inversiones del período</div>';
   html+='<div class="kpi-grid">';
-  html+='<div class="kpi" style="border-top-color:var(--wn)"><div class="klbl">Total Invertido</div><div class="kval wn">'+fv(totInvARS)+'</div><div class="ksub">'+filtInv.length+' registros</div></div>';
+  html+='<div class="kpi" style="border-top-color:var(--wn)"><div class="klbl">Total Invertido</div><div class="kval wn">'+fv(totInvARS)+'</div><div class="ksub">equiv. ARS · '+filtInv.length+' registros</div></div>';
   Object.entries(byA).forEach(function(e){
-    var col=AC2[e[0]]||'#888';
-    html+='<div class="kpi" style="border-top-color:'+col+'"><div class="klbl">'+(AL2[e[0]]||e[0])+'</div><div class="kval" style="color:'+col+'">'+fv(e[1])+'</div></div>';
+    var k=e[0],v=e[1],col=AC2[k]||'#888',lbl=AL2[k]||k;
+    var esExt=_extActivos.has(k);
+    var valDisplay=esExt?(k==='BTC'?v.unidades.toFixed(6)+' BTC':fu(v.unidades)):fv(v.ars);
+    var subDisplay=esExt?'equiv. '+fv(v.ars):(v.unidades>0?v.unidades+' ud':'');
+    html+='<div class="kpi" style="border-top-color:'+col+'"><div class="klbl">'+lbl+'</div><div class="kval" style="color:'+col+'">'+valDisplay+'</div>'+(subDisplay?'<div class="ksub">'+subDisplay+'</div>':'')+'</div>';
   });
   html+='</div>';
   cont.innerHTML+=html;
