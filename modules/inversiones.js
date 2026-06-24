@@ -879,41 +879,20 @@ export function invConfirmarLiquidacion(id){
   inv.precioVenta=precioVenta;
   inv.resultadoRealizado=resultadoRealizado;
   inv.capitalRecuperado=capitalRecuperado;
-  sd(d);
 
   var mes=d2m(hoy());
   var fecha=hoy();
   var signo=resultadoRealizado>=0?'+':'';
   var concepto='🟡 LIQ. INVERSIÓN '+id+' ('+dest+') — Resultado: '+signo+fv(resultadoRealizado);
-  // Import sE dynamically via window to avoid circular dep
-  const sE=window.sE;
+  // Construir egreso y agregar a d antes del sd() — escritura atómica
+  if(!d.egresos)d.egresos=[];
   if(resultadoRealizado>=0){
-    var eId=nEId(mes);
-    var eObj={
-      id:eId, fecha:fecha, fechaDisplay:d2s(fecha), mesActual:mes,
-      concepto:concepto,
-      montoTotal:capitalRecuperado,
-      impactoCaja:-capitalRecuperado,
-      cuotasTotales:1, cuotasRestantes:0, finaliza:fecha,
-      medio:'Liquidación Inversión',
-      obs:'Ref: '+id+' | Capital recuperado: '+fv(capitalRecuperado),
-      esLiquidacionInv:true, invRef:id
-    };
-    if(sE)sE(eObj);
+    d.egresos.push({id:nEId(mes),fecha:fecha,fechaDisplay:d2s(fecha),mesActual:mes,concepto:concepto,montoTotal:capitalRecuperado,impactoCaja:-capitalRecuperado,cuotasTotales:1,cuotasRestantes:0,finaliza:fecha,medio:'Liquidación Inversión',obs:'Ref: '+id+' | Capital recuperado: '+fv(capitalRecuperado),esLiquidacionInv:true,invRef:id});
   } else {
-    var eId2=nEId(mes);
-    var eObj2={
-      id:eId2, fecha:fecha, fechaDisplay:d2s(fecha), mesActual:mes,
-      concepto:concepto,
-      montoTotal:Math.abs(resultadoRealizado),
-      impactoCaja:Math.abs(resultadoRealizado),
-      cuotasTotales:1, cuotasRestantes:0, finaliza:fecha,
-      medio:'Pérdida Inversión',
-      obs:'Ref: '+id+' | Capital original: '+fv(inv.montoARS||0),
-      esLiquidacionInv:true, invRef:id
-    };
-    if(sE)sE(eObj2);
+    d.egresos.push({id:nEId(mes),fecha:fecha,fechaDisplay:d2s(fecha),mesActual:mes,concepto:concepto,montoTotal:Math.abs(resultadoRealizado),impactoCaja:Math.abs(resultadoRealizado),cuotasTotales:1,cuotasRestantes:0,finaliza:fecha,medio:'Pérdida Inversión',obs:'Ref: '+id+' | Capital original: '+fv(inv.montoARS||0),esLiquidacionInv:true,invRef:id});
   }
+  sd(d); // atomic: inversión LIQUIDADA + egreso en una sola escritura
+  ghAutoPush();
 
   invRfMes();
   invRenderHistorial();

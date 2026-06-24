@@ -426,6 +426,6 @@ export function limpiar(){
   rst('var');
   ['nota','cliente'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('fecha').value=hoy();setTP('ARS');
-  const tc=document.getElementById('tc');if(tc)tc.value='';
+  const tc=document.getElementById('tc-valor');if(tc)tc.value='';
   document.getElementById('outA').style.display='none';upd();window.scrollTo({top:0,behavior:'smooth'});
 }

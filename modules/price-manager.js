@@ -84,15 +84,7 @@ export function applyPriceAdjustment(scope,pct,motivo){
     }
   });
 
-  d.listasPrecios=listas;
-  sd(d); // ONE write for listas + productos
-
-  // Refresh live config so ticket engine uses new prices immediately
-  window.loadConfig?.();
-  window.buildTicketUI?.();
-  window.upd?.();
-
-  // Write audit log entry (separate key, append-only)
+  // Build log entry antes del sd() — newPriceLogId() lee el estado actual via ld()
   const tc=window._blueARS||null;
   const entry={
     id:newPriceLogId(),
@@ -104,9 +96,20 @@ export function applyPriceAdjustment(scope,pct,motivo){
     tc,
     cambios
   };
-  const log=getPriceLog();
-  log.push(entry);
-  savePriceLog(log);
+  // Ensure d.priceLog existe (migration inline)
+  if(!Array.isArray(d.priceLog)){
+    try{const _r=localStorage.getItem('me_price_log');d.priceLog=_r?JSON.parse(_r):[];}
+    catch(e){d.priceLog=[];}
+    localStorage.removeItem('me_price_log');
+  }
+  d.listasPrecios=listas;
+  d.priceLog.push(entry);
+  sd(d); // atomic: listas + productos + priceLog en un solo write
+
+  // Refresh live config so ticket engine uses new prices immediately
+  window.loadConfig?.();
+  window.buildTicketUI?.();
+  window.upd?.();
 
   ghAutoPush();
   sN(`✓ Precios actualizados — ${cambios.length} lista(s) · ${pct>0?'+':''}${pct}%`);

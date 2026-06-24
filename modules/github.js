@@ -204,6 +204,25 @@ export async function ghPush(showNotif){
         ghStatus('OK guardado en GitHub a las '+now+'<br>Archivo: '+cfg.file+' en '+cfg.repo,false);
         sN('Guardado en GitHub');
       }
+    } else if(r.status===409||r.status===422){
+      // SHA stale — reintentar una vez con SHA fresco
+      const freshSha=await ghGetFileSha(cfg);
+      if(freshSha){
+        body.sha=freshSha;
+        const r2=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+cfg.file,{method:'PUT',headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+        const resp2=await r2.json();
+        if(r2.ok){
+          const now2=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+          localStorage.setItem('me_gh_last_push',now2);
+          const syncEl2=document.getElementById('ghSyncInfo');if(syncEl2)syncEl2.textContent='Guardado en GitHub: '+now2;
+          if(showNotif){ghStatus('OK guardado en GitHub a las '+now2,false);sN('Guardado en GitHub');}
+        } else {
+          if(showNotif)ghStatus('ERROR '+r2.status+': '+(resp2.message||JSON.stringify(resp2)),true);
+          console.error('ghPush retry failed:',r2.status,resp2);
+        }
+      } else {
+        if(showNotif)ghStatus('ERROR 409: SHA conflict sin resolución automática',true);
+      }
     } else {
       const errMsg='ERROR '+r.status+': '+(resp.message||JSON.stringify(resp));
       if(showNotif)ghStatus(errMsg+'<br>Repo: '+cfg.repo+'<br>Archivo: '+cfg.file,true);
@@ -258,12 +277,12 @@ export async function ghPull(showNotif){
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
     sd(decoded);
     // Full refresh — inventario incluido
-    loadConfig();buildTicketUI();upd();
-    rfM();rH();rS();rEH();rES();renderDash();renderSettings();
-    try{renderInventario();}catch(e){}
-    try{if(typeof renderInvAll==='function')renderInvAll();}catch(e){}
-    try{rfInvM();}catch(e){}
-    updateClientesDatalist();uhd();
+    window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
+    window.rfM?.();window.rH?.();window.rS?.();window.rEH?.();window.rES?.();window.renderDash?.();window.renderSettings?.();
+    try{window.renderInventario?.();}catch(e){}
+    try{window.renderInvAll?.();}catch(e){}
+    try{window.rfInvM?.();}catch(e){}
+    window.updateClientesDatalist?.();window.uhd?.();
     window.renderPriceTerminal?.();window.renderPriceLog?.();
     const now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
     const syncEl=document.getElementById('ghSyncInfo');
@@ -397,12 +416,12 @@ export async function ghRestoreBackup(path){
     if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
     sd(decoded);
-    loadConfig();buildTicketUI();upd();
-    rfM();rH();rS();rEH();rES();renderDash();renderSettings();
-    try{renderInventario();}catch(e){}
-    try{if(typeof renderInvAll==='function')renderInvAll();}catch(e){}
-    try{rfInvM();}catch(e){}
-    updateClientesDatalist();uhd();
+    window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
+    window.rfM?.();window.rH?.();window.rS?.();window.rEH?.();window.rES?.();window.renderDash?.();window.renderSettings?.();
+    try{window.renderInventario?.();}catch(e){}
+    try{window.renderInvAll?.();}catch(e){}
+    try{window.rfInvM?.();}catch(e){}
+    window.updateClientesDatalist?.();window.uhd?.();
     window.renderPriceTerminal?.();window.renderPriceLog?.();
     sN('✓ Restaurado desde '+name);
     ghStatus('OK — restaurado desde backup: <b>'+name+'</b>',false);
@@ -413,4 +432,5 @@ export function ghInit(){
   ghLoadConfig();
   const last=localStorage.getItem('me_gh_last_push');
   if(last){const el=document.getElementById('ghSyncInfo');if(el)el.textContent='Ultimo guardado: '+last;}
+  window.addEventListener('beforeunload',function(){if(_autoPushTimer){clearTimeout(_autoPushTimer);ghPush(false);}});
 }

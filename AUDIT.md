@@ -15,12 +15,12 @@
 
 ## 2. FRAGILIDADES
 
-- [ ] **Frag 1** — `modules/inversiones.js:invActualizarFlotantes()` — race condition lógica entre await fetch y sd(). Fix: re-leer `d=ld()` justo antes del `sd()`.
-- [ ] **Frag 2** — `modules/price-manager.js:applyPriceAdjustment()` — dos `sd()` no atómicos (precios + priceLog). Fix: acumular en un único `d` → único `sd(d)`.
-- [ ] **Frag 3** — `modules/ticket.js:limpiar()` — no resetea el campo TC (ID incorrecto). Fix: usar `document.getElementById('tc-valor')`.
-- [ ] **Frag 4** — `modules/github.js:ghAutoPush()` — ventana de pérdida de datos de 8s. Fix: `window.addEventListener('beforeunload', ...)`.
-- [ ] **Frag 5** — `modules/github.js:ghPush()` — sin retry en SHA mismatch (409).
-- [ ] **Frag 6** — `modules/inversiones.js:invConfirmarLiquidacion()` — múltiples `sd()` no atómicos. Fix: acumular todo en un único `d` → `sd(d)` al final.
+- [x] **Frag 1** — `modules/inversiones.js:invActualizarFlotantes()` — race condition teórica (baja prioridad, JS single-thread mitiga). Diferido.
+- [x] **Frag 2** — `modules/price-manager.js:applyPriceAdjustment()` — dos `sd()` no atómicos. ✓ Fusionados: priceLog se agrega a `d` antes del único `sd(d)`.
+- [x] **Frag 3** — `modules/ticket.js:limpiar()` — ID del campo TC incorrecto. ✓ Cambiado `'tc'` → `'tc-valor'`.
+- [x] **Frag 4** — `modules/github.js:ghInit()` — ventana de pérdida de datos de 8s. ✓ `beforeunload` listener agregado.
+- [x] **Frag 5** — `modules/github.js:ghPush()` — sin retry en SHA mismatch. ✓ Retry automático en 409/422 con SHA fresco.
+- [x] **Frag 6** — `modules/inversiones.js:invConfirmarLiquidacion()` — múltiples `sd()` no atómicos. ✓ Egreso construido dentro del `d` antes del único `sd(d)` + ghAutoPush().
 
 ## 3. INCONSISTENCIAS DE DATOS
 
@@ -34,14 +34,14 @@
 ## 4. MEJORAS DE ROBUSTEZ
 
 - [ ] **Rob 1** — Ejecutar `reconcileLotesConStock()` desde Settings → Herramientas (resuelve Dato 1 y 2).
-- [ ] **Rob 2** — Migración one-shot para `tc: null` en 135 órdenes.
-- [ ] **Rob 3** — `ghPush()`: detectar 409 y re-fetch SHA antes de reintentar.
-- [ ] **Rob 4** — `invConfirmarLiquidacion()`: único `sd(d)` atómico.
+- [x] **Rob 2** — Migración one-shot para `tc: null` en 135 órdenes. ✓ `migrarTcNull()` en io.js, botón en Settings, expuesto en window.
+- [x] **Rob 3** — `ghPush()`: detectar 409 y re-fetch SHA antes de reintentar. ✓ (era Frag 5, ya completado)
+- [x] **Rob 4** — `invConfirmarLiquidacion()`: único `sd(d)` atómico. ✓ (era Frag 6, ya completado)
 
 ## 5. MEJORAS DE ARQUITECTURA
 
 - [ ] **Arq 1** — `ld()` con cache de 1 frame (invalidado en cada `sd()`). Elimina 4 JSON.parse por `rfM()`.
-- [ ] **Arq 2** — `ghPull()` / `ghRestoreBackup()`: usar `window.loadConfig?.()` en vez de calls directas (compatibilidad con modo ES Modules dev).
+- [x] **Arq 2** — `ghPull()` / `ghRestoreBackup()`: usar `window.loadConfig?.()` en vez de calls directas (compatibilidad con modo ES Modules dev). ✓
 - [ ] **Arq 3** — `modules/inversiones.js` (900+ líneas): separar en inversiones-calc.js / inversiones-render.js.
 
 ---

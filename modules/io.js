@@ -497,6 +497,29 @@ export function impJSONFile(input){
   reader.readAsText(file,'utf-8');
 }
 
+// ── MIGRAR TC NULL — one-shot fix para órdenes con tc: null ──
+export function migrarTcNull(){
+  const d=ld();
+  const orders=d.orders||[];
+  let migradas=0;
+  orders.forEach(o=>{
+    const needsFix=(o.tc===null||o.tc===undefined)||(o.tcUsdt===null||o.tcUsdt===undefined);
+    if(!needsFix)return;
+    if(o.tc===null||o.tc===undefined){
+      if(o.tipoPago==='ARS'){o.tc=1;}
+      else if(o.tipoPago==='USD'&&o.payment?.tc_usd>0){o.tc=o.payment.tc_usd;}
+      else if(o.tipoPago==='USDT'&&o.payment?.tc_usdt>0){o.tc=o.payment.tc_usdt;}
+      else{o.tc=1;}
+    }
+    if(o.tcUsdt===null||o.tcUsdt===undefined){
+      o.tcUsdt=o.payment?.tc_usdt||1;
+    }
+    migradas++;
+  });
+  if(migradas>0){sd(d);}
+  return{migradas};
+}
+
 // ── HARD RESET — borra todo el localStorage del sistema ──
 export function hardReset(){
   const KEYS=[

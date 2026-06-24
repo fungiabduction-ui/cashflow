@@ -15,10 +15,10 @@ import { sO, confirmarOrden, rH, rS, toggleHistGrp, toggleTotals, openEditVenta,
 import { getIngresos, saveIngreso, deleteIngreso, consumirStock, renderInvStockTabla, guardarUmbralesDesdeTabla, abrirLotesPanel, cerrarLotesPanel, renderLotesDetalle, renderIngresoForm, ingPreview, registrarIngreso, renderProductosRegistrados, eliminarProductoRegistrado, renderIngresosHistorial, editarIngreso, eliminarIngreso, renderInvStock, renderInventario, renderInventarioTabla, renderStockHistorial, descontarStockPorTicket, renderStockMiniPanel, renderDashStock, renderStockEntryForm, generarStockTicket, invSubNav, onInvPeriodoChange } from './modules/inventario.js';
 import { renderSettings } from './modules/settings.js';
 import { sLiqExterna, saveLiqSlices, autoBalanceLiq, renderLiqDistConfig, cycleLiqColor, addLiqSlice, removeLiqSlice, setLiqView, updLiqPreview, toggleLiqExterna, registrarLiqExterna, renderLiqExterna } from './modules/liquidez.js';
-import { filtrarPorPeriodo, getInvFiltro, rfInvM, onInvMesChange, onInvGlobalMesChange, saveDistSlices, saveKpiHidden, toggleDistEdit, toggleDistKpi, kpiVisible, calcDistBase, buildSmartDefaults, resetDistDefaults, autoBalancePct, renderDistConfig, cycleColor, addDistSlice, removeDistSlice, fetchPrecios, actualizarPreciosDash, setBtcDays, fetchBtcHistorico, renderInvRepo, distRow, distRowUSD, renderDistChart, renderInvDist, getDisponibleDist, getDisponibleLiq, invGetDisponibleActual, invUsarPct, invMostrarPct, invSelFuente, invActualizarCampos, invCalcular, invReset, invGenerar, invRfMes, invRenderHistorial, invActualizarFlotantes, invLiquidarModal, invConfirmarLiquidacion, invEliminar, invAnularModal, invLimpiar, renderInvAll, onInvActivoChange, onInvFuenteChange, buildInvForm, calcInvResult, updInvTicket, limpiarInversiones, rfInvHistMes, renderDashInversiones } from './modules/inversiones.js';
+import { filtrarPorPeriodo, getInvFiltro, rfInvM, onInvMesChange, onInvGlobalMesChange, saveDistSlices, saveKpiHidden, toggleDistEdit, toggleDistKpi, kpiVisible, calcDistBase, buildSmartDefaults, resetDistDefaults, autoBalancePct, renderDistConfig, cycleColor, addDistSlice, removeDistSlice, fetchPrecios, actualizarPreciosDash, setBtcDays, fetchBtcHistorico, renderInvRepo, distRow, distRowUSD, renderDistChart, renderInvDist, getDisponibleDist, getDisponibleLiq, invGetDisponibleActual, invUsarPct, invMostrarPct, invSelFuente, invActualizarCampos, invCalcular, invReset, invGenerar, invRfMes, invRenderHistorial, invActualizarFlotantes, invLiquidarModal, invConfirmarLiquidacion, invEliminar, invAnularModal, invLimpiar, renderInvAll, onInvActivoChange, buildInvForm, calcInvResult, updInvTicket, limpiarInversiones, rfInvHistMes, renderDashInversiones, renderCartera } from './modules/inversiones.js';
 import { destroyCharts, toggleChart, onDashMesChange, calcBalance, renderDash, renderDashFlowChart, setFlowPer } from './modules/dashboard.js';
 import { setTP, buildTicketUI, updStockHints, adj, rst, rstDel, gn, resetTodo, getTC, autoFillTC, syncAjuste, getPayment, calc, upd, generarTicket, confirmarDesdeOutput, limpiar } from './modules/ticket.js';
-import { xlsxCell, xlsxSetCell, xlsxAoaToSheet, expJSON, expCSV, expXLSX, getStockUmbObj, impJSONFile, hardReset } from './modules/io.js';
+import { xlsxCell, xlsxSetCell, xlsxAoaToSheet, expJSON, expCSV, expXLSX, getStockUmbObj, impJSONFile, hardReset, migrarTcNull } from './modules/io.js';
 import { showInputModal, vTk, vEgr, clM, cpM } from './ui/modal.js';
 import { showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange } from './ui/tabs.js';
 import { normNombre, getContactos, getContactoById, getHistorialContacto, autoRegistrarContacto, guardarInfoContacto, renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort, mostrarMigracionContactos, ejecutarMigracionContactos } from './modules/contactos.js';
@@ -123,7 +123,7 @@ Object.assign(window, {
   renderDash, onDashMesChange, renderDashFlowChart, setFlowPer, setBtcDays,
   fetchBtcHistorico, toggleChart,
   // inversiones
-  renderInvAll, renderInvDist, renderInvRepo,
+  renderInvAll, renderInvDist, renderInvRepo, renderCartera,
   rfInvM, onInvMesChange, onInvGlobalMesChange, invSelFuente, invSubNav, fetchPrecios,
   actualizarPreciosDash, invActualizarCampos, invCalcular, invGenerar,
   invReset, invLimpiar, invRenderHistorial,
@@ -151,7 +151,7 @@ Object.assign(window, {
   renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista,
   abrirEditarLista, eliminarLista, renderInvPrecios, renderWAText,
   // io
-  expJSON, expCSV, expXLSX, impJSONFile, hardReset,
+  expJSON, expCSV, expXLSX, impJSONFile, hardReset, migrarTcNull,
   // github
   ghSaveToken, ghTestConn, ghPush, ghPull, ghBackupNow, ghListBackups, ghRestoreBackup,
   // apariencia

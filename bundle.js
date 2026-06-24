@@ -359,6 +359,25 @@ async function ghPush(showNotif){
         ghStatus('OK guardado en GitHub a las '+now+'<br>Archivo: '+cfg.file+' en '+cfg.repo,false);
         sN('Guardado en GitHub');
       }
+    } else if(r.status===409||r.status===422){
+      // SHA stale — reintentar una vez con SHA fresco
+      const freshSha=await ghGetFileSha(cfg);
+      if(freshSha){
+        body.sha=freshSha;
+        const r2=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+cfg.file,{method:'PUT',headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+        const resp2=await r2.json();
+        if(r2.ok){
+          const now2=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+          localStorage.setItem('me_gh_last_push',now2);
+          const syncEl2=document.getElementById('ghSyncInfo');if(syncEl2)syncEl2.textContent='Guardado en GitHub: '+now2;
+          if(showNotif){ghStatus('OK guardado en GitHub a las '+now2,false);sN('Guardado en GitHub');}
+        } else {
+          if(showNotif)ghStatus('ERROR '+r2.status+': '+(resp2.message||JSON.stringify(resp2)),true);
+          console.error('ghPush retry failed:',r2.status,resp2);
+        }
+      } else {
+        if(showNotif)ghStatus('ERROR 409: SHA conflict sin resolución automática',true);
+      }
     } else {
       const errMsg='ERROR '+r.status+': '+(resp.message||JSON.stringify(resp));
       if(showNotif)ghStatus(errMsg+'<br>Repo: '+cfg.repo+'<br>Archivo: '+cfg.file,true);
@@ -413,12 +432,12 @@ async function ghPull(showNotif){
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
     sd(decoded);
     // Full refresh — inventario incluido
-    loadConfig();buildTicketUI();upd();
-    rfM();rH();rS();rEH();rES();renderDash();renderSettings();
-    try{renderInventario();}catch(e){}
-    try{if(typeof renderInvAll==='function')renderInvAll();}catch(e){}
-    try{rfInvM();}catch(e){}
-    updateClientesDatalist();uhd();
+    window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
+    window.rfM?.();window.rH?.();window.rS?.();window.rEH?.();window.rES?.();window.renderDash?.();window.renderSettings?.();
+    try{window.renderInventario?.();}catch(e){}
+    try{window.renderInvAll?.();}catch(e){}
+    try{window.rfInvM?.();}catch(e){}
+    window.updateClientesDatalist?.();window.uhd?.();
     window.renderPriceTerminal?.();window.renderPriceLog?.();
     const now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
     const syncEl=document.getElementById('ghSyncInfo');
@@ -552,12 +571,12 @@ async function ghRestoreBackup(path){
     if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
     delete decoded._version;delete decoded._savedAt;delete decoded._meta;
     sd(decoded);
-    loadConfig();buildTicketUI();upd();
-    rfM();rH();rS();rEH();rES();renderDash();renderSettings();
-    try{renderInventario();}catch(e){}
-    try{if(typeof renderInvAll==='function')renderInvAll();}catch(e){}
-    try{rfInvM();}catch(e){}
-    updateClientesDatalist();uhd();
+    window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
+    window.rfM?.();window.rH?.();window.rS?.();window.rEH?.();window.rES?.();window.renderDash?.();window.renderSettings?.();
+    try{window.renderInventario?.();}catch(e){}
+    try{window.renderInvAll?.();}catch(e){}
+    try{window.rfInvM?.();}catch(e){}
+    window.updateClientesDatalist?.();window.uhd?.();
     window.renderPriceTerminal?.();window.renderPriceLog?.();
     sN('✓ Restaurado desde '+name);
     ghStatus('OK — restaurado desde backup: <b>'+name+'</b>',false);
@@ -568,6 +587,7 @@ function ghInit(){
   ghLoadConfig();
   const last=localStorage.getItem('me_gh_last_push');
   if(last){const el=document.getElementById('ghSyncInfo');if(el)el.textContent='Ultimo guardado: '+last;}
+  window.addEventListener('beforeunload',function(){if(_autoPushTimer){clearTimeout(_autoPushTimer);ghPush(false);}});
 }
 
 
@@ -1772,15 +1792,7 @@ function applyPriceAdjustment(scope,pct,motivo){
     }
   });
 
-  d.listasPrecios=listas;
-  sd(d); // ONE write for listas + productos
-
-  // Refresh live config so ticket engine uses new prices immediately
-  window.loadConfig?.();
-  window.buildTicketUI?.();
-  window.upd?.();
-
-  // Write audit log entry (separate key, append-only)
+  // Build log entry antes del sd() — newPriceLogId() lee el estado actual via ld()
   const tc=window._blueARS||null;
   const entry={
     id:newPriceLogId(),
@@ -1792,9 +1804,20 @@ function applyPriceAdjustment(scope,pct,motivo){
     tc,
     cambios
   };
-  const log=getPriceLog();
-  log.push(entry);
-  savePriceLog(log);
+  // Ensure d.priceLog existe (migration inline)
+  if(!Array.isArray(d.priceLog)){
+    try{const _r=localStorage.getItem('me_price_log');d.priceLog=_r?JSON.parse(_r):[];}
+    catch(e){d.priceLog=[];}
+    localStorage.removeItem('me_price_log');
+  }
+  d.listasPrecios=listas;
+  d.priceLog.push(entry);
+  sd(d); // atomic: listas + productos + priceLog en un solo write
+
+  // Refresh live config so ticket engine uses new prices immediately
+  window.loadConfig?.();
+  window.buildTicketUI?.();
+  window.upd?.();
 
   ghAutoPush();
   sN(`✓ Precios actualizados — ${cambios.length} lista(s) · ${pct>0?'+':''}${pct}%`);
@@ -4040,6 +4063,27 @@ function renderSettings(){
   const saved=getApariencia();
   const activePreset=saved?._preset||'dark';
   updateThemeCards(activePreset);
+  _renderMigracionTcBtn();
+}
+
+function _renderMigracionTcBtn(){
+  const cont=document.getElementById('settingsMaintTools');
+  if(!cont)return;
+  const d=ld();
+  const count=(d.orders||[]).filter(o=>o.tc===null||o.tc===undefined).length;
+  const existing=document.getElementById('btnMigraTcNull');
+  if(existing)existing.remove();
+  if(count===0)return;
+  const btn=document.createElement('button');
+  btn.id='btnMigraTcNull';
+  btn.textContent='⚙ Migrar TC nulo ('+count+' órdenes)';
+  btn.style.cssText='margin-top:8px;font-family:var(--mo);font-size:9px;padding:6px 14px;background:var(--wn);color:#000;border:none;cursor:pointer';
+  btn.onclick=function(){
+    const r=window.migrarTcNull?.();
+    if(r)sN('✓ TC migrado en '+r.migradas+' órdenes');
+    btn.remove();
+  };
+  cont.appendChild(btn);
 }
 
 
@@ -5101,41 +5145,20 @@ function invConfirmarLiquidacion(id){
   inv.precioVenta=precioVenta;
   inv.resultadoRealizado=resultadoRealizado;
   inv.capitalRecuperado=capitalRecuperado;
-  sd(d);
 
   var mes=d2m(hoy());
   var fecha=hoy();
   var signo=resultadoRealizado>=0?'+':'';
   var concepto='🟡 LIQ. INVERSIÓN '+id+' ('+dest+') — Resultado: '+signo+fv(resultadoRealizado);
-  // Import sE dynamically via window to avoid circular dep
-  const sE=window.sE;
+  // Construir egreso y agregar a d antes del sd() — escritura atómica
+  if(!d.egresos)d.egresos=[];
   if(resultadoRealizado>=0){
-    var eId=nEId(mes);
-    var eObj={
-      id:eId, fecha:fecha, fechaDisplay:d2s(fecha), mesActual:mes,
-      concepto:concepto,
-      montoTotal:capitalRecuperado,
-      impactoCaja:-capitalRecuperado,
-      cuotasTotales:1, cuotasRestantes:0, finaliza:fecha,
-      medio:'Liquidación Inversión',
-      obs:'Ref: '+id+' | Capital recuperado: '+fv(capitalRecuperado),
-      esLiquidacionInv:true, invRef:id
-    };
-    if(sE)sE(eObj);
+    d.egresos.push({id:nEId(mes),fecha:fecha,fechaDisplay:d2s(fecha),mesActual:mes,concepto:concepto,montoTotal:capitalRecuperado,impactoCaja:-capitalRecuperado,cuotasTotales:1,cuotasRestantes:0,finaliza:fecha,medio:'Liquidación Inversión',obs:'Ref: '+id+' | Capital recuperado: '+fv(capitalRecuperado),esLiquidacionInv:true,invRef:id});
   } else {
-    var eId2=nEId(mes);
-    var eObj2={
-      id:eId2, fecha:fecha, fechaDisplay:d2s(fecha), mesActual:mes,
-      concepto:concepto,
-      montoTotal:Math.abs(resultadoRealizado),
-      impactoCaja:Math.abs(resultadoRealizado),
-      cuotasTotales:1, cuotasRestantes:0, finaliza:fecha,
-      medio:'Pérdida Inversión',
-      obs:'Ref: '+id+' | Capital original: '+fv(inv.montoARS||0),
-      esLiquidacionInv:true, invRef:id
-    };
-    if(sE)sE(eObj2);
+    d.egresos.push({id:nEId(mes),fecha:fecha,fechaDisplay:d2s(fecha),mesActual:mes,concepto:concepto,montoTotal:Math.abs(resultadoRealizado),impactoCaja:Math.abs(resultadoRealizado),cuotasTotales:1,cuotasRestantes:0,finaliza:fecha,medio:'Pérdida Inversión',obs:'Ref: '+id+' | Capital original: '+fv(inv.montoARS||0),esLiquidacionInv:true,invRef:id});
   }
+  sd(d); // atomic: inversión LIQUIDADA + egreso en una sola escritura
+  ghAutoPush();
 
   invRfMes();
   invRenderHistorial();
@@ -6729,7 +6752,7 @@ function limpiar(){
   rst('var');
   ['nota','cliente'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('fecha').value=hoy();setTP('ARS');
-  const tc=document.getElementById('tc');if(tc)tc.value='';
+  const tc=document.getElementById('tc-valor');if(tc)tc.value='';
   document.getElementById('outA').style.display='none';upd();window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -7225,6 +7248,29 @@ function impJSONFile(input){
   reader.readAsText(file,'utf-8');
 }
 
+// ── MIGRAR TC NULL — one-shot fix para órdenes con tc: null ──
+function migrarTcNull(){
+  const d=ld();
+  const orders=d.orders||[];
+  let migradas=0;
+  orders.forEach(o=>{
+    const needsFix=(o.tc===null||o.tc===undefined)||(o.tcUsdt===null||o.tcUsdt===undefined);
+    if(!needsFix)return;
+    if(o.tc===null||o.tc===undefined){
+      if(o.tipoPago==='ARS'){o.tc=1;}
+      else if(o.tipoPago==='USD'&&o.payment?.tc_usd>0){o.tc=o.payment.tc_usd;}
+      else if(o.tipoPago==='USDT'&&o.payment?.tc_usdt>0){o.tc=o.payment.tc_usdt;}
+      else{o.tc=1;}
+    }
+    if(o.tcUsdt===null||o.tcUsdt===undefined){
+      o.tcUsdt=o.payment?.tc_usdt||1;
+    }
+    migradas++;
+  });
+  if(migradas>0){sd(d);}
+  return{migradas};
+}
+
 // ── HARD RESET — borra todo el localStorage del sistema ──
 function hardReset(){
   const KEYS=[
@@ -7566,7 +7612,7 @@ Object.assign(window, {
   renderListasPrecios, renderAsignacionPrecios, abrirNuevaLista,
   abrirEditarLista, eliminarLista, renderInvPrecios, renderWAText,
   // io
-  expJSON, expCSV, expXLSX, impJSONFile, hardReset,
+  expJSON, expCSV, expXLSX, impJSONFile, hardReset, migrarTcNull,
   // github
   ghSaveToken, ghTestConn, ghPush, ghPull, ghBackupNow, ghListBackups, ghRestoreBackup,
   // apariencia
