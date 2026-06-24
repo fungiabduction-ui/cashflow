@@ -346,7 +346,9 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
 
 9. **Compatibilidad legacy**: órdenes antiguas tienen `{pastillas, cristales, hongos}`. Nuevas usan `lineas[]`. Ambos formatos conviven. `_getLineasOrden(o)` en `modules/io.js` es el bridge. No tocarlo. `getInvPeriodoSoldMap()` maneja ambos formatos.
 
-9b. **`o.totales` puede ser undefined en órdenes legacy**: SIEMPRE usar optional chaining `o.totales?.totalGeneral` y `o.totales?.costoTotal`. Acceso directo `o.totales.campo` crashea silenciosamente en `renderInvDist()` / `buildSmartDefaults()` / `calcDistBase()` e impide que `invRenderHistorial()` se ejecute. Mismo patrón en `dashboard.js`. En `renderInvAll()` cada función está envuelta en try-catch individual para que un crash parcial no bloquee el resto.
+9b. **`x.cantidad` en registros de inversión es string con locale argentino**: El campo `cantidad` de una inversión se guarda como `"10.000 USD"` (punto = separador de miles, coma = decimal). `parseFloat("10.000")` = 10, NO 10000. Para extraer el valor numérico: `parseFloat(s.split(' ')[0].replace(/\./g,'').replace(',','.'))||0`. Nunca usar `parseFloat(x.cantidad)` directamente. Ver `renderDashInversiones()` en `modules/inversiones.js`.
+
+9c. **`o.totales` puede ser undefined en órdenes legacy**: SIEMPRE usar optional chaining `o.totales?.totalGeneral` y `o.totales?.costoTotal`. Acceso directo `o.totales.campo` crashea silenciosamente en `renderInvDist()` / `buildSmartDefaults()` / `calcDistBase()` e impide que `invRenderHistorial()` se ejecute. Mismo patrón en `dashboard.js`. En `renderInvAll()` cada función está envuelta en try-catch individual para que un crash parcial no bloquee el resto.
 
 10. **Orden de inicialización** (en `main.js`, al final): `initConfigDeps()` → `loadConfig()` → `seedStockInicial()` → `ghInit()` → tema/apariencia → `buildTicketUI()` → `upd()` → `rfM()` → `uhd()` → `setInterval` → `setupDelegation()` → `setupDrop()`.
 
