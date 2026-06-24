@@ -987,7 +987,7 @@ export function renderDashInversiones(cont,f){
   });
   var AC2={BTC:'#ff6b35',USD_BLUE:'#ffaa00',USDT:'#7c6fff',ORO:'#e0c080',STOCK:'#00e5a0',OTRO:'#8888a0'};
   var AL2={BTC:'BTC',USD_BLUE:'Dólar Blue',USDT:'USDT',ORO:'Oro',STOCK:'Stock',OTRO:'Otro'};
-  var _extActivos=new Set(['USD_BLUE','USDT','BTC']);
+  var _extActivos=new Set(['USD','USD_BLUE','USDT','BTC']);
   var html='<div class="ct" style="margin-top:14px;margin-bottom:8px">Inversiones del período</div>';
   html+='<div class="kpi-grid">';
   html+='<div class="kpi" style="border-top-color:var(--wn)"><div class="klbl">Total Invertido</div><div class="kval wn">'+fv(totInvARS)+'</div><div class="ksub">equiv. ARS · '+filtInv.length+' registros</div></div>';
@@ -1023,10 +1023,11 @@ export function renderDashInversiones(cont,f){
       if(k==='BTC')qStr=dv.qty.toFixed(6)+' BTC';
       else if(k==='USD'||k==='USDT')qStr=fu(dv.qty)+' '+k;
       var flotColor=dv.flotante>=0?'#00e5a0':'#ff4455';
+      var esExtC=(k==='USD'||k==='USDT'||k==='BTC');
       ch+='<div class="kpi" style="border-top-color:'+col+'">'
         +'<div class="klbl" style="color:'+col+'">'+k+'</div>'
-        +'<div class="kval">'+fv(dv.montoARS)+'</div>'
-        +(qStr?'<div class="ksub">'+qStr+'</div>':'')
+        +(esExtC&&qStr?'<div class="kval" style="color:'+col+'">'+qStr+'</div>':'<div class="kval">'+fv(dv.montoARS)+'</div>')
+        +(esExtC?'<div class="ksub">inv. '+fv(dv.montoARS)+'</div>':(qStr?'<div class="ksub">'+qStr+'</div>':''))
         +'<div class="ksub" style="color:'+flotColor+'">'+(dv.flotante>=0?'+':'')+fv(dv.flotante)+'</div>'
         +'</div>';
     });
