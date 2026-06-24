@@ -376,6 +376,7 @@ async function ghPull(showNotif){
     if(showNotif)ghStatus('ERROR: Configura GitHub primero',true);
     return;
   }
+  if(!confirm('¿Cargar desde GitHub? Se sobreescribirán todos los datos locales.'))return;
   if(showNotif)ghStatus('Cargando datos desde GitHub...', false);
   try{
     const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+cfg.file+'?t='+Date.now(),{
@@ -2525,7 +2526,7 @@ function confirmarOrden(id){
   sN('✓ '+id+' — CONFIRMADA');
 }
 
-function anularByIdModal(){window.showInputModal?.('🟢 Anular Venta por ID','ID de la venta (ej: V-202603-0001):',true,'uppercase',function(raw){if(!raw)return;const id=raw.toUpperCase();const o=gO().find(x=>x.id===id);if(!o){sN(`${id} no encontrado`,true);return;}if(!confirm(`¿Anular ${id}?\n${o.fechaDisplay} — ${fv(o.totales.totalGeneral)}`))return;dO(id);window.rfM?.();rH();rS();window.renderDash?.();sN(`${id} anulada`);window.uhd?.();window.clM?.();});}
+function anularByIdModal(){window.showInputModal?.('🟢 Anular Venta por ID','ID de la venta (ej: V-202603-0001):',true,'uppercase',function(raw){if(!raw)return;const id=raw.toUpperCase();const o=gO().find(x=>x.id===id);if(!o){sN(`${id} no encontrado`,true);return;}if(!confirm(`¿Anular ${id}?\n${o.fechaDisplay} — ${fv(o.totales?.totalGeneral||0)}`))return;dO(id);window.rfM?.();rH();rS();window.renderDash?.();sN(`${id} anulada`);window.uhd?.();window.clM?.();});}
 
 function rH(){
   const f=document.getElementById('ventasMes').value;
@@ -2568,7 +2569,7 @@ function rH(){
       } else if(o.tipoPago==='USDT'){
         montoDisplay=`<span style="color:var(--wn)">${fu(o.payment?.usdt||0)} USDT</span>`;
       } else {
-        montoDisplay=fv(o.totales.totalGeneral);
+        montoDisplay=fv(o.totales?.totalGeneral||0);
       }
       const isPend=o.estado==='pendiente';
       const cardBorderCol=isPend?'rgba(255,170,0,.5)':'var(--br)';
@@ -2641,7 +2642,7 @@ function rS(){
   // ── Build rows ──
   let rows='';
   orders.forEach(o=>{
-    const t=o.totales;
+    const t=o.totales||{};
     const cells=PRODUCT_COLUMNS.map(col=>{
       const v=col.getQty(o);
       if(!v||v===0)return`<td class="mu"></td>`;
@@ -2660,7 +2661,7 @@ function rS(){
         if(col.id==='variable')return`<td class="${cls}">${fi(sum)}</td>`;
         return`<td class="${cls}">${sum}</td>`;
       }).join('');
-      const tARS=arr.reduce((a,o)=>a+(o.totales.totalGeneral||0),0);
+      const tARS=arr.reduce((a,o)=>a+(o.totales?.totalGeneral||0),0);
       const tUSDT=arr.reduce((a,o)=>a+(o.totales.totalUSDT||0),0);
       return`${cells}<td class="${cls}">${fi(tARS)}</td><td class="${cls}">${tUSDT?fu(tUSDT):''}</td><td></td><td></td>`;
     }
@@ -4003,9 +4004,16 @@ function generarStockTicket(){
     targetId=newId;
   }
   // Crear lote FIFO
-  agregarLote(targetId,{qty,costoUsd:costoUsd||0,fecha,nota:nota||'Entrada de mercadería'});
   const tc=window._blueARS||window._usdtARS||1;
   const costoArs=costoUsd?costoUsd*tc:0;
+  const ingresoId=newIngresoId();const ts=new Date().toISOString();
+  const _lotes=getLotes();if(!_lotes[targetId])_lotes[targetId]=[];
+  const loteId=ingresoId+'-L1';
+  _lotes[targetId].push({id:loteId,ingreso_id:ingresoId,fecha:ts,qty_inicial:qty,qty_restante:qty,costo_unitario:costoArs,nota:nota||'Entrada de mercadería'});
+  saveLotes(_lotes);
+  saveIngreso({id:ingresoId,fecha:ts,fecha_display:d2s(fecha),prod_id:targetId,qty,costo_unitario:costoArs,total:qty*costoArs,nota:nota||'Entrada de mercadería',lote_id:loteId});
+  addStockMov({fecha:ts,tipo:'S-TICKET',prodId:targetId,nombre:displayName,emoji,delta:qty,antes:getStockFromLotes(targetId)-qty,despues:getStockFromLotes(targetId),nota:'S-Ticket entrada'});
+  const _d=ld();if(!_d.stock)_d.stock={};_d.stock[targetId]=(_d.stock[targetId]||0)+qty;sd(_d);
   const fd=d2s(fecha);
   let tk=`🧾 S-Ticket Entrada\n📅 Fecha: ${fd}\n📦 ${emoji} ${displayName}\n📥 +${qty} ${unit}`;
   if(costoUsd)tk+=`\n💵 Costo: US$${fu(costoUsd)}/ud · TC $${fi(Math.round(tc))} = $${fi(Math.round(costoArs))}/ud`;
@@ -4133,7 +4141,8 @@ function registrarLiqExterna(){
   const parts=fecha.split('-');const mes=parts[0]+parts[1];
   const arsEq=window._blueARS?Math.round(monto*window._blueARS):0;
   const btcEq=(window._btcPrecioUSD&&window._blueARS)?parseFloat((monto/window._btcPrecioUSD).toFixed(8)):0;
-  const id='L-'+mes+'-'+String(gLiqExterna().filter(function(x){return x.mesActual===mes;}).length+1).padStart(4,'0');
+  const _existing=gLiqExterna().filter(x=>x.mesActual===mes).map(x=>parseInt((x.id||'').split('-')[2])||0);
+  const id='L-'+mes+'-'+String(Math.max(0,..._existing)+1).padStart(4,'0');
   sLiqExterna({id:id,fecha:fecha,fechaDisplay:d2s(fecha),mesActual:mes,moneda:'USD',monto:monto,arsEquivalente:arsEq,btcEquivalente:btcEq,descripcion:desc||null});
   document.getElementById('liq-monto').value='';document.getElementById('liq-desc').value='';document.getElementById('liq-preview').style.display='none';
   window.rfInvM?.();renderLiqExterna();window.renderDash?.();window.uhd?.();window.invActualizarCampos?.();sN('OK '+id+' registrado');
@@ -4164,7 +4173,6 @@ function renderLiqExterna(){
   if(res){
     if(!liq.length){res.innerHTML='<div style="font-family:var(--mo);font-size:11px;color:var(--tx3)">Sin liquidez registrada</div>';}
     else{
-      const fu=fu;
       res.innerHTML='<div class="kpi-grid" style="margin-bottom:8px">'
         +'<div class="kpi" style="border-top-color:#44aaff"><div class="kicon">💰</div><div class="klbl">Total USD</div><div class="kval" style="color:#44aaff">'+fu(totalUSD)+' USD</div><div class="ksub">'+liq.length+' registros</div></div>'
         +'<div class="kpi neg"><div class="kicon">↗</div><div class="klbl">Invertido</div><div class="kval neg">-'+fu(yaUsadoUSD)+' USD</div></div>'
@@ -4179,7 +4187,6 @@ function renderLiqExterna(){
   // View toggles: ARS / BTC / USD
   const vc=document.getElementById('liqValoresContent');
   if(vc&&liq.length){
-    const fu=fu;
     if(_liqView==='ars'){
       vc.innerHTML='<div class="kpi-grid">'
         +'<div class="kpi"><div class="klbl">Total Liquidez</div><div class="kval ac">'+fv(totalARS)+'</div><div class="ksub">'+fu(totalUSD)+' USD</div></div>'
@@ -4194,7 +4201,6 @@ function renderLiqExterna(){
         +'</div>'
         +(!window._btcPrecioUSD?'<div style="font-family:var(--mo);font-size:9px;color:var(--wn);margin-top:6px">Actualiza precios para ver en BTC</div>':'');
     } else {
-      const fu=fu;
       vc.innerHTML='<div class="kpi-grid">'
         +'<div class="kpi" style="border-top-color:#44aaff"><div class="klbl">Total USD</div><div class="kval" style="color:#44aaff">'+fu(totalUSD)+' USD</div></div>'
         +'<div class="kpi '+(dispUSD>=0?'':'neg')+'"><div class="klbl">Disponible USD</div><div class="kval '+(dispUSD>=0?'ac':'neg')+'">'+fu(dispUSD)+' USD</div><div class="ksub">-'+fu(yaUsadoUSD)+' USD invertido</div></div>'
@@ -4306,9 +4312,9 @@ function kpiVisible(id){return !distKpiHidden[id];}
 
 function calcDistBase(){
   const orders=gOConf(),eg=gE();
-  const totV=orders.reduce(function(a,o){return a+(o.totales.totalGeneral||0);},0);
+  const totV=orders.reduce(function(a,o){return a+(o.totales?.totalGeneral||0);},0);
   const totE=eg.reduce(function(a,e){return a+(e.impactoCaja||0);},0);
-  const totC=orders.reduce(function(a,o){return a+(o.costo||0);},0);
+  const totC=orders.reduce(function(a,o){return a+((o.totales&&o.totales.costoTotal)||o.costo||0);},0);
   const netoNeto=totV-totE;
   const netoReal=netoNeto-totC;
   return {netoNeto:netoNeto,netoReal:netoReal,totalC:totC,totV:totV,totE:totE};
@@ -4316,9 +4322,9 @@ function calcDistBase(){
 
 function buildSmartDefaults(){
   const orders=gOConf(),eg=gE();
-  const totV=orders.reduce(function(a,o){return a+(o.totales.totalGeneral||0);},0);
+  const totV=orders.reduce(function(a,o){return a+(o.totales?.totalGeneral||0);},0);
   const totE=eg.reduce(function(a,e){return a+(e.impactoCaja||0);},0);
-  const totC=orders.reduce(function(a,o){return a+(o.costo||0);},0);
+  const totC=orders.reduce(function(a,o){return a+((o.totales&&o.totales.costoTotal)||o.costo||0);},0);
   const netoNeto=totV-totE;
   const btcSlice={id:'sd1',label:'Bitcoin',pct:50,color:'#ff6b35',activo:'BTC'};
   const blueSlice={id:'sd2',label:'Dolar Blue',pct:50,color:'#ffaa00',activo:'USD_BLUE'};
@@ -4392,7 +4398,10 @@ async function fetchPrecios(){
   window._btcPrecioUSD=_btcPrecioUSD;
   window._blueARS=_blueARS;
   window._usdtARS=_usdtARS;
-  renderInvDist();window.renderLiqExterna?.();fetchBtcHistorico();
+  try{renderInvDist();}catch(e){console.error('fetchPrecios→renderInvDist',e);}
+  try{invRenderHistorial();}catch(e){console.error('fetchPrecios→invRenderHistorial',e);}
+  try{renderCartera();}catch(e){console.error('fetchPrecios→renderCartera',e);}
+  window.renderLiqExterna?.();fetchBtcHistorico();
 }
 
 async function actualizarPreciosDash(){
@@ -4435,18 +4444,34 @@ function renderInvRepo(){
   const filtro=getInvFiltro();
   const orders=filtrarPorPeriodo(gO(),filtro);
   const inv=filtrarPorPeriodo(gInv(),filtro).filter(function(x){return x.activo&&x.activo.indexOf('STOCK_')===0;});
-  const totC=orders.reduce(function(a,o){return a+(o.costo||0);},0);
-  const qPast=orders.reduce(function(a,o){return a+(o.productos.totalPastillas||0);},0);
-  const qCris=orders.reduce(function(a,o){return a+(o.productos.cristales||0);},0);
-  const qHong=orders.reduce(function(a,o){return a+(o.productos.hongos||0);},0);
-  const qGot=orders.reduce(function(a,o){return a+(o.productos.goteros||0);},0);
-  const qPetr=orders.reduce(function(a,o){return a+(o.productos.petri||0);},0);
+  const totC=orders.reduce(function(a,o){return a+((o.totales&&o.totales.costoTotal)||o.costo||0);},0);
+  const qPast=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='v-cal'||l.prodId==='v-ted'||l.prodId==='v-lck'||l.prodId==='v-gen';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.totalPastillas||0);
+  },0);
+  const qCris=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='p-cris';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.cristales||0);
+  },0);
+  const qHong=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='p-hong';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.hongos||0);
+  },0);
+  const qGot=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='p-got';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.goteros||0);
+  },0);
+  const qPetr=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='p-pet';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.petri||0);
+  },0);
   const cPast=qPast*COSTS.past,cCris=qCris*COSTS.cris,cHong=qHong*COSTS.hong,cGot=qGot*COSTS.got,cPetr=qPetr*COSTS.pet;
   function repuOf(activo){return inv.filter(function(x){return x.activo===activo;}).reduce(function(a,x){return a+(x.montoARS||0);},0);}
   const rPast=repuOf('STOCK_PAST'),rCris=repuOf('STOCK_CRIS'),rHong=repuOf('STOCK_HONG'),rGot=repuOf('STOCK_GOT'),rPetr=repuOf('STOCK_PETR');
   const totalRep=rPast+rCris+rHong+rGot+rPetr;
   const pend=Math.max(0,totC-totalRep);
   const cont=document.getElementById('invRepoContent');
+  if(!cont)return;
   if(!orders.length){cont.innerHTML='<div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Sin datos</div>';return;}
   function rr(e,q,u,c,r){if(!q)return'';const p=Math.max(0,c-r);return'<tr><td>'+e+'</td><td class="mu">'+q+u+'</td><td class="er">'+fv(c)+'</td><td class="ac">'+(r>0?'-'+fv(r):'')+'</td><td class="'+(p>0?'wn':'ac')+'">'+(p>0?fv(p):'✅ Cubierto')+'</td></tr>';}
   cont.innerHTML='<div class="kpi-grid" style="margin-bottom:10px">'
@@ -4485,21 +4510,22 @@ function renderDistChart(canvasId,rows,chartRef,height){
 
 function renderInvDist(){
   const filtro=getInvFiltro();
-  const orders=filtrarPorPeriodo(gO(),filtro);
+  const orders=filtrarPorPeriodo(gOConf(),filtro);
   const eg=filtrarPorPeriodo(gE(),filtro);
-  const totV=orders.reduce(function(a,o){return a+(o.totales.totalGeneral||0);},0);
+  const totV=orders.reduce(function(a,o){return a+(o.totales?.totalGeneral||0);},0);
   const totE=eg.reduce(function(a,e){return a+(e.impactoCaja||0);},0);
-  const totC=orders.reduce(function(a,o){return a+(o.costo||0);},0);
+  const totC=orders.reduce(function(a,o){return a+(o.totales?.costoTotal||o.costo||0);},0);
   const netoNeto=totV-totE;
   const netoReal=netoNeto-totC;
   const invReal=filtrarPorPeriodo(gInv(),filtro).filter(function(x){return x.fuente==='distribucion'||x.fuente==='mixto';});
   const yaInv=invReal.reduce(function(a,x){return a+(x.montoARS||0);},0);
-  const disponible=Math.max(0,netoNeto-yaInv);
+  const disponible=netoNeto-yaInv;
+  const disponibleDistribuir=Math.max(0,disponible);
   const cont=document.getElementById('invDistContent');
   renderDistConfig();
   if(netoNeto<=0){cont.innerHTML='<div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Resultado Neto menor o igual a 0 en este periodo.</div>';return;}
   const totPct=distSlices.reduce(function(a,s){return a+s.pct;},0)||100;
-  const rows=distSlices.map(function(s){return distRow(s,disponible*(s.pct/totPct));});
+  const rows=distSlices.map(function(s){return distRow(s,disponibleDistribuir*(s.pct/totPct));});
   function kpiCard(id,cls,icon,lbl,val,sub,fullWidth){
     if(!kpiVisible(id))return'';
     return'<div class="kpi '+cls+'"'+(fullWidth?' style="grid-column:1/-1"':'')+'>'+
@@ -4525,9 +4551,10 @@ function renderInvDist(){
     +kpiCard('kpiFondo','wn','💼','Fondo Reposicion',fv(totC),(netoNeto>0?parseFloat((totC/netoNeto*100).toFixed(1))+'% del neto':'—'),false)
     +kpiCard('kpiReal','org','📈','Resultado Real',fv(netoReal),'Neto - Fondo',false)
     +kpiCard('kpiYaInv','neg','↗','Ya Invertido','-'+fv(yaInv),'',false)
-    +kpiCard('kpiDisp',(disponible>=0?'':'neg'),'💰','Disponible para distribuir',
+    +kpiCard('kpiDisp',(disponible>=0?'':'neg'),disponible>=0?'💰':'⚠',
+      disponible>=0?'Saldo disponible':'Sobre-invertido',
       '<span style="font-size:16px">'+fv(disponible)+'</span>',
-      (!_blueARS?'Actualiza precios para ver equivalencias':''),true)
+      disponible<0?'Excede el neto en '+fv(Math.abs(disponible)):(!_blueARS?'Actualiza precios para ver equivalencias':''),true)
     +'</div>'
     +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:12px">'
     +rows.map(function(r){return '<div style="background:var(--s2);border:1px solid var(--br);border-top:2px solid '+r.color+';padding:10px"><div style="font-family:var(--mo);font-size:7px;color:var(--tx3);text-transform:uppercase;margin-bottom:3px">'+r.pct.toFixed(1)+'% '+r.label+'</div><div style="font-family:var(--mo);font-size:12px;font-weight:700;color:'+r.color+'">'+fv(r.monto)+'</div><div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:2px">'+r.equiv+'</div></div>';}).join('')
@@ -4535,15 +4562,83 @@ function renderInvDist(){
   renderDistChart('cDistTorta',rows,_distChartRef,180);
 }
 
+// ── Cartera Actual ──
+function renderCartera(){
+  const cont=document.getElementById('carteraContent');
+  if(!cont)return;
+  const activas=gInv().filter(function(x){return x.estado==='ACTIVA'&&x.activo!=='REPO'&&!String(x.activo||'').startsWith('STOCK_');});
+  if(!activas.length){
+    cont.innerHTML='<div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:16px">Sin inversiones activas</div>';
+    return;
+  }
+  var byActivo={};
+  activas.forEach(function(x){
+    var k=x.activo==='USD_BLUE'?'USD':x.activo;
+    if(!byActivo[k])byActivo[k]={qty:0,montoARS:0,flotante:0,count:0};
+    if(x.precioCompra&&x.precioCompra>0)byActivo[k].qty+=x.monto/x.precioCompra;
+    byActivo[k].montoARS+=(x.montoARS||0);
+    byActivo[k].flotante+=(x.resultadoFlotante||0);
+    byActivo[k].count++;
+  });
+  var hasPrices=!!(_blueARS||_btcPrecioUSD);
+  var totInvertido=0,totValorActual=0,totFlotante=0;
+  var AC={'BTC':'#ff6b35','USD':'#ffaa00','USDT':'#7c6fff','ARS':'#00e5a0'};
+  var rows='';
+  Object.keys(byActivo).sort().forEach(function(k){
+    var data=byActivo[k];
+    var valorActual=0,qtyStr='',col=AC[k]||'#8888a0';
+    if(k==='BTC'&&_btcPrecioUSD&&_blueARS){
+      valorActual=Math.round(data.qty*_btcPrecioUSD*_blueARS);
+      qtyStr=data.qty.toFixed(6)+' BTC';
+    } else if(k==='USD'&&_blueARS){
+      valorActual=Math.round(data.qty*_blueARS);
+      qtyStr=fu(data.qty)+' USD';
+    } else if(k==='USDT'&&_usdtARS){
+      valorActual=Math.round(data.qty*_usdtARS);
+      qtyStr=fu(data.qty)+' USDT';
+    } else {
+      valorActual=data.montoARS;
+      qtyStr=fv(data.montoARS);
+    }
+    var flot=data.flotante;
+    totInvertido+=data.montoARS;
+    totValorActual+=valorActual;
+    totFlotante+=flot;
+    var flotColor=flot>=0?'var(--ac)':'var(--er)';
+    rows+='<tr>'
+      +'<td><b style="color:'+col+'">'+k+'</b>'
+      +'<div style="font-family:var(--mo);font-size:8px;color:var(--tx3)">'+data.count+' pos.</div></td>'
+      +'<td class="mu">'+qtyStr+'</td>'
+      +'<td>'+fv(data.montoARS)+'</td>'
+      +'<td>'+(valorActual?fv(valorActual):'<span style="color:var(--tx3)">—</span>')+'</td>'
+      +'<td><span style="color:'+flotColor+'">'+(flot>=0?'+':'')+fv(flot)+'</span></td>'
+      +'</tr>';
+  });
+  var totFlotColor=totFlotante>=0?'var(--ac)':'var(--er)';
+  var pctRet=totInvertido>0?((totFlotante/totInvertido)*100).toFixed(1):'0';
+  cont.innerHTML=(!hasPrices?'<div style="font-family:var(--mo);font-size:9px;color:var(--wn);text-align:center;margin-bottom:8px">⚠ Actualizá precios para ver valores actuales</div>':'')
+    +'<div class="tw"><table>'
+    +'<thead><tr><th>Activo</th><th>Cantidad</th><th>Invertido</th><th>Valor actual</th><th>Flotante</th></tr></thead>'
+    +'<tbody>'+rows+'</tbody>'
+    +'<tfoot><tr class="total-row">'
+    +'<td>TOTAL</td><td style="font-family:var(--mo);font-size:9px;color:var(--tx3)">'+activas.length+' pos.</td>'
+    +'<td>'+fv(totInvertido)+'</td>'
+    +'<td>'+(hasPrices?fv(totValorActual):'—')+'</td>'
+    +'<td><span style="color:'+totFlotColor+'">'+(totFlotante>=0?'+':'')+fv(totFlotante)+'</span>'
+    +(pctRet!=='0'?'<div style="font-family:var(--mo);font-size:8px;color:'+totFlotColor+'">'+pctRet+'%</div>':'')
+    +'</td></tr></tfoot>'
+    +'</table></div>';
+}
+
 // ── Disponible ──
 function getDisponibleDist(){
   var orders=gOConf(),eg=gE();
-  var totV=orders.reduce(function(a,o){return a+(o.totales.totalGeneral||0);},0);
+  var totV=orders.reduce(function(a,o){return a+(o.totales?.totalGeneral||0);},0);
   var totE=eg.reduce(function(a,e){return a+(e.impactoCaja||0);},0);
   var netoNeto=totV-totE;
   var inv=gInv().filter(function(x){return x.fuente==='distribucion'||x.fuente==='mixto';});
   var yaInv=inv.reduce(function(a,x){return a+(x.montoARS||0);},0);
-  return Math.max(0,netoNeto-yaInv);
+  return netoNeto-yaInv;
 }
 
 function getDisponibleLiq(){
@@ -4552,7 +4647,8 @@ function getDisponibleLiq(){
   var inv=gInv().filter(function(x){return x.fuente==='liquidez_externa'||x.fuente==='mixto';});
   var yaUSD=inv.reduce(function(a,x){
     if(x.moneda==='USD'||x.moneda==='USDT')return a+(x.montoOriginal||0);
-    return a+((x.montoARS||0)/(_blueARS||1));
+    if(!_blueARS)return a;
+    return a+((x.montoARS||0)/_blueARS);
   },0);
   return Math.max(0,parseFloat((totalUSD-yaUSD).toFixed(2)));
 }
@@ -4829,7 +4925,7 @@ function invGenerar(){
   invActualizarCampos();
   document.getElementById('inv-tkOut').textContent=tk;
   document.getElementById('inv-outA').style.display='block';
-  document.getElementById('inv-outA').scrollIntoView({behavior:'smooth'});
+  document.getElementById('invHistorial').scrollIntoView({behavior:'smooth'});
   sN('OK '+id+' registrada');
 }
 
@@ -5087,9 +5183,13 @@ function invLimpiar(){
 
 function renderInvAll(){
   if(!localStorage.getItem('me_dist_slices')){
-    distSlices=buildSmartDefaults();
+    try{distSlices=buildSmartDefaults();}catch(e){console.error('buildSmartDefaults',e);}
   }
-  renderInvRepo();renderInvDist();invRenderHistorial();window.renderLiqExterna?.();
+  try{renderInvRepo();}catch(e){console.error('renderInvRepo',e);}
+  try{renderInvDist();}catch(e){console.error('renderInvDist',e);}
+  try{invRenderHistorial();}catch(e){console.error('invRenderHistorial',e);}
+  try{renderCartera();}catch(e){console.error('renderCartera',e);}
+  window.renderLiqExterna?.();
   if(document.getElementById('inv-activo'))buildInvForm();
   rfInvHistMes();
   if(document.getElementById('inv-activo'))updInvTicket();
@@ -5097,7 +5197,6 @@ function renderInvAll(){
 
 // ── Aliases ──
 function onInvActivoChange(){invActualizarCampos();}
-function onInvFuenteChange(){}
 function buildInvForm(){invActualizarCampos();}
 function calcInvResult(){invCalcular();}
 function updInvTicket(){invCalcular();}
@@ -5138,6 +5237,45 @@ function renderDashInversiones(cont,f){
   });
   html+='</div>';
   cont.innerHTML+=html;
+  // Cartera activa compacta en dashboard
+  var activas=gInv().filter(function(x){return x.estado==='ACTIVA'&&x.activo!=='REPO'&&!String(x.activo||'').startsWith('STOCK_');});
+  if(activas.length){
+    var byAct={};
+    activas.forEach(function(x){
+      var k=x.activo==='USD_BLUE'?'USD':x.activo;
+      if(!byAct[k])byAct[k]={qty:0,montoARS:0,flotante:0};
+      if(x.precioCompra&&x.precioCompra>0)byAct[k].qty+=x.monto/x.precioCompra;
+      byAct[k].montoARS+=(x.montoARS||0);
+      byAct[k].flotante+=(x.resultadoFlotante||0);
+    });
+    var totF=Object.values(byAct).reduce(function(a,v){return a+v.flotante;},0);
+    var totI=Object.values(byAct).reduce(function(a,v){return a+v.montoARS;},0);
+    var AC2={'BTC':'#ff6b35','USD':'#ffaa00','USDT':'#7c6fff','ARS':'#00e5a0'};
+    var ch='<div class="ct" style="margin-top:14px;margin-bottom:8px">💼 Cartera Activa</div>';
+    ch+='<div class="kpi-grid">';
+    Object.keys(byAct).sort().forEach(function(k){
+      var dv=byAct[k];
+      var col=AC2[k]||'#8888a0';
+      var qStr='';
+      if(k==='BTC')qStr=dv.qty.toFixed(6)+' BTC';
+      else if(k==='USD'||k==='USDT')qStr=fu(dv.qty)+' '+k;
+      var flotColor=dv.flotante>=0?'#00e5a0':'#ff4455';
+      ch+='<div class="kpi" style="border-top-color:'+col+'">'
+        +'<div class="klbl" style="color:'+col+'">'+k+'</div>'
+        +'<div class="kval">'+fv(dv.montoARS)+'</div>'
+        +(qStr?'<div class="ksub">'+qStr+'</div>':'')
+        +'<div class="ksub" style="color:'+flotColor+'">'+(dv.flotante>=0?'+':'')+fv(dv.flotante)+'</div>'
+        +'</div>';
+    });
+    var totFColor=totF>=0?'#00e5a0':'#ff4455';
+    ch+='<div class="kpi" style="border-top-color:var(--ac)">'
+      +'<div class="klbl">Flotante total</div>'
+      +'<div class="kval" style="color:'+totFColor+'">'+(totF>=0?'+':'')+fv(totF)+'</div>'
+      +(totI>0?'<div class="ksub" style="color:'+totFColor+'">'+((totF/totI)*100).toFixed(1)+'% retorno</div>':'')
+      +'</div>';
+    ch+='</div>';
+    cont.innerHTML+=ch;
+  }
 }
 
 
@@ -5217,9 +5355,9 @@ function renderDash(){
   else if(f!=='all'){orders=orders.filter(o=>o.mesActual===f);eg=eg.filter(e=>e.mesActual===f);}
   const cont=document.getElementById('dashContent');
   if(!orders.length&&!eg.length){cont.innerHTML=`<div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:30px">Sin datos</div>`;return;}
-  const totV=orders.reduce((a,o)=>a+(o.totales.totalGeneral||0),0);
+  const totV=orders.reduce((a,o)=>a+(o.totales?.totalGeneral||0),0);
   const totE=eg.reduce((a,e)=>a+(e.impactoCaja||0),0);
-  const neto=totV-totE;const totC=orders.reduce((a,o)=>a+(o.costo||0),0);
+  const neto=totV-totE;const totC=orders.reduce((a,o)=>a+((o.totales&&o.totales.costoTotal)||o.costo||0),0);
   const gan=totV-totC;const mgp=totV>0?((gan/totV)*100).toFixed(1):0;
   const fondoRepo=totC;const totOrd=orders.length;const tprom=totOrd?totV/totOrd:0;
   const netoReal=neto-totC;
@@ -5230,8 +5368,8 @@ function renderDash(){
   orders.forEach(o=>{
     const p=o.payment||{};
     if(p.modo==='ARS'||p.modo===undefined){
-      byTP.ARS+=o.totales.totalGeneral||0;
-      ventasEnARS.ARS+=o.totales.totalGeneral||0;
+      byTP.ARS+=o.totales?.totalGeneral||0;
+      ventasEnARS.ARS+=o.totales?.totalGeneral||0;
     } else if(p.modo==='USD'){
       byTP.USD+=p.usd||0;
       ventasEnARS.USD+=(p.usd||0)*(p.tc_usd||1);
@@ -5246,8 +5384,8 @@ function renderDash(){
       if(p.usd>0){byTP.USD+=p.usd;ventasEnARS.USD+=(p.usd*(p.tc_usd||1));tcPromedio.USD.sumUsd+=p.usd;tcPromedio.USD.sumArs+=(p.usd*(p.tc_usd||1));}
       if(p.usdt>0){byTP.USDT+=p.usdt;ventasEnARS.USDT+=(p.usdt*(p.tc_usdt||1));tcPromedio.USDT.sumUsdt+=p.usdt;tcPromedio.USDT.sumArs+=(p.usdt*(p.tc_usdt||1));}
     } else {
-      byTP.ARS+=o.totales.totalGeneral||0;
-      ventasEnARS.ARS+=o.totales.totalGeneral||0;
+      byTP.ARS+=o.totales?.totalGeneral||0;
+      ventasEnARS.ARS+=o.totales?.totalGeneral||0;
     }
   });
 
@@ -5261,22 +5399,27 @@ function renderDash(){
   const pctUSDT=tcPromUSDT>0?((tcActualUSDT/tcPromUSDT-1)*100).toFixed(1):0;
 
   const _PAST_IDS=new Set(['p-past','v-cal','v-ted','v-lck','v-gen']);
-  const qPast=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>_PAST_IDS.has(l.prodId)).reduce((s,l)=>s+(l.qty||0),0):(o.productos.calaveras||0)+(o.productos.teddy||0)+(o.productos.lucky||0)+(o.productos.genericas||0))||0),0);
-  const qCris=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>l.prodId==='p-cris').reduce((s,l)=>s+(l.qty||0),0):o.productos.cristales||0)||0),0);
-  const qHong=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>l.prodId==='p-hong').reduce((s,l)=>s+(l.qty||0),0):o.productos.hongos||0)||0),0);
-  const qGot=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>l.prodId==='p-got').reduce((s,l)=>s+(l.qty||0),0):o.productos.goteros||0)||0),0);
-  const qPetr=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>l.prodId==='p-pet').reduce((s,l)=>s+(l.qty||0),0):o.productos.petri||0)||0),0);
-  const vPast=orders.reduce((a,o)=>a+((o.totales.totalPastillasLinea||0)+(o.totales.totalPastillasBase||0)),0);
-  const vCris=orders.reduce((a,o)=>a+(o.totales.totalCristales||0),0);
-  const vHong=orders.reduce((a,o)=>a+(o.totales.totalHongos||0),0);
-  const vGot=orders.reduce((a,o)=>a+(o.totales.totalGoteros||0),0);
-  const vPetr=orders.reduce((a,o)=>a+(o.totales.totalPetri||0),0);
-  const vVar=orders.reduce((a,o)=>a+(o.productos.variable||0),0);
+  function _getQty(o,predFn,legacyFn){
+    if(o.lineas)return o.lineas.filter(predFn).reduce((s,l)=>s+(l.qty||0),0);
+    if(o.productos?._lineas)return o.productos._lineas.filter(predFn).reduce((s,l)=>s+(l.qty||0),0);
+    return legacyFn(o.productos||{});
+  }
+  const qPast=orders.reduce((a,o)=>a+_getQty(o,l=>_PAST_IDS.has(l.prodId),p=>(p.calaveras||0)+(p.teddy||0)+(p.lucky||0)+(p.genericas||0)),0);
+  const qCris=orders.reduce((a,o)=>a+_getQty(o,l=>l.prodId==='p-cris',p=>p.cristales||0),0);
+  const qHong=orders.reduce((a,o)=>a+_getQty(o,l=>l.prodId==='p-hong',p=>p.hongos||0),0);
+  const qGot=orders.reduce((a,o)=>a+_getQty(o,l=>l.prodId==='p-got',p=>p.goteros||0),0);
+  const qPetr=orders.reduce((a,o)=>a+_getQty(o,l=>l.prodId==='p-pet',p=>p.petri||0),0);
+  const vPast=orders.reduce((a,o)=>a+((o.totales?.totalPastillasLinea||0)+(o.totales?.totalPastillasBase||0)),0);
+  const vCris=orders.reduce((a,o)=>a+(o.totales?.totalCristales||0),0);
+  const vHong=orders.reduce((a,o)=>a+(o.totales?.totalHongos||0),0);
+  const vGot=orders.reduce((a,o)=>a+(o.totales?.totalGoteros||0),0);
+  const vPetr=orders.reduce((a,o)=>a+(o.totales?.totalPetri||0),0);
+  const vVar=orders.reduce((a,o)=>a+(o.productos?.variable||0),0);
 
   const cPast=qPast*COSTS.past,cCris=qCris*COSTS.cris,cHong=qHong*COSTS.hong,cGot=qGot*COSTS.got,cPetr=qPetr*COSTS.pet;
   const allM=[...new Set([...orders.map(o=>o.mesActual),...eg.map(e=>e.mesActual)])].sort();
   const pm={};allM.forEach(m=>{pm[m]={v:0,e:0,c:0,n:0};});
-  orders.forEach(o=>{if(pm[o.mesActual]){pm[o.mesActual].v+=o.totales.totalGeneral||0;pm[o.mesActual].c+=o.costo||0;pm[o.mesActual].n++;}});
+  orders.forEach(o=>{if(pm[o.mesActual]){pm[o.mesActual].v+=o.totales?.totalGeneral||0;pm[o.mesActual].c+=(o.totales?.costoTotal||o.costo||0);pm[o.mesActual].n++;}});
   eg.forEach(e=>{if(pm[e.mesActual])pm[e.mesActual].e+=e.impactoCaja||0;});
   const ratio=totE>0?((totV/totE)*100).toFixed(0):100;const estadoTxt=neto>0?'🟢 Crecimiento':'🔴 Déficit';
   function mgClass(v){return v>70?'margin-ok':v>40?'margin-wn':'margin-er';}
@@ -7128,7 +7271,7 @@ function cpM(){navigator.clipboard.writeText(document.getElementById('mTk').text
 // ===== ui/tabs.js =====
 
 function rfM(){
-  const orders=gOConf(),eg=gE();const mV=[...new Set(orders.map(o=>o.mesActual))].sort();const mE=[...new Set(eg.map(e=>e.mesActual))].sort();const mAll=[...new Set([...mV,...mE])].sort();
+  const orders=gOConf(),eg=gE();const mV=[...new Set(orders.map(o=>o.mesActual))].sort();const mE=[...new Set(eg.map(e=>e.mesActual))].sort();const mI=[...new Set(gInv().map(x=>x.mesActual))].sort();const mAll=[...new Set([...mV,...mE,...mI])].sort();
   const mesActual=d2m(hoy());
 
   function fillWithRango(id,meses,lbl,defaultMes){
@@ -7395,7 +7538,7 @@ Object.assign(window, {
   renderDash, onDashMesChange, renderDashFlowChart, setFlowPer, setBtcDays,
   fetchBtcHistorico, toggleChart,
   // inversiones
-  renderInvAll, renderInvDist, renderInvRepo,
+  renderInvAll, renderInvDist, renderInvRepo, renderCartera,
   rfInvM, onInvMesChange, onInvGlobalMesChange, invSelFuente, invSubNav, fetchPrecios,
   actualizarPreciosDash, invActualizarCampos, invCalcular, invGenerar,
   invReset, invLimpiar, invRenderHistorial,

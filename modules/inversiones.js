@@ -90,9 +90,9 @@ export function kpiVisible(id){return !distKpiHidden[id];}
 
 export function calcDistBase(){
   const orders=gOConf(),eg=gE();
-  const totV=orders.reduce(function(a,o){return a+(o.totales.totalGeneral||0);},0);
+  const totV=orders.reduce(function(a,o){return a+(o.totales?.totalGeneral||0);},0);
   const totE=eg.reduce(function(a,e){return a+(e.impactoCaja||0);},0);
-  const totC=orders.reduce(function(a,o){return a+(o.costo||0);},0);
+  const totC=orders.reduce(function(a,o){return a+((o.totales&&o.totales.costoTotal)||o.costo||0);},0);
   const netoNeto=totV-totE;
   const netoReal=netoNeto-totC;
   return {netoNeto:netoNeto,netoReal:netoReal,totalC:totC,totV:totV,totE:totE};
@@ -100,9 +100,9 @@ export function calcDistBase(){
 
 export function buildSmartDefaults(){
   const orders=gOConf(),eg=gE();
-  const totV=orders.reduce(function(a,o){return a+(o.totales.totalGeneral||0);},0);
+  const totV=orders.reduce(function(a,o){return a+(o.totales?.totalGeneral||0);},0);
   const totE=eg.reduce(function(a,e){return a+(e.impactoCaja||0);},0);
-  const totC=orders.reduce(function(a,o){return a+(o.costo||0);},0);
+  const totC=orders.reduce(function(a,o){return a+((o.totales&&o.totales.costoTotal)||o.costo||0);},0);
   const netoNeto=totV-totE;
   const btcSlice={id:'sd1',label:'Bitcoin',pct:50,color:'#ff6b35',activo:'BTC'};
   const blueSlice={id:'sd2',label:'Dolar Blue',pct:50,color:'#ffaa00',activo:'USD_BLUE'};
@@ -176,7 +176,10 @@ export async function fetchPrecios(){
   window._btcPrecioUSD=_btcPrecioUSD;
   window._blueARS=_blueARS;
   window._usdtARS=_usdtARS;
-  renderInvDist();window.renderLiqExterna?.();fetchBtcHistorico();
+  try{renderInvDist();}catch(e){console.error('fetchPrecios→renderInvDist',e);}
+  try{invRenderHistorial();}catch(e){console.error('fetchPrecios→invRenderHistorial',e);}
+  try{renderCartera();}catch(e){console.error('fetchPrecios→renderCartera',e);}
+  window.renderLiqExterna?.();fetchBtcHistorico();
 }
 
 export async function actualizarPreciosDash(){
@@ -219,18 +222,34 @@ export function renderInvRepo(){
   const filtro=getInvFiltro();
   const orders=filtrarPorPeriodo(gO(),filtro);
   const inv=filtrarPorPeriodo(gInv(),filtro).filter(function(x){return x.activo&&x.activo.indexOf('STOCK_')===0;});
-  const totC=orders.reduce(function(a,o){return a+(o.costo||0);},0);
-  const qPast=orders.reduce(function(a,o){return a+(o.productos.totalPastillas||0);},0);
-  const qCris=orders.reduce(function(a,o){return a+(o.productos.cristales||0);},0);
-  const qHong=orders.reduce(function(a,o){return a+(o.productos.hongos||0);},0);
-  const qGot=orders.reduce(function(a,o){return a+(o.productos.goteros||0);},0);
-  const qPetr=orders.reduce(function(a,o){return a+(o.productos.petri||0);},0);
+  const totC=orders.reduce(function(a,o){return a+((o.totales&&o.totales.costoTotal)||o.costo||0);},0);
+  const qPast=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='v-cal'||l.prodId==='v-ted'||l.prodId==='v-lck'||l.prodId==='v-gen';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.totalPastillas||0);
+  },0);
+  const qCris=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='p-cris';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.cristales||0);
+  },0);
+  const qHong=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='p-hong';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.hongos||0);
+  },0);
+  const qGot=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='p-got';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.goteros||0);
+  },0);
+  const qPetr=orders.reduce(function(a,o){
+    if(o.lineas)return a+o.lineas.filter(function(l){return l.prodId==='p-pet';}).reduce(function(s,l){return s+l.qty;},0);
+    return a+(o.productos?.petri||0);
+  },0);
   const cPast=qPast*COSTS.past,cCris=qCris*COSTS.cris,cHong=qHong*COSTS.hong,cGot=qGot*COSTS.got,cPetr=qPetr*COSTS.pet;
   function repuOf(activo){return inv.filter(function(x){return x.activo===activo;}).reduce(function(a,x){return a+(x.montoARS||0);},0);}
   const rPast=repuOf('STOCK_PAST'),rCris=repuOf('STOCK_CRIS'),rHong=repuOf('STOCK_HONG'),rGot=repuOf('STOCK_GOT'),rPetr=repuOf('STOCK_PETR');
   const totalRep=rPast+rCris+rHong+rGot+rPetr;
   const pend=Math.max(0,totC-totalRep);
   const cont=document.getElementById('invRepoContent');
+  if(!cont)return;
   if(!orders.length){cont.innerHTML='<div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Sin datos</div>';return;}
   function rr(e,q,u,c,r){if(!q)return'';const p=Math.max(0,c-r);return'<tr><td>'+e+'</td><td class="mu">'+q+u+'</td><td class="er">'+fv(c)+'</td><td class="ac">'+(r>0?'-'+fv(r):'')+'</td><td class="'+(p>0?'wn':'ac')+'">'+(p>0?fv(p):'✅ Cubierto')+'</td></tr>';}
   cont.innerHTML='<div class="kpi-grid" style="margin-bottom:10px">'
@@ -269,21 +288,22 @@ export function renderDistChart(canvasId,rows,chartRef,height){
 
 export function renderInvDist(){
   const filtro=getInvFiltro();
-  const orders=filtrarPorPeriodo(gO(),filtro);
+  const orders=filtrarPorPeriodo(gOConf(),filtro);
   const eg=filtrarPorPeriodo(gE(),filtro);
-  const totV=orders.reduce(function(a,o){return a+(o.totales.totalGeneral||0);},0);
+  const totV=orders.reduce(function(a,o){return a+(o.totales?.totalGeneral||0);},0);
   const totE=eg.reduce(function(a,e){return a+(e.impactoCaja||0);},0);
-  const totC=orders.reduce(function(a,o){return a+(o.costo||0);},0);
+  const totC=orders.reduce(function(a,o){return a+(o.totales?.costoTotal||o.costo||0);},0);
   const netoNeto=totV-totE;
   const netoReal=netoNeto-totC;
   const invReal=filtrarPorPeriodo(gInv(),filtro).filter(function(x){return x.fuente==='distribucion'||x.fuente==='mixto';});
   const yaInv=invReal.reduce(function(a,x){return a+(x.montoARS||0);},0);
-  const disponible=Math.max(0,netoNeto-yaInv);
+  const disponible=netoNeto-yaInv;
+  const disponibleDistribuir=Math.max(0,disponible);
   const cont=document.getElementById('invDistContent');
   renderDistConfig();
   if(netoNeto<=0){cont.innerHTML='<div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:20px">Resultado Neto menor o igual a 0 en este periodo.</div>';return;}
   const totPct=distSlices.reduce(function(a,s){return a+s.pct;},0)||100;
-  const rows=distSlices.map(function(s){return distRow(s,disponible*(s.pct/totPct));});
+  const rows=distSlices.map(function(s){return distRow(s,disponibleDistribuir*(s.pct/totPct));});
   function kpiCard(id,cls,icon,lbl,val,sub,fullWidth){
     if(!kpiVisible(id))return'';
     return'<div class="kpi '+cls+'"'+(fullWidth?' style="grid-column:1/-1"':'')+'>'+
@@ -309,9 +329,10 @@ export function renderInvDist(){
     +kpiCard('kpiFondo','wn','💼','Fondo Reposicion',fv(totC),(netoNeto>0?parseFloat((totC/netoNeto*100).toFixed(1))+'% del neto':'—'),false)
     +kpiCard('kpiReal','org','📈','Resultado Real',fv(netoReal),'Neto - Fondo',false)
     +kpiCard('kpiYaInv','neg','↗','Ya Invertido','-'+fv(yaInv),'',false)
-    +kpiCard('kpiDisp',(disponible>=0?'':'neg'),'💰','Disponible para distribuir',
+    +kpiCard('kpiDisp',(disponible>=0?'':'neg'),disponible>=0?'💰':'⚠',
+      disponible>=0?'Saldo disponible':'Sobre-invertido',
       '<span style="font-size:16px">'+fv(disponible)+'</span>',
-      (!_blueARS?'Actualiza precios para ver equivalencias':''),true)
+      disponible<0?'Excede el neto en '+fv(Math.abs(disponible)):(!_blueARS?'Actualiza precios para ver equivalencias':''),true)
     +'</div>'
     +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:12px">'
     +rows.map(function(r){return '<div style="background:var(--s2);border:1px solid var(--br);border-top:2px solid '+r.color+';padding:10px"><div style="font-family:var(--mo);font-size:7px;color:var(--tx3);text-transform:uppercase;margin-bottom:3px">'+r.pct.toFixed(1)+'% '+r.label+'</div><div style="font-family:var(--mo);font-size:12px;font-weight:700;color:'+r.color+'">'+fv(r.monto)+'</div><div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:2px">'+r.equiv+'</div></div>';}).join('')
@@ -319,15 +340,83 @@ export function renderInvDist(){
   renderDistChart('cDistTorta',rows,_distChartRef,180);
 }
 
+// ── Cartera Actual ──
+export function renderCartera(){
+  const cont=document.getElementById('carteraContent');
+  if(!cont)return;
+  const activas=gInv().filter(function(x){return x.estado==='ACTIVA'&&x.activo!=='REPO'&&!String(x.activo||'').startsWith('STOCK_');});
+  if(!activas.length){
+    cont.innerHTML='<div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:16px">Sin inversiones activas</div>';
+    return;
+  }
+  var byActivo={};
+  activas.forEach(function(x){
+    var k=x.activo==='USD_BLUE'?'USD':x.activo;
+    if(!byActivo[k])byActivo[k]={qty:0,montoARS:0,flotante:0,count:0};
+    if(x.precioCompra&&x.precioCompra>0)byActivo[k].qty+=x.monto/x.precioCompra;
+    byActivo[k].montoARS+=(x.montoARS||0);
+    byActivo[k].flotante+=(x.resultadoFlotante||0);
+    byActivo[k].count++;
+  });
+  var hasPrices=!!(_blueARS||_btcPrecioUSD);
+  var totInvertido=0,totValorActual=0,totFlotante=0;
+  var AC={'BTC':'#ff6b35','USD':'#ffaa00','USDT':'#7c6fff','ARS':'#00e5a0'};
+  var rows='';
+  Object.keys(byActivo).sort().forEach(function(k){
+    var data=byActivo[k];
+    var valorActual=0,qtyStr='',col=AC[k]||'#8888a0';
+    if(k==='BTC'&&_btcPrecioUSD&&_blueARS){
+      valorActual=Math.round(data.qty*_btcPrecioUSD*_blueARS);
+      qtyStr=data.qty.toFixed(6)+' BTC';
+    } else if(k==='USD'&&_blueARS){
+      valorActual=Math.round(data.qty*_blueARS);
+      qtyStr=fu(data.qty)+' USD';
+    } else if(k==='USDT'&&_usdtARS){
+      valorActual=Math.round(data.qty*_usdtARS);
+      qtyStr=fu(data.qty)+' USDT';
+    } else {
+      valorActual=data.montoARS;
+      qtyStr=fv(data.montoARS);
+    }
+    var flot=data.flotante;
+    totInvertido+=data.montoARS;
+    totValorActual+=valorActual;
+    totFlotante+=flot;
+    var flotColor=flot>=0?'var(--ac)':'var(--er)';
+    rows+='<tr>'
+      +'<td><b style="color:'+col+'">'+k+'</b>'
+      +'<div style="font-family:var(--mo);font-size:8px;color:var(--tx3)">'+data.count+' pos.</div></td>'
+      +'<td class="mu">'+qtyStr+'</td>'
+      +'<td>'+fv(data.montoARS)+'</td>'
+      +'<td>'+(valorActual?fv(valorActual):'<span style="color:var(--tx3)">—</span>')+'</td>'
+      +'<td><span style="color:'+flotColor+'">'+(flot>=0?'+':'')+fv(flot)+'</span></td>'
+      +'</tr>';
+  });
+  var totFlotColor=totFlotante>=0?'var(--ac)':'var(--er)';
+  var pctRet=totInvertido>0?((totFlotante/totInvertido)*100).toFixed(1):'0';
+  cont.innerHTML=(!hasPrices?'<div style="font-family:var(--mo);font-size:9px;color:var(--wn);text-align:center;margin-bottom:8px">⚠ Actualizá precios para ver valores actuales</div>':'')
+    +'<div class="tw"><table>'
+    +'<thead><tr><th>Activo</th><th>Cantidad</th><th>Invertido</th><th>Valor actual</th><th>Flotante</th></tr></thead>'
+    +'<tbody>'+rows+'</tbody>'
+    +'<tfoot><tr class="total-row">'
+    +'<td>TOTAL</td><td style="font-family:var(--mo);font-size:9px;color:var(--tx3)">'+activas.length+' pos.</td>'
+    +'<td>'+fv(totInvertido)+'</td>'
+    +'<td>'+(hasPrices?fv(totValorActual):'—')+'</td>'
+    +'<td><span style="color:'+totFlotColor+'">'+(totFlotante>=0?'+':'')+fv(totFlotante)+'</span>'
+    +(pctRet!=='0'?'<div style="font-family:var(--mo);font-size:8px;color:'+totFlotColor+'">'+pctRet+'%</div>':'')
+    +'</td></tr></tfoot>'
+    +'</table></div>';
+}
+
 // ── Disponible ──
 export function getDisponibleDist(){
   var orders=gOConf(),eg=gE();
-  var totV=orders.reduce(function(a,o){return a+(o.totales.totalGeneral||0);},0);
+  var totV=orders.reduce(function(a,o){return a+(o.totales?.totalGeneral||0);},0);
   var totE=eg.reduce(function(a,e){return a+(e.impactoCaja||0);},0);
   var netoNeto=totV-totE;
   var inv=gInv().filter(function(x){return x.fuente==='distribucion'||x.fuente==='mixto';});
   var yaInv=inv.reduce(function(a,x){return a+(x.montoARS||0);},0);
-  return Math.max(0,netoNeto-yaInv);
+  return netoNeto-yaInv;
 }
 
 export function getDisponibleLiq(){
@@ -336,7 +425,8 @@ export function getDisponibleLiq(){
   var inv=gInv().filter(function(x){return x.fuente==='liquidez_externa'||x.fuente==='mixto';});
   var yaUSD=inv.reduce(function(a,x){
     if(x.moneda==='USD'||x.moneda==='USDT')return a+(x.montoOriginal||0);
-    return a+((x.montoARS||0)/(_blueARS||1));
+    if(!_blueARS)return a;
+    return a+((x.montoARS||0)/_blueARS);
   },0);
   return Math.max(0,parseFloat((totalUSD-yaUSD).toFixed(2)));
 }
@@ -613,7 +703,7 @@ export function invGenerar(){
   invActualizarCampos();
   document.getElementById('inv-tkOut').textContent=tk;
   document.getElementById('inv-outA').style.display='block';
-  document.getElementById('inv-outA').scrollIntoView({behavior:'smooth'});
+  document.getElementById('invHistorial').scrollIntoView({behavior:'smooth'});
   sN('OK '+id+' registrada');
 }
 
@@ -871,9 +961,13 @@ export function invLimpiar(){
 
 export function renderInvAll(){
   if(!localStorage.getItem('me_dist_slices')){
-    distSlices=buildSmartDefaults();
+    try{distSlices=buildSmartDefaults();}catch(e){console.error('buildSmartDefaults',e);}
   }
-  renderInvRepo();renderInvDist();invRenderHistorial();window.renderLiqExterna?.();
+  try{renderInvRepo();}catch(e){console.error('renderInvRepo',e);}
+  try{renderInvDist();}catch(e){console.error('renderInvDist',e);}
+  try{invRenderHistorial();}catch(e){console.error('invRenderHistorial',e);}
+  try{renderCartera();}catch(e){console.error('renderCartera',e);}
+  window.renderLiqExterna?.();
   if(document.getElementById('inv-activo'))buildInvForm();
   rfInvHistMes();
   if(document.getElementById('inv-activo'))updInvTicket();
@@ -881,7 +975,6 @@ export function renderInvAll(){
 
 // ── Aliases ──
 export function onInvActivoChange(){invActualizarCampos();}
-export function onInvFuenteChange(){}
 export function buildInvForm(){invActualizarCampos();}
 export function calcInvResult(){invCalcular();}
 export function updInvTicket(){invCalcular();}
@@ -922,4 +1015,43 @@ export function renderDashInversiones(cont,f){
   });
   html+='</div>';
   cont.innerHTML+=html;
+  // Cartera activa compacta en dashboard
+  var activas=gInv().filter(function(x){return x.estado==='ACTIVA'&&x.activo!=='REPO'&&!String(x.activo||'').startsWith('STOCK_');});
+  if(activas.length){
+    var byAct={};
+    activas.forEach(function(x){
+      var k=x.activo==='USD_BLUE'?'USD':x.activo;
+      if(!byAct[k])byAct[k]={qty:0,montoARS:0,flotante:0};
+      if(x.precioCompra&&x.precioCompra>0)byAct[k].qty+=x.monto/x.precioCompra;
+      byAct[k].montoARS+=(x.montoARS||0);
+      byAct[k].flotante+=(x.resultadoFlotante||0);
+    });
+    var totF=Object.values(byAct).reduce(function(a,v){return a+v.flotante;},0);
+    var totI=Object.values(byAct).reduce(function(a,v){return a+v.montoARS;},0);
+    var AC2={'BTC':'#ff6b35','USD':'#ffaa00','USDT':'#7c6fff','ARS':'#00e5a0'};
+    var ch='<div class="ct" style="margin-top:14px;margin-bottom:8px">💼 Cartera Activa</div>';
+    ch+='<div class="kpi-grid">';
+    Object.keys(byAct).sort().forEach(function(k){
+      var dv=byAct[k];
+      var col=AC2[k]||'#8888a0';
+      var qStr='';
+      if(k==='BTC')qStr=dv.qty.toFixed(6)+' BTC';
+      else if(k==='USD'||k==='USDT')qStr=fu(dv.qty)+' '+k;
+      var flotColor=dv.flotante>=0?'#00e5a0':'#ff4455';
+      ch+='<div class="kpi" style="border-top-color:'+col+'">'
+        +'<div class="klbl" style="color:'+col+'">'+k+'</div>'
+        +'<div class="kval">'+fv(dv.montoARS)+'</div>'
+        +(qStr?'<div class="ksub">'+qStr+'</div>':'')
+        +'<div class="ksub" style="color:'+flotColor+'">'+(dv.flotante>=0?'+':'')+fv(dv.flotante)+'</div>'
+        +'</div>';
+    });
+    var totFColor=totF>=0?'#00e5a0':'#ff4455';
+    ch+='<div class="kpi" style="border-top-color:var(--ac)">'
+      +'<div class="klbl">Flotante total</div>'
+      +'<div class="kval" style="color:'+totFColor+'">'+(totF>=0?'+':'')+fv(totF)+'</div>'
+      +(totI>0?'<div class="ksub" style="color:'+totFColor+'">'+((totF/totI)*100).toFixed(1)+'% retorno</div>':'')
+      +'</div>';
+    ch+='</div>';
+    cont.innerHTML+=ch;
+  }
 }

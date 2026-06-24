@@ -16,7 +16,7 @@ export function confirmarOrden(id){
   sN('✓ '+id+' — CONFIRMADA');
 }
 
-export function anularByIdModal(){window.showInputModal?.('🟢 Anular Venta por ID','ID de la venta (ej: V-202603-0001):',true,'uppercase',function(raw){if(!raw)return;const id=raw.toUpperCase();const o=gO().find(x=>x.id===id);if(!o){sN(`${id} no encontrado`,true);return;}if(!confirm(`¿Anular ${id}?\n${o.fechaDisplay} — ${fv(o.totales.totalGeneral)}`))return;dO(id);window.rfM?.();rH();rS();window.renderDash?.();sN(`${id} anulada`);window.uhd?.();window.clM?.();});}
+export function anularByIdModal(){window.showInputModal?.('🟢 Anular Venta por ID','ID de la venta (ej: V-202603-0001):',true,'uppercase',function(raw){if(!raw)return;const id=raw.toUpperCase();const o=gO().find(x=>x.id===id);if(!o){sN(`${id} no encontrado`,true);return;}if(!confirm(`¿Anular ${id}?\n${o.fechaDisplay} — ${fv(o.totales?.totalGeneral||0)}`))return;dO(id);window.rfM?.();rH();rS();window.renderDash?.();sN(`${id} anulada`);window.uhd?.();window.clM?.();});}
 
 export function rH(){
   const f=document.getElementById('ventasMes').value;
@@ -59,7 +59,7 @@ export function rH(){
       } else if(o.tipoPago==='USDT'){
         montoDisplay=`<span style="color:var(--wn)">${fu(o.payment?.usdt||0)} USDT</span>`;
       } else {
-        montoDisplay=fv(o.totales.totalGeneral);
+        montoDisplay=fv(o.totales?.totalGeneral||0);
       }
       const isPend=o.estado==='pendiente';
       const cardBorderCol=isPend?'rgba(255,170,0,.5)':'var(--br)';
@@ -132,7 +132,7 @@ export function rS(){
   // ── Build rows ──
   let rows='';
   orders.forEach(o=>{
-    const t=o.totales;
+    const t=o.totales||{};
     const cells=PRODUCT_COLUMNS.map(col=>{
       const v=col.getQty(o);
       if(!v||v===0)return`<td class="mu"></td>`;
@@ -151,7 +151,7 @@ export function rS(){
         if(col.id==='variable')return`<td class="${cls}">${fi(sum)}</td>`;
         return`<td class="${cls}">${sum}</td>`;
       }).join('');
-      const tARS=arr.reduce((a,o)=>a+(o.totales.totalGeneral||0),0);
+      const tARS=arr.reduce((a,o)=>a+(o.totales?.totalGeneral||0),0);
       const tUSDT=arr.reduce((a,o)=>a+(o.totales.totalUSDT||0),0);
       return`${cells}<td class="${cls}">${fi(tARS)}</td><td class="${cls}">${tUSDT?fu(tUSDT):''}</td><td></td><td></td>`;
     }

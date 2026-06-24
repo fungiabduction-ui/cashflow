@@ -78,9 +78,9 @@ export function renderDash(){
   else if(f!=='all'){orders=orders.filter(o=>o.mesActual===f);eg=eg.filter(e=>e.mesActual===f);}
   const cont=document.getElementById('dashContent');
   if(!orders.length&&!eg.length){cont.innerHTML=`<div style="font-family:var(--mo);font-size:11px;color:var(--tx3);text-align:center;padding:30px">Sin datos</div>`;return;}
-  const totV=orders.reduce((a,o)=>a+(o.totales.totalGeneral||0),0);
+  const totV=orders.reduce((a,o)=>a+(o.totales?.totalGeneral||0),0);
   const totE=eg.reduce((a,e)=>a+(e.impactoCaja||0),0);
-  const neto=totV-totE;const totC=orders.reduce((a,o)=>a+(o.costo||0),0);
+  const neto=totV-totE;const totC=orders.reduce((a,o)=>a+((o.totales&&o.totales.costoTotal)||o.costo||0),0);
   const gan=totV-totC;const mgp=totV>0?((gan/totV)*100).toFixed(1):0;
   const fondoRepo=totC;const totOrd=orders.length;const tprom=totOrd?totV/totOrd:0;
   const netoReal=neto-totC;
@@ -91,8 +91,8 @@ export function renderDash(){
   orders.forEach(o=>{
     const p=o.payment||{};
     if(p.modo==='ARS'||p.modo===undefined){
-      byTP.ARS+=o.totales.totalGeneral||0;
-      ventasEnARS.ARS+=o.totales.totalGeneral||0;
+      byTP.ARS+=o.totales?.totalGeneral||0;
+      ventasEnARS.ARS+=o.totales?.totalGeneral||0;
     } else if(p.modo==='USD'){
       byTP.USD+=p.usd||0;
       ventasEnARS.USD+=(p.usd||0)*(p.tc_usd||1);
@@ -107,8 +107,8 @@ export function renderDash(){
       if(p.usd>0){byTP.USD+=p.usd;ventasEnARS.USD+=(p.usd*(p.tc_usd||1));tcPromedio.USD.sumUsd+=p.usd;tcPromedio.USD.sumArs+=(p.usd*(p.tc_usd||1));}
       if(p.usdt>0){byTP.USDT+=p.usdt;ventasEnARS.USDT+=(p.usdt*(p.tc_usdt||1));tcPromedio.USDT.sumUsdt+=p.usdt;tcPromedio.USDT.sumArs+=(p.usdt*(p.tc_usdt||1));}
     } else {
-      byTP.ARS+=o.totales.totalGeneral||0;
-      ventasEnARS.ARS+=o.totales.totalGeneral||0;
+      byTP.ARS+=o.totales?.totalGeneral||0;
+      ventasEnARS.ARS+=o.totales?.totalGeneral||0;
     }
   });
 
@@ -122,22 +122,27 @@ export function renderDash(){
   const pctUSDT=tcPromUSDT>0?((tcActualUSDT/tcPromUSDT-1)*100).toFixed(1):0;
 
   const _PAST_IDS=new Set(['p-past','v-cal','v-ted','v-lck','v-gen']);
-  const qPast=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>_PAST_IDS.has(l.prodId)).reduce((s,l)=>s+(l.qty||0),0):(o.productos.calaveras||0)+(o.productos.teddy||0)+(o.productos.lucky||0)+(o.productos.genericas||0))||0),0);
-  const qCris=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>l.prodId==='p-cris').reduce((s,l)=>s+(l.qty||0),0):o.productos.cristales||0)||0),0);
-  const qHong=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>l.prodId==='p-hong').reduce((s,l)=>s+(l.qty||0),0):o.productos.hongos||0)||0),0);
-  const qGot=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>l.prodId==='p-got').reduce((s,l)=>s+(l.qty||0),0):o.productos.goteros||0)||0),0);
-  const qPetr=orders.reduce((a,o)=>a+((o.productos._lineas?o.productos._lineas.filter(l=>l.prodId==='p-pet').reduce((s,l)=>s+(l.qty||0),0):o.productos.petri||0)||0),0);
-  const vPast=orders.reduce((a,o)=>a+((o.totales.totalPastillasLinea||0)+(o.totales.totalPastillasBase||0)),0);
-  const vCris=orders.reduce((a,o)=>a+(o.totales.totalCristales||0),0);
-  const vHong=orders.reduce((a,o)=>a+(o.totales.totalHongos||0),0);
-  const vGot=orders.reduce((a,o)=>a+(o.totales.totalGoteros||0),0);
-  const vPetr=orders.reduce((a,o)=>a+(o.totales.totalPetri||0),0);
-  const vVar=orders.reduce((a,o)=>a+(o.productos.variable||0),0);
+  function _getQty(o,predFn,legacyFn){
+    if(o.lineas)return o.lineas.filter(predFn).reduce((s,l)=>s+(l.qty||0),0);
+    if(o.productos?._lineas)return o.productos._lineas.filter(predFn).reduce((s,l)=>s+(l.qty||0),0);
+    return legacyFn(o.productos||{});
+  }
+  const qPast=orders.reduce((a,o)=>a+_getQty(o,l=>_PAST_IDS.has(l.prodId),p=>(p.calaveras||0)+(p.teddy||0)+(p.lucky||0)+(p.genericas||0)),0);
+  const qCris=orders.reduce((a,o)=>a+_getQty(o,l=>l.prodId==='p-cris',p=>p.cristales||0),0);
+  const qHong=orders.reduce((a,o)=>a+_getQty(o,l=>l.prodId==='p-hong',p=>p.hongos||0),0);
+  const qGot=orders.reduce((a,o)=>a+_getQty(o,l=>l.prodId==='p-got',p=>p.goteros||0),0);
+  const qPetr=orders.reduce((a,o)=>a+_getQty(o,l=>l.prodId==='p-pet',p=>p.petri||0),0);
+  const vPast=orders.reduce((a,o)=>a+((o.totales?.totalPastillasLinea||0)+(o.totales?.totalPastillasBase||0)),0);
+  const vCris=orders.reduce((a,o)=>a+(o.totales?.totalCristales||0),0);
+  const vHong=orders.reduce((a,o)=>a+(o.totales?.totalHongos||0),0);
+  const vGot=orders.reduce((a,o)=>a+(o.totales?.totalGoteros||0),0);
+  const vPetr=orders.reduce((a,o)=>a+(o.totales?.totalPetri||0),0);
+  const vVar=orders.reduce((a,o)=>a+(o.productos?.variable||0),0);
 
   const cPast=qPast*COSTS.past,cCris=qCris*COSTS.cris,cHong=qHong*COSTS.hong,cGot=qGot*COSTS.got,cPetr=qPetr*COSTS.pet;
   const allM=[...new Set([...orders.map(o=>o.mesActual),...eg.map(e=>e.mesActual)])].sort();
   const pm={};allM.forEach(m=>{pm[m]={v:0,e:0,c:0,n:0};});
-  orders.forEach(o=>{if(pm[o.mesActual]){pm[o.mesActual].v+=o.totales.totalGeneral||0;pm[o.mesActual].c+=o.costo||0;pm[o.mesActual].n++;}});
+  orders.forEach(o=>{if(pm[o.mesActual]){pm[o.mesActual].v+=o.totales?.totalGeneral||0;pm[o.mesActual].c+=(o.totales?.costoTotal||o.costo||0);pm[o.mesActual].n++;}});
   eg.forEach(e=>{if(pm[e.mesActual])pm[e.mesActual].e+=e.impactoCaja||0;});
   const ratio=totE>0?((totV/totE)*100).toFixed(0):100;const estadoTxt=neto>0?'🟢 Crecimiento':'🔴 Déficit';
   function mgClass(v){return v>70?'margin-ok':v>40?'margin-wn':'margin-er';}

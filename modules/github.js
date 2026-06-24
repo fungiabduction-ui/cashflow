@@ -221,6 +221,7 @@ export async function ghPull(showNotif){
     if(showNotif)ghStatus('ERROR: Configura GitHub primero',true);
     return;
   }
+  if(!confirm('¿Cargar desde GitHub? Se sobreescribirán todos los datos locales.'))return;
   if(showNotif)ghStatus('Cargando datos desde GitHub...', false);
   try{
     const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+cfg.file+'?t='+Date.now(),{

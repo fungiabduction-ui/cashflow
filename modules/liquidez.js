@@ -99,7 +99,8 @@ export function registrarLiqExterna(){
   const parts=fecha.split('-');const mes=parts[0]+parts[1];
   const arsEq=window._blueARS?Math.round(monto*window._blueARS):0;
   const btcEq=(window._btcPrecioUSD&&window._blueARS)?parseFloat((monto/window._btcPrecioUSD).toFixed(8)):0;
-  const id='L-'+mes+'-'+String(gLiqExterna().filter(function(x){return x.mesActual===mes;}).length+1).padStart(4,'0');
+  const _existing=gLiqExterna().filter(x=>x.mesActual===mes).map(x=>parseInt((x.id||'').split('-')[2])||0);
+  const id='L-'+mes+'-'+String(Math.max(0,..._existing)+1).padStart(4,'0');
   sLiqExterna({id:id,fecha:fecha,fechaDisplay:d2s(fecha),mesActual:mes,moneda:'USD',monto:monto,arsEquivalente:arsEq,btcEquivalente:btcEq,descripcion:desc||null});
   document.getElementById('liq-monto').value='';document.getElementById('liq-desc').value='';document.getElementById('liq-preview').style.display='none';
   window.rfInvM?.();renderLiqExterna();window.renderDash?.();window.uhd?.();window.invActualizarCampos?.();sN('OK '+id+' registrado');
@@ -130,7 +131,6 @@ export function renderLiqExterna(){
   if(res){
     if(!liq.length){res.innerHTML='<div style="font-family:var(--mo);font-size:11px;color:var(--tx3)">Sin liquidez registrada</div>';}
     else{
-      const fu=fu;
       res.innerHTML='<div class="kpi-grid" style="margin-bottom:8px">'
         +'<div class="kpi" style="border-top-color:#44aaff"><div class="kicon">💰</div><div class="klbl">Total USD</div><div class="kval" style="color:#44aaff">'+fu(totalUSD)+' USD</div><div class="ksub">'+liq.length+' registros</div></div>'
         +'<div class="kpi neg"><div class="kicon">↗</div><div class="klbl">Invertido</div><div class="kval neg">-'+fu(yaUsadoUSD)+' USD</div></div>'
@@ -145,7 +145,6 @@ export function renderLiqExterna(){
   // View toggles: ARS / BTC / USD
   const vc=document.getElementById('liqValoresContent');
   if(vc&&liq.length){
-    const fu=fu;
     if(_liqView==='ars'){
       vc.innerHTML='<div class="kpi-grid">'
         +'<div class="kpi"><div class="klbl">Total Liquidez</div><div class="kval ac">'+fv(totalARS)+'</div><div class="ksub">'+fu(totalUSD)+' USD</div></div>'
@@ -160,7 +159,6 @@ export function renderLiqExterna(){
         +'</div>'
         +(!window._btcPrecioUSD?'<div style="font-family:var(--mo);font-size:9px;color:var(--wn);margin-top:6px">Actualiza precios para ver en BTC</div>':'');
     } else {
-      const fu=fu;
       vc.innerHTML='<div class="kpi-grid">'
         +'<div class="kpi" style="border-top-color:#44aaff"><div class="klbl">Total USD</div><div class="kval" style="color:#44aaff">'+fu(totalUSD)+' USD</div></div>'
         +'<div class="kpi '+(dispUSD>=0?'':'neg')+'"><div class="klbl">Disponible USD</div><div class="kval '+(dispUSD>=0?'ac':'neg')+'">'+fu(dispUSD)+' USD</div><div class="ksub">-'+fu(yaUsadoUSD)+' USD invertido</div></div>'

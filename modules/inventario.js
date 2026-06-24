@@ -1118,9 +1118,16 @@ export function generarStockTicket(){
     targetId=newId;
   }
   // Crear lote FIFO
-  agregarLote(targetId,{qty,costoUsd:costoUsd||0,fecha,nota:nota||'Entrada de mercadería'});
   const tc=window._blueARS||window._usdtARS||1;
   const costoArs=costoUsd?costoUsd*tc:0;
+  const ingresoId=newIngresoId();const ts=new Date().toISOString();
+  const _lotes=getLotes();if(!_lotes[targetId])_lotes[targetId]=[];
+  const loteId=ingresoId+'-L1';
+  _lotes[targetId].push({id:loteId,ingreso_id:ingresoId,fecha:ts,qty_inicial:qty,qty_restante:qty,costo_unitario:costoArs,nota:nota||'Entrada de mercadería'});
+  saveLotes(_lotes);
+  saveIngreso({id:ingresoId,fecha:ts,fecha_display:d2s(fecha),prod_id:targetId,qty,costo_unitario:costoArs,total:qty*costoArs,nota:nota||'Entrada de mercadería',lote_id:loteId});
+  addStockMov({fecha:ts,tipo:'S-TICKET',prodId:targetId,nombre:displayName,emoji,delta:qty,antes:getStockFromLotes(targetId)-qty,despues:getStockFromLotes(targetId),nota:'S-Ticket entrada'});
+  const _d=ld();if(!_d.stock)_d.stock={};_d.stock[targetId]=(_d.stock[targetId]||0)+qty;sd(_d);
   const fd=d2s(fecha);
   let tk=`🧾 S-Ticket Entrada\n📅 Fecha: ${fd}\n📦 ${emoji} ${displayName}\n📥 +${qty} ${unit}`;
   if(costoUsd)tk+=`\n💵 Costo: US$${fu(costoUsd)}/ud · TC $${fi(Math.round(tc))} = $${fi(Math.round(costoArs))}/ud`;
