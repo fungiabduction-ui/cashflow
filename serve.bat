@@ -10,22 +10,22 @@ echo.
 :: Intentar con Python 3
 python --version >nul 2>&1
 if %errorlevel% == 0 (
-    echo  Puerto: http://localhost:8080
+    echo  Puerto: http://localhost:7432
     echo  Cerrar esta ventana para detener el servidor.
     echo.
-    start "" "http://localhost:8080"
-    python -m http.server 8080
+    start "" "http://localhost:7432"
+    python -m http.server 7432
     goto :eof
 )
 
 :: Intentar con Python como py
 py --version >nul 2>&1
 if %errorlevel% == 0 (
-    echo  Puerto: http://localhost:8080
+    echo  Puerto: http://localhost:7432
     echo  Cerrar esta ventana para detener el servidor.
     echo.
-    start "" "http://localhost:8080"
-    py -m http.server 8080
+    start "" "http://localhost:7432"
+    py -m http.server 7432
     goto :eof
 )
 

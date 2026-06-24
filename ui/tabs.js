@@ -1,4 +1,4 @@
-import { gOConf, gO, gE, ld } from '../core/storage.js';
+import { gOConf, gO, gE, gInv, ld } from '../core/storage.js';
 import { mLong, d2m, hoy } from '../core/formatters.js';
 import { rfInvM, renderInvAll, invSelFuente, fetchPrecios } from '../modules/inversiones.js';
 import { destroyCharts, onDashMesChange, renderDashFlowChart } from '../modules/dashboard.js';
@@ -9,7 +9,7 @@ import { renderInventario } from '../modules/inventario.js';
 import { ghInit, renderIOStatus } from '../modules/github.js';
 
 export function rfM(){
-  const orders=gOConf(),eg=gE();const mV=[...new Set(orders.map(o=>o.mesActual))].sort();const mE=[...new Set(eg.map(e=>e.mesActual))].sort();const mAll=[...new Set([...mV,...mE])].sort();
+  const orders=gOConf(),eg=gE();const mV=[...new Set(orders.map(o=>o.mesActual))].sort();const mE=[...new Set(eg.map(e=>e.mesActual))].sort();const mI=[...new Set(gInv().map(x=>x.mesActual))].sort();const mAll=[...new Set([...mV,...mE,...mI])].sort();
   const mesActual=d2m(hoy());
 
   function fillWithRango(id,meses,lbl,defaultMes){

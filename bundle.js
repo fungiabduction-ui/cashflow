@@ -5278,7 +5278,9 @@ function renderDashInversiones(cont,f){
     var k=x.activo&&x.activo.indexOf('STOCK_')===0?'STOCK':x.activo;
     if(!byA[k])byA[k]={ars:0,unidades:0};
     byA[k].ars+=(x.montoARS||0);
-    byA[k].unidades+=parseFloat(x.unidad||x.cantidad||0)||0;
+    var rawU=x.unidad||x.cantidad||'0';
+    var parsedU=typeof rawU==='string'?parseFloat(rawU.split(' ')[0].replace(/\./g,'').replace(',','.'))||0:parseFloat(rawU)||0;
+    byA[k].unidades+=parsedU;
   });
   var AC2={BTC:'#ff6b35',USD_BLUE:'#ffaa00',USDT:'#7c6fff',ORO:'#e0c080',STOCK:'#00e5a0',OTRO:'#8888a0'};
   var AL2={BTC:'BTC',USD_BLUE:'Dólar Blue',USDT:'USDT',ORO:'Oro',STOCK:'Stock',OTRO:'Otro'};

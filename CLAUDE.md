@@ -143,6 +143,11 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── ventas.js       ← sO(), rH(), rS(), confirmarOrden(), openEditVenta(), showTotalsRow
 │   ├── egresos.js      ← sE(), rEH(), rES(), generarEgreso(), openEditEgr()
 │   ├── inversiones.js  ← invGenerar(), renderInvDist(), fetchPrecios(), distSlices, _btcPrecioUSD
+│   │                      renderCartera() — agrega posiciones activas por activo (USD/BTC/USDT), valor actual, flotante
+│   │                      renderInvAll() — wrapper con try-catch individual por función (resiliente a crashes parciales)
+│   │                      renderDashInversiones() — incluye bloque compacto de cartera activa en dashboard
+│   │                      IMPORTANTE: SIEMPRE usar o.totales?.totalGeneral (optional chaining) — órdenes legacy pueden no tener totales
+│   │                      HTML requiere: #invRepoContent (Fondo Reposición), #invDistContent (Distribución), #carteraContent (Cartera), #invHistorial
 │   ├── liquidez.js     ← sLiqExterna(), renderLiqExterna(), liqDistSlices
 │   ├── dashboard.js    ← renderDash(), renderDashFlowChart(), calcBalance(), dashCharts
 │   ├── inventario.js   ← consumirStock(), registrarIngreso(), descontarStockPorTicket(), renderInventario()
@@ -340,6 +345,8 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
 8. **`ghAutoPush()`**: se llama automáticamente después de `sO()`, `sE()`, `sLiqExterna()`, `sInv()`. No sacarlo de esas funciones. Tiene debounce de 8 segundos (`_autoPushTimer`) — múltiples operaciones rápidas se agrupan en un solo push para evitar race conditions con el SHA de GitHub.
 
 9. **Compatibilidad legacy**: órdenes antiguas tienen `{pastillas, cristales, hongos}`. Nuevas usan `lineas[]`. Ambos formatos conviven. `_getLineasOrden(o)` en `modules/io.js` es el bridge. No tocarlo. `getInvPeriodoSoldMap()` maneja ambos formatos.
+
+9b. **`o.totales` puede ser undefined en órdenes legacy**: SIEMPRE usar optional chaining `o.totales?.totalGeneral` y `o.totales?.costoTotal`. Acceso directo `o.totales.campo` crashea silenciosamente en `renderInvDist()` / `buildSmartDefaults()` / `calcDistBase()` e impide que `invRenderHistorial()` se ejecute. Mismo patrón en `dashboard.js`. En `renderInvAll()` cada función está envuelta en try-catch individual para que un crash parcial no bloquee el resto.
 
 10. **Orden de inicialización** (en `main.js`, al final): `initConfigDeps()` → `loadConfig()` → `seedStockInicial()` → `ghInit()` → tema/apariencia → `buildTicketUI()` → `upd()` → `rfM()` → `uhd()` → `setInterval` → `setupDelegation()` → `setupDrop()`.
 
