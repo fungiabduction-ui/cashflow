@@ -7,8 +7,13 @@ export function renderSettings(){
   const saved=getApariencia();
   const activePreset=saved?._preset||'dark';
   updateThemeCards(activePreset);
+  const cont=document.getElementById('settingsMaintTools');
+  if(cont)cont.innerHTML='';
   _renderMigracionTcBtn();
   _renderMigracionLineasBtn();
+  if(cont&&!cont.querySelector('button')){
+    cont.innerHTML='<span style="font-family:var(--mo);font-size:9px;color:var(--tx3)">✓ Sin migraciones pendientes</span>';
+  }
 }
 
 function _renderMigracionTcBtn(){
