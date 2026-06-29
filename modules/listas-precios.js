@@ -307,11 +307,9 @@ export function renderWAText(){
     return;
   }
   function waEmoji(i,n){
-    if(i===0)return'⭐';
-    const pos=i-1,third=(n-1)/3;
-    if(pos<third)return'💥';
-    if(pos<third*2)return'🔥';
-    return'🚀';
+    if(i===0)return'🔴';
+    const greenStart=1+Math.floor((n-1)*2/3);
+    return i>=greenStart?'🟢':'🟡';
   }
   const bloques=prods.map(p=>{
     const tramos=getTramosProducto(p);
