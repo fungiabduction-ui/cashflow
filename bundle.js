@@ -2238,7 +2238,7 @@ function rEH(){
   const mesActual=d2m(hoy());
   let html='';
   Object.keys(g).sort().forEach(mes=>{
-    const isActual=mes===mesActual;
+    const isActual=mes===mesActual||mes===f;
     const grpTotal=g[mes].reduce((a,e)=>a+(e.montoTotal||0),0);
     const collapseId='egrp-'+mes;
     html+=`<div style="margin-bottom:4px">
@@ -2370,7 +2370,7 @@ function _mpHandleFile(file) {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => _mpLoadCsv(ev.target.result);
-  reader.readAsText(file, 'ISO-8859-1');
+  reader.readAsText(file, 'UTF-8');
 }
 
 function _mpLoadCsv(text) {
@@ -2413,9 +2413,11 @@ function _mpConfirmar() {
   const d = ld();
   if (!d.egresos) d.egresos = [];
 
+  const mesesTocados = new Set();
   selIndices.forEach(idx => {
     const f = _mpFilas[idx];
     const mes = d2m(f.fecha);
+    mesesTocados.add(mes);
     const id = _nEIdLocal(d, mes);
     const fd = d2s(f.fecha);
     const tk = `📅 Fecha: ${fd}\nID Egreso: ${id}\n\n📉 Egreso:\nConcepto: ${f.concepto}\nMonto: ${fv(f.monto)}\nMedio de pago: Mercado Pago\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -${fv(f.monto)}`;
@@ -2432,6 +2434,12 @@ function _mpConfirmar() {
   sd(d);
   ghAutoPush();
   window.rfM?.();
+  // Si el import cayó en un único mes, filtramos la vista a ese mes para que
+  // se vea de inmediato (el grupo del mes filtrado siempre se expande).
+  if (mesesTocados.size === 1) {
+    const sel = document.getElementById('egresosMes');
+    if (sel) sel.value = [...mesesTocados][0];
+  }
   window.rEH?.();
   window.rES?.();
   window.renderDash?.();
@@ -2565,7 +2573,7 @@ function rH(){
   const mesActual=d2m(hoy());
   let html='';
   mesMeses.forEach(mes=>{
-    const isActual=mes===mesActual;
+    const isActual=mes===mesActual||mes===f;
     const grpTotal=g[mes].filter(o=>o.estado!=='pendiente').reduce((a,o)=>a+(o.totales?.totalGeneral||0),0);
     const pendCount=g[mes].filter(o=>o.estado==='pendiente').length;
     const pendStr=pendCount?` <span style="font-family:var(--mo);font-size:7px;color:var(--wn);background:rgba(255,170,0,.12);border:1px solid rgba(255,170,0,.3);padding:1px 5px">${pendCount} pendiente${pendCount>1?'s':''}</span>`:'';

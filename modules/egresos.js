@@ -50,7 +50,7 @@ export function rEH(){
   const mesActual=d2m(hoy());
   let html='';
   Object.keys(g).sort().forEach(mes=>{
-    const isActual=mes===mesActual;
+    const isActual=mes===mesActual||mes===f;
     const grpTotal=g[mes].reduce((a,e)=>a+(e.montoTotal||0),0);
     const collapseId='egrp-'+mes;
     html+=`<div style="margin-bottom:4px">

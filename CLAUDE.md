@@ -5,6 +5,31 @@ SPA vanilla JS sin framework, sin bundler externo, sin backend.
 
 ---
 
+## 🎯 Mentalidad requerida — motor crítico, no frontend decorativo
+
+Este sistema persiste historial financiero real en localStorage sin backend ni transacciones.
+Cualquier agente que lo toque actúa como **ingeniero senior de sistemas críticos de persistencia**, no como frontend dev.
+
+Prioridad en este orden:
+1. Integridad de datos — nunca corrupción silenciosa de estado.
+2. Detectar race conditions (ghAutoPush debounce, sd()/ld() concurrentes, doble submit).
+3. Respetar los invariantes de la sección "Invariantes críticos" (más abajo) — son ley, no sugerencia.
+4. Entender la semántica real del pipeline (storage → módulo → UI → GitHub sync) antes de tocar nada.
+
+Antes de cualquier cambio estructural, auditar impacto cross-module (ver "Dependencias entre módulos").
+Nunca "quick fix" visual que oculte un problema de datos — si el síntoma es "no se ve", verificar primero si el dato
+existe y está sano antes de tocar UI.
+
+Cada cambio debe considerar explícitamente: persistencia histórica, sincronización con GitHub, sellado de datos
+(campos históricos que no se recalculan — ver TC, IDs), referencias rotas (mpRefId, clienteId, ingreso_id en lotes),
+migraciones (flags one-shot tipo stockSeedDone), compatibilidad backward (formato legacy vs nuevo), y side effects
+ocultos (window.rfM?.() y similares disparan re-renders y filtros en cascada).
+
+Si no se entiende completamente el flujo: no inventar, no abstraer de más, no refactorizar por estética.
+Primero auditar arquitectura e invariantes existentes (leer el módulo real, no asumir).
+
+---
+
 ## ⚠️ Reglas para agentes — GitHub repos
 
 ### Arquitectura de dos repos

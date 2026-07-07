@@ -34,7 +34,7 @@ export function rH(){
   const mesActual=d2m(hoy());
   let html='';
   mesMeses.forEach(mes=>{
-    const isActual=mes===mesActual;
+    const isActual=mes===mesActual||mes===f;
     const grpTotal=g[mes].filter(o=>o.estado!=='pendiente').reduce((a,o)=>a+(o.totales?.totalGeneral||0),0);
     const pendCount=g[mes].filter(o=>o.estado==='pendiente').length;
     const pendStr=pendCount?` <span style="font-family:var(--mo);font-size:7px;color:var(--wn);background:rgba(255,170,0,.12);border:1px solid rgba(255,170,0,.3);padding:1px 5px">${pendCount} pendiente${pendCount>1?'s':''}</span>`:'';
