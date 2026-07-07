@@ -2407,15 +2407,22 @@ function _mpConfirmar() {
   const tbody = document.getElementById('mp-rows');
   if (!tbody) return;
   const checks = [...tbody.querySelectorAll('input[type=checkbox]:not([disabled])')];
-  const selIndices = checks.map((c, i) => c.checked ? i : -1).filter(i => i >= 0);
+  // El índice real en _mpFilas viaja en data-idx: la posición dentro de este
+  // NodeList filtrado (ya-importados quedan afuera) NO coincide con esa
+  // posición real apenas hay filas deshabilitadas antes de las nuevas.
+  const selIndices = checks.filter(c => c.checked).map(c => parseInt(c.dataset.idx, 10));
   if (!selIndices.length) { sN('Seleccioná al menos un egreso', true); return; }
 
   const d = ld();
   if (!d.egresos) d.egresos = [];
+  const yaImportados = new Set(d.egresos.filter(e => e.mpRefId).map(e => e.mpRefId));
 
   const mesesTocados = new Set();
+  let importadosCount = 0;
   selIndices.forEach(idx => {
     const f = _mpFilas[idx];
+    if (yaImportados.has(f.refId)) return; // guard: nunca duplicar por refId, pase lo que pase con el índice
+    importadosCount++;
     const mes = d2m(f.fecha);
     mesesTocados.add(mes);
     const id = _nEIdLocal(d, mes);
@@ -2445,7 +2452,7 @@ function _mpConfirmar() {
   window.renderDash?.();
   window.uhd?.();
   cerrarMPModal();
-  sN(`✓ ${selIndices.length} egreso(s) importados desde MercadoPago`);
+  sN(`✓ ${importadosCount} egreso(s) importados desde MercadoPago`);
 }
 
 // ── HTML builders ─────────────────────────────────────────────────────────
@@ -2480,7 +2487,7 @@ function _mpPreviewHTML(filas) {
     rows += `
       <tr style="${ya ? 'opacity:0.45' : ''};border-bottom:1px solid var(--br)">
         <td style="padding:6px 4px;text-align:center">
-          <input type="checkbox" ${ya ? 'disabled' : `checked onchange="_mpToggleRow()"`} style="accent-color:var(--er)">
+          <input type="checkbox" data-idx="${i}" ${ya ? 'disabled' : `checked onchange="_mpToggleRow()"`} style="accent-color:var(--er)">
         </td>
         <td style="padding:6px 4px;font-family:var(--mo);font-size:10px;color:var(--tx3);white-space:nowrap">${d2s(f.fecha).slice(0,5)}</td>
         <td style="padding:6px 4px">${badge}<input type="text" value="${_escHtml(f.concepto)}" ${ya ? 'disabled' : `onchange="_mpEditConcepto(${i},this.value)"`} style="font-family:var(--mo);font-size:10px;padding:2px 6px;width:90%;border:1px solid;border-radius:2px;outline:none;${inputStyle}"></td>
