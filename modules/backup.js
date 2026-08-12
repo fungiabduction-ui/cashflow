@@ -78,6 +78,7 @@ export function restoreBackupPayload(data){
   if(data._theme){try{localStorage.setItem('me_theme',data._theme);}catch(e){}}
   delete data._distSlices;delete data._liqDistSlices;delete data._distKpiHidden;delete data._priceLog;
   delete data._apariencia;delete data._theme;delete data._version;delete data._savedAt;delete data._meta;
+  delete data._exportedAt;
 
   sd(data);
   window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
