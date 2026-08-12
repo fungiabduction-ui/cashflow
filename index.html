@@ -863,11 +863,11 @@
     <div id="io-status-body" style="padding:4px 0"></div>
   </div>
 
-  <!-- GITHUB SYNC -->
+  <!-- GITHUB BACKUPS -->
   <div class="card">
-    <div class="ct">☁ GitHub Sync</div>
+    <div class="ct">☁ Backups en GitHub</div>
     <div style="font-family:var(--mo);font-size:9px;color:var(--tx2);margin-bottom:12px;line-height:1.8">
-      Guardá y sincronizá tus datos en GitHub.<br>
+      Backups manuales con fecha, nunca se sobreescriben.<br>
       El token se guarda solo en este dispositivo (localStorage).
     </div>
     <div id="ghStatus" style="font-family:var(--mo);font-size:10px;margin-bottom:10px;padding:8px;background:var(--s2);border:1px solid var(--br);display:none"></div>
@@ -878,38 +878,21 @@
       </div>
       <div>
         <label>Usuario / Repo</label>
-        <input type="text" id="ghRepo" placeholder="fungiabduction-ui/cashflow" value="fungiabduction-ui/cashflow" style="font-size:11px">
-      </div>
-      <div>
-        <label>Archivo de datos</label>
-        <input type="text" id="ghFile" placeholder="datos.json" value="datos.json" style="font-size:11px">
+        <input type="text" id="ghRepo" placeholder="fungiabduction-ui/motoredge-data" value="fungiabduction-ui/motoredge-data" style="font-size:11px">
       </div>
     </div>
     <div class="btn-row" style="margin-bottom:10px">
       <button class="btn btn-s" onclick="ghSaveToken()">🔑 Acceso</button>
       <button class="btn btn-s" onclick="ghTestConn()">🔌 Probar conexión</button>
     </div>
-    <div class="dv"></div>
-    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin:10px 0 6px;letter-spacing:1px">SINCRONIZACIÓN</div>
-    <div class="btn-row">
-      <button class="btn btn-s" onclick="ghPush(true)" id="ghPushBtn">⚠️ Guardar en GitHub</button>
-      <button class="btn btn-s" onclick="ghPull(true)" id="ghPullBtn">⬇ Cargar desde GitHub</button>
-    </div>
-    <div id="ghSyncInfo" style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:8px"></div>
-    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-top:10px;line-height:1.8;background:var(--s2);border:1px solid var(--br);padding:8px">
-      Auto-sync: se guarda en GitHub automáticamente cada vez que registrás una venta, egreso o inversión.
-    </div>
-    <div class="dv" style="margin-top:14px"></div>
-    <div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin:10px 0 6px;letter-spacing:1px">🔒 BACKUP DE SEGURIDAD (INMUTABLE POR FECHA)</div>
-    <div style="font-family:var(--mo);font-size:9px;color:var(--tx2);margin-bottom:10px;line-height:1.7">
-      Copia de seguridad manual que <b>nunca se sobreescribe</b>.<br>
-      Se guarda en una carpeta <code style="background:var(--s3);padding:1px 4px">backups/</code> con fecha en el nombre.
-    </div>
+    <div id="ghUnsavedStatus" style="font-family:var(--mo);font-size:10px;margin-bottom:10px;padding:8px;background:var(--s2);border:1px solid var(--br);display:none"></div>
     <div id="ghBackupStatus" style="font-family:var(--mo);font-size:10px;margin-bottom:10px;padding:8px;background:var(--s2);border:1px solid var(--br);display:none"></div>
     <div class="btn-row">
       <button class="btn btn-s-glow" onclick="ghBackupNow()">🔒 Guardar backup ahora</button>
-      <button class="btn btn-s" onclick="ghListBackups()">📋 Ver backups</button>
+      <button class="btn btn-s" onclick="ghLoadLatest()">⬇ Cargar el más reciente</button>
+      <button class="btn btn-s" onclick="ghListBackups()">📋 Ver todos los backups</button>
     </div>
+    <div id="ghSyncInfo" style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:8px"></div>
     <div id="ghBackupList" style="margin-top:10px"></div>
   </div>
 
@@ -934,7 +917,7 @@
       Recarga forzada desde el servidor, ignorando caché del navegador.<br>
       Los datos <strong>no se modifican</strong>.
     </p>
-    <button class="btn btn-s" onclick="location.reload(true)">
+    <button class="btn btn-s" onclick="location.href=location.pathname+'?v='+Date.now()">
       🔄 Forzar recarga (limpiar caché)
     </button>
   </div>
@@ -986,7 +969,15 @@
 </div>
 <div class="notif" id="notif"></div>
 
-<script src="bundle.js"></script>
+<script>
+(function(){
+  var v=new URLSearchParams(location.search).get('v')||'1';
+  var s=document.createElement('script');
+  s.src='bundle.js?v='+v;
+  s.async=false;
+  document.body.appendChild(s);
+})();
+</script>
 
 </body>
 </html>
