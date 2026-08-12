@@ -12,6 +12,7 @@ $files = @(
     "core/storage.js",
     "core/ids.js",
     "core/config.js",
+    "modules/backup.js",
     "modules/github.js",
     "modules/apariencia.js",
     "modules/stock.js",
