@@ -1,5 +1,6 @@
 import { sN } from '../ui/notif.js';
-import { SK, ld, sd } from '../core/storage.js';
+import { ld } from '../core/storage.js';
+import { buildBackupPayload, restoreBackupPayload, backupFingerprint } from './backup.js';
 
 // ── GITHUB SYNC ──
 export function renderIOStatus(){
@@ -70,6 +71,13 @@ export function ghCfg(){
   try{return JSON.parse(localStorage.getItem(GH_SK)||'{}');}catch(e){return{};}
 }
 
+function ghSetSyncState(fp,source){
+  const cfg=ghCfg();
+  cfg.lastBackupFp=fp;
+  cfg.lastBackupSource=source;
+  localStorage.setItem(GH_SK,JSON.stringify(cfg));
+}
+
 export function ghStatus(msg,isErr){
   const el=document.getElementById('ghStatus');
   if(!el)return;
@@ -86,7 +94,6 @@ export function ghSyncInfo(msg){
 
 // Encode JSON to base64 safely — handles all unicode / $ / accented chars
 export function safeB64Encode(str){
-  // TextEncoder → Uint8Array → base64
   const bytes=new TextEncoder().encode(str);
   let bin='';
   for(let i=0;i<bytes.byteLength;i++)bin+=String.fromCharCode(bytes[i]);
@@ -104,12 +111,18 @@ export function safeB64Decode(b64){
 export function ghSaveToken(){
   const token=(document.getElementById('ghToken').value||'').trim();
   const repo=(document.getElementById('ghRepo').value||'').trim();
-  const file=(document.getElementById('ghFile').value||'datos.json').trim();
   if(!token){ghStatus('ERROR: Token requerido',true);return;}
   if(!repo||!repo.includes('/')){ghStatus('ERROR: Repo invalido — debe ser usuario/repo',true);return;}
   if(ghIsUnsafeRepo(repo)){ghStatus('ERROR: '+GH_PUBLIC_REPO+' es el repo PUBLICO (codigo fuente). Los datos financieros van a fungiabduction-ui/motoredge-data.',true);return;}
-  localStorage.setItem(GH_SK,JSON.stringify({token,repo,file}));
+  const prev=ghCfg();
+  const sameRepo=prev.repo===repo;
+  localStorage.setItem(GH_SK,JSON.stringify({
+    token,repo,
+    lastBackupFp:sameRepo?prev.lastBackupFp:null,
+    lastBackupSource:sameRepo?prev.lastBackupSource:null,
+  }));
   ghStatus('Config guardada en este dispositivo.<br>El token nunca sale de tu browser.',false);
+  ghLoadConfig();
   sN('GitHub config guardada');
 }
 
@@ -117,10 +130,34 @@ export function ghLoadConfig(){
   const cfg=ghCfg();
   const tf=document.getElementById('ghToken');
   const rf=document.getElementById('ghRepo');
-  const ff=document.getElementById('ghFile');
   if(tf&&cfg.token)tf.value=cfg.token;
   if(rf&&cfg.repo)rf.value=cfg.repo;
-  if(ff&&cfg.file)ff.value=cfg.file;
+  const last=localStorage.getItem('me_gh_last_push');
+  const syncEl=document.getElementById('ghSyncInfo');
+  if(syncEl)syncEl.textContent=last?'Último backup: '+last:'Sin backups todavía';
+  ghRenderUnsaved(cfg);
+}
+
+function ghRenderUnsaved(cfg){
+  const el=document.getElementById('ghUnsavedStatus');
+  if(!el)return;
+  if(!cfg.token||!cfg.repo){el.style.display='none';return;}
+  if(!cfg.lastBackupFp){
+    el.style.display='block';
+    el.style.borderLeft='3px solid var(--wn)';el.style.color='var(--wn)';
+    el.innerHTML='⚠ Todavía no hiciste ningún backup en GitHub.';
+    return;
+  }
+  const current=backupFingerprint(buildBackupPayload());
+  const dirty=current!==cfg.lastBackupFp;
+  el.style.display='block';
+  if(dirty){
+    el.style.borderLeft='3px solid var(--wn)';el.style.color='var(--wn)';
+    el.innerHTML='⚠ Cambios sin guardar desde el último backup.';
+  }else{
+    el.style.borderLeft='3px solid var(--ac)';el.style.color='var(--ac)';
+    el.innerHTML='✓ Todo guardado.';
+  }
 }
 
 export async function ghTestConn(){
@@ -141,192 +178,31 @@ export async function ghTestConn(){
   }catch(e){ghStatus('ERROR de red: '+e.message,true);}
 }
 
-export async function ghGetFileSha(cfg){
-  try{
-    const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+cfg.file+'?t='+Date.now(),{
-      headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
-    });
-    if(r.ok){const d=await r.json();return d.sha||null;}
-    return null;
-  }catch(e){return null;}
+// Descarga (Blobs API) y decodifica el contenido completo de un blob de GitHub.
+// La Contents API omite el content inline para archivos >1MB (encoding:"none").
+async function ghApiBlob(cfg,sha){
+  const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/git/blobs/'+sha,{
+    headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
+  });
+  if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error(d.message||('ERROR '+r.status+' al leer blob'));}
+  return r.json();
 }
 
-export async function ghPush(showNotif){
-  const cfg=ghCfg();
-  if(!cfg.token||!cfg.repo){
-    if(showNotif)ghStatus('ERROR: Configura GitHub primero (token + repo)',true);
-    return;
+// Lee el contenido de un archivo de backup vía Contents API, con fallback
+// automático a la Blobs API si el archivo supera 1MB.
+async function ghFetchBackupContent(cfg,path){
+  const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+path+'?t='+Date.now(),{
+    headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
+  });
+  if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error('ERROR '+r.status+': '+(d.message||'No se pudo leer'));}
+  const meta=await r.json();
+  if(meta.content){
+    return safeB64Decode(meta.content.replace(/\n/g,''));
   }
-  if(ghIsUnsafeRepo(cfg.repo)){
-    if(showNotif)ghStatus('BLOQUEADO: la config apunta al repo PUBLICO ('+cfg.repo+'). Corregi el repo en Settings — debe ser fungiabduction-ui/motoredge-data.',true);
-    console.error('ghPush bloqueado: repo publico detectado en config',cfg.repo);
-    return;
-  }
-  if(showNotif)ghStatus('Guardando en GitHub...', false);
-  try{
-    const data=ld();
-    // Incluir configuraciones separadas para backup completo
-    data._distSlices=window._getDistSlices?.();
-    data._liqDistSlices=window._getLiqDistSlices?.();
-    data._distKpiHidden=window._getDistKpiHidden?.();
-    try{const ap=localStorage.getItem('me_apariencia');if(ap)data._apariencia=JSON.parse(ap);}catch(e){}
-    const _th=localStorage.getItem('me_theme');if(_th)data._theme=_th;
-    data._version='motoredge_v5';
-    data._savedAt=new Date().toISOString();
-    // Metadata para verificación rápida
-    data._meta={
-      orders:(data.orders||[]).length,
-      egresos:(data.egresos||[]).length,
-      inversiones:(data.inversiones||[]).length,
-      productos:(data.productos||[]).length,
-      listasPrecios:(data.listasPrecios||[]).length,
-      ingresos:(data.ingresos||[]).length,
-      lotesItems:Object.keys(data.lotes||{}).length,
-      contactos:(data.contactos||[]).length,
-    };
-    const jsonStr=JSON.stringify(data,null,2);
-    const encoded=safeB64Encode(jsonStr);
-    const sha=await ghGetFileSha(cfg);
-    const msgParts=[
-      'sync '+new Date().toISOString().slice(0,16).replace('T',' '),
-      (data.orders||[]).length+'v',
-      (data.egresos||[]).length+'e',
-      (data.ingresos||[]).length+'ing',
-    ];
-    const body={
-      message:msgParts.join(' · '),
-      content:encoded
-    };
-    if(sha)body.sha=sha;
-    const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+cfg.file,{
-      method:'PUT',
-      headers:{
-        'Authorization':'token '+cfg.token,
-        'Accept':'application/vnd.github.v3+json',
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify(body)
-    });
-    const resp=await r.json();
-    if(r.ok){
-      const now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      localStorage.setItem('me_gh_last_push',now);
-      const syncEl=document.getElementById('ghSyncInfo');
-      if(syncEl)syncEl.textContent='Guardado en GitHub: '+now;
-      if(showNotif){
-        ghStatus('OK guardado en GitHub a las '+now+'<br>Archivo: '+cfg.file+' en '+cfg.repo,false);
-        sN('Guardado en GitHub');
-      }
-    } else if(r.status===409||r.status===422){
-      // SHA stale — reintentar una vez con SHA fresco
-      const freshSha=await ghGetFileSha(cfg);
-      if(freshSha){
-        body.sha=freshSha;
-        const r2=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+cfg.file,{method:'PUT',headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-        const resp2=await r2.json();
-        if(r2.ok){
-          const now2=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-          localStorage.setItem('me_gh_last_push',now2);
-          const syncEl2=document.getElementById('ghSyncInfo');if(syncEl2)syncEl2.textContent='Guardado en GitHub: '+now2;
-          if(showNotif){ghStatus('OK guardado en GitHub a las '+now2,false);sN('Guardado en GitHub');}
-        } else {
-          if(showNotif)ghStatus('ERROR '+r2.status+': '+(resp2.message||JSON.stringify(resp2)),true);
-          console.error('ghPush retry failed:',r2.status,resp2);
-        }
-      } else {
-        if(showNotif)ghStatus('ERROR 409: SHA conflict sin resolución automática',true);
-      }
-    } else {
-      const errMsg='ERROR '+r.status+': '+(resp.message||JSON.stringify(resp));
-      if(showNotif)ghStatus(errMsg+'<br>Repo: '+cfg.repo+'<br>Archivo: '+cfg.file,true);
-      console.error('ghPush error:',r.status,resp);
-    }
-  }catch(e){
-    if(showNotif)ghStatus('ERROR inesperado: '+e.message,true);
-    console.error('ghPush exception:',e);
-  }
+  const blob=await ghApiBlob(cfg,meta.sha);
+  return safeB64Decode(blob.content.replace(/\n/g,''));
 }
 
-export async function ghPull(showNotif){
-  const cfg=ghCfg();
-  if(!cfg.token||!cfg.repo){
-    if(showNotif)ghStatus('ERROR: Configura GitHub primero',true);
-    return;
-  }
-  if(!confirm('¿Cargar desde GitHub? Se sobreescribirán todos los datos locales.'))return;
-  if(showNotif)ghStatus('Cargando datos desde GitHub...', false);
-  try{
-    const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+cfg.file+'?t='+Date.now(),{
-      headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
-    });
-    if(r.status===404){
-      if(showNotif)ghStatus('El archivo <b>'+cfg.file+'</b> todavia no existe en el repo.<br>Hace un "Guardar en GitHub" primero.',false);
-      return;
-    }
-    if(!r.ok){
-      const d=await r.json();
-      if(showNotif)ghStatus('ERROR '+r.status+': '+(d.message||'Error al leer'),true);
-      return;
-    }
-    const meta=await r.json();
-    const jsonStr=safeB64Decode(meta.content.replace(/\n/g,''));
-    const decoded=JSON.parse(jsonStr);
-    if(!decoded.orders||!Array.isArray(decoded.orders))throw new Error('Formato de datos invalido');
-    // Restaurar configuraciones separadas si vienen en el payload
-    if(decoded._distSlices){window._setDistSlices?.(decoded._distSlices);saveDistSlices();delete decoded._distSlices;}
-    if(decoded._liqDistSlices){window._setLiqDistSlices?.(decoded._liqDistSlices);saveLiqSlices();delete decoded._liqDistSlices;}
-    if(decoded._distKpiHidden){window._setDistKpiHidden?.(decoded._distKpiHidden);saveKpiHidden();delete decoded._distKpiHidden;}
-    // Compat: backups viejos tenian _priceLog separado; moverlo a priceLog dentro de motoredge_v4
-    if(decoded._priceLog&&!decoded.priceLog){decoded.priceLog=decoded._priceLog;}
-    delete decoded._priceLog;
-    // Si el backup no tiene priceLog (anterior al feature), preservar el log local en lugar de perderlo
-    if(!Array.isArray(decoded.priceLog)){
-      const _cur=ld();
-      if(Array.isArray(_cur.priceLog)&&_cur.priceLog.length){decoded.priceLog=_cur.priceLog;}
-      else{try{const _r=localStorage.getItem('me_price_log');decoded.priceLog=_r?JSON.parse(_r):[];localStorage.removeItem('me_price_log');}catch(_e){decoded.priceLog=[];}}
-    }
-    if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
-    if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
-    delete decoded._version;delete decoded._savedAt;delete decoded._meta;
-    sd(decoded);
-    // Full refresh — inventario incluido
-    window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
-    window.rfM?.();window.rH?.();window.rS?.();window.rEH?.();window.rES?.();window.renderDash?.();window.renderSettings?.();
-    try{window.renderInventario?.();}catch(e){}
-    try{window.renderInvAll?.();}catch(e){}
-    try{window.rfInvM?.();}catch(e){}
-    window.updateClientesDatalist?.();window.uhd?.();
-    window.renderPriceTerminal?.();window.renderPriceLog?.();
-    const now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
-    const syncEl=document.getElementById('ghSyncInfo');
-    if(syncEl)syncEl.textContent='Cargado desde GitHub: '+now;
-    if(showNotif){
-      const m=decoded._meta||{};
-      ghStatus('OK — datos cargados desde GitHub<br>'
-        +(decoded.orders||[]).length+' ventas · '+(decoded.egresos||[]).length+' egresos · '
-        +(decoded.inversiones||[]).length+' inversiones · '
-        +(decoded.ingresos||[]).length+' ingresos stock · '
-        +Object.keys(decoded.lotes||{}).length+' productos con lotes',false);
-      sN('Datos cargados desde GitHub');
-    }
-  }catch(e){
-    if(showNotif)ghStatus('ERROR: '+e.message,true);
-    console.error('ghPull exception:',e);
-  }
-}
-
-// Auto-push silencioso con debounce — agrupa operaciones rápidas en un solo push
-let _autoPushTimer=null;
-export function ghAutoPush(){
-  const cfg=ghCfg();
-  if(!cfg.token||!cfg.repo)return;
-  clearTimeout(_autoPushTimer);
-  _autoPushTimer=setTimeout(function(){
-    ghPush(false).catch(function(e){console.error('ghAutoPush failed:',e);});
-  },8000);
-}
-
-// ── BACKUP DE SEGURIDAD POR FECHA ──
 export async function ghBackupNow(){
   const cfg=ghCfg();
   if(!cfg.token||!cfg.repo){
@@ -343,34 +219,27 @@ export async function ghBackupNow(){
   const el=document.getElementById('ghBackupStatus');
   if(el){el.style.display='';el.style.color='var(--tx2)';el.innerHTML='Guardando backup...';}
   try{
-    const data=ld();
-    data._distSlices=window._getDistSlices?.();
-    data._liqDistSlices=window._getLiqDistSlices?.();
-    data._distKpiHidden=window._getDistKpiHidden?.();
-    try{const ap=localStorage.getItem('me_apariencia');if(ap)data._apariencia=JSON.parse(ap);}catch(e){}
-    const _th2=localStorage.getItem('me_theme');if(_th2)data._theme=_th2;
+    const data=buildBackupPayload();
     const jsonStr=JSON.stringify(data,null,2);
     const encoded=safeB64Encode(jsonStr);
     const now=new Date();
     const dateStr=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
     const timeStr=String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0');
     const backupFile='backups/backup_'+dateStr+'_'+timeStr+'.json';
-    // Backups NUNCA se sobreescriben — no buscamos SHA
-    const body={
-      message:'backup manual '+dateStr+' '+timeStr,
-      content:encoded
-    };
+    const body={message:'backup manual '+dateStr+' '+timeStr,content:encoded};
     const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+backupFile,{
       method:'PUT',
-      headers:{
-        'Authorization':'token '+cfg.token,
-        'Accept':'application/vnd.github.v3+json',
-        'Content-Type':'application/json'
-      },
+      headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
       body:JSON.stringify(body)
     });
     const resp=await r.json();
     if(r.ok){
+      const nowStr=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      localStorage.setItem('me_gh_last_push',nowStr);
+      ghSetSyncState(backupFingerprint(data),'save');
+      const syncEl=document.getElementById('ghSyncInfo');
+      if(syncEl)syncEl.textContent='Último backup: '+nowStr;
+      ghRenderUnsaved(ghCfg());
       if(el){el.style.color='var(--ac)';el.innerHTML='✅ Backup guardado: <b>'+backupFile+'</b><br>'+data.orders.length+' ventas · '+(data.egresos||[]).length+' egresos · '+(data.inversiones||[]).length+' inversiones';}
       sN('Backup guardado en GitHub');
     } else {
@@ -402,11 +271,27 @@ export async function ghListBackups(){
     files.slice().reverse().forEach(function(f){
       html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:var(--s2);border:1px solid var(--br);margin-bottom:4px">'
         +'<span style="font-family:var(--mo);font-size:9px;color:var(--tx)">'+f.name+'</span>'
+        +'<span>'
+        +'<button onclick="ghDownloadBackup(\''+f.path+'\')" style="background:none;border:1px solid var(--tx3);color:var(--tx2);font-family:var(--mo);font-size:8px;padding:3px 8px;cursor:pointer;margin-right:4px">⬇ descargar</button>'
         +'<button onclick="ghRestoreBackup(\''+f.path+'\')" style="background:none;border:1px solid var(--ac2);color:var(--ac2);font-family:var(--mo);font-size:8px;padding:3px 8px;cursor:pointer">↩ restaurar</button>'
+        +'</span>'
         +'</div>';
     });
     if(el)el.innerHTML=html;
   }catch(e){if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--er)">ERROR: '+e.message+'</div>';}
+}
+
+export async function ghDownloadBackup(path){
+  const cfg=ghCfg();
+  if(!cfg.token||!cfg.repo){sN('Configura GitHub primero',true);return;}
+  try{
+    const jsonStr=await ghFetchBackupContent(cfg,path);
+    const blob=new Blob([jsonStr],{type:'application/json'});
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');
+    a.href=url;a.download=path.split('/').pop();
+    a.click();URL.revokeObjectURL(url);
+    sN('Descargado: '+a.download);
+  }catch(e){sN('Error al descargar: '+e.message,true);}
 }
 
 export async function ghRestoreBackup(path){
@@ -415,41 +300,41 @@ export async function ghRestoreBackup(path){
   const cfg=ghCfg();
   sN('Restaurando...');
   try{
-    const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/'+path+'?t='+Date.now(),{
-      headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
-    });
-    if(!r.ok){const d=await r.json().catch(()=>({}));sN('Error '+r.status+': '+(d.message||'No se pudo leer el backup'),true);return;}
-    const meta=await r.json();
-    const jsonStr=safeB64Decode(meta.content.replace(/\n/g,''));
+    const jsonStr=await ghFetchBackupContent(cfg,path);
     const decoded=JSON.parse(jsonStr);
-    if(!decoded.orders||!Array.isArray(decoded.orders))throw new Error('Formato inválido');
-    if(decoded._priceLog&&!decoded.priceLog){decoded.priceLog=decoded._priceLog;}
-    delete decoded._priceLog;
-    // Si el backup no tiene priceLog (anterior al feature), preservar el log local en lugar de perderlo
-    if(!Array.isArray(decoded.priceLog)){
-      const _cur=ld();
-      if(Array.isArray(_cur.priceLog)&&_cur.priceLog.length){decoded.priceLog=_cur.priceLog;}
-      else{try{const _r=localStorage.getItem('me_price_log');decoded.priceLog=_r?JSON.parse(_r):[];localStorage.removeItem('me_price_log');}catch(_e){decoded.priceLog=[];}}
-    }
-    if(decoded._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(decoded._apariencia));window.applyApariencia?.(decoded._apariencia);}catch(e){}delete decoded._apariencia;}
-    if(decoded._theme){try{localStorage.setItem('me_theme',decoded._theme);}catch(e){}delete decoded._theme;}
-    delete decoded._version;delete decoded._savedAt;delete decoded._meta;
-    sd(decoded);
-    window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
-    window.rfM?.();window.rH?.();window.rS?.();window.rEH?.();window.rES?.();window.renderDash?.();window.renderSettings?.();
-    try{window.renderInventario?.();}catch(e){}
-    try{window.renderInvAll?.();}catch(e){}
-    try{window.rfInvM?.();}catch(e){}
-    window.updateClientesDatalist?.();window.uhd?.();
-    window.renderPriceTerminal?.();window.renderPriceLog?.();
-    sN('✓ Restaurado desde '+name);
+    const n=restoreBackupPayload(decoded);
+    ghSetSyncState(backupFingerprint(buildBackupPayload()),'load');
+    ghRenderUnsaved(ghCfg());
+    sN('✓ Restaurado desde '+name+' ('+n+' ventas)');
     ghStatus('OK — restaurado desde backup: <b>'+name+'</b>',false);
   }catch(e){sN('ERROR al restaurar: '+e.message,true);}
 }
 
+export async function ghLoadLatest(){
+  const cfg=ghCfg();
+  if(!cfg.token||!cfg.repo){ghStatus('ERROR: Configura GitHub primero',true);return;}
+  if(!confirm('¿Cargar el backup más reciente? Esto sobreescribirá los datos actuales.'))return;
+  ghStatus('Buscando el último backup...',false);
+  try{
+    const r=await fetch('https://api.github.com/repos/'+cfg.repo+'/contents/backups',{
+      headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
+    });
+    if(!r.ok){ghStatus('ERROR: No se encontraron backups todavía.',true);return;}
+    const files=await r.json();
+    if(!files.length){ghStatus('Sin backups todavía — usá "Guardar backup ahora" primero.',true);return;}
+    files.sort(function(a,b){return a.name.localeCompare(b.name);});
+    const latest=files[files.length-1];
+    ghStatus('Cargando '+latest.name+'...',false);
+    const jsonStr=await ghFetchBackupContent(cfg,latest.path);
+    const decoded=JSON.parse(jsonStr);
+    const n=restoreBackupPayload(decoded);
+    ghSetSyncState(backupFingerprint(buildBackupPayload()),'load');
+    ghRenderUnsaved(ghCfg());
+    ghStatus('OK — cargado '+latest.name+' ('+n+' ventas)',false);
+    sN('Backup más reciente cargado');
+  }catch(e){ghStatus('ERROR: '+e.message,true);}
+}
+
 export function ghInit(){
   ghLoadConfig();
-  const last=localStorage.getItem('me_gh_last_push');
-  if(last){const el=document.getElementById('ghSyncInfo');if(el)el.textContent='Ultimo guardado: '+last;}
-  window.addEventListener('beforeunload',function(){if(_autoPushTimer){clearTimeout(_autoPushTimer);ghPush(false);}});
 }
