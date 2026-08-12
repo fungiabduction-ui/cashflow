@@ -7566,7 +7566,7 @@ function toggleTheme(){const isLight=document.body.getAttribute('data-theme')===
 // ── INIT ──
 initConfigDeps(getProductos, updateClientesDatalist);
 loadConfig();
-getPriceLog(); // migración temprana: me_price_log → d.priceLog antes del primer ghAutoPush
+getPriceLog(); // migración temprana: me_price_log → d.priceLog antes del primer backup
 
 // ── Seed stock inicial (corre una sola vez) ──
 function seedStockInicial(){
@@ -7669,7 +7669,7 @@ Object.assign(window, {
   // io
   expJSON, expCSV, expXLSX, impJSONFile, hardReset, migrarTcNull, migrarLineasYTotales,
   // github
-  ghSaveToken, ghTestConn, ghPush, ghPull, ghBackupNow, ghListBackups, ghRestoreBackup,
+  ghSaveToken, ghTestConn, ghBackupNow, ghListBackups, ghRestoreBackup, ghLoadLatest, ghDownloadBackup,
   // apariencia
   guardarApariencia, resetApariencia, applyPreset, syncColorFromHex,
   toggleAparienciaAvanzada, loadAparienciaForm, updateThemeCards,
