@@ -214,6 +214,13 @@ function renderIOStatus(){
 
 const GH_SK='me_gh_config';
 
+// Invariante de seguridad: datos.json/backups SOLO pueden ir al repo privado.
+// fungiabduction-ui/cashflow es publico (codigo fuente) — nunca destino de datos financieros.
+const GH_PUBLIC_REPO='fungiabduction-ui/cashflow';
+function ghIsUnsafeRepo(repo){
+  return (repo||'').trim().toLowerCase()===GH_PUBLIC_REPO;
+}
+
 function ghCfg(){
   try{return JSON.parse(localStorage.getItem(GH_SK)||'{}');}catch(e){return{};}
 }
@@ -255,6 +262,7 @@ function ghSaveToken(){
   const file=(document.getElementById('ghFile').value||'datos.json').trim();
   if(!token){ghStatus('ERROR: Token requerido',true);return;}
   if(!repo||!repo.includes('/')){ghStatus('ERROR: Repo invalido — debe ser usuario/repo',true);return;}
+  if(ghIsUnsafeRepo(repo)){ghStatus('ERROR: '+GH_PUBLIC_REPO+' es el repo PUBLICO (codigo fuente). Los datos financieros van a fungiabduction-ui/motoredge-data.',true);return;}
   localStorage.setItem(GH_SK,JSON.stringify({token,repo,file}));
   ghStatus('Config guardada en este dispositivo.<br>El token nunca sale de tu browser.',false);
   sN('GitHub config guardada');
@@ -302,6 +310,11 @@ async function ghPush(showNotif){
   const cfg=ghCfg();
   if(!cfg.token||!cfg.repo){
     if(showNotif)ghStatus('ERROR: Configura GitHub primero (token + repo)',true);
+    return;
+  }
+  if(ghIsUnsafeRepo(cfg.repo)){
+    if(showNotif)ghStatus('BLOQUEADO: la config apunta al repo PUBLICO ('+cfg.repo+'). Corregi el repo en Settings — debe ser fungiabduction-ui/motoredge-data.',true);
+    console.error('ghPush bloqueado: repo publico detectado en config',cfg.repo);
     return;
   }
   if(showNotif)ghStatus('Guardando en GitHub...', false);
@@ -474,6 +487,12 @@ async function ghBackupNow(){
   if(!cfg.token||!cfg.repo){
     const el=document.getElementById('ghBackupStatus');
     if(el){el.style.display='';el.style.color='var(--er)';el.innerHTML='ERROR: Configura GitHub primero (token + repo)';}
+    return;
+  }
+  if(ghIsUnsafeRepo(cfg.repo)){
+    const elBlk=document.getElementById('ghBackupStatus');
+    if(elBlk){elBlk.style.display='';elBlk.style.color='var(--er)';elBlk.innerHTML='BLOQUEADO: la config apunta al repo PUBLICO ('+cfg.repo+'). Corregi el repo en Settings.';}
+    console.error('ghBackupNow bloqueado: repo publico detectado en config',cfg.repo);
     return;
   }
   const el=document.getElementById('ghBackupStatus');

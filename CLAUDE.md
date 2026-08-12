@@ -389,6 +389,12 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
 
 16. **`clienteId` en órdenes**: campo opcional hacia atrás. Órdenes pre-migración tienen `clienteId: null`. El historial de un contacto se resuelve con resolución dual: `o.clienteId === ct.id || (!o.clienteId && normNombre(o.cliente) === ct.nombreNorm)`. No cambiar esta lógica.
 
+17. **Acordeón por mes en `rEH()`/`rH()` (egresos.js/ventas.js)**: cada grupo mensual se auto-expande si `mes===mesActual` (mes calendario real) **o** `mes===f` (filtro activo seleccionado). Si se filtra a un mes específico, ese grupo SIEMPRE debe expandirse — si solo se chequea contra `mesActual`, cualquier dato de un mes pasado (imports retroactivos, backfills) queda colapsado e indistinguible de "no hay datos". Bug real que costó horas de debugging en jul/2026.
+
+18. **Checkboxes en listas con filas mixtas (habilitadas + disabled), ej. `mp-import.js`**: el índice real del ítem en el array de datos SIEMPRE debe viajar en un atributo del DOM (`data-idx`), nunca inferirse de la posición dentro de un NodeList filtrado (`:not([disabled])`). Si hay filas disabled intercaladas, esa posición no coincide con el índice real → se opera sobre el ítem equivocado silenciosamente. Causó reimportación de transacciones viejas en vez de las nuevas en el importador MP.
+
+19. **`me_gh_config.repo` NUNCA puede ser `fungiabduction-ui/cashflow`**: `modules/github.js` bloquea con `ghIsUnsafeRepo()` el guardado de config (`ghSaveToken`) y los dos paths de escritura (`ghPush`, `ghBackupNow`) si el repo configurado es el público. Esto es un guardrail de código — no depende de que el usuario configure bien cada dispositivo. **Incidente real**: en jun/2026 y ago/2026, `me_gh_config` quedó apuntando al repo público en al menos un dispositivo y `ghAutoPush()` subió `datos.json` (con ventas y clientes reales) a `fungiabduction-ui/cashflow`, quedando servido públicamente vía GitHub Pages hasta que se detectó y se purgó (force-push + ticket a GitHub Support). No remover este guard ni relajarlo. Si se agrega un nuevo path de escritura a GitHub en el futuro (nuevo tipo de backup, nueva función de sync), DEBE pasar por el mismo chequeo antes del primer `fetch(...,{method:'PUT'})`.
+
 ---
 
 ## Catálogo de productos (DEFAULT_PRODUCTS)
