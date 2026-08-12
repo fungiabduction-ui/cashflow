@@ -12,7 +12,7 @@ Cualquier agente que lo toque actúa como **ingeniero senior de sistemas crític
 
 Prioridad en este orden:
 1. Integridad de datos — nunca corrupción silenciosa de estado.
-2. Detectar race conditions (ghAutoPush debounce, sd()/ld() concurrentes, doble submit).
+2. Detectar race conditions (sd()/ld() concurrentes, doble submit).
 3. Respetar los invariantes de la sección "Invariantes críticos" (más abajo) — son ley, no sugerencia.
 4. Entender la semántica real del pipeline (storage → módulo → UI → GitHub sync) antes de tocar nada.
 
@@ -37,12 +37,12 @@ Primero auditar arquitectura e invariantes existentes (leer el módulo real, no 
 | Repo | Visibilidad | Contenido |
 |---|---|---|
 | `fungiabduction-ui/cashflow` | 🌍 Público | Solo código fuente. NUNCA datos financieros. |
-| `fungiabduction-ui/motoredge-data` | 🔒 Privado | `datos.json` + `backups/` — sincronización de la app. |
+| `fungiabduction-ui/motoredge-data` | 🔒 Privado | `backups/` — backups manuales con fecha, nunca se pisan (ver invariante #8). `datos.json` es legacy: quedó huérfano ahí desde antes del refactor de ago/2026, nada lo lee ni lo escribe más — no reintroducir un flujo que vuelva a usarlo. |
 | `fungiabduction-ui/calculadora` | 🌍 Público | Calculadora pública (GitHub Pages). Recibe `precios.json` via `ghSyncCalc()` desde MotorEdge. |
 
 **`datos.json` y `backups/` están en `.gitignore` del repo `cashflow`.** No los agregues nunca al repo público.
 
-**NUNCA hacer commits con datos financieros en `cashflow`.** Si aparece `datos.json` en `git status`, ignorarlo — está correctamente excluido por `.gitignore`.
+**NUNCA hacer commits con datos financieros en `cashflow`.** Si aparece `datos.json` o cualquier archivo dentro de `backups/` en `git status`, ignorarlo — está correctamente excluido por `.gitignore`.
 
 ### Credenciales GitHub
 
@@ -188,7 +188,9 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── settings.js     ← renderSettings(), guardarPrecios(), resetPrecios()
 │   ├── contactos.js    ← normNombre(), autoRegistrarContacto(), mostrarMigracionContactos(),
 │   │                     ejecutarMigracionContactos(), renderContactos(), abrirContacto()
-│   ├── github.js       ← ghAutoPush(), ghPush(), ghPull(), ghInit(), safeB64Encode/Decode()
+│   ├── backup.js       ← buildBackupPayload(), restoreBackupPayload(data), backupFingerprint(dataObj)
+│   │                      Única fuente de verdad de "qué es un backup" — usada por github.js e io.js
+│   ├── github.js       ← ghBackupNow(), ghListBackups(), ghRestoreBackup(), ghLoadLatest(), ghDownloadBackup(), ghInit(), safeB64Encode/Decode()
 │   ├── apariencia.js   ← applyApariencia(), PRESETS, guardarApariencia()
 │   └── io.js           ← expJSON(), expCSV(), expXLSX(), impJSONFile(), hardReset()
 │                         (impJSON, impMerge, handleXlsxFile ELIMINADOS — no reintroducirlos)
@@ -257,12 +259,14 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
 **Flujos de backup — cobertura completa:**
 | Flujo | Escribe | Lee/restaura |
 |---|---|---|
-| `ghPush()` | Sube todo al repo privado (`datos.json`) | — |
-| `ghPull()` | — | Restaura todo desde `datos.json` |
-| `ghBackupNow()` | Sube snapshot a `backups/backup_FECHA.json` | — |
-| `ghRestoreBackup(path)` | — | Restaura desde backup puntual |
+| `ghBackupNow()` | Sube snapshot a `backups/backup_YYYY-MM-DD_HHMM.json` (repo privado, nunca se pisa) | — |
+| `ghLoadLatest()` | — | Restaura el backup más reciente de `backups/` |
+| `ghDownloadBackup(path)` | — | Descarga un backup puntual como archivo local (sin restaurar) |
+| `ghRestoreBackup(path)` | — | Restaura desde un backup puntual elegido de la lista |
 | `expJSON()` | Descarga JSON local | — |
 | `impJSONFile(input)` | — | Restaura desde JSON local |
+
+Todos los flujos de escritura usan `buildBackupPayload()` y todos los de restauración usan `restoreBackupPayload()` (`modules/backup.js`) — sin duplicación de la lógica de qué se guarda o cómo se restaura.
 
 ---
 
@@ -367,7 +371,7 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
 
 7. **`stockSeedDone`**: flag de un solo disparo. Si se pierde, `seedStockInicial()` duplica el stock inicial de producción.
 
-8. **`ghAutoPush()`**: se llama automáticamente después de `sO()`, `sE()`, `sLiqExterna()`, `sInv()`. No sacarlo de esas funciones. Tiene debounce de 8 segundos (`_autoPushTimer`) — múltiples operaciones rápidas se agrupan en un solo push para evitar race conditions con el SHA de GitHub.
+8. **Guardado 100% manual (desde 2026-08)**: NO existe auto-save. `buildBackupPayload()`/`restoreBackupPayload()`/`backupFingerprint()` (`modules/backup.js`) son la única fuente de verdad de qué es un backup y cómo se restaura — usadas por `ghBackupNow`/`ghLoadLatest`/`ghRestoreBackup` (GitHub) y `expJSON`/`impJSONFile` (local). El indicador de "cambios sin guardar" en el tab Config compara el fingerprint actual contra `me_gh_config.lastBackupFp`. Si se agrega un nuevo flujo de guardado en el futuro, DEBE pasar por `buildBackupPayload()`, no reimplementar la recolección de datos a mano — así se evitó que volviera a divergir como pasó entre `ghPush`/`ghBackupNow`/`expJSON` (ver `docs/superpowers/specs/2026-08-12-unificar-backup-cfg-design.md`).
 
 9. **Compatibilidad legacy**: órdenes antiguas tienen `{pastillas, cristales, hongos}`. Nuevas usan `lineas[]`. Ambos formatos conviven. `_getLineasOrden(o)` en `modules/io.js` es el bridge. No tocarlo. `getInvPeriodoSoldMap()` maneja ambos formatos.
 
@@ -393,7 +397,7 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
 
 18. **Checkboxes en listas con filas mixtas (habilitadas + disabled), ej. `mp-import.js`**: el índice real del ítem en el array de datos SIEMPRE debe viajar en un atributo del DOM (`data-idx`), nunca inferirse de la posición dentro de un NodeList filtrado (`:not([disabled])`). Si hay filas disabled intercaladas, esa posición no coincide con el índice real → se opera sobre el ítem equivocado silenciosamente. Causó reimportación de transacciones viejas en vez de las nuevas en el importador MP.
 
-19. **`me_gh_config.repo` NUNCA puede ser `fungiabduction-ui/cashflow`**: `modules/github.js` bloquea con `ghIsUnsafeRepo()` el guardado de config (`ghSaveToken`) y los dos paths de escritura (`ghPush`, `ghBackupNow`) si el repo configurado es el público. Esto es un guardrail de código — no depende de que el usuario configure bien cada dispositivo. **Incidente real**: en jun/2026 y ago/2026, `me_gh_config` quedó apuntando al repo público en al menos un dispositivo y `ghAutoPush()` subió `datos.json` (con ventas y clientes reales) a `fungiabduction-ui/cashflow`, quedando servido públicamente vía GitHub Pages hasta que se detectó y se purgó (force-push + ticket a GitHub Support). No remover este guard ni relajarlo. Si se agrega un nuevo path de escritura a GitHub en el futuro (nuevo tipo de backup, nueva función de sync), DEBE pasar por el mismo chequeo antes del primer `fetch(...,{method:'PUT'})`.
+19. **`me_gh_config.repo` NUNCA puede ser `fungiabduction-ui/cashflow`**: `modules/github.js` bloquea con `ghIsUnsafeRepo()` el guardado de config (`ghSaveToken`) y el único path de escritura (`ghBackupNow`) si el repo configurado es el público. Esto es un guardrail de código — no depende de que el usuario configure bien cada dispositivo. **Incidente real**: en jun/2026 y ago/2026, `me_gh_config` quedó apuntando al repo público en al menos un dispositivo y el auto-push (eliminado en el refactor de ago/2026 — ver invariante #8) subió `datos.json` (con ventas y clientes reales) a `fungiabduction-ui/cashflow`, quedando servido públicamente vía GitHub Pages hasta que se detectó y se purgó (force-push + ticket a GitHub Support). No remover este guard ni relajarlo. Si se agrega un nuevo path de escritura a GitHub en el futuro (nuevo tipo de backup, nueva función de sync), DEBE pasar por el mismo chequeo antes del primer `fetch(...,{method:'PUT'})`.
 
 ---
 
@@ -425,7 +429,8 @@ constants  ←── (ninguna)
 storage    ←── notif
 ids        ←── storage, formatters
 config     ←── storage, constants   [+ DI: getProductos, updateClientesDatalist]
-github     ←── storage, notif
+backup     ←── storage
+github     ←── storage, notif, backup
 apariencia ←── notif
 stock      ←── storage, notif
 listas-precios ←── storage, notif, constants, formatters, stock
@@ -439,7 +444,7 @@ liquidez   ←── storage, notif, formatters, github
 inversiones←── storage, notif, formatters, ids, github, stock, productos
 dashboard  ←── storage, formatters, config, inversiones, inventario
 ticket     ←── storage, notif, formatters, config, ids, ventas, productos, listas-precios, inventario, stock, contactos
-io         ←── storage, notif, formatters, productos, stock, inventario, listas-precios
+io         ←── storage, notif, formatters, productos, stock, inventario, listas-precios, backup
 modal      ←── storage, notif
 tabs       ←── storage, formatters, inversiones, dashboard, ventas, egresos, settings, inventario, github
 delegacion ←── notif, ventas, egresos, io, productos, stock
@@ -566,13 +571,22 @@ Llama a `build.ps1` que:
 | `impJSONFile(input)` | modules/io | Auto-restaura al seleccionar archivo. Descarga backup pre-restore primero. Confirm muestra stats |
 | `hardReset()` | modules/io | Descarga backup y borra TODO el localStorage del sistema |
 
-### GitHub sync
+### GitHub sync (100% manual, sin auto-save — ver invariante #8)
 | Función | Módulo | Qué hace |
 |---|---|---|
-| `ghAutoPush()` | modules/github | Push silencioso (llamado automáticamente) |
-| `ghPush(showNotif)` | modules/github | Push explícito con feedback |
-| `ghPull(showNotif)` | modules/github | Pull y restauración completa de datos |
-| `ghInit()` | modules/github | Inicializa UI del tab GitHub |
+| `ghBackupNow()` | modules/github | Sube snapshot con fecha a `backups/`, nunca se pisa |
+| `ghListBackups()` | modules/github | Lista backups guardados (fecha, descargar, restaurar) |
+| `ghLoadLatest()` | modules/github | Restaura el backup más reciente |
+| `ghDownloadBackup(path)` | modules/github | Descarga un backup puntual como archivo local |
+| `ghRestoreBackup(path)` | modules/github | Restaura desde un backup puntual elegido |
+| `ghInit()` | modules/github | Inicializa UI del tab GitHub + indicador de cambios sin guardar |
+
+### Backup (fuente de verdad compartida)
+| Función | Módulo | Qué hace |
+|---|---|---|
+| `buildBackupPayload()` | modules/backup | Arma el objeto único de respaldo (motoredge_v4 + claves satélite) |
+| `restoreBackupPayload(data)` | modules/backup | Valida, backup de seguridad pre-restore, reintegra, guarda, re-renderiza |
+| `backupFingerprint(dataObj)` | modules/backup | Hash del payload — detecta cambios sin guardar |
 
 ---
 
