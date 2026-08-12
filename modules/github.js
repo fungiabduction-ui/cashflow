@@ -265,7 +265,7 @@ export async function ghListBackups(){
       if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--tx3)">No hay backups guardados todavía.</div>';return;
     }
     if(!r.ok){const d=await r.json().catch(()=>({}));if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--er)">Error '+r.status+': '+(d.message||'Error al listar backups.')+'</div>';return;}
-    const files=await r.json();
+    const files=(await r.json()).filter(function(f){return f.type==='file'&&/^backup_\d{4}-\d{2}-\d{2}_\d{4}\.json$/.test(f.name);});
     if(!files.length){if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--tx3)">Sin backups.</div>';return;}
     var html='<div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-bottom:6px;letter-spacing:1px">'+files.length+' BACKUPS GUARDADOS</div>';
     files.slice().reverse().forEach(function(f){
@@ -320,7 +320,7 @@ export async function ghLoadLatest(){
       headers:{'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json'}
     });
     if(!r.ok){ghStatus('ERROR: No se encontraron backups todavía.',true);return;}
-    const files=await r.json();
+    const files=(await r.json()).filter(function(f){return f.type==='file'&&/^backup_\d{4}-\d{2}-\d{2}_\d{4}\.json$/.test(f.name);});
     if(!files.length){ghStatus('Sin backups todavía — usá "Guardar backup ahora" primero.',true);return;}
     files.sort(function(a,b){return a.name.localeCompare(b.name);});
     const latest=files[files.length-1];
