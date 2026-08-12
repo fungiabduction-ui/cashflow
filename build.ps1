@@ -90,12 +90,26 @@ Write-Host " bundle.js: $ln lineas / $kb KB ($ok archivos)" -ForegroundColor Gre
 # Actualizar index.html para usar bundle.js como script clasico (sin type=module)
 $html = [System.IO.File]::ReadAllText("index.html", [System.Text.Encoding]::UTF8)
 
+# Loader con cache-bust (ver Task 6, 2026-08): reemplaza el <script src="bundle.js">
+# estatico. Debe coincidir EXACTAMENTE con el bloque de index.html.
+$bundleLoader = @'
+<script>
+(function(){
+  var v=new URLSearchParams(location.search).get('v')||'1';
+  var s=document.createElement('script');
+  s.src='bundle.js?v='+v;
+  s.async=false;
+  document.body.appendChild(s);
+})();
+</script>
+'@
+
 if ($html -match '<script type="module" src="main\.js">') {
-    $html = $html -replace '<script type="module" src="main\.js"></script>', '<script src="bundle.js"></script>'
+    $html = $html -replace '<script type="module" src="main\.js"></script>', $bundleLoader
     [System.IO.File]::WriteAllText("index.html", $html, [System.Text.Encoding]::UTF8)
-    Write-Host " index.html: script tag actualizado → bundle.js" -ForegroundColor Green
-} elseif ($html -match '<script src="bundle\.js">') {
-    Write-Host " index.html: ya usa bundle.js (sin cambios)" -ForegroundColor Cyan
+    Write-Host " index.html: script tag actualizado → loader bundle.js (cache-bust)" -ForegroundColor Green
+} elseif ($html -match "s\.src='bundle\.js\?v='\+v") {
+    Write-Host " index.html: ya usa el loader de bundle.js (sin cambios)" -ForegroundColor Cyan
 } else {
     Write-Host " [!] index.html: no se encontro el tag de script esperado" -ForegroundColor Yellow
 }
