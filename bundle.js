@@ -6918,28 +6918,8 @@ function _getLineasOrden(o){
 
 // ── JSON BACKUP COMPLETO (incluye distSlices) ──
 function expJSON(){
-  const d=ld();
-  // Guardia: si el storage devuelve 0 órdenes, posible corrupción silenciosa
+  const d=buildBackupPayload();
   if(!(d.orders||[]).length&&!confirm('⚠ El backup tiene 0 ventas. El storage podría estar vacío o corrupto. ¿Descargar igual?'))return;
-  // Configuraciones separadas de localStorage
-  d._distSlices=window._getDistSlices?.();
-  d._liqDistSlices=window._getLiqDistSlices?.();
-  d._distKpiHidden=window._getDistKpiHidden?.();
-  try{const ap=localStorage.getItem('me_apariencia');if(ap)d._apariencia=JSON.parse(ap);}catch(e){}
-  const _th=localStorage.getItem('me_theme');if(_th)d._theme=_th;
-  d._exportedAt=new Date().toISOString();
-  d._version='motoredge_v5';
-  d._meta={
-    orders:(d.orders||[]).length,
-    egresos:(d.egresos||[]).length,
-    inversiones:(d.inversiones||[]).length,
-    productos:(d.productos||[]).length,
-    listasPrecios:(d.listasPrecios||[]).length,
-    ingresos:(d.ingresos||[]).length,
-    lotesItems:Object.keys(d.lotes||{}).length,
-    stockSeedDone:!!d.stockSeedDone,
-    contactos:(d.contactos||[]).length,
-  };
   const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');
   a.href=url;a.download=`motoredge_backup_${new Date().toISOString().slice(0,10)}.json`;
@@ -7281,48 +7261,15 @@ function impJSONFile(input){
         if(resEl)resEl.innerHTML='<span style="color:var(--tx3)">Cancelado</span>';
         return;
       }
-      // Backup automático silencioso del estado actual antes de sobreescribir
-      const cur=ld();
-      if((cur.orders||[]).length>0){
-        try{
-          const blob=new Blob([JSON.stringify(cur,null,2)],{type:'application/json'});
-          const url=URL.createObjectURL(blob);const a=document.createElement('a');
-          a.href=url;a.download=`motoredge_pre-restore_${new Date().toISOString().slice(0,16).replace('T','_').replace(':','-')}.json`;
-          a.click();URL.revokeObjectURL(url);
-        }catch(bkErr){/* no bloquear si el backup falla */}
-      }
-      if(d._distSlices){window._setDistSlices?.(d._distSlices);saveDistSlices();}
-      if(d._liqDistSlices){window._setLiqDistSlices?.(d._liqDistSlices);saveLiqSlices();}
-      if(d._distKpiHidden){window._setDistKpiHidden?.(d._distKpiHidden);saveKpiHidden();}
-      // Compat: backups viejos tenian _priceLog separado
-      if(d._priceLog&&!d.priceLog){d.priceLog=d._priceLog;}
-      // Si el backup no tiene priceLog (anterior al feature), preservar el log local en lugar de perderlo
-      if(!Array.isArray(d.priceLog)){
-        const _cur=ld();
-        if(Array.isArray(_cur.priceLog)&&_cur.priceLog.length){d.priceLog=_cur.priceLog;}
-        else{try{const _r=localStorage.getItem('me_price_log');d.priceLog=_r?JSON.parse(_r):[];localStorage.removeItem('me_price_log');}catch(_e){d.priceLog=[];}}
-      }
-      if(d._apariencia){try{localStorage.setItem('me_apariencia',JSON.stringify(d._apariencia));window.applyApariencia?.(d._apariencia);}catch(e){}}
-      if(d._theme){try{localStorage.setItem('me_theme',d._theme);}catch(e){}}
-      delete d._distSlices;delete d._liqDistSlices;delete d._distKpiHidden;delete d._priceLog;
-      delete d._apariencia;delete d._theme;
-      delete d._exportedAt;delete d._version;delete d._meta;delete d._savedAt;
-      sd(d);
-      window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
-      window.rfM?.();window.rH?.();window.rS?.();window.rEH?.();window.rES?.();window.renderDash?.();window.renderSettings?.();
-      try{window.renderInventario?.();}catch(er){}
-      try{if(typeof window.renderInvAll==='function')window.renderInvAll?.();}catch(er){}
-      try{window.rfInvM?.();}catch(er){}
-      window.updateClientesDatalist?.();window.uhd?.();
-      const lotesItems=Object.keys(d.lotes||{}).length;
-      if(resEl)resEl.innerHTML=`<span style="color:var(--ac)">✓ Restaurado: ${d.orders.length} ventas · ${(d.egresos||[]).length} egresos<br>${(d.productos||[]).length} productos · ${(d.ingresos||[]).length} ingresos stock · ${lotesItems} lotes</span>`;
-      sN('✓ Datos restaurados completamente');window.uhd?.();
-    }catch(er){
-      if(resEl)resEl.innerHTML=`<span style="color:var(--er)">ERROR: ${er.message}</span>`;
-      sN('Error al restaurar',true);
+      const n=restoreBackupPayload(d);
+      if(resEl)resEl.innerHTML=`<span style="color:var(--ac)">✓ Restaurado (${n} ventas)</span>`;
+      sN(`✓ Sistema restaurado desde ${file.name}`);
+    }catch(err){
+      if(resEl)resEl.innerHTML=`<span style="color:var(--er)">ERROR: ${err.message}</span>`;
+      sN('ERROR al restaurar: '+err.message,true);
     }
   };
-  reader.readAsText(file,'utf-8');
+  reader.readAsText(file);
 }
 
 // ── MIGRAR TC NULL — one-shot fix para órdenes con tc: null ──
@@ -7399,7 +7346,7 @@ function hardReset(){
   expJSON();
   present.forEach(x=>{try{localStorage.removeItem(x.k);}catch(e){}});
   sN('✓ Reset completo. Recargando...');
-  setTimeout(()=>location.reload(),1500);
+  setTimeout(()=>{location.href=location.pathname+'?v='+Date.now();},1500);
 }
 
 
