@@ -6,8 +6,6 @@ import { getProductos } from './productos.js';
 import { getLotes, getUmbrales, getStockMovs, getStock, getAllStockItems, getActualQty, getStockStatus, getStockFromLotes, getCostoPromedio } from './stock.js';
 import { getListasPrecios, getTramosProducto } from './listas-precios.js';
 import { getIngresos } from './inventario.js';
-import { saveDistSlices, saveKpiHidden } from './inversiones.js';
-import { saveLiqSlices } from './liquidez.js';
 // XLSX is a global from CDN script — available as window.XLSX
 
 
