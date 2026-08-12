@@ -526,9 +526,21 @@ async function ghListBackups(){
     const files=(await r.json()).filter(function(f){return f.type==='file'&&/^backup_\d{4}-\d{2}-\d{2}_\d{4}\.json$/.test(f.name);});
     if(!files.length){if(el)el.innerHTML='<div style="font-family:var(--mo);font-size:9px;color:var(--tx3)">Sin backups.</div>';return;}
     var html='<div style="font-family:var(--mo);font-size:8px;color:var(--tx3);margin-bottom:6px;letter-spacing:1px">'+files.length+' BACKUPS GUARDADOS</div>';
-    files.slice().reverse().forEach(function(f){
+    // Mas nuevo primero. sortedAsc queda mas viejo primero, para comparar cada
+    // backup contra el que se guardo justo antes en el tiempo (su "anterior").
+    const sortedAsc=files.slice().sort(function(a,b){return a.name.localeCompare(b.name);});
+    const sortedDesc=sortedAsc.slice().reverse();
+    sortedDesc.forEach(function(f){
+      const kb=f.size!=null?(f.size/1024).toFixed(1)+' KB':'—';
+      const idxAsc=sortedAsc.indexOf(f);
+      const prev=idxAsc>0?sortedAsc[idxAsc-1]:null; // backup guardado justo antes
+      let kbColor='var(--tx3)';
+      if(prev&&f.size!=null&&prev.size!=null){
+        kbColor=f.size>prev.size?'var(--ac)':(f.size===prev.size?'var(--wn)':'var(--er)');
+      }
       html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:var(--s2);border:1px solid var(--br);margin-bottom:4px">'
         +'<span style="font-family:var(--mo);font-size:9px;color:var(--tx)">'+f.name+'</span>'
+        +'<span style="font-family:var(--mo);font-size:8px;color:'+kbColor+';margin-right:10px">'+kb+'</span>'
         +'<span>'
         +'<button onclick="ghDownloadBackup(\''+f.path+'\')" style="background:none;border:1px solid var(--tx3);color:var(--tx2);font-family:var(--mo);font-size:8px;padding:3px 8px;cursor:pointer;margin-right:4px">⬇ descargar</button>'
         +'<button onclick="ghRestoreBackup(\''+f.path+'\')" style="background:none;border:1px solid var(--ac2);color:var(--ac2);font-family:var(--mo);font-size:8px;padding:3px 8px;cursor:pointer">↩ restaurar</button>'
