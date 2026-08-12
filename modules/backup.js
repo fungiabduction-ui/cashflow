@@ -81,13 +81,22 @@ export function restoreBackupPayload(data){
   delete data._exportedAt;
 
   sd(data);
-  window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
-  window.rfM?.();window.rH?.();window.rS?.();window.rEH?.();window.rES?.();
-  window.renderDash?.();window.renderSettings?.();
+  try{window.loadConfig?.();}catch(e){}
+  try{window.buildTicketUI?.();}catch(e){}
+  try{window.upd?.();}catch(e){}
+  try{window.rfM?.();}catch(e){}
+  try{window.rH?.();}catch(e){}
+  try{window.rS?.();}catch(e){}
+  try{window.rEH?.();}catch(e){}
+  try{window.rES?.();}catch(e){}
+  try{window.renderDash?.();}catch(e){}
+  try{window.renderSettings?.();}catch(e){}
   try{window.renderInventario?.();}catch(e){}
   try{window.renderInvAll?.();}catch(e){}
   try{window.rfInvM?.();}catch(e){}
-  window.updateClientesDatalist?.();window.uhd?.();
-  window.renderPriceTerminal?.();window.renderPriceLog?.();
+  try{window.updateClientesDatalist?.();}catch(e){}
+  try{window.uhd?.();}catch(e){}
+  try{window.renderPriceTerminal?.();}catch(e){}
+  try{window.renderPriceLog?.();}catch(e){}
   return (data.orders||[]).length;
 }
