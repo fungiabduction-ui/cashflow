@@ -1,7 +1,6 @@
 import { ld, sd, gE } from '../core/storage.js';
 import { sN } from '../ui/notif.js';
 import { fv, d2s, d2m, addMon } from '../core/formatters.js';
-import { ghAutoPush } from './github.js';
 
 // ── HTML escape helper ──────────────────────────────────────────────────
 function _escHtml(s) {
@@ -125,7 +124,6 @@ function _mpConfirmar() {
   });
 
   sd(d);
-  ghAutoPush();
   window.rfM?.();
   // Si el import cayó en un único mes, filtramos la vista a ese mes para que
   // se vea de inmediato (el grupo del mes filtrado siempre se expande).

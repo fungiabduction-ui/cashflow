@@ -1,7 +1,6 @@
 import { ld, sd, gO, gOConf } from '../core/storage.js';
 import { sN } from '../ui/notif.js';
 import { fv, d2s } from '../core/formatters.js';
-import { ghAutoPush } from './github.js';
 import { getProductos } from './productos.js';
 
 let _ctSort='ultima'; // 'ultima' | 'total'
@@ -105,7 +104,6 @@ export function guardarInfoContacto(id){
   ct.instagram=document.getElementById('ct-ig')?.value.trim()||null;
   ct.notas=document.getElementById('ct-notas')?.value.trim()||null;
   sd(d);
-  ghAutoPush();
   sN(`✓ ${ct.nombre} actualizado`);
 }
 
@@ -480,7 +478,6 @@ export function ejecutarMigracionContactos(){
   d.contactos=[...existentes,...nuevos];
   d.contactosMigDone=true;
   sd(d);
-  ghAutoPush();
 
   window.clM?.();
   sN(`✓ ${nuevos.length} contactos creados · ${linked} órdenes vinculadas`);

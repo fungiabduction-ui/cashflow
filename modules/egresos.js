@@ -2,9 +2,8 @@ import { ld, sd, gE, dE } from '../core/storage.js';
 import { sN } from '../ui/notif.js';
 import { fv, fi, hoy, d2s, d2m, mL, mLong, pn, trunc, addMon } from '../core/formatters.js';
 import { nEId } from '../core/ids.js';
-import { ghAutoPush } from './github.js';
 
-export function sE(e){const d=ld();if(!d.egresos)d.egresos=[];d.egresos.push(e);sd(d);ghAutoPush();}
+export function sE(e){const d=ld();if(!d.egresos)d.egresos=[];d.egresos.push(e);sd(d);}
 
 export function updEgreso(){
   const monto=parseFloat(document.getElementById('e-monto').value)||0;const cuotas=Math.max(1,parseInt(document.getElementById('e-cuotas').value)||1);

@@ -3,7 +3,6 @@ import { sN } from '../ui/notif.js';
 import { fi, fv, fu, hoy, d2s, d2m, mL, mLong } from '../core/formatters.js';
 import { invNuevoId, nEId } from '../core/ids.js';
 import { COSTS } from '../core/config.js';
-import { ghAutoPush } from './github.js';
 
 // ── State ──
 let _btcPrecioUSD=null,_blueARS=null,_usdtARS=null,_blueCompra=null,_usdtCompra=null;
@@ -18,8 +17,8 @@ let distKpiHidden=JSON.parse(localStorage.getItem('me_dist_kpi_hidden')||'{}');
 
 const _distChartRef={chart:null},_liqChartRef={chart:null};
 
-// ── Storage helper (local, includes ghAutoPush) ──
-function sInv(x){var d=ld();if(!d.inversiones)d.inversiones=[];d.inversiones.push(x);sd(d);ghAutoPush();}
+// ── Storage helper (local) ──
+function sInv(x){var d=ld();if(!d.inversiones)d.inversiones=[];d.inversiones.push(x);sd(d);}
 
 // ── Window bridges for cross-module access ──
 window._getDistSlices=()=>distSlices;
@@ -892,7 +891,6 @@ export function invConfirmarLiquidacion(id){
     d.egresos.push({id:nEId(mes),fecha:fecha,fechaDisplay:d2s(fecha),mesActual:mes,concepto:concepto,montoTotal:Math.abs(resultadoRealizado),impactoCaja:Math.abs(resultadoRealizado),cuotasTotales:1,cuotasRestantes:0,finaliza:fecha,medio:'Pérdida Inversión',obs:'Ref: '+id+' | Capital original: '+fv(inv.montoARS||0),esLiquidacionInv:true,invRef:id});
   }
   sd(d); // atomic: inversión LIQUIDADA + egreso en una sola escritura
-  ghAutoPush();
 
   invRfMes();
   invRenderHistorial();

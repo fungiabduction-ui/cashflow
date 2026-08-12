@@ -2,7 +2,7 @@ import { ld, sd } from '../core/storage.js';
 import { sN } from '../ui/notif.js';
 import { getListasPrecios, getTramosProducto } from './listas-precios.js';
 import { getProductos } from './productos.js';
-import { ghCfg, safeB64Encode, ghAutoPush } from './github.js';
+import { ghCfg, safeB64Encode } from './github.js';
 
 // ── LOG STORAGE — vive dentro de motoredge_v4 como d.priceLog ──
 // Incluido automáticamente en todos los backup/restore via ld()/sd().
@@ -111,7 +111,6 @@ export function applyPriceAdjustment(scope,pct,motivo){
   window.buildTicketUI?.();
   window.upd?.();
 
-  ghAutoPush();
   sN(`✓ Precios actualizados — ${cambios.length} lista(s) · ${pct>0?'+':''}${pct}%`);
   return{ok:true,entry};
 }
@@ -363,7 +362,6 @@ export function restoreFromPriceLog(entryId){
   window.renderListasPrecios?.();
   window.renderAsignacionPrecios?.();
   window.renderWAText?.();
-  ghAutoPush();
   sN('✓ Precios restaurados al estado anterior a '+entryId);
 }
 

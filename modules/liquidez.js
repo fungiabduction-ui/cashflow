@@ -1,7 +1,6 @@
 import { ld, sd, gLiqExterna, dLiqExterna, gInv } from '../core/storage.js';
 import { sN } from '../ui/notif.js';
 import { fv, fi, fu, hoy, d2s } from '../core/formatters.js';
-import { ghAutoPush } from './github.js';
 
 // Separate dist slices for liquidez externa
 const LIQ_DIST_DEFAULTS=[{id:'ls1',label:'Bitcoin',pct:50,color:'#ff6b35',activo:'BTC'},{id:'ls2',label:'Dolar Blue',pct:50,color:'#ffaa00',activo:'USD_BLUE'}];
@@ -12,7 +11,6 @@ export function sLiqExterna(l) {
   if (!d.liquidezExterna) d.liquidezExterna = [];
   d.liquidezExterna.push(l);
   sd(d);
-  ghAutoPush();
 }
 
 export function saveLiqSlices(){localStorage.setItem('me_liq_dist_slices',JSON.stringify(liqDistSlices));}

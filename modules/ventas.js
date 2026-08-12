@@ -2,17 +2,16 @@ import { ld, sd, gO, gOConf, dO } from '../core/storage.js';
 import { sN } from '../ui/notif.js';
 import { fv, fi, fu, hoy, d2s, d2m, mL, mLong, pn } from '../core/formatters.js';
 import { nId } from '../core/ids.js';
-import { ghAutoPush } from './github.js';
 import { getProductos } from './productos.js';
 
 let showTotalsRow = false;
 
-export function sO(o){const d=ld();d.orders.push(o);sd(d);ghAutoPush();window.updateClientesDatalist?.();}
+export function sO(o){const d=ld();d.orders.push(o);sd(d);window.updateClientesDatalist?.();}
 
 export function confirmarOrden(id){
   const d=ld();const o=(d.orders||[]).find(x=>x.id===id);if(!o)return;
   o.estado='confirmada';o.fechaConfirmacion=new Date().toISOString();
-  sd(d);ghAutoPush();window.rfM?.();rH();rS();window.renderDash?.();window.renderDashFlowChart?.();window.uhd?.();
+  sd(d);window.rfM?.();rH();rS();window.renderDash?.();window.renderDashFlowChart?.();window.uhd?.();
   sN('✓ '+id+' — CONFIRMADA');
 }
 

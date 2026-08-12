@@ -1824,7 +1824,6 @@ function applyPriceAdjustment(scope,pct,motivo){
   window.buildTicketUI?.();
   window.upd?.();
 
-  ghAutoPush();
   sN(`✓ Precios actualizados — ${cambios.length} lista(s) · ${pct>0?'+':''}${pct}%`);
   return{ok:true,entry};
 }
@@ -2076,7 +2075,6 @@ function restoreFromPriceLog(entryId){
   window.renderListasPrecios?.();
   window.renderAsignacionPrecios?.();
   window.renderWAText?.();
-  ghAutoPush();
   sN('✓ Precios restaurados al estado anterior a '+entryId);
 }
 
@@ -2199,7 +2197,7 @@ function renderPriceTerminal(){
 
 // ===== modules/egresos.js =====
 
-function sE(e){const d=ld();if(!d.egresos)d.egresos=[];d.egresos.push(e);sd(d);ghAutoPush();}
+function sE(e){const d=ld();if(!d.egresos)d.egresos=[];d.egresos.push(e);sd(d);}
 
 function updEgreso(){
   const monto=parseFloat(document.getElementById('e-monto').value)||0;const cuotas=Math.max(1,parseInt(document.getElementById('e-cuotas').value)||1);
@@ -2446,7 +2444,6 @@ function _mpConfirmar() {
   });
 
   sd(d);
-  ghAutoPush();
   window.rfM?.();
   // Si el import cayó en un único mes, filtramos la vista a ese mes para que
   // se vea de inmediato (el grupo del mes filtrado siempre se expande).
@@ -2560,12 +2557,12 @@ function renderMPImportModal() {
 
 let showTotalsRow = false;
 
-function sO(o){const d=ld();d.orders.push(o);sd(d);ghAutoPush();window.updateClientesDatalist?.();}
+function sO(o){const d=ld();d.orders.push(o);sd(d);window.updateClientesDatalist?.();}
 
 function confirmarOrden(id){
   const d=ld();const o=(d.orders||[]).find(x=>x.id===id);if(!o)return;
   o.estado='confirmada';o.fechaConfirmacion=new Date().toISOString();
-  sd(d);ghAutoPush();window.rfM?.();rH();rS();window.renderDash?.();window.renderDashFlowChart?.();window.uhd?.();
+  sd(d);window.rfM?.();rH();rS();window.renderDash?.();window.renderDashFlowChart?.();window.uhd?.();
   sN('✓ '+id+' — CONFIRMADA');
 }
 
@@ -4147,7 +4144,6 @@ function sLiqExterna(l) {
   if (!d.liquidezExterna) d.liquidezExterna = [];
   d.liquidezExterna.push(l);
   sd(d);
-  ghAutoPush();
 }
 
 function saveLiqSlices(){localStorage.setItem('me_liq_dist_slices',JSON.stringify(liqDistSlices));}
@@ -4333,8 +4329,8 @@ let distKpiHidden=JSON.parse(localStorage.getItem('me_dist_kpi_hidden')||'{}');
 
 const _distChartRef={chart:null},_liqChartRef={chart:null};
 
-// ── Storage helper (local, includes ghAutoPush) ──
-function sInv(x){var d=ld();if(!d.inversiones)d.inversiones=[];d.inversiones.push(x);sd(d);ghAutoPush();}
+// ── Storage helper (local) ──
+function sInv(x){var d=ld();if(!d.inversiones)d.inversiones=[];d.inversiones.push(x);sd(d);}
 
 // ── Window bridges for cross-module access ──
 window._getDistSlices=()=>distSlices;
@@ -5207,7 +5203,6 @@ function invConfirmarLiquidacion(id){
     d.egresos.push({id:nEId(mes),fecha:fecha,fechaDisplay:d2s(fecha),mesActual:mes,concepto:concepto,montoTotal:Math.abs(resultadoRealizado),impactoCaja:Math.abs(resultadoRealizado),cuotasTotales:1,cuotasRestantes:0,finaliza:fecha,medio:'Pérdida Inversión',obs:'Ref: '+id+' | Capital original: '+fv(inv.montoARS||0),esLiquidacionInv:true,invRef:id});
   }
   sd(d); // atomic: inversión LIQUIDADA + egreso en una sola escritura
-  ghAutoPush();
 
   invRfMes();
   invRenderHistorial();
@@ -6030,7 +6025,6 @@ function guardarInfoContacto(id){
   ct.instagram=document.getElementById('ct-ig')?.value.trim()||null;
   ct.notas=document.getElementById('ct-notas')?.value.trim()||null;
   sd(d);
-  ghAutoPush();
   sN(`✓ ${ct.nombre} actualizado`);
 }
 
@@ -6405,7 +6399,6 @@ function ejecutarMigracionContactos(){
   d.contactos=[...existentes,...nuevos];
   d.contactosMigDone=true;
   sd(d);
-  ghAutoPush();
 
   window.clM?.();
   sN(`✓ ${nuevos.length} contactos creados · ${linked} órdenes vinculadas`);
