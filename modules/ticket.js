@@ -382,11 +382,11 @@ export function generarTicket(){
   const margen=totalFinal>0?parseFloat(((totalFinal-costo)/totalFinal*100).toFixed(1)):0;
   const aud=`--- AUDITORÍA ---\nSubtotal: ${fv(tot)} | Ajuste: ${ajuste.ajusteNeto>=0?'+':''}${fv(ajuste.ajusteNeto)} | Total: ${fv(totalFinal)} | Pago: ${payment.modo} | Costo: ${fv(costo)} | Margen: ${margen}% | ID: ${id}`;
 
-  // Oversell: detectar líneas que superan el stock disponible ANTES de descontar
+  // Oversell: detectar líneas que superan el stock disponible ANTES de descontar.
+  // No se mezcla con tk (texto que se copia al cliente) — se muestra aparte, junto
+  // a los botones de acción, vía #tkStockWarn.
   const oversold=lineas.filter(ln=>{if(ln.consulta||!ln.qty)return false;return ln.qty>getActualQty(ln.varId||ln.prodId);});
-  if(oversold.length>0){
-    tk+='\n⚠ STOCK INSUFICIENTE:'+oversold.map(ln=>{const avail=getActualQty(ln.varId||ln.prodId);return` ${ln.emoji} ${ln.nombre} (pide ${ln.qty}, hay ${avail})`;}).join(' |');
-  }
+  const stockWarnMsg=oversold.length>0?'⚠ STOCK INSUFICIENTE:'+oversold.map(ln=>{const avail=getActualQty(ln.varId||ln.prodId);return` ${ln.emoji} ${ln.nombre} (pide ${ln.qty}, hay ${avail})`;}).join(' |'):'';
 
   const clienteId=autoRegistrarContacto(cliente,fecha);
   const tcOrden=tipoPago==='ARS'?1:(payment.tc_usd||payment.tc_usdt||null);
@@ -397,6 +397,8 @@ export function generarTicket(){
   const tkDisplay=clienteObs?`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}\n👤 Cliente: ${clienteObs}`+tk.slice(_tkHeaderEnd):tk;
   document.getElementById('tkOut').textContent=tkDisplay;
   document.getElementById('audOut').textContent=aud;
+  const stockWarnEl=document.getElementById('tkStockWarn');
+  if(stockWarnEl){stockWarnEl.style.display=stockWarnMsg?'block':'none';stockWarnEl.textContent=stockWarnMsg;}
   document.getElementById('outA').style.display='block';
   // Store ID for confirm button + show pendiente state
   document.getElementById('outA').dataset.currentId=id;
