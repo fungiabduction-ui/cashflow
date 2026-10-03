@@ -326,7 +326,7 @@ export function saveEditVenta(id){
       const pEl=document.getElementById('edit-prc-'+ln.key);
       const q=qEl?Math.max(0,parseFloat(qEl.value)||0):ln.qty;
       const p=pEl?parseFloat(pEl.value)||0:ln.precio;
-      if(q>0) newLineas.push({prodId:ln.prodId,varId:ln.varId,qty:q,precio:p,subtotal:q*p});
+      if(q>0) newLineas.push({prodId:ln.prodId,varId:ln.varId,nombre:ln.nombre,emoji:ln.emoji,qty:q,precio:p,subtotal:q*p});
       sum+=q*p;
     });
     if(sum>0) nuevoTotal=sum;
@@ -371,7 +371,7 @@ export function saveEditVenta(id){
 
   if(nuevaFecha){o.fecha=nuevaFecha;o.fechaDisplay=d2s(nuevaFecha);o.mesActual=d2m(nuevaFecha);}
   o.cliente=nuevoCliente||null; o.nota=nuevaNota||null;
-  o.tipoPago=modo; o.tc=modo==='USDT'?tcUsdt:modo==='USD'?tcUsd:null; o.payment=payment;
+  o.tipoPago=modo; o.tc=modo==='ARS'?1:(modo==='USDT'?tcUsdt:tcUsd); o.tcUsdt=tcUsdt||1; o.payment=payment;
   o.totales={...o.totales,totalGeneral:nuevoTotal,totalUSDT:payment.total_usdt,payment};
   const costo=o.costo||0;
   o.margen=nuevoTotal>0?parseFloat(((nuevoTotal-costo)/nuevoTotal*100).toFixed(1)):0;

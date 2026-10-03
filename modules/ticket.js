@@ -390,7 +390,8 @@ export function generarTicket(){
 
   const clienteId=autoRegistrarContacto(cliente,fecha);
   const tcOrden=tipoPago==='ARS'?1:(payment.tc_usd||payment.tc_usdt||null);
-  sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'});
+  const tcUsdtOrden=payment.tc_usdt||1;
+  sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'});
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
