@@ -283,7 +283,19 @@ fetch('./precios.json?v=' + Date.now(), { cache: 'no-store' })
     };
     CFG.grupos.forEach(function(grupo) {
       var key = MAP[grupo.id];
-      if (key && p[key] && Array.isArray(p[key])) grupo.tramos = p[key];
+      if (key && p[key] && Array.isArray(p[key])) {
+        grupo.tramos = p[key];
+        // La tabla "Ver todos los precios" se renderizó con los tramos hardcodeados
+        // en renderProductos() — hay que reescribir sus filas con los tramos nuevos.
+        var tbl = document.getElementById('pt-' + grupo.id);
+        if (tbl) {
+          var rowsHtml = '';
+          grupo.tramos.forEach(function(tr, i) {
+            rowsHtml += '<div class="price-table-row" id="ptr-' + grupo.id + '-' + i + '"><span class="qty">' + tr.t + ' ' + grupo.unidad + '</span><span class="price">' + fv(tr.p) + '/' + grupo.unidad + '</span></div>';
+          });
+          tbl.innerHTML = rowsHtml;
+        }
+      }
     });
     // Re-disparar cálculo por si el usuario ya ingresó cantidades
     if (typeof upd === 'function') upd();
