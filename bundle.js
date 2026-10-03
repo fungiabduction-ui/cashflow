@@ -1020,6 +1020,8 @@ function abrirEditarLista(lid){
   const lista=lid?listas.find(l=>l.id===lid):null;
   const esNueva=!lista;
   const tramos=lista?JSON.parse(JSON.stringify(lista.tramos||[])):[];
+  const nombreInicial=lista?.nombre||'';
+  const tramosInicialJSON=JSON.stringify(tramos);
 
   const IS='width:100%;background:var(--bg);border:1px solid var(--br);color:var(--tx);font-family:var(--mo);font-size:13px;padding:8px 10px;outline:none;min-height:40px';
   const LB='font-family:var(--mo);font-size:8px;letter-spacing:.8px;color:var(--tx2);display:block;margin-bottom:4px;text-transform:uppercase';
@@ -1090,6 +1092,7 @@ function abrirEditarLista(lid){
     tramos.push({t:lastT+tramosStep(lastT),p:Math.round((last?.p||0)*0.9)||0});
     document.getElementById('te-wrap').innerHTML=renderTramosEditor();
     bindTramoEvents();
+    checkDirty();
   };
 
   function bindTramoEvents(){
@@ -1098,6 +1101,7 @@ function abrirEditarLista(lid){
       inp.oninput=function(){
         tramos[parseInt(inp.getAttribute('data-ti'))][inp.getAttribute('data-field')]=parseFloat(inp.value)||0;
         if(inp.getAttribute('data-field')==='p')updatePctColumn();
+        checkDirty();
       };
     });
     wrap.querySelectorAll('[data-del-t]').forEach(btn=>{
@@ -1105,14 +1109,27 @@ function abrirEditarLista(lid){
         tramos.splice(parseInt(btn.getAttribute('data-del-t')),1);
         document.getElementById('te-wrap').innerHTML=renderTramosEditor();
         bindTramoEvents();
+        checkDirty();
       };
     });
   }
   bindTramoEvents();
 
+  // Botón de guardar: solo "vivo" (verde, habilitado) si hay cambios reales respecto
+  // al estado cargado. Lista nueva siempre cuenta como "con cambios" — no hay nada contra qué comparar.
+  function checkDirty(){
+    const btn=document.getElementById('el-save');if(!btn)return;
+    const nombreNow=document.getElementById('el-nombre')?.value.trim()||'';
+    const dirty=esNueva||nombreNow!==nombreInicial||JSON.stringify(tramos)!==tramosInicialJSON;
+    btn.disabled=!dirty;
+    btn.className='btn '+(dirty?'btn-p':'btn-s');
+  }
+
   document.getElementById('mFooter').innerHTML=
     '<button class="btn btn-p" id="el-save">💾 Guardar lista</button>'
     +'<button class="btn btn-s" onclick="clM()">✕ Cancelar</button>';
+  document.getElementById('el-nombre').oninput=checkDirty;
+  checkDirty();
 
   document.getElementById('el-save').onclick=function(){
     const nombre=document.getElementById('el-nombre').value.trim();
@@ -1164,9 +1181,9 @@ function renderWAText(){
     return;
   }
   function waEmoji(i,n){
-    if(i===0)return'⚡';
+    if(i===0)return'🔴';
     const topStart=1+Math.floor((n-1)*2/3);
-    return i>=topStart?'🚀':'🔥';
+    return i>=topStart?'🟢':'🟡';
   }
   const bloques=prods.map(p=>{
     const tramos=getTramosProducto(p);
@@ -4104,19 +4121,36 @@ function renderSettings(){
 function _renderMigracionTcBtn(){
   const cont=document.getElementById('settingsMaintTools');
   if(!cont)return;
-  const d=ld();
-  const count=(d.orders||[]).filter(o=>o.tc===null||o.tc===undefined).length;
+  // Conteo via dry-run de la propia migración (no un filtro propio) — así el número
+  // mostrado siempre coincide con lo que realmente va a tocar. Antes el conteo solo
+  // miraba tc===null e ignoraba tcUsdt===null, mostrando menos órdenes de las que
+  // realmente migraba al confirmar.
+  const count=(window.migrarTcNull?.(true)?.cambios||[]).length;
   const existing=document.getElementById('btnMigraTcNull');
   if(existing)existing.remove();
+  document.getElementById('btnMigraTcNull-desc')?.remove();
   if(count===0)return;
+  const desc=document.createElement('div');
+  desc.id='btnMigraTcNull-desc';
+  desc.style.cssText='margin-top:8px;font-family:var(--mo);font-size:8px;color:var(--tx3);line-height:1.5';
+  desc.textContent='Completa el tipo de cambio (tc/tcUsdt) en órdenes viejas guardadas sin TC: usa 1 si era ARS, o el TC cargado en el pago si era USD/USDT. No modifica montos ni totales, solo ese campo histórico.';
+  cont.appendChild(desc);
   const btn=document.createElement('button');
   btn.id='btnMigraTcNull';
   btn.textContent='⚙ Migrar TC nulo ('+count+' órdenes)';
-  btn.style.cssText='margin-top:8px;font-family:var(--mo);font-size:9px;padding:6px 14px;background:var(--wn);color:#000;border:none;cursor:pointer';
+  btn.style.cssText='margin-top:6px;font-family:var(--mo);font-size:9px;padding:6px 14px;background:var(--wn);color:#000;border:none;cursor:pointer';
   btn.onclick=function(){
+    const preview=window.migrarTcNull?.(true);
+    if(!preview||!preview.cambios.length)return;
+    const detalle=preview.cambios.map(c=>
+      `• ${c.id} (${c.tipoPago}): tc ${c.before.tc??'null'} → ${c.after.tc} · tcUsdt ${c.before.tcUsdt??'null'} → ${c.after.tcUsdt}`
+    ).join('\n');
+    const msg=`⚙ MIGRAR TC NULO (${preview.cambios.length} órdenes)\n\nSe va a completar así:\n\n${detalle}\n\nNo se tocan montos ni totales, solo tc/tcUsdt.\n\n¿Confirmar?`;
+    if(!confirm(msg))return;
     const r=window.migrarTcNull?.();
     if(r)sN('✓ TC migrado en '+r.migradas+' órdenes');
     btn.remove();
+    document.getElementById('btnMigraTcNull-desc')?.remove();
   };
   cont.appendChild(btn);
 }
@@ -4124,22 +4158,37 @@ function _renderMigracionTcBtn(){
 function _renderMigracionLineasBtn(){
   const cont=document.getElementById('settingsMaintTools');
   if(!cont)return;
-  const d=ld();
-  const count=(d.orders||[]).filter(o=>{
-    const ls=(o.productos?._lineas)||[];
-    return ls.some(l=>!l.nombre||!l.emoji);
-  }).length;
+  // Conteo via dry-run — el filtro propio anterior solo miraba lineas sin nombre/emoji
+  // e ignoraba órdenes que solo necesitaban costoTotal, subestimando el total real.
+  const count=(window.migrarLineasYTotales?.(true)?.cambios||[]).length;
   const existing=document.getElementById('btnMigraLineas');
   if(existing)existing.remove();
+  document.getElementById('btnMigraLineas-desc')?.remove();
   if(count===0)return;
+  const desc=document.createElement('div');
+  desc.id='btnMigraLineas-desc';
+  desc.style.cssText='margin-top:8px;font-family:var(--mo);font-size:8px;color:var(--tx3);line-height:1.5';
+  desc.textContent='Completa nombre/emoji faltante en el detalle de productos de órdenes viejas, buscando el producto actual por ID. También completa costoTotal en órdenes que no lo tenían, usando el campo legado costo. No cambia importes de venta.';
+  cont.appendChild(desc);
   const btn=document.createElement('button');
   btn.id='btnMigraLineas';
   btn.textContent='⚙ Migrar detalle productos ('+count+' órdenes)';
-  btn.style.cssText='margin-top:8px;font-family:var(--mo);font-size:9px;padding:6px 14px;background:var(--wn);color:#000;border:none;cursor:pointer';
+  btn.style.cssText='margin-top:6px;font-family:var(--mo);font-size:9px;padding:6px 14px;background:var(--wn);color:#000;border:none;cursor:pointer';
   btn.onclick=function(){
+    const preview=window.migrarLineasYTotales?.(true);
+    if(!preview||!preview.cambios.length)return;
+    const detalle=preview.cambios.map(c=>{
+      const partes=[];
+      c.lineas.forEach(l=>partes.push(`${l.prodId||'?'}: "${l.before.nombre||'—'}"/${l.before.emoji||'—'} → "${l.after.nombre||'—'}"/${l.after.emoji||'—'}`));
+      if(c.costoTotal)partes.push(`costoTotal: null → ${c.costoTotal.after}`);
+      return `• ${c.id}: ${partes.join(' · ')}`;
+    }).join('\n');
+    const msg=`⚙ MIGRAR DETALLE PRODUCTOS (${preview.cambios.length} órdenes)\n\nSe va a completar así:\n\n${detalle}\n\nNo se tocan importes de venta.\n\n¿Confirmar?`;
+    if(!confirm(msg))return;
     const r=window.migrarLineasYTotales?.();
     if(r)sN('✓ Migradas: '+r.migradasLineas+' órdenes con productos, '+r.migradasTotales+' con costos');
     btn.remove();
+    document.getElementById('btnMigraLineas-desc')?.remove();
   };
   cont.appendChild(btn);
 }
@@ -7289,55 +7338,69 @@ function impJSONFile(input){
 }
 
 // ── MIGRAR TC NULL — one-shot fix para órdenes con tc: null ──
-function migrarTcNull(){
+// dryRun=true: calcula y devuelve los cambios sin escribir nada (para mostrar
+// el detalle al usuario antes de confirmar). Misma lógica para preview y ejecución,
+// para que lo que se muestra sea exactamente lo que se aplica.
+function migrarTcNull(dryRun){
   const d=ld();
   const orders=d.orders||[];
-  let migradas=0;
+  const cambios=[];
   orders.forEach(o=>{
     const needsFix=(o.tc===null||o.tc===undefined)||(o.tcUsdt===null||o.tcUsdt===undefined);
     if(!needsFix)return;
-    if(o.tc===null||o.tc===undefined){
-      if(o.tipoPago==='ARS'){o.tc=1;}
-      else if(o.tipoPago==='USD'&&o.payment?.tc_usd>0){o.tc=o.payment.tc_usd;}
-      else if(o.tipoPago==='USDT'&&o.payment?.tc_usdt>0){o.tc=o.payment.tc_usdt;}
-      else{o.tc=1;}
+    const before={tc:o.tc??null,tcUsdt:o.tcUsdt??null};
+    let tc=o.tc,tcUsdt=o.tcUsdt;
+    if(tc===null||tc===undefined){
+      if(o.tipoPago==='ARS'){tc=1;}
+      else if(o.tipoPago==='USD'&&o.payment?.tc_usd>0){tc=o.payment.tc_usd;}
+      else if(o.tipoPago==='USDT'&&o.payment?.tc_usdt>0){tc=o.payment.tc_usdt;}
+      else{tc=1;}
     }
-    if(o.tcUsdt===null||o.tcUsdt===undefined){
-      o.tcUsdt=o.payment?.tc_usdt||1;
+    if(tcUsdt===null||tcUsdt===undefined){
+      tcUsdt=o.payment?.tc_usdt||1;
     }
-    migradas++;
+    cambios.push({id:o.id,tipoPago:o.tipoPago,before,after:{tc,tcUsdt}});
+    if(!dryRun){o.tc=tc;o.tcUsdt=tcUsdt;}
   });
-  if(migradas>0){sd(d);}
-  return{migradas};
+  if(!dryRun&&cambios.length>0){sd(d);}
+  return{migradas:cambios.length,cambios};
 }
 
 // ── MIGRAR LINEAS Y TOTALES — one-shot: agrega nombre/emoji a _lineas y costoTotal a totales ──
-function migrarLineasYTotales(){
+// dryRun=true: mismo criterio que arriba, no escribe, solo arma el detalle para preview.
+function migrarLineasYTotales(dryRun){
   const d=ld();
   const prods=getProductos();
   const orders=d.orders||[];
-  let migradasLineas=0,migradasTotales=0;
+  const cambios=[];
   orders.forEach(o=>{
     const p=o.productos||{};
+    const detalle={id:o.id,lineas:[],costoTotal:null};
     if(Array.isArray(p._lineas)&&p._lineas.length){
-      let changed=false;
       p._lineas.forEach(l=>{
         if(!l.nombre||!l.emoji){
+          const before={nombre:l.nombre||null,emoji:l.emoji||null};
           const prod=prods.find(x=>x.id===(l.varId||l.prodId)||x.id===l.prodId);
-          if(prod){l.nombre=prod.nombre;l.emoji=prod.emoji;}
-          else if(!l.nombre){l.nombre=l.prodId||'';}
-          changed=true;
+          const after={nombre:before.nombre,emoji:before.emoji};
+          if(prod){after.nombre=prod.nombre;after.emoji=prod.emoji;}
+          else if(!l.nombre){after.nombre=l.prodId||'';}
+          detalle.lineas.push({prodId:l.prodId||l.varId||null,before,after});
+          if(!dryRun){l.nombre=after.nombre;l.emoji=after.emoji;}
         }
       });
-      if(changed)migradasLineas++;
     }
     if(o.totales&&(o.totales.costoTotal===undefined||o.totales.costoTotal===null)){
-      o.totales.costoTotal=o.costo||0;
-      migradasTotales++;
+      detalle.costoTotal={before:null,after:o.costo||0};
+      if(!dryRun)o.totales.costoTotal=o.costo||0;
     }
+    if(detalle.lineas.length||detalle.costoTotal)cambios.push(detalle);
   });
-  if(migradasLineas>0||migradasTotales>0)sd(d);
-  return{migradasLineas,migradasTotales};
+  if(!dryRun&&cambios.length>0)sd(d);
+  return{
+    migradasLineas:cambios.filter(c=>c.lineas.length).length,
+    migradasTotales:cambios.filter(c=>c.costoTotal).length,
+    cambios
+  };
 }
 
 // ── HARD RESET — borra todo el localStorage del sistema ──

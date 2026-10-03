@@ -444,55 +444,69 @@ export function impJSONFile(input){
 }
 
 // ── MIGRAR TC NULL — one-shot fix para órdenes con tc: null ──
-export function migrarTcNull(){
+// dryRun=true: calcula y devuelve los cambios sin escribir nada (para mostrar
+// el detalle al usuario antes de confirmar). Misma lógica para preview y ejecución,
+// para que lo que se muestra sea exactamente lo que se aplica.
+export function migrarTcNull(dryRun){
   const d=ld();
   const orders=d.orders||[];
-  let migradas=0;
+  const cambios=[];
   orders.forEach(o=>{
     const needsFix=(o.tc===null||o.tc===undefined)||(o.tcUsdt===null||o.tcUsdt===undefined);
     if(!needsFix)return;
-    if(o.tc===null||o.tc===undefined){
-      if(o.tipoPago==='ARS'){o.tc=1;}
-      else if(o.tipoPago==='USD'&&o.payment?.tc_usd>0){o.tc=o.payment.tc_usd;}
-      else if(o.tipoPago==='USDT'&&o.payment?.tc_usdt>0){o.tc=o.payment.tc_usdt;}
-      else{o.tc=1;}
+    const before={tc:o.tc??null,tcUsdt:o.tcUsdt??null};
+    let tc=o.tc,tcUsdt=o.tcUsdt;
+    if(tc===null||tc===undefined){
+      if(o.tipoPago==='ARS'){tc=1;}
+      else if(o.tipoPago==='USD'&&o.payment?.tc_usd>0){tc=o.payment.tc_usd;}
+      else if(o.tipoPago==='USDT'&&o.payment?.tc_usdt>0){tc=o.payment.tc_usdt;}
+      else{tc=1;}
     }
-    if(o.tcUsdt===null||o.tcUsdt===undefined){
-      o.tcUsdt=o.payment?.tc_usdt||1;
+    if(tcUsdt===null||tcUsdt===undefined){
+      tcUsdt=o.payment?.tc_usdt||1;
     }
-    migradas++;
+    cambios.push({id:o.id,tipoPago:o.tipoPago,before,after:{tc,tcUsdt}});
+    if(!dryRun){o.tc=tc;o.tcUsdt=tcUsdt;}
   });
-  if(migradas>0){sd(d);}
-  return{migradas};
+  if(!dryRun&&cambios.length>0){sd(d);}
+  return{migradas:cambios.length,cambios};
 }
 
 // ── MIGRAR LINEAS Y TOTALES — one-shot: agrega nombre/emoji a _lineas y costoTotal a totales ──
-export function migrarLineasYTotales(){
+// dryRun=true: mismo criterio que arriba, no escribe, solo arma el detalle para preview.
+export function migrarLineasYTotales(dryRun){
   const d=ld();
   const prods=getProductos();
   const orders=d.orders||[];
-  let migradasLineas=0,migradasTotales=0;
+  const cambios=[];
   orders.forEach(o=>{
     const p=o.productos||{};
+    const detalle={id:o.id,lineas:[],costoTotal:null};
     if(Array.isArray(p._lineas)&&p._lineas.length){
-      let changed=false;
       p._lineas.forEach(l=>{
         if(!l.nombre||!l.emoji){
+          const before={nombre:l.nombre||null,emoji:l.emoji||null};
           const prod=prods.find(x=>x.id===(l.varId||l.prodId)||x.id===l.prodId);
-          if(prod){l.nombre=prod.nombre;l.emoji=prod.emoji;}
-          else if(!l.nombre){l.nombre=l.prodId||'';}
-          changed=true;
+          const after={nombre:before.nombre,emoji:before.emoji};
+          if(prod){after.nombre=prod.nombre;after.emoji=prod.emoji;}
+          else if(!l.nombre){after.nombre=l.prodId||'';}
+          detalle.lineas.push({prodId:l.prodId||l.varId||null,before,after});
+          if(!dryRun){l.nombre=after.nombre;l.emoji=after.emoji;}
         }
       });
-      if(changed)migradasLineas++;
     }
     if(o.totales&&(o.totales.costoTotal===undefined||o.totales.costoTotal===null)){
-      o.totales.costoTotal=o.costo||0;
-      migradasTotales++;
+      detalle.costoTotal={before:null,after:o.costo||0};
+      if(!dryRun)o.totales.costoTotal=o.costo||0;
     }
+    if(detalle.lineas.length||detalle.costoTotal)cambios.push(detalle);
   });
-  if(migradasLineas>0||migradasTotales>0)sd(d);
-  return{migradasLineas,migradasTotales};
+  if(!dryRun&&cambios.length>0)sd(d);
+  return{
+    migradasLineas:cambios.filter(c=>c.lineas.length).length,
+    migradasTotales:cambios.filter(c=>c.costoTotal).length,
+    cambios
+  };
 }
 
 // ── HARD RESET — borra todo el localStorage del sistema ──

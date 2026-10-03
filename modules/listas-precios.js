@@ -163,6 +163,8 @@ export function abrirEditarLista(lid){
   const lista=lid?listas.find(l=>l.id===lid):null;
   const esNueva=!lista;
   const tramos=lista?JSON.parse(JSON.stringify(lista.tramos||[])):[];
+  const nombreInicial=lista?.nombre||'';
+  const tramosInicialJSON=JSON.stringify(tramos);
 
   const IS='width:100%;background:var(--bg);border:1px solid var(--br);color:var(--tx);font-family:var(--mo);font-size:13px;padding:8px 10px;outline:none;min-height:40px';
   const LB='font-family:var(--mo);font-size:8px;letter-spacing:.8px;color:var(--tx2);display:block;margin-bottom:4px;text-transform:uppercase';
@@ -233,6 +235,7 @@ export function abrirEditarLista(lid){
     tramos.push({t:lastT+tramosStep(lastT),p:Math.round((last?.p||0)*0.9)||0});
     document.getElementById('te-wrap').innerHTML=renderTramosEditor();
     bindTramoEvents();
+    checkDirty();
   };
 
   function bindTramoEvents(){
@@ -241,6 +244,7 @@ export function abrirEditarLista(lid){
       inp.oninput=function(){
         tramos[parseInt(inp.getAttribute('data-ti'))][inp.getAttribute('data-field')]=parseFloat(inp.value)||0;
         if(inp.getAttribute('data-field')==='p')updatePctColumn();
+        checkDirty();
       };
     });
     wrap.querySelectorAll('[data-del-t]').forEach(btn=>{
@@ -248,14 +252,27 @@ export function abrirEditarLista(lid){
         tramos.splice(parseInt(btn.getAttribute('data-del-t')),1);
         document.getElementById('te-wrap').innerHTML=renderTramosEditor();
         bindTramoEvents();
+        checkDirty();
       };
     });
   }
   bindTramoEvents();
 
+  // Botón de guardar: solo "vivo" (verde, habilitado) si hay cambios reales respecto
+  // al estado cargado. Lista nueva siempre cuenta como "con cambios" — no hay nada contra qué comparar.
+  function checkDirty(){
+    const btn=document.getElementById('el-save');if(!btn)return;
+    const nombreNow=document.getElementById('el-nombre')?.value.trim()||'';
+    const dirty=esNueva||nombreNow!==nombreInicial||JSON.stringify(tramos)!==tramosInicialJSON;
+    btn.disabled=!dirty;
+    btn.className='btn '+(dirty?'btn-p':'btn-s');
+  }
+
   document.getElementById('mFooter').innerHTML=
     '<button class="btn btn-p" id="el-save">💾 Guardar lista</button>'
     +'<button class="btn btn-s" onclick="clM()">✕ Cancelar</button>';
+  document.getElementById('el-nombre').oninput=checkDirty;
+  checkDirty();
 
   document.getElementById('el-save').onclick=function(){
     const nombre=document.getElementById('el-nombre').value.trim();
@@ -307,9 +324,9 @@ export function renderWAText(){
     return;
   }
   function waEmoji(i,n){
-    if(i===0)return'⚡';
+    if(i===0)return'🔴';
     const topStart=1+Math.floor((n-1)*2/3);
-    return i>=topStart?'🚀':'🔥';
+    return i>=topStart?'🟢':'🟡';
   }
   const bloques=prods.map(p=>{
     const tramos=getTramosProducto(p);

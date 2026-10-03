@@ -37,6 +37,7 @@ textarea{resize:vertical;min-height:70px}
 .tusdt{font-family:var(--mo);font-size:10px;color:var(--ac2);margin-top:2px}
 .tchip{font-family:var(--mo);font-size:8px;color:var(--tx3);padding:2px 5px;background:var(--s3);display:inline-block;margin-top:2px}
 .btn{font-family:var(--mo);font-size:10px;letter-spacing:.8px;text-transform:uppercase;padding:0 14px;border:none;cursor:pointer;height:var(--touch);display:inline-flex;align-items:center;justify-content:center;font-weight:700;gap:5px}
+.btn:disabled{cursor:not-allowed;opacity:.6}
 .btn-p{background:var(--ac);color:#000}
 .btn-p:active{background:#00c888}
 .btn-s{background:transparent;color:var(--tx2);border:1px solid var(--br)}
