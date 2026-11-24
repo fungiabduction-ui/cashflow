@@ -951,6 +951,31 @@ export function descontarStockPorTicket(lineas){
   saveStock(stock);
 }
 
+// ── Edición de venta: aplica el delta de cantidades sobre d, sin guardar (guarda saveEditVenta en un solo sd()) ──
+// delta>0 (se vendió más): mismo descuento que descontarStockPorTicket — FIFO en lotes + plano con su propia cuenta.
+// delta<0 (se vendió menos): vuelve al plano y a los lotes en orden inverso al FIFO (el más reciente primero),
+// sin superar qty_inicial. Cada producto deja un movimiento «Edición V-…».
+export function moverStockEdicion(d,deltas,ventaId){
+  if(!deltas.length)return;
+  d.stock=d.stock||{};d.lotes=d.lotes||{};d.stockMovs=d.stockMovs||[];
+  const fecha=new Date().toISOString();
+  deltas.forEach(({key,prodId,varId,nombre,emoji,delta})=>{
+    if(!delta)return;
+    const lotes=(d.lotes[key]||[]).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+    let r=Math.abs(delta);
+    if(delta>0){
+      for(const l of lotes){if(l.qty_restante<=0||r<=0)continue;const c=Math.min(l.qty_restante,r);l.qty_restante-=c;r-=c;}
+    } else {
+      for(const l of [...lotes].reverse()){if(r<=0)break;const c=Math.min((l.qty_inicial||0)-l.qty_restante,r);if(c>0){l.qty_restante+=c;r-=c;}}
+    }
+    const antes=d.stock[key]||0,despues=delta>0?Math.max(0,antes-delta):antes-delta;
+    d.stock[key]=despues;
+    if(varId&&prodId&&d.stock['grp-'+prodId]!=null){const g=d.stock['grp-'+prodId]||0;d.stock['grp-'+prodId]=delta>0?Math.max(0,g-delta):g-delta;}
+    d.stockMovs.unshift({fecha,tipo:delta>0?'VENTA':'AJUSTE',prodId:key,nombre,emoji,delta:despues-antes,antes,despues,nota:'Edición '+ventaId});
+  });
+  if(d.stockMovs.length>1000)d.stockMovs=d.stockMovs.slice(0,1000);
+}
+
 // ── ticket mini-panel alerts ──
 export function renderStockMiniPanel(){
   // Panel de advertencias eliminado — stock visible en 📦 Inventario

@@ -34,3 +34,18 @@ test('generarTicket(): mismo ticket y auditoría de siempre, y costo por línea'
   assert.equal(buildTicketText(o),o.ticketText);
   assert.equal(buildAuditText(o),o.auditText);
 });
+
+import { moverStockEdicion } from '../modules/inventario.js';
+test('moverStockEdicion(): aumento descuenta FIFO + plano; baja devuelve en orden inverso sin pasar qty_inicial', ()=>{
+  const d={stock:{'v-ted':10},lotes:{'v-ted':[
+    {id:'L2',fecha:'2026-11-01',qty_inicial:10,qty_restante:9},{id:'L1',fecha:'2026-10-01',qty_inicial:5,qty_restante:4}]},stockMovs:[]};
+  moverStockEdicion(d,[{key:'v-ted',prodId:'v-ted',varId:null,nombre:'Teddy',emoji:'🧸',delta:-3}],'V-202611-0001');
+  assert.equal(d.stock['v-ted'],13);
+  assert.deepEqual(d.lotes['v-ted'].map(l=>[l.id,l.qty_restante]),[['L1',5],['L2',10]]);
+  assert.deepEqual([d.stockMovs[0].tipo,d.stockMovs[0].delta,d.stockMovs[0].nota],['AJUSTE',3,'Edición V-202611-0001']);
+  moverStockEdicion(d,[{key:'v-ted',prodId:'v-ted',varId:null,nombre:'Teddy',emoji:'🧸',delta:7}],'V-202611-0001');
+  assert.equal(d.stock['v-ted'],6);
+  assert.deepEqual(d.lotes['v-ted'].map(l=>[l.id,l.qty_restante]),[['L1',0],['L2',8]]);
+  assert.deepEqual([d.stockMovs[0].tipo,d.stockMovs[0].delta],['VENTA',-7]);
+  const vacio={};moverStockEdicion(vacio,[],'V-1');assert.deepEqual(vacio,{});
+});
