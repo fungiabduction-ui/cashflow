@@ -2966,215 +2966,270 @@ function bO(id){if(!confirm(`¿Eliminar venta ${id}?`))return;dO(id);window.rfM?
 
 function confirLimpiar(){if(!confirm('¿Eliminar TODO el historial de ventas?'))return;const d=ld();d.orders=[];sd(d);window.rfM?.();rH();rS();window.renderDash?.();sN('Historial eliminado');window.uhd?.();}
 
+// ── Texto del ticket y de auditoría a partir de la orden: los usan generarTicket() y la edición ──
+// El cliente no va en el ticket (dato interno): queda en o.cliente y en la auditoría.
+function buildTicketText(o){
+  const p=o.productos||{},t=o.totales||{},aj=o.ajuste||{ajusteNeto:t.ajusteNeto||0},pm=o.payment||{};
+  const prods=getProductos();
+  const unidad=l=>prods.find(x=>x.id===(l.varId||l.prodId))?.unit||'ud';
+  const total=t.totalGeneral||0;
+  let tk=`🧾 Orden de Venta: ${o.id}\n📅 Fecha: ${o.fechaDisplay}`;
+  tk+=`\n\n🛒 Pedido\n\n`;
+  const lns=(p._lineas||[]).filter(l=>l.prodId!=='__var').map(l=>`${l.emoji} ${l.qty} ${unidad(l)} × ${fv(l.precio)} = ${fv(l.subtotal)}`);
+  if(p.variable>0)lns.push(`💲 ${fv(p.variable)}`);
+  const ajTk=[];
+  if(aj.tipo==='libre'&&aj.libreTotal>0)ajTk.push(`✏️ Total libre: ${fv(aj.libreTotal)}`);
+  else{
+    if(aj.recargoPctMonto>0)ajTk.push(`📈 Recargo ${aj.recargoPct}%: +${fv(aj.recargoPctMonto)}`);
+    if(aj.recargoFijoMonto>0)ajTk.push(`📈 Recargo fijo: +${fv(aj.recargoFijoMonto)}`);
+    if(aj.descPctMonto>0)ajTk.push(`📉 Descuento ${aj.descPct}%: -${fv(aj.descPctMonto)}`);
+    if(aj.descFijoMonto>0)ajTk.push(`📉 Descuento fijo: -${fv(aj.descFijoMonto)}`);
+  }
+  let tkLineas=lns.join('\n');
+  if(ajTk.length)tkLineas+=`\n\n${ajTk.join('\n')}\n━━━━━━━━━━━━━━━━━━━━━`;
+  tk+=tkLineas+`\n\n💰 Total: ${fv(total)} ARS`;
+  if(aj.ajusteNeto)tk+=`\n   (subtotal ${fv(t.subtotalBruto??total)} ${aj.ajusteNeto>0?'+':'-'} ajuste ${fv(Math.abs(aj.ajusteNeto))})`;
+  if(o.tipoPago==='USD')tk+=`\n💵 Total USD: ${fu(pm.usd||0)} (TC ${fi(pm.tc_usd||0)})`;
+  if(o.tipoPago==='USDT')tk+=`\n🔵 Total USDT: ${fu(pm.usdt||0)} (TC ${fi(pm.tc_usdt||0)})`;
+  if(o.tipoPago==='MIX'){
+    const parts=[];
+    if(pm.ars>0)parts.push(`ARS ${fv(pm.ars)}`);
+    if(pm.usd>0)parts.push(`USD ${fu(pm.usd)}`);
+    if(pm.usdt>0)parts.push(`USDT ${fu(pm.usdt)}`);
+    if(parts.length)tk+=`\n💳 Pago: ${parts.join(' + ')}`;
+    if(pm.total_usdt!=null)tk+=` ≈ ${fu(pm.total_usdt)} USDT`;
+  }
+  if(o.nota)tk+=`\n📝 Nota: ${o.nota}`;
+  return tk;
+}
+function buildAuditText(o){
+  const t=o.totales||{},total=t.totalGeneral||0,aj=t.ajusteNeto??o.ajuste?.ajusteNeto??0;
+  return`--- AUDITORÍA ---\nSubtotal: ${fv(t.subtotalBruto??total)} | Ajuste: ${aj>=0?'+':''}${fv(aj)} | Total: ${fv(total)} | Pago: ${o.payment?.modo||o.tipoPago||'ARS'} | Costo: ${fv(o.costo||0)} | Margen: ${o.margen}% | ID: ${o.id}${o.cliente?` | Cliente: ${o.cliente}`:''}`;
+}
+
+// ── EDICIÓN DE VENTAS ──
+function escV(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// Líneas editables: _lineas (formato nuevo) o campos legacy. «Variable» va aparte (productos.variable).
+function lineasDeOrden(o){
+  const p=o.productos||{};
+  if(p._lineas?.length)return p._lineas.filter(l=>l.prodId!=='__var').map(l=>({prodId:l.prodId,varId:l.varId||null,nombre:l.nombre||'',emoji:l.emoji||'',qty:l.qty||0,precio:l.precio||0,subtotal:l.subtotal??(l.qty||0)*(l.precio||0),costo:l.costo}));
+  const catalog=getProductos();
+  const precioCat=id=>catalog.find(x=>x.id===id)?.tramos?.[0]?.p||0;
+  const out=[],pastPrice=p.precioPastilla||precioCat('p-past');
+  [['calaveras','v-cal','💀','Calaveras'],['teddy','v-ted','🧸','Teddy'],['lucky','v-lck','🐱','Lucky Cat'],['genericas','v-gen','💊','Genéricas']].forEach(([k,varId,emoji,nombre])=>{
+    if((p[k]||0)>0)out.push({prodId:'p-past',varId,nombre,emoji,qty:p[k],precio:pastPrice,subtotal:p[k]*pastPrice});
+  });
+  [['cristales','p-cris','💎','Cristales','precioCristales'],['hongos','p-hong','🍄','Hongos','precioHongos'],['goteros','p-got','💧','Goteros',null],['petri','p-pet','🧫','Petri',null]].forEach(([k,prodId,emoji,nombre,pf])=>{
+    const qty=p[k]||0;if(!qty)return;const precio=(pf&&p[pf])||precioCat(prodId);
+    out.push({prodId,varId:null,nombre,emoji,qty,precio,subtotal:qty*precio});
+  });
+  return out;
+}
+
+// Lee el modal: líneas, variable y total con el mismo cálculo que el ticket (calc()): subtotal ± ajuste original.
+function leerEdicion(o,ed){
+  const num=id=>parseFloat(document.getElementById(id)?.value)||0;
+  const lineas=ed.lineas.map((l,i)=>({...l,q:Math.max(0,num('edit-qty-'+i)),p:num('edit-prc-'+i)}));
+  const variable=Math.max(0,num('edit-var'));
+  const subtotal=lineas.reduce((a,l)=>a+l.q*l.p,0)+variable;
+  const cambio=variable!==ed.variable0||lineas.some(l=>l.q!==l.qty||l.p!==l.precio);
+  const total0=o.totales?.totalGeneral||0;
+  if(!cambio)return{cambio,lineas,variable,subtotal,ajuste:o.ajuste,total:total0};
+  const aj=o.ajuste;
+  if(aj?.tipo==='libre'){const total=aj.libreTotal||subtotal;return{cambio,lineas,variable,subtotal,ajuste:{...aj,ajusteNeto:total-subtotal},total};}
+  if(aj){
+    const rp=subtotal*((aj.recargoPct||0)/100),dp=subtotal*((aj.descPct||0)/100),neto=rp+(aj.recargoFijo||0)-dp-(aj.descFijo||0);
+    return{cambio,lineas,variable,subtotal,ajuste:{...aj,recargoPctMonto:rp,descPctMonto:dp,ajusteNeto:neto},total:subtotal+neto};
+  }
+  // Sin detalle de ajuste (órdenes viejas): se conserva la diferencia original entre total y subtotal
+  const sub0=ed.lineas.reduce((a,l)=>a+l.subtotal,0)+ed.variable0;
+  return{cambio,lineas,variable,subtotal,ajuste:null,total:subtotal+(total0-sub0)};
+}
+
+// Composición del pago con los TC de la orden (mismo criterio que getPayment() del ticket)
+function pagoEdicion(modo,total,tcUsd,tcUsdt,mix){
+  if(modo==='USD'){const usd=parseFloat((total/tcUsd).toFixed(2));return{ars:0,usd,usdt:0,tc:tcUsd,tc_usd:tcUsd,tc_usdt:tcUsdt,total_ars:Math.round(usd*tcUsd),total_usdt:null,modo};}
+  if(modo==='USDT'){const usdt=parseFloat((total/tcUsdt).toFixed(2));return{ars:0,usd:0,usdt,tc:tcUsdt,tc_usd:tcUsd,tc_usdt:tcUsdt,total_ars:Math.round(usdt*tcUsdt),total_usdt:usdt,modo};}
+  if(modo==='MIX'){const ta=Math.round(mix.ars+mix.usd*tcUsd+mix.usdt*tcUsdt);return{ars:mix.ars,usd:mix.usd,usdt:mix.usdt,tc:0,tc_usd:tcUsd,tc_usdt:tcUsdt,total_ars:ta,total_usdt:tcUsdt>0?parseFloat((ta/tcUsdt).toFixed(2)):null,modo};}
+  return{ars:total,usd:0,usdt:0,tc:0,tc_usd:0,tc_usdt:0,total_ars:total,total_usdt:null,modo:'ARS'};
+}
+
 function openEditVenta(id){
-  const d=ld();const o=d.orders.find(x=>x.id===id);if(!o)return;
-  const pm=o.payment||{ars:o.totales?.totalGeneral||0,usd:0,usdt:o.totales?.totalUSDT||0,tc_usd:0,tc_usdt:o.tc||0,modo:o.tipoPago||'ARS'};
+  const o=ld().orders.find(x=>x.id===id);if(!o)return;
+  const pm=o.payment||{};
+  const modo0=pm.modo||o.tipoPago||'ARS';
+  const total0=o.totales?.totalGeneral||0;
+  // TC de la orden, nunca el del día (ese solo como placeholder)
+  const tcUsd0=pm.tc_usd||(o.tipoPago==='USD'&&o.tc>1?o.tc:0);
+  const tcUsdt0=pm.tc_usdt||(o.tipoPago==='USDT'&&o.tc>1?o.tc:0);
+  const mix0=modo0==='MIX'?{ars:pm.ars||0,usd:pm.usd||0,usdt:pm.usdt||0}
+    :{ars:modo0==='ARS'?total0:0,usd:modo0==='USD'?(pm.usd||0):0,usdt:modo0==='USDT'?(pm.usdt||0):0};
+  const lineas=lineasDeOrden(o),variable0=o.productos?.variable||0;
+  window._editVenta={id,o,lineas,variable0,tcUsd0,tcUsdt0,mix0};
   const IS='width:100%;background:var(--bg);border:1px solid var(--br);color:var(--tx);font-family:var(--mo);font-size:12px;padding:8px;outline:none;min-height:40px;border-radius:0;-webkit-appearance:none';
   const LB='font-family:var(--mo);font-size:8px;color:var(--tx2);display:block;margin-bottom:4px;text-transform:uppercase';
+  const NI=`${IS};min-height:30px;padding:3px 6px;font-size:12px`;
+  const vis=(on,disp='block')=>`display:${on?disp:'none'}`;
   document.getElementById('mTitEl').textContent='EDIT — '+id;
   document.getElementById('mTitEl').className='mtit';
   document.getElementById('modalBox').className='modal modal-wide';
   document.getElementById('mTk').style.display='none';
-
   const catalog=getProductos();
-  let editLineas=[];
-
-  if(o.productos?._lineas&&o.productos._lineas.length){
-    editLineas=o.productos._lineas.map(ln=>{
-      const prod=catalog.find(p=>p.id===(ln.varId||ln.prodId)||p.id===ln.prodId);
-      const nombre=prod?prod.nombre:(ln.varId||ln.prodId);
-      const emoji=prod?prod.emoji:'📦';
-      return{key:ln.varId||ln.prodId,prodId:ln.prodId,varId:ln.varId||null,nombre,emoji,qty:ln.qty,precio:ln.precio||0};
-    });
-  } else {
-    const p=o.productos||{};
-    const pastProd=catalog.find(x=>x.id==='p-past');
-    const pastPrice=o.productos?.precioPastilla||pastProd?.tramos?.[0]?.p||0;
-    const varMap={calaveras:'v-cal',teddy:'v-ted',lucky:'v-lck',genericas:'v-gen'};
-    const varEmoji={calaveras:'💀',teddy:'🧸',lucky:'🐱',genericas:'💊'};
-    const varName={calaveras:'Calaveras',teddy:'Teddy',lucky:'Lucky Cat',genericas:'Genéricas'};
-    ['calaveras','teddy','lucky','genericas'].forEach(k=>{
-      if((p[k]||0)>0) editLineas.push({key:'p-past-'+varMap[k],prodId:'p-past',varId:varMap[k],nombre:varName[k],emoji:varEmoji[k],qty:p[k],precio:pastPrice});
-    });
-    const legMap=[
-      {key:'cristales',prodId:'p-cris',emoji:'💎',nombre:'Cristales',qtyField:'cristales',priceField:'precioCristales'},
-      {key:'hongos',   prodId:'p-hong',emoji:'🍄',nombre:'Hongos',   qtyField:'hongos',   priceField:'precioHongos'},
-      {key:'goteros',  prodId:'p-got', emoji:'💧',nombre:'Goteros',  qtyField:'goteros',  priceField:null},
-      {key:'petri',    prodId:'p-pet', emoji:'🧫',nombre:'Petri',    qtyField:'petri',    priceField:null},
-    ];
-    legMap.forEach(({key,prodId,emoji,nombre,qtyField,priceField})=>{
-      const qty=p[qtyField]||0;if(!qty)return;
-      const prod=catalog.find(x=>x.id===prodId);
-      const precio=(priceField&&p[priceField])||prod?.tramos?.[0]?.p||0;
-      editLineas.push({key,prodId,varId:null,nombre,emoji,qty,precio});
-    });
-    if((p.variable||0)>0) editLineas.push({key:'variable',prodId:'__var',varId:null,nombre:'Variable',emoji:'💲',qty:1,precio:p.variable});
-  }
-
-  const prodRows=editLineas.length
-    ? editLineas.map(ln=>`
+  const filas=lineas.map((l,i)=>{const prod=catalog.find(x=>x.id===(l.varId||l.prodId));return`
       <div style="display:grid;grid-template-columns:1fr 80px 95px;gap:6px;align-items:center;margin-bottom:5px;padding:6px;background:var(--s2);border:1px solid var(--br)">
-        <div style="font-family:var(--mo);font-size:10px;color:var(--tx)">${ln.emoji} ${ln.nombre}</div>
-        <input type="number" style="${IS};min-height:30px;padding:3px 6px;font-size:12px;text-align:center" placeholder="qty" value="${ln.qty}" id="edit-qty-${ln.key}">
-        <input type="number" style="${IS};min-height:30px;padding:3px 6px;font-size:12px;text-align:right" placeholder="$ ARS" value="${ln.precio}" id="edit-prc-${ln.key}">
-      </div>`).join('')
-    : `<div style="font-family:var(--mo);font-size:9px;color:var(--tx3);padding:8px">Sin productos detectados</div>`;
-
-  const modoActual=pm.modo||'ARS';
-  // Calcular equivalentes USD para mostrar
-  const tcUsdVal=pm.tc_usd||0;
-  const tcUsdtVal=pm.tc_usdt||o.tc||0;
-  const eqUsd=tcUsdVal>0?(o.totales?.totalGeneral||0)/tcUsdVal:0;
-  const eqUsdt=tcUsdtVal>0?(o.totales?.totalGeneral||0)/tcUsdtVal:0;
-
+        <div style="font-family:var(--mo);font-size:10px;color:var(--tx)">${escV(l.emoji||prod?.emoji||'📦')} ${escV(l.nombre||prod?.nombre||l.varId||l.prodId)}</div>
+        <input type="number" style="${NI};text-align:center" placeholder="qty" value="${l.qty}" id="edit-qty-${i}" oninput="editRecalcTotal()">
+        <input type="number" style="${NI};text-align:right" placeholder="$ ARS" value="${l.precio}" id="edit-prc-${i}" oninput="editRecalcTotal()">
+      </div>`;}).join('');
+  const ajN=o.totales?.ajusteNeto||0;
+  const ajInfo=(o.ajuste?.tipo==='libre'?'Total libre. ':ajN?`Incluye ajuste ${ajN>0?'+':'-'}${fv(Math.abs(ajN))}. `:'')+'Si lo cambiás a mano queda como total libre.';
   document.getElementById('mBody').innerHTML=`
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-      <div><label style="${LB}">Fecha</label><input type="date" id="edit-fecha" value="${o.fecha}" style="${IS}"></div>
-      <div><label style="${LB}">Cliente</label><input type="text" id="edit-cliente" value="${o.cliente||''}" placeholder="opcional" style="${IS}"></div>
-      <div style="grid-column:1/-1"><label style="${LB}">Nota</label><input type="text" id="edit-nota" value="${o.nota||''}" placeholder="opcional" style="${IS}"></div>
+      <div><label style="${LB}">Fecha</label><input type="date" id="edit-fecha" value="${escV(o.fecha)}" style="${IS}"></div>
+      <div><label style="${LB}">Cliente</label><input type="text" id="edit-cliente" value="${escV(o.cliente)}" placeholder="opcional" list="clientes-list" style="${IS}"></div>
+      <div style="grid-column:1/-1"><label style="${LB}">Nota</label><input type="text" id="edit-nota" value="${escV(o.nota)}" placeholder="opcional" style="${IS}"></div>
     </div>
     <div style="margin-bottom:10px">
       <div style="font-family:var(--mo);font-size:8px;color:var(--ac);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Productos · Cantidad · Precio (ARS)</div>
-      ${prodRows}
-      <button onclick="editRecalcTotal()" style="margin-top:8px;background:var(--s2);border:1px solid var(--br);color:var(--ac);font-family:var(--mo);font-size:9px;padding:6px 12px;cursor:pointer">⟳ Recalcular total</button>
+      ${filas||'<div style="font-family:var(--mo);font-size:9px;color:var(--tx3);padding:8px">Sin productos detectados</div>'}
+      <div style="display:grid;grid-template-columns:1fr 181px;gap:6px;align-items:center;padding:6px;background:var(--s2);border:1px solid var(--br)">
+        <div style="font-family:var(--mo);font-size:10px;color:var(--tx)">💲 Variable</div>
+        <input type="number" style="${NI};text-align:right" value="${variable0}" id="edit-var" oninput="editRecalcTotal()">
+      </div>
+    </div>
+    <div style="margin-bottom:10px"><label style="${LB}">Total ARS</label>
+      <input type="number" id="edit-total-ars" value="${total0}" oninput="editUpdateEquiv()" style="${IS}">
+      <div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:4px">${escV(ajInfo)}</div>
     </div>
     <div style="background:var(--s2);border:1px solid var(--br);padding:10px">
       <div style="font-family:var(--mo);font-size:8px;color:var(--tx2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Modo de pago</div>
       <div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap">
-        <button class="tgb ${modoActual==='ARS' ?'active':''}" id="em-btnARS"  onclick="editSetMode('ARS')"  style="font-size:9px;min-height:28px;flex:1">ARS</button>
-        <button class="tgb ${modoActual==='USD' ?'active':''}" id="em-btnUSD"  onclick="editSetMode('USD')"  style="font-size:9px;min-height:28px;flex:1">USD</button>
-        <button class="tgb ${modoActual==='USDT'?'active':''}" id="em-btnUSDT" onclick="editSetMode('USDT')" style="font-size:9px;min-height:28px;flex:1">USDT</button>
+        ${['ARS','USD','USDT','MIX'].map(m=>`<button class="tgb ${modo0===m?'active':''}" id="em-btn${m}" onclick="editSetMode('${m}')" style="font-size:9px;min-height:28px;flex:1">${m}</button>`).join('')}
       </div>
-      <input type="hidden" id="edit-modo" value="${modoActual}">
-      <div id="em-ars" style="display:${modoActual==='ARS'?'block':'none'}">
-        <label style="${LB}">Total ARS</label>
-        <input type="number" id="edit-total-ars" value="${o.totales?.totalGeneral||0}" style="${IS}">
+      <input type="hidden" id="edit-modo" value="${escV(modo0)}">
+      <div id="em-mix" style="${vis(modo0==='MIX','grid')};grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+        <div><label style="${LB}">ARS</label><input type="number" id="edit-mix-ars" value="${mix0.ars}" oninput="editUpdateEquiv()" style="${IS}"></div>
+        <div><label style="${LB}">USD</label><input type="number" id="edit-mix-usd" value="${mix0.usd}" oninput="editUpdateEquiv()" style="${IS}"></div>
+        <div><label style="${LB}">USDT</label><input type="number" id="edit-mix-usdt" value="${mix0.usdt}" oninput="editUpdateEquiv()" style="${IS}"></div>
       </div>
-      <div id="em-usd" style="display:${modoActual==='USD'?'block':'none'}">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div><label style="${LB}">TC ARS/USD</label><input type="number" id="edit-tc-usd" value="${tcUsdVal||window._blueARS||''}" placeholder="ej: 1400" style="${IS}"></div>
-          <div><label style="${LB}">Equivalente USD</label><input type="text" id="edit-eq-usd" value="${fu(eqUsd)}" style="${IS};background:var(--s3);color:var(--wn)" readonly></div>
-        </div>
-        <div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:6px">Total en ARS se calcula desde productos</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div id="em-tcusd" style="${vis(modo0==='USD'||modo0==='MIX')}"><label style="${LB}">TC ARS/USD</label><input type="number" id="edit-tc-usd" value="${tcUsd0||''}" placeholder="${window._blueARS?'hoy '+window._blueARS:'ej: 1400'}" oninput="editUpdateEquiv()" style="${IS}"></div>
+        <div id="em-tcusdt" style="${vis(modo0==='USDT'||modo0==='MIX')}"><label style="${LB}">TC ARS/USDT</label><input type="number" id="edit-tc-usdt" value="${tcUsdt0||''}" placeholder="${window._usdtARS?'hoy '+window._usdtARS:'ej: 1450'}" oninput="editUpdateEquiv()" style="${IS}"></div>
       </div>
-      <div id="em-usdt" style="display:${modoActual==='USDT'?'block':'none'}">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div><label style="${LB}">TC ARS/USDT</label><input type="number" id="edit-tc-usdt" value="${tcUsdtVal||window._usdtARS||''}" placeholder="ej: 1450" style="${IS}"></div>
-          <div><label style="${LB}">Equivalente USDT</label><input type="text" id="edit-eq-usdt" value="${fu(eqUsdt)}" style="${IS};background:var(--s3);color:var(--wn)" readonly></div>
-        </div>
-        <div style="font-family:var(--mo);font-size:9px;color:var(--tx3);margin-top:6px">Total en ARS se calcula desde productos</div>
-      </div>
+      <div id="edit-eq" style="font-family:var(--mo);font-size:10px;color:var(--wn);margin-top:6px"></div>
     </div>`;
   document.getElementById('mFooter').innerHTML=`<button class="btn btn-p" onclick="saveEditVenta('${id}')">💾 Guardar</button><button class="btn btn-s" onclick="clM()">✕ Cancelar</button>`;
   document.getElementById('modal').classList.add('open');
-  window._editLineas=editLineas;
+  editUpdateEquiv();
 }
 
 function editRecalcTotal(){
-  const editLineas=window._editLineas||[];
-  let sum=0;
-  editLineas.forEach(ln=>{
-    const qEl=document.getElementById('edit-qty-'+ln.key);
-    const pEl=document.getElementById('edit-prc-'+ln.key);
-    if(qEl&&pEl){
-      const q=Math.max(0,parseFloat(qEl.value)||0);
-      const p=parseFloat(pEl.value)||0;
-      sum+=q*p;
-    }
-  });
-  document.getElementById('edit-total-ars').value=Math.round(sum);
+  const ed=window._editVenta;if(!ed)return;
+  const el=document.getElementById('edit-total-ars');
+  if(el)el.value=String(Math.round(leerEdicion(ed.o,ed).total*100)/100);
   editUpdateEquiv();
 }
 
 function editUpdateEquiv(){
-  const totalARS=parseFloat(document.getElementById('edit-total-ars')?.value)||0;
-  const tcUsd=parseFloat(document.getElementById('edit-tc-usd')?.value)||0;
-  const tcUsdt=parseFloat(document.getElementById('edit-tc-usdt')?.value)||0;
-  const eqUsd=tcUsd>0?(totalARS/tcUsd).toFixed(2):0;
-  const eqUsdt=tcUsdt>0?(totalARS/tcUsdt).toFixed(2):0;
-  const eqUsdEl=document.getElementById('edit-eq-usd');
-  const eqUsdtEl=document.getElementById('edit-eq-usdt');
-  if(eqUsdEl)eqUsdEl.value=fu(eqUsd);
-  if(eqUsdtEl)eqUsdtEl.value=fu(eqUsdt);
+  const el=document.getElementById('edit-eq');if(!el)return;
+  const num=id=>parseFloat(document.getElementById(id)?.value)||0;
+  const m=document.getElementById('edit-modo')?.value||'ARS',total=num('edit-total-ars'),tcU=num('edit-tc-usd'),tcT=num('edit-tc-usdt');
+  if(m==='USD')el.textContent=tcU>0?`≈ ${fu(total/tcU)} USD`:'';
+  else if(m==='USDT')el.textContent=tcT>0?`≈ ${fu(total/tcT)} USDT`:'';
+  else if(m==='MIX')el.textContent=`Pago: ${fv(num('edit-mix-ars')+num('edit-mix-usd')*tcU+num('edit-mix-usdt')*tcT)} · total ${fv(total)}`;
+  else el.textContent='';
 }
 
 function editSetMode(m){
   document.getElementById('edit-modo').value=m;
-  ['ARS','USD','USDT'].forEach(x=>{const b=document.getElementById('em-btn'+x);if(b)b.classList.toggle('active',x===m);});
-  ['ars','usd','usdt'].forEach(x=>{const el=document.getElementById('em-'+x);if(el)el.style.display=x===m.toLowerCase()?'block':'none';});
+  ['ARS','USD','USDT','MIX'].forEach(x=>document.getElementById('em-btn'+x)?.classList.toggle('active',x===m));
+  const show=(id,on,disp='block')=>{const el=document.getElementById(id);if(el)el.style.display=on?disp:'none';};
+  show('em-mix',m==='MIX','grid');show('em-tcusd',m==='USD'||m==='MIX');show('em-tcusdt',m==='USDT'||m==='MIX');
+  editUpdateEquiv();
 }
 
 function saveEditVenta(id){
-  const d=ld();const idx=d.orders.findIndex(x=>x.id===id);if(idx<0)return;
-  const o=d.orders[idx];
-  const nuevaFecha=document.getElementById('edit-fecha').value;
-  const nuevoCliente=document.getElementById('edit-cliente').value.trim();
-  const nuevaNota=document.getElementById('edit-nota').value.trim();
-  const modo=document.getElementById('edit-modo')?.value||'ARS';
+  const ed=window._editVenta;if(!ed||ed.id!==id)return;
+  const val=k=>String(document.getElementById(k)?.value??'');
+  const num=k=>parseFloat(val(k))||0;
+  const modo=val('edit-modo')||'ARS';
+  const tcUsd=num('edit-tc-usd'),tcUsdt=num('edit-tc-usdt');
+  const mix={ars:num('edit-mix-ars'),usd:num('edit-mix-usd'),usdt:num('edit-mix-usdt')};
+  if((modo==='USD'||(modo==='MIX'&&mix.usd>0))&&!(tcUsd>0)){sN('Ingresá el TC ARS/USD',true);return;}
+  if((modo==='USDT'||(modo==='MIX'&&mix.usdt>0))&&!(tcUsdt>0)){sN('Ingresá el TC ARS/USDT',true);return;}
+  const r0=leerEdicion(ed.o,ed);
+  if(!r0.lineas.some(l=>l.q>0)&&!r0.variable){sN('La venta no puede quedar sin productos',true);return;}
+  const cli=val('edit-cliente').trim(),nota=val('edit-nota').trim(),fecha=val('edit-fecha');
+  // Cliente distinto: se registra antes de leer d (autoRegistrarContacto guarda solo, como en generarTicket;
+  // leer d después evita pisar el contacto nuevo)
+  const cambiaContacto=normNombre(cli)!==normNombre(ed.o.cliente||'');
+  const clienteId=cambiaContacto?(autoRegistrarContacto(cli,fecha||ed.o.fecha)||null):null;
+  const d=ld();const idx=(d.orders||[]).findIndex(x=>x.id===id);if(idx<0)return;
+  const o0=d.orders[idx],o=JSON.parse(JSON.stringify(o0));
+  const total0=o0.totales?.totalGeneral||0;
 
-  // Recalcular total desde líneas editadas
-  const editLineas=window._editLineas||[];
-  let nuevoTotal=parseFloat(document.getElementById('edit-total-ars')?.value)||0;
-  const newLineas=[];
-  if(editLineas.length){
-    let sum=0;
-    editLineas.forEach(ln=>{
-      const qEl=document.getElementById('edit-qty-'+ln.key);
-      const pEl=document.getElementById('edit-prc-'+ln.key);
-      const q=qEl?Math.max(0,parseFloat(qEl.value)||0):ln.qty;
-      const p=pEl?parseFloat(pEl.value)||0:ln.precio;
-      if(q>0) newLineas.push({prodId:ln.prodId,varId:ln.varId,nombre:ln.nombre,emoji:ln.emoji,qty:q,precio:p,subtotal:q*p});
-      sum+=q*p;
+  if(fecha&&fecha!==o.fecha){o.fecha=fecha;o.fechaDisplay=d2s(fecha);o.mesActual=d2m(fecha);}
+  if(cli!==(o.cliente||'').trim()){o.cliente=cli||null;if(cambiaContacto)o.clienteId=clienteId;}
+  if(nota!==(o.nota||'').trim())o.nota=nota||null;
+
+  // Productos, costo y stock: solo si cambió alguna línea o la variable
+  const r=leerEdicion(o0,ed);
+  const deltas=[];
+  if(r.cambio){
+    const subL=ed.lineas.reduce((a,l)=>a+l.subtotal,0);
+    const nuevas=[];
+    r.lineas.forEach(l=>{
+      // costo de la línea: el guardado o, en órdenes viejas, o.costo prorrateado por subtotal; escala con la cantidad
+      const c0=l.costo!=null?l.costo:(subL>0?(o0.costo||0)*l.subtotal/subL:0);
+      if(l.q>0)nuevas.push({prodId:l.prodId,varId:l.varId,nombre:l.nombre,emoji:l.emoji,qty:l.q,precio:l.p,subtotal:l.q*l.p,costo:Math.round(l.q===l.qty?c0:c0*l.q/l.qty)});
+      const key=l.varId||l.prodId;
+      if(l.q!==l.qty&&key!=='p-past')deltas.push({key,prodId:l.prodId,varId:l.varId,nombre:l.nombre,emoji:l.emoji,delta:l.q-l.qty});
     });
-    if(sum>0) nuevoTotal=sum;
-    if(!o.productos) o.productos={};
-    o.productos._lineas=newLineas;
+    const q=f=>nuevas.filter(f).reduce((a,l)=>a+l.qty,0),s=f=>nuevas.filter(f).reduce((a,l)=>a+l.subtotal,0);
+    const es=(...ids)=>l=>ids.includes(l.varId)||ids.includes(l.prodId);
+    const PAST=['v-cal','v-ted','v-lck','v-gen'];
+    const p={...o.productos,_lineas:nuevas,variable:r.variable,
+      calaveras:q(es('v-cal')),teddy:q(es('v-ted')),lucky:q(es('v-lck')),genericas:q(es('v-gen')),
+      totalPastillas:q(es(...PAST)),totalPastillasLinea:s(es(...PAST)),
+      cristales:q(es('p-cris')),totalCristales:s(es('p-cris')),hongos:q(es('p-hong')),totalHongos:s(es('p-hong')),
+      goteros:q(es('p-got')),totalGoteros:s(es('p-got')),petri:q(es('p-pet')),totalPetri:s(es('p-pet'))};
+    o.productos=p;
+    o.totales={...o.totales,totalPastillasLinea:p.totalPastillasLinea,totalCristales:p.totalCristales,totalHongos:p.totalHongos,totalGoteros:p.totalGoteros,totalPetri:p.totalPetri};
+    if(r.lineas.some(l=>l.q!==l.qty)){const costo=nuevas.reduce((a,l)=>a+l.costo,0);o.costo=costo;o.totales.costoTotal=costo;}
   }
 
-  // Recalcular campos legacy para compatibilidad
-  const p=o.productos;
-  if(p&&p._lineas){
-    p.calaveras=p._lineas.filter(l=>l.varId==='v-cal'||l.prodId==='v-cal').reduce((a,l)=>a+(l.qty||0),0);
-    p.teddy=p._lineas.filter(l=>l.varId==='v-ted'||l.prodId==='v-ted').reduce((a,l)=>a+(l.qty||0),0);
-    p.lucky=p._lineas.filter(l=>l.varId==='v-lck'||l.prodId==='v-lck').reduce((a,l)=>a+(l.qty||0),0);
-    p.genericas=p._lineas.filter(l=>l.varId==='v-gen'||l.prodId==='v-gen').reduce((a,l)=>a+(l.qty||0),0);
-    p.cristales=p._lineas.filter(l=>l.prodId==='p-cris').reduce((a,l)=>a+(l.qty||0),0);
-    p.hongos=p._lineas.filter(l=>l.prodId==='p-hong').reduce((a,l)=>a+(l.qty||0),0);
-    p.goteros=p._lineas.filter(l=>l.prodId==='p-got').reduce((a,l)=>a+(l.qty||0),0);
-    p.petri=p._lineas.filter(l=>l.prodId==='p-pet').reduce((a,l)=>a+(l.qty||0),0);
-    p.variable=p._lineas.filter(l=>l.prodId==='__var').reduce((a,l)=>a+(l.subtotal||0),0);
-    p.totalPastillas=p.calaveras+p.teddy+p.lucky+p.genericas;
-    p.totalPastillasLinea=newLineas.filter(l=>l.prodId==='p-past').reduce((a,l)=>a+(l.subtotal||0),0);
-    p.totalCristales=newLineas.filter(l=>l.prodId==='p-cris').reduce((a,l)=>a+(l.subtotal||0),0);
-    p.totalHongos=newLineas.filter(l=>l.prodId==='p-hong').reduce((a,l)=>a+(l.subtotal||0),0);
-    p.totalGoteros=newLineas.filter(l=>l.prodId==='p-got').reduce((a,l)=>a+(l.subtotal||0),0);
-    p.totalPetri=newLineas.filter(l=>l.prodId==='p-pet').reduce((a,l)=>a+(l.subtotal||0),0);
+  // Total: el calculado como el ticket; si el usuario lo escribió a mano, queda como ajuste libre
+  const tIn=parseFloat(val('edit-total-ars'));
+  const manual=!isNaN(tIn)&&Math.abs(tIn-r.total)>0.01;
+  const total=manual?tIn:r.total;
+  const ajuste=manual?{recargoPct:0,recargoFijo:0,descPct:0,descFijo:0,recargoPctMonto:0,recargoFijoMonto:0,descPctMonto:0,descFijoMonto:0,ajusteNeto:tIn-r.subtotal,libreTotal:tIn,tipo:'libre'}:r.ajuste;
+  if(r.cambio||manual){
+    o.totales={...o.totales,totalGeneral:total,subtotalBruto:r.subtotal,ajusteNeto:total-r.subtotal};
+    if(ajuste)o.ajuste=ajuste;
+  }
+  if(total!==total0||o.costo!==o0.costo)o.margen=total>0?parseFloat(((total-(o.costo||0))/total*100).toFixed(1)):0;
+
+  // Pago: se conservan payment y TC salvo que cambie el modo, un TC, el desglose MIX o el total (fuera de MIX)
+  const modo0=o0.payment?.modo||o0.tipoPago||'ARS';
+  const tcCambio=((modo==='USD'||modo==='MIX')&&tcUsd!==ed.tcUsd0)||((modo==='USDT'||modo==='MIX')&&tcUsdt!==ed.tcUsdt0);
+  const mixCambio=modo==='MIX'&&(mix.ars!==ed.mix0.ars||mix.usd!==ed.mix0.usd||mix.usdt!==ed.mix0.usdt);
+  if(modo!==modo0||tcCambio||mixCambio||(modo!=='MIX'&&total!==total0)){
+    const pago=pagoEdicion(modo,total,tcUsd,tcUsdt,mix);
+    o.payment=pago;o.tipoPago=modo;
+    if(modo!==modo0||tcCambio){o.tc=modo==='ARS'?1:(pago.tc_usd||pago.tc_usdt||null);o.tcUsdt=pago.tc_usdt||1;}
+    o.totales={...o.totales,totalUSDT:pago.total_usdt,totalUSD:pago.usd||null,payment:pago};
   }
 
-  // Payment
-  let payment;
-  const tcUsd =parseFloat(document.getElementById('edit-tc-usd')?.value)||0;
-  const tcUsdt=parseFloat(document.getElementById('edit-tc-usdt')?.value)||0;
-
-  if(modo==='USD'){
-    const usdCalc=tcUsd>0?parseFloat((nuevoTotal/tcUsd).toFixed(2)):0;
-    payment={ars:0,usd:usdCalc,usdt:0,tc:tcUsd,tc_usd:tcUsd,tc_usdt:tcUsdt,total_ars:nuevoTotal,total_usdt:null,modo:'USD'};
-  } else if(modo==='USDT'){
-    const usdtCalc=tcUsdt>0?parseFloat((nuevoTotal/tcUsdt).toFixed(2)):0;
-    payment={ars:0,usd:0,usdt:usdtCalc,tc:tcUsdt,tc_usd:tcUsd,tc_usdt:tcUsdt,total_ars:nuevoTotal,total_usdt:usdtCalc,modo:'USDT'};
-  } else {
-    payment={ars:nuevoTotal,usd:0,usdt:0,tc:0,tc_usd:0,tc_usdt:0,total_ars:nuevoTotal,total_usdt:null,modo:'ARS'};
-  }
-
-  if(nuevaFecha){o.fecha=nuevaFecha;o.fechaDisplay=d2s(nuevaFecha);o.mesActual=d2m(nuevaFecha);}
-  o.cliente=nuevoCliente||null; o.nota=nuevaNota||null;
-  o.tipoPago=modo; o.tc=modo==='ARS'?1:(modo==='USDT'?tcUsdt:tcUsd); o.tcUsdt=tcUsdt||1; o.payment=payment;
-  o.totales={...o.totales,totalGeneral:nuevoTotal,totalUSDT:payment.total_usdt,payment};
-  const costo=o.costo||0;
-  o.margen=nuevoTotal>0?parseFloat(((nuevoTotal-costo)/nuevoTotal*100).toFixed(1)):0;
-  if(!sd(d))return; // no se guardó: el modal queda abierto con lo editado
+  if(JSON.stringify(o)===JSON.stringify(o0)){window.clM?.();sN('Sin cambios');delete window._editVenta;return;}
+  o.ticketText=buildTicketText(o);
+  const ediciones=(o0.auditText||'').split('\n').filter(l=>l.startsWith('✏ Editada'));
+  o.auditText=[buildAuditText(o),...ediciones,`✏ Editada ${d2s(hoy())}: total ${fv(total0)} → ${fv(total)}`].join('\n');
+  d.orders[idx]=o;
+  moverStockEdicion(d,deltas,id);          // stock plano + lotes + movimientos, en el mismo d
+  if(!sd(d))return;                        // un solo guardado; si falla, el modal queda abierto con lo editado
   window.rfM?.();rH();rS();window.renderDash?.();window.clM?.();sN(`✓ ${id} actualizada`);window.uhd?.();window.updateClientesDatalist?.();
-  delete window._editLineas;
+  delete window._editVenta;
 }
 
 
@@ -4122,6 +4177,31 @@ function descontarStockPorTicket(lineas){
     }
   });
   saveStock(stock);
+}
+
+// ── Edición de venta: aplica el delta de cantidades sobre d, sin guardar (guarda saveEditVenta en un solo sd()) ──
+// delta>0 (se vendió más): mismo descuento que descontarStockPorTicket — FIFO en lotes + plano con su propia cuenta.
+// delta<0 (se vendió menos): vuelve al plano y a los lotes en orden inverso al FIFO (el más reciente primero),
+// sin superar qty_inicial. Cada producto deja un movimiento «Edición V-…».
+function moverStockEdicion(d,deltas,ventaId){
+  if(!deltas.length)return;
+  d.stock=d.stock||{};d.lotes=d.lotes||{};d.stockMovs=d.stockMovs||[];
+  const fecha=new Date().toISOString();
+  deltas.forEach(({key,prodId,varId,nombre,emoji,delta})=>{
+    if(!delta)return;
+    const lotes=(d.lotes[key]||[]).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+    let r=Math.abs(delta);
+    if(delta>0){
+      for(const l of lotes){if(l.qty_restante<=0||r<=0)continue;const c=Math.min(l.qty_restante,r);l.qty_restante-=c;r-=c;}
+    } else {
+      for(const l of [...lotes].reverse()){if(r<=0)break;const c=Math.min((l.qty_inicial||0)-l.qty_restante,r);if(c>0){l.qty_restante+=c;r-=c;}}
+    }
+    const antes=d.stock[key]||0,despues=delta>0?Math.max(0,antes-delta):antes-delta;
+    d.stock[key]=despues;
+    if(varId&&prodId&&d.stock['grp-'+prodId]!=null){const g=d.stock['grp-'+prodId]||0;d.stock['grp-'+prodId]=delta>0?Math.max(0,g-delta):g-delta;}
+    d.stockMovs.unshift({fecha,tipo:delta>0?'VENTA':'AJUSTE',prodId:key,nombre,emoji,delta:despues-antes,antes,despues,nota:'Edición '+ventaId});
+  });
+  if(d.stockMovs.length>1000)d.stockMovs=d.stockMovs.slice(0,1000);
 }
 
 // ── ticket mini-panel alerts ──
@@ -6854,7 +6934,7 @@ function calc(){
           const r=gtr(tramos,qEval);if(r){precio=r.p;tramo=r.t;}
         }
         const subtotal=q*(precio||0);
-        lineas.push({emoji:prod.emoji,nombre:prod.nombre,qty:q,unit:prod.unit,precio,tramo,subtotal,prodId:prod.id,legacyKey:prod.legacyKey,qGrupo:gruposVol[prod.listaPrecioId]||q});
+        lineas.push({emoji:prod.emoji,nombre:prod.nombre,qty:q,unit:prod.unit,precio,tramo,subtotal,costo:q*(prod.costo||0),prodId:prod.id,legacyKey:prod.legacyKey,qGrupo:gruposVol[prod.listaPrecioId]||q});
         tot+=subtotal;
         if(prod.legacyKey)legacyMap[prod.legacyKey]={qty:q,precio,tramo,subtotal};
         costo+=q*(prod.costo||0);
@@ -6979,39 +7059,8 @@ function generarTicket(){
 
   const payment=getPayment(totalFinal);
   const mes=d2m(fecha),id=nId(mes),fd=d2s(fecha);
-  // El cliente es dato interno: no va en el ticket que se copia (queda en o.cliente y en auditText)
-  let tk=`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}`;
-  tk+=`\n\n🛒 Pedido\n\n`;
-  const lns=lineas.map(ln=>`${ln.emoji} ${ln.qty} ${ln.unit} × ${fv(ln.precio)} = ${fv(ln.subtotal)}`);
-  if(qV>0)lns.push(`💲 ${fv(qV)}`);
 
-  // Ajuste
-  const lineasAjTk=[];
-  if(ajuste.tipo==='libre'&&ajuste.libreTotal>0){lineasAjTk.push(`✏️ Total libre: ${fv(ajuste.libreTotal)}`);}
-  else{
-    if(ajuste.recargoPctMonto>0) lineasAjTk.push(`📈 Recargo ${ajuste.recargoPct}%: +${fv(ajuste.recargoPctMonto)}`);
-    if(ajuste.recargoFijoMonto>0) lineasAjTk.push(`📈 Recargo fijo: +${fv(ajuste.recargoFijoMonto)}`);
-    if(ajuste.descPctMonto>0)     lineasAjTk.push(`📉 Descuento ${ajuste.descPct}%: -${fv(ajuste.descPctMonto)}`);
-    if(ajuste.descFijoMonto>0)    lineasAjTk.push(`📉 Descuento fijo: -${fv(ajuste.descFijoMonto)}`);
-  }
-  let tkLineas=lns.join('\n');
-  if(lineasAjTk.length) tkLineas+=`\n\n${lineasAjTk.join('\n')}\n━━━━━━━━━━━━━━━━━━━━━`;
-  tk+=tkLineas+`\n\n💰 Total: ${fv(totalFinal)} ARS`;
-  if(ajuste.ajusteNeto!==0) tk+=`\n   (subtotal ${fv(tot)} ${ajuste.ajusteNeto>0?'+':'-'} ajuste ${fv(Math.abs(ajuste.ajusteNeto))})`;
-
-  // Equivalente en USD/USDT si no es ARS
-  if(tipoPago==='USD')  tk+=`\n💵 Total USD: ${fu(payment.usd)} (TC ${fi(payment.tc_usd)})`;
-  if(tipoPago==='USDT') tk+=`\n🔵 Total USDT: ${fu(payment.usdt)} (TC ${fi(payment.tc_usdt)})`;
-  if(tipoPago==='MIX'){
-    const parts=[];
-    if(payment.ars>0)  parts.push(`ARS ${fv(payment.ars)}`);
-    if(payment.usd>0)  parts.push(`USD ${fu(payment.usd)}`);
-    if(payment.usdt>0) parts.push(`USDT ${fu(payment.usdt)}`);
-    if(parts.length)   tk+=`\n💳 Pago: ${parts.join(' + ')}`;
-    if(payment.total_usdt!=null) tk+=` ≈ ${fu(payment.total_usdt)} USDT`;
-  }
-
-  // Nota
+  // Nota (el ajuste se suma a la nota)
   const notaAjParts=[];
   if(ajuste.tipo==='libre'&&ajuste.libreTotal>0) notaAjParts.push(`Total libre ${fv(ajuste.libreTotal)}`);
   else{
@@ -7021,7 +7070,6 @@ function generarTicket(){
     if(ajuste.descFijo>0)    notaAjParts.push(`Dto fijo ${fv(ajuste.descFijo)}`);
   }
   const notaFinal=[nota, notaAjParts.join(' | ')].filter(Boolean).join(' | ');
-  if(notaFinal)tk+=`\n📝 Nota: ${notaFinal}`;
 
   const lm=legacyMap;
   const productos={
@@ -7033,7 +7081,7 @@ function generarTicket(){
     goteros:lm.goteros?.qty||0,totalGoteros:lm.goteros?.subtotal||0,
     petri:lm.petri?.qty||0,totalPetri:lm.petri?.subtotal||0,
     variable:qV,
-    _lineas:lineas.map(l=>({prodId:l.prodId,varId:l.varId||null,nombre:l.nombre||'',emoji:l.emoji||'',qty:l.qty,precio:l.precio,subtotal:l.subtotal}))
+    _lineas:lineas.map(l=>({prodId:l.prodId,varId:l.varId||null,nombre:l.nombre||'',emoji:l.emoji||'',qty:l.qty,precio:l.precio,subtotal:l.subtotal,costo:l.costo}))
   };
   const totales={
     totalPastillasLinea:productos.totalPastillasLinea,totalCristales:productos.totalCristales,
@@ -7044,7 +7092,6 @@ function generarTicket(){
     payment  // ← objeto completo {ars,usd,usdt,tc,total_ars,total_usdt,modo}
   };
   const margen=totalFinal>0?parseFloat(((totalFinal-costo)/totalFinal*100).toFixed(1)):0;
-  const aud=`--- AUDITORÍA ---\nSubtotal: ${fv(tot)} | Ajuste: ${ajuste.ajusteNeto>=0?'+':''}${fv(ajuste.ajusteNeto)} | Total: ${fv(totalFinal)} | Pago: ${payment.modo} | Costo: ${fv(costo)} | Margen: ${margen}% | ID: ${id}${cliente?` | Cliente: ${cliente}`:''}`;
 
   // Oversell: detectar líneas que superan el stock disponible ANTES de descontar.
   // No se mezcla con tk (texto que se copia al cliente) — se muestra aparte, junto
@@ -7055,12 +7102,15 @@ function generarTicket(){
   const clienteId=autoRegistrarContacto(cliente,fecha);
   const tcOrden=tipoPago==='ARS'?1:(payment.tc_usd||payment.tc_usdt||null);
   const tcUsdtOrden=payment.tc_usdt||1;
-  if(!sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'}))return; // no se guardó: no descontar stock ni mostrar éxito (el formulario queda lleno)
+  // El cliente es dato interno: no va en el ticket que se copia (queda en o.cliente y en auditText)
+  const o={id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,estado:'pendiente'};
+  o.ticketText=buildTicketText(o);o.auditText=buildAuditText(o);
+  if(!sO(o))return; // no se guardó: no descontar stock ni mostrar éxito (el formulario queda lleno)
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
-  document.getElementById('tkOut').textContent=tk;
-  document.getElementById('audOut').textContent=aud;
+  document.getElementById('tkOut').textContent=o.ticketText;
+  document.getElementById('audOut').textContent=o.auditText;
   const stockWarnEl=document.getElementById('tkStockWarn');
   if(stockWarnEl){stockWarnEl.style.display=stockWarnMsg?'block':'none';stockWarnEl.textContent=stockWarnMsg;}
   document.getElementById('outA').style.display='block';

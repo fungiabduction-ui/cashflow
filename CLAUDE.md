@@ -172,7 +172,9 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │
 ├── modules/
 │   ├── ticket.js       ← Motor del ticket: calc(), upd(), generarTicket(), buildTicketUI()
-│   ├── ventas.js       ← sO(), rH(), rS(), confirmarOrden(), openEditVenta(), showTotalsRow
+│   ├── ventas.js       ← sO(), rH(), rS(), confirmarOrden(), openEditVenta()/saveEditVenta(), showTotalsRow
+│   │                      buildTicketText(o), buildAuditText(o) — texto del ticket/auditoría desde la orden
+│   │                      (los usan generarTicket() y la edición)
 │   ├── egresos.js      ← sE(), rEH(), rES(), generarEgreso(), openEditEgr()
 │   ├── inversiones.js  ← invGenerar(), renderInvDist(), fetchPrecios(), distSlices, _btcPrecioUSD
 │   │                      renderCartera() — agrega posiciones activas por activo (USD/BTC/USDT), valor actual, flotante
@@ -183,6 +185,7 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── liquidez.js     ← sLiqExterna(), renderLiqExterna(), liqDistSlices
 │   ├── dashboard.js    ← renderDash(), renderDashFlowChart(), calcBalance(), dashCharts
 │   ├── inventario.js   ← consumirStock(), registrarIngreso(), descontarStockPorTicket(), renderInventario()
+│   │                      moverStockEdicion(d,deltas,id) — delta de stock de una edición de venta sobre d (sin guardar)
 │   ├── stock.js        ← getLotes(), saveLotes(), getCostoPromedio(), getActualQty(), getStockStatus()
 │   ├── productos.js    ← getProductos(), saveProductos(), guardarProductoModal(), updateClientesDatalist()
 │   ├── listas-precios.js ← getListasPrecios(), getTramosProducto(), renderListasPrecios()
@@ -330,33 +333,39 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
   nota: "",
   estado: "confirmada",         // "pendiente" | "confirmada". Pendientes NO cuentan en dashboard.
   fechaConfirmacion: "...",     // ISO string. Solo en confirmadas.
-  tipoPago: "ARS",              // "ARS" | "USD" | "USDT" | "MIX"
-  tc: 1250,                     // TC en el momento de la venta. Histórico sellado, nunca recalcular.
-  tcUsdt: 1240,
-  lineas: [                     // Productos del ticket (formato nuevo).
-    { prodId: "v-cal", varId: null, nombre: "Calaveras", emoji: "💀",
-      qty: 10, precioUnit: 21735, subtotal: 217350, costo: 50750 }
-  ],
+  tipoPago: "ARS",              // "ARS" | "USD" | "USDT" | "MIX" (el ticket genera ARS/USD/USDT; MIX: órdenes viejas o edición)
+  tc: 1,                        // TC del momento de la venta (1 en ARS). Histórico sellado, nunca recalcular.
+  tcUsdt: 1,
+  payment: { ars, usd, usdt, tc, tc_usd, tc_usdt, total_ars, total_usdt, modo }, // Cómo se cobró. Falta en órdenes viejas (= ARS).
+  productos: {
+    _lineas: [                  // Formato nuevo. `costo` (total de la línea) desde la 3.2 (nov/2026); las anteriores no lo tienen.
+      { prodId: "v-cal", varId: null, nombre: "Calaveras", emoji: "💀",
+        qty: 10, precio: 21735, subtotal: 217350, costo: 50750 }
+    ],
+    variable: 0,                // Monto «💲 Variable»: suma al total, no es línea ni mueve stock.
+    // + campos legacy en paralelo: calaveras, teddy, lucky, genericas, cristales, …, totalPastillasLinea, totalCristales, …
+  },
   // ⚠ GOTCHA varId: generarTicket() guarda _lineas con varId:null para TODOS los productos
   // (calc() no setea varId). Para filtrar v-cal/v-ted/v-lck/v-gen SIEMPRE usar:
   //   l.varId==='v-cal' || l.prodId==='v-cal'   ← NO solo l.varId (siempre null en órdenes modernas)
+  //   (líneas de órdenes legacy editadas: prodId:'p-past' + varId:'v-…'; la clave de stock es varId||prodId)
   // p-cris/p-hong/p-got/p-pet: filtrar por l.prodId directamente (nunca tuvieron varId).
-  // Formato legacy (órdenes antiguas): { pastillas: N, cristales: N, hongos: N, goteros: N, petri: N }
+  // Formato legacy (órdenes antiguas, sin _lineas): { calaveras, teddy, …, cristales, hongos, goteros, petri, precioPastilla, … }
   // Ambos formatos coexisten. _getLineasOrden(o) es el bridge.
-  totales: {
-    subtotal: 217350,
-    descuento: 0,
-    recargo: 0,
-    totalGeneral: 217350,
-    totalUSD: 173.88,
-    totalUsdt: 175.28,
-    costoTotal: 50750,
-    margen: 166600,
-  },
-  ticketText: "...",            // Texto plano del ticket para copiar/WhatsApp.
-  auditoriaText: "..."          // Texto de auditoría interna.
+  ajuste: { tipo, recargoPct, recargoFijo, descPct, descFijo, recargoPctMonto, …, ajusteNeto, libreTotal }, // tipo 'libre' = total a mano
+  totales: { totalGeneral, subtotalBruto, ajusteNeto, costoTotal, totalUSD, totalUSDT, payment, totalPastillasLinea, … },
+  costo: 50750,                 // Costo total de la venta.
+  margen: 76.6,                 // % sobre el total.
+  ticketText: "...",            // buildTicketText(o): texto para el cliente (sin su nombre). Para copiar/WhatsApp.
+  auditText: "..."              // buildAuditText(o) + líneas «✏ Editada dd/mm/aaaa: total X → Y» si se editó.
 }
 ```
+
+**Edición de ventas** (`openEditVenta`/`saveEditVenta`, 3.2): abrir y guardar sin cambios no guarda nada. Si cambian
+líneas, el total se recalcula como el ticket con el ajuste original (total escrito a mano → ajuste libre); `payment`/`tc`
+solo cambian si cambia el modo, un TC, el desglose MIX o el total; el costo de línea escala con la cantidad (órdenes
+sin costo por línea: `o.costo` prorrateado); el stock se mueve con `moverStockEdicion(d,deltas,id)` y todo va en un
+solo `sd()`. Eliminar una venta sigue sin devolver stock.
 
 ---
 
@@ -469,7 +478,7 @@ listas-precios ←── storage, notif, constants, formatters, stock, ids
 productos  ←── storage, notif, constants, formatters, listas-precios
 price-manager ←── storage, notif, formatters, ids, listas-precios, productos, stock, github
 egresos    ←── storage, notif, formatters, ids, github
-ventas     ←── storage, notif, formatters, ids, github, productos
+ventas     ←── storage, notif, formatters, ids, github, productos, contactos, inventario
 inventario ←── storage, notif, formatters, productos, stock, ids, config, listas-precios
 settings   ←── storage, notif, formatters, productos
 contactos  ←── storage, notif, formatters, github, productos
