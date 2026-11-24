@@ -387,7 +387,7 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
 
 13. **`contactosMigDone`**: flag one-shot. La migración histórica se dispara al abrir la pestaña Contactos si aún no corrió. `ejecutarMigracionContactos()` es el único writer — hace un único `sd(d)` atómico con `contactos`, `contactosMigDone=true`, y los `clienteId` en todas las órdenes históricas. No invocar a medias.
 
-14. **`autoRegistrarContacto(nombre, fechaOrden)`**: llamado desde `generarTicket()` ANTES de `sO()`. Crea el contacto si no existe (single `sd()`), retorna `clienteId` que se guarda en la orden. El `ticketText` almacenado en la orden tiene el nombre real. La UI de `#tkOut` muestra el nombre ofuscado (random, solo display, no persistido).
+14. **`autoRegistrarContacto(nombre, fechaOrden)`**: llamado desde `generarTicket()` ANTES de `sO()`. Crea el contacto si no existe (single `sd()`), retorna `clienteId` que se guarda en la orden. El ticket para el cliente (`ticketText` y `#tkOut`) **no lleva su nombre** (dato interno, desde 2026-11-24): el cliente queda en `o.cliente`/`o.clienteId` y al final de `auditText`. `vTk()` oculta la línea «👤 Cliente» de órdenes viejas al mostrar y copiar (sin modificar el dato guardado) y muestra el cliente aparte, fuera del texto copiable.
 
 15. **`normNombre(s)`**: normalización canónica para dedup y lookup de contactos. NFD + strip diacríticos + lowercase + colapso de espacios. Toda comparación de nombres de clientes DEBE pasar por esta función. Nunca comparar strings raw de `o.cliente` con `ct.nombre` directamente.
 

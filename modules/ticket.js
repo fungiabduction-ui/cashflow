@@ -10,17 +10,6 @@ import { descontarStockPorTicket, renderStockMiniPanel } from './inventario.js';
 import { getActualQty, getStockStatus } from './stock.js';
 import { autoRegistrarContacto } from './contactos.js';
 
-// Ofusca el nombre del cliente para el ticket visible (DOM only — ticketText almacenado siempre tiene nombre real)
-function obfuscarNombreTicket(nombre){
-  if(!nombre)return nombre;
-  const pool='!@#$%&*0123456789';
-  return nombre.split(' ').map((w,i)=>{
-    const keep=i===0?2:1;
-    if(w.length<=keep)return w;
-    return w.slice(0,keep)+Array.from({length:w.length-keep},()=>pool[Math.floor(Math.random()*pool.length)]).join('');
-  }).join(' ');
-}
-
 // ── TICKET DINÁMICO ──
 let tipoPago='ARS';
 let _lastTicketId=null;
@@ -313,10 +302,8 @@ export function generarTicket(){
 
   const payment=getPayment(totalFinal);
   const mes=d2m(fecha),id=nId(mes),fd=d2s(fecha);
-  const clienteObs=cliente?obfuscarNombreTicket(cliente):null;
+  // El cliente es dato interno: no va en el ticket que se copia (queda en o.cliente y en auditText)
   let tk=`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}`;
-  if(cliente)tk+=`\n👤 Cliente: ${cliente}`;
-  const _tkHeaderEnd=tk.length;
   tk+=`\n\n🛒 Pedido\n\n`;
   const lns=lineas.map(ln=>`${ln.emoji} ${ln.qty} ${ln.unit} × ${fv(ln.precio)} = ${fv(ln.subtotal)}`);
   if(qV>0)lns.push(`💲 ${fv(qV)}`);
@@ -380,7 +367,7 @@ export function generarTicket(){
     payment  // ← objeto completo {ars,usd,usdt,tc,total_ars,total_usdt,modo}
   };
   const margen=totalFinal>0?parseFloat(((totalFinal-costo)/totalFinal*100).toFixed(1)):0;
-  const aud=`--- AUDITORÍA ---\nSubtotal: ${fv(tot)} | Ajuste: ${ajuste.ajusteNeto>=0?'+':''}${fv(ajuste.ajusteNeto)} | Total: ${fv(totalFinal)} | Pago: ${payment.modo} | Costo: ${fv(costo)} | Margen: ${margen}% | ID: ${id}`;
+  const aud=`--- AUDITORÍA ---\nSubtotal: ${fv(tot)} | Ajuste: ${ajuste.ajusteNeto>=0?'+':''}${fv(ajuste.ajusteNeto)} | Total: ${fv(totalFinal)} | Pago: ${payment.modo} | Costo: ${fv(costo)} | Margen: ${margen}% | ID: ${id}${cliente?` | Cliente: ${cliente}`:''}`;
 
   // Oversell: detectar líneas que superan el stock disponible ANTES de descontar.
   // No se mezcla con tk (texto que se copia al cliente) — se muestra aparte, junto
@@ -395,8 +382,7 @@ export function generarTicket(){
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
-  const tkDisplay=clienteObs?`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}\n👤 Cliente: ${clienteObs}`+tk.slice(_tkHeaderEnd):tk;
-  document.getElementById('tkOut').textContent=tkDisplay;
+  document.getElementById('tkOut').textContent=tk;
   document.getElementById('audOut').textContent=aud;
   const stockWarnEl=document.getElementById('tkStockWarn');
   if(stockWarnEl){stockWarnEl.style.display=stockWarnMsg?'block':'none';stockWarnEl.textContent=stockWarnMsg;}

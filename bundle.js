@@ -6469,17 +6469,6 @@ function ejecutarMigracionContactos(){
 
 // ===== modules/ticket.js =====
 
-// Ofusca el nombre del cliente para el ticket visible (DOM only — ticketText almacenado siempre tiene nombre real)
-function obfuscarNombreTicket(nombre){
-  if(!nombre)return nombre;
-  const pool='!@#$%&*0123456789';
-  return nombre.split(' ').map((w,i)=>{
-    const keep=i===0?2:1;
-    if(w.length<=keep)return w;
-    return w.slice(0,keep)+Array.from({length:w.length-keep},()=>pool[Math.floor(Math.random()*pool.length)]).join('');
-  }).join(' ');
-}
-
 // ── TICKET DINÁMICO ──
 let tipoPago='ARS';
 let _lastTicketId=null;
@@ -6772,10 +6761,8 @@ function generarTicket(){
 
   const payment=getPayment(totalFinal);
   const mes=d2m(fecha),id=nId(mes),fd=d2s(fecha);
-  const clienteObs=cliente?obfuscarNombreTicket(cliente):null;
+  // El cliente es dato interno: no va en el ticket que se copia (queda en o.cliente y en auditText)
   let tk=`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}`;
-  if(cliente)tk+=`\n👤 Cliente: ${cliente}`;
-  const _tkHeaderEnd=tk.length;
   tk+=`\n\n🛒 Pedido\n\n`;
   const lns=lineas.map(ln=>`${ln.emoji} ${ln.qty} ${ln.unit} × ${fv(ln.precio)} = ${fv(ln.subtotal)}`);
   if(qV>0)lns.push(`💲 ${fv(qV)}`);
@@ -6839,7 +6826,7 @@ function generarTicket(){
     payment  // ← objeto completo {ars,usd,usdt,tc,total_ars,total_usdt,modo}
   };
   const margen=totalFinal>0?parseFloat(((totalFinal-costo)/totalFinal*100).toFixed(1)):0;
-  const aud=`--- AUDITORÍA ---\nSubtotal: ${fv(tot)} | Ajuste: ${ajuste.ajusteNeto>=0?'+':''}${fv(ajuste.ajusteNeto)} | Total: ${fv(totalFinal)} | Pago: ${payment.modo} | Costo: ${fv(costo)} | Margen: ${margen}% | ID: ${id}`;
+  const aud=`--- AUDITORÍA ---\nSubtotal: ${fv(tot)} | Ajuste: ${ajuste.ajusteNeto>=0?'+':''}${fv(ajuste.ajusteNeto)} | Total: ${fv(totalFinal)} | Pago: ${payment.modo} | Costo: ${fv(costo)} | Margen: ${margen}% | ID: ${id}${cliente?` | Cliente: ${cliente}`:''}`;
 
   // Oversell: detectar líneas que superan el stock disponible ANTES de descontar.
   // No se mezcla con tk (texto que se copia al cliente) — se muestra aparte, junto
@@ -6854,8 +6841,7 @@ function generarTicket(){
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
-  const tkDisplay=clienteObs?`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}\n👤 Cliente: ${clienteObs}`+tk.slice(_tkHeaderEnd):tk;
-  document.getElementById('tkOut').textContent=tkDisplay;
+  document.getElementById('tkOut').textContent=tk;
   document.getElementById('audOut').textContent=aud;
   const stockWarnEl=document.getElementById('tkStockWarn');
   if(stockWarnEl){stockWarnEl.style.display=stockWarnMsg?'block':'none';stockWarnEl.textContent=stockWarnMsg;}
@@ -7441,7 +7427,7 @@ function showInputModal(title,placeholder,isText,style,callback){
   document.getElementById('mFooter').innerHTML=`<button class="btn btn-p" onclick="(function(){const v=document.getElementById('modalInput').value;clM();(${callback.toString()})(v)})()">Confirmar</button><button class="btn btn-s" onclick="clM()">✕ Cancelar</button>`;
   document.getElementById('modal').classList.add('open');setTimeout(()=>{const el=document.getElementById('modalInput');if(el)el.focus();},100);
 }
-function vTk(id){const o=gO().find(x=>x.id===id);if(!o)return;document.getElementById('mTitEl').textContent='🧾 Detalle';document.getElementById('mTitEl').className='mtit';document.getElementById('modalBox').className='modal';document.getElementById('mTk').style.display='block';document.getElementById('mTk').className='mtk';document.getElementById('mTk').textContent=o.ticketText;document.getElementById('mBody').innerHTML='';document.getElementById('mFooter').innerHTML=`<button class="btn btn-s" onclick="cpM()">⎘ Copiar</button><button class="btn btn-s" onclick="clM()">✕ Cerrar</button>`;document.getElementById('modal').classList.add('open');}
+function vTk(id){const o=gO().find(x=>x.id===id);if(!o)return;document.getElementById('mTitEl').textContent='🧾 Detalle';document.getElementById('mTitEl').className='mtit';document.getElementById('modalBox').className='modal';document.getElementById('mTk').style.display='block';document.getElementById('mTk').className='mtk';document.getElementById('mTk').textContent=(o.ticketText||'').replace(/\n👤 Cliente: [^\n]*/,'');const mb=document.getElementById('mBody');mb.innerHTML='';if(o.cliente){const cd=document.createElement('div');cd.style.cssText='margin-top:10px;font-size:12px;opacity:.7';cd.textContent=`👤 Cliente: ${o.cliente} · interno, no se copia`;mb.appendChild(cd);}document.getElementById('mFooter').innerHTML=`<button class="btn btn-s" onclick="cpM()">⎘ Copiar</button><button class="btn btn-s" onclick="clM()">✕ Cerrar</button>`;document.getElementById('modal').classList.add('open');}
 function vEgr(id){const e=gE().find(x=>x.id===id);if(!e)return;document.getElementById('mTitEl').textContent='📉 Egreso';document.getElementById('mTitEl').className='mtit red';document.getElementById('modalBox').className='modal red';document.getElementById('mTk').style.display='block';document.getElementById('mTk').className='mtk red';document.getElementById('mTk').textContent=e.ticketText;document.getElementById('mBody').innerHTML='';document.getElementById('mFooter').innerHTML=`<button class="btn btn-s" onclick="cpM()">⎘ Copiar</button><button class="btn btn-s" onclick="clM()">✕ Cerrar</button>`;document.getElementById('modal').classList.add('open');}
 function clM(){document.getElementById('modal').classList.remove('open');document.getElementById('mTk').style.display='none';document.getElementById('mBody').innerHTML='';}
 function cpM(){navigator.clipboard.writeText(document.getElementById('mTk').textContent).then(()=>sN('Copiado'));}
