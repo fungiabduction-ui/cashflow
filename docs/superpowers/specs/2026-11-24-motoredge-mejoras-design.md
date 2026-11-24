@@ -110,6 +110,9 @@ cualquier fallo.
 
 ## Etapa 3 — Ventas
 
+El ticket es lo que el usuario usa a diario: **3.1 se implementa, prueba y despliega primero, por separado**;
+recién después empieza 3.2.
+
 **3.1 Ticket sin nombre del cliente** (el cliente es dato interno):
 - `generarTicket()`: el texto para el cliente (`ticketText` guardado y `#tkOut`) ya no lleva la línea
   "👤 Cliente". El cliente queda en `o.cliente`/`o.clienteId` y se agrega al texto de auditoría (`auditText`).
