@@ -77,15 +77,39 @@ const DEFAULT_LISTAS_PRECIOS=[
 // ===== core/storage.js =====
 
 const SK='motoredge_v4';
-function ld(){
-  try{const r=localStorage.getItem(SK);return r?JSON.parse(r):{orders:[],egresos:[],precios:null,costos:null,productos:null};}
-  catch(e){
-    // JSON corrupto en localStorage — notificar después de que el DOM esté listo
-    setTimeout(()=>sN('⚠ Storage corrupto — datos no cargados. Restaurá desde backup JSON.',true),800);
-    return{orders:[],egresos:[],precios:null,costos:null,productos:null};
-  }
+const VACIO=()=>({orders:[],egresos:[],precios:null,costos:null,productos:null});
+// Modo protegido: si motoredge_v4 no parsea, se bloquea toda escritura para que el estado vacío que devuelve ld()
+// nunca pise los datos. Solo restoreBackupPayload() y hardReset() lo levantan (desbloquearEscritura()).
+let _bloqueado=false,_copiaHecha=false;
+function escrituraBloqueada(){return _bloqueado;}
+function desbloquearEscritura(){_bloqueado=false;try{document.getElementById('me-bloqueo')?.remove();}catch(e){}}
+function sello(){const n=new Date(),p=x=>String(x).padStart(2,'0');return`${n.getFullYear()}${p(n.getMonth()+1)}${p(n.getDate())}-${p(n.getHours())}${p(n.getMinutes())}`;}
+function avisoBloqueo(){
+  try{
+    if(!document.body||document.getElementById('me-bloqueo'))return;
+    const el=document.createElement('div');el.id='me-bloqueo';
+    el.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#c0392b;color:#fff;font:bold 13px/1.4 monospace;padding:10px 14px;text-align:center';
+    el.textContent='⚠ Datos dañados — escrituras bloqueadas. Restaurá un backup desde Config';
+    document.body.prepend(el);
+  }catch(e){}
 }
-function sd(d){try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){if(e.name==='QuotaExceededError'||e.code===22)sN('⚠ Storage LLENO — exportá un backup JSON y borrá meses viejos desde Configuración',true);else sN('Error al guardar',true);}}
+function ld(){
+  let r=null;
+  try{r=localStorage.getItem(SK);if(r)return JSON.parse(r);}
+  catch(e){
+    if(r){
+      _bloqueado=true;
+      if(!_copiaHecha){_copiaHecha=true;try{localStorage.setItem(SK+'_corrupt_'+sello(),r);}catch(e2){/* sin espacio: se sigue igual */}}
+      avisoBloqueo();
+    }
+  }
+  return VACIO();
+}
+function sd(d){
+  if(_bloqueado){sN('⚠ Escrituras bloqueadas: datos dañados. Restaurá un backup desde Config',true);return false;}
+  try{localStorage.setItem(SK,JSON.stringify(d));return true;}
+  catch(e){if(e.name==='QuotaExceededError'||e.code===22)sN('⚠ Storage LLENO — exportá un backup JSON y borrá meses viejos desde Configuración',true);else sN('Error al guardar',true);return false;}
+}
 function gO(){return ld().orders||[];}
 function gOConf(){return gO().filter(o=>o.estado!=='pendiente');}
 function gE(){return ld().egresos||[];}
@@ -243,7 +267,8 @@ function restoreBackupPayload(data){
   delete data._apariencia;delete data._theme;delete data._version;delete data._savedAt;delete data._meta;
   delete data._exportedAt;
 
-  sd(data);
+  desbloquearEscritura(); // restaurar es una de las dos salidas del modo protegido
+  if(!sd(data))throw new Error('No se pudo guardar el backup restaurado (¿storage lleno?)');
   try{window.loadConfig?.();}catch(e){}
   try{window.buildTicketUI?.();}catch(e){}
   try{window.upd?.();}catch(e){}
@@ -1165,7 +1190,7 @@ function abrirEditarLista(lid){
       }
     }
     d.listasPrecios=listas;
-    sd(d); // un solo write: lista + productos + log
+    if(!sd(d))return; // un solo write: lista + productos + log (si falla, el modal queda abierto)
     if(!esNueva){window.loadConfig?.();window.buildTicketUI?.();window.upd?.();}
     window.clM?.();renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();
     window.renderPriceTerminal?.();window.renderPriceLog?.();window.renderCalcStatus?.();
@@ -1871,7 +1896,7 @@ function applyPriceAdjustment({listaIds,pct,redondeo=0,motivo='',productos=[]}){
   };
   d.listasPrecios=listas;
   d.priceLog.push(entry);
-  sd(d); // atomic: listas + productos + priceLog en un solo write
+  if(!sd(d))return{ok:false}; // atomic: listas + productos + priceLog en un solo write
 
   // Refresh live config so ticket engine uses new prices immediately
   window.loadConfig?.();
@@ -2277,7 +2302,7 @@ function restoreFromPriceLog(entryId){
     scope:entry.scope,
     cambios:cambiosRestore
   });
-  sd(data);
+  if(!sd(data))return;
   window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
   renderPriceTerminal();
   renderPriceLog();
@@ -2416,7 +2441,7 @@ function renderPriceTerminal(){
 
 // ===== modules/egresos.js =====
 
-function sE(e){const d=ld();if(!d.egresos)d.egresos=[];d.egresos.push(e);sd(d);}
+function sE(e){const d=ld();if(!d.egresos)d.egresos=[];d.egresos.push(e);return sd(d);}
 
 function updEgreso(){
   const monto=parseFloat(document.getElementById('e-monto').value)||0;const cuotas=Math.max(1,parseInt(document.getElementById('e-cuotas').value)||1);
@@ -2439,7 +2464,7 @@ function generarEgreso(){
   tk+=`\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -${fv(impacto)}`;
   if(cuotasN>1)tk+=`\nCuotas restantes: ${resta}\nFinaliza: ${finaliza}`;else tk+=`\nFinaliza: ${addMon(mes,0)}`;
   const egreso={id,fecha,fechaDisplay:fd,mesActual:mes,concepto,montoTotal:monto,cuotaBase:base,ultimaCuota:ultima,impactoCaja:impacto,cuotasTotales:cuotasN,cuotasRestantes:resta,finaliza,medio,obs:obs||null,ticketText:tk};
-  sE(egreso);window.rfM?.();rEH();rES();window.renderDash?.();document.getElementById('e-tkOut').textContent=tk;document.getElementById('e-outA').style.display='block';document.getElementById('e-outA').scrollIntoView({behavior:'smooth'});sN(`✓ ${id} registrado`);window.uhd?.();
+  if(!sE(egreso))return;window.rfM?.();rEH();rES();window.renderDash?.();document.getElementById('e-tkOut').textContent=tk;document.getElementById('e-outA').style.display='block';document.getElementById('e-outA').scrollIntoView({behavior:'smooth'});sN(`✓ ${id} registrado`);window.uhd?.();
 }
 
 function limpiarEgr(){['e-concepto','e-monto','e-obs'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('e-fecha').value=hoy();document.getElementById('e-cuotas').value='1';document.getElementById('e-preview').style.display='none';document.getElementById('e-outA').style.display='none';}
@@ -2776,13 +2801,15 @@ function renderMPImportModal() {
 
 let showTotalsRow = false;
 
-function sO(o){const d=ld();d.orders.push(o);sd(d);window.updateClientesDatalist?.();}
+function sO(o){const d=ld();d.orders.push(o);const ok=sd(d);window.updateClientesDatalist?.();return ok;}
 
 function confirmarOrden(id){
-  const d=ld();const o=(d.orders||[]).find(x=>x.id===id);if(!o)return;
+  const d=ld();const o=(d.orders||[]).find(x=>x.id===id);if(!o)return false;
   o.estado='confirmada';o.fechaConfirmacion=new Date().toISOString();
-  sd(d);window.rfM?.();rH();rS();window.renderDash?.();window.renderDashFlowChart?.();window.uhd?.();
+  if(!sd(d))return false;
+  window.rfM?.();rH();rS();window.renderDash?.();window.renderDashFlowChart?.();window.uhd?.();
   sN('✓ '+id+' — CONFIRMADA');
+  return true;
 }
 
 function anularByIdModal(){window.showInputModal?.('🟢 Anular Venta por ID','ID de la venta (ej: V-202603-0001):',true,'uppercase',function(raw){if(!raw)return;const id=raw.toUpperCase();const o=gO().find(x=>x.id===id);if(!o){sN(`${id} no encontrado`,true);return;}if(!confirm(`¿Anular ${id}?\n${o.fechaDisplay} — ${fv(o.totales?.totalGeneral||0)}`))return;dO(id);window.rfM?.();rH();rS();window.renderDash?.();sN(`${id} anulada`);window.uhd?.();window.clM?.();});}
@@ -3145,7 +3172,8 @@ function saveEditVenta(id){
   o.totales={...o.totales,totalGeneral:nuevoTotal,totalUSDT:payment.total_usdt,payment};
   const costo=o.costo||0;
   o.margen=nuevoTotal>0?parseFloat(((nuevoTotal-costo)/nuevoTotal*100).toFixed(1)):0;
-  sd(d);window.rfM?.();rH();rS();window.renderDash?.();window.clM?.();sN(`✓ ${id} actualizada`);window.uhd?.();window.updateClientesDatalist?.();
+  if(!sd(d))return; // no se guardó: el modal queda abierto con lo editado
+  window.rfM?.();rH();rS();window.renderDash?.();window.clM?.();sN(`✓ ${id} actualizada`);window.uhd?.();window.updateClientesDatalist?.();
   delete window._editLineas;
 }
 
@@ -3573,18 +3601,18 @@ function registrarIngreso(){
   const id=newIngresoId();
   const ts=new Date().toISOString();
 
-  // Crear lote
-  const lotes=getLotes();
-  if(!lotes[prod])lotes[prod]=[];
+  // Lote + ingreso en un solo sd(): si falla, no queda un lote sin su ingreso
+  const d=ld();
+  if(!d.lotes)d.lotes={};
+  if(!d.lotes[prod])d.lotes[prod]=[];
   const loteId=id+'-L1';
-  lotes[prod].push({id:loteId,ingreso_id:id,fecha:ts,qty_inicial:qty,qty_restante:qty,
+  d.lotes[prod].push({id:loteId,ingreso_id:id,fecha:ts,qty_inicial:qty,qty_restante:qty,
     costo_unitario:costo,proveedor:prov,nota});
-  saveLotes(lotes);
-
-  // Guardar ingreso
   const ing={id,fecha:ts,fecha_display:d2s(fecha)+' '+ts.substring(11,16),
     prod_id:prod,qty,costo_unitario:costo,total:qty*costo,proveedor:prov,nota,lote_id:loteId};
-  saveIngreso(ing);
+  if(!d.ingresos)d.ingresos=[];
+  d.ingresos.push(ing);
+  if(!sd(d))return;
 
   // Mov
   addStockMov({fecha:ts,tipo:'S-TICKET',prodId:prod,
@@ -7027,7 +7055,7 @@ function generarTicket(){
   const clienteId=autoRegistrarContacto(cliente,fecha);
   const tcOrden=tipoPago==='ARS'?1:(payment.tc_usd||payment.tc_usdt||null);
   const tcUsdtOrden=payment.tc_usdt||1;
-  sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'});
+  if(!sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'}))return; // no se guardó: no descontar stock ni mostrar éxito (el formulario queda lleno)
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
@@ -7055,7 +7083,7 @@ function generarTicket(){
 function confirmarDesdeOutput(){
   const id=document.getElementById('outA')?.dataset.currentId;
   if(!id){sN('Sin orden activa',true);return;}
-  confirmarOrden(id);
+  if(!confirmarOrden(id))return;
   // Update output UI to confirmed state
   const badge=document.getElementById('outA-estado-badge');
   const confirmBtn=document.getElementById('outA-confirmar-btn');
@@ -7601,6 +7629,7 @@ function hardReset(){
   if(!confirm(msg))return;
   expJSON();
   present.forEach(x=>{try{localStorage.removeItem(x.k);}catch(e){}});
+  desbloquearEscritura(); // hard reset es la otra salida del modo protegido
   sN('✓ Reset completo. Recargando...');
   setTimeout(()=>{location.href=location.pathname+'?v='+Date.now();},1500);
 }
