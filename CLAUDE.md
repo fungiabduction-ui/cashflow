@@ -159,7 +159,7 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 ├── core/
 │   ├── constants.js    ← DPT, DCT, DHT, DGP, DPP, DCOSTS, DEFAULT_PRODUCTS, DEFAULT_LISTAS_PRECIOS
 │   ├── storage.js      ← ld(), sd(), gO(), gOConf(), gE(), gInv(), gLiqExterna() y deletes
-│   ├── ids.js          ← nId(), nEId(), newIngresoId(), invNuevoId()
+│   ├── ids.js          ← nId(), nEId(), newIngresoId(), invNuevoId(), newPriceLogId(log)
 │   ├── formatters.js   ← fi(), fv(), fu(), hoy(), d2s(), d2m(), mL(), mLong(), pn(), gtr(), parseDate()
 │   └── config.js       ← PT, CT, HT, GP, PP, COSTS (live bindings) + loadConfig() + initConfigDeps()
 │
@@ -179,12 +179,20 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 │   ├── stock.js        ← getLotes(), saveLotes(), getCostoPromedio(), getActualQty(), getStockStatus()
 │   ├── productos.js    ← getProductos(), saveProductos(), guardarProductoModal(), updateClientesDatalist()
 │   ├── listas-precios.js ← getListasPrecios(), getTramosProducto(), renderListasPrecios()
-│   ├── price-manager.js ← applyPriceAdjustment(), previewAjuste(), validarAjuste(), getPriceLog(),
+│   ├── price-manager.js ← applyPriceAdjustment({listaIds,pct,redondeo,motivo,productos}), previewAjuste(listaIds,pct,r),
+│   │                      validarAjuste(listaIds,pct,r), ajustarPrecio(p,pct,r), agruparProductosPorLista(),
+│   │                      pctSugerido(), calcSyncStatus(), renderCalcStatus(), getPriceLog(),
 │   │                      buildPreciosJson(), ghSyncCalc(), renderPriceAdjust(), renderPriceLog(),
-│   │                      restoreFromPriceLog(entryId) — aplica before[] de una entrada del log
-│   │                      Log en d.priceLog dentro de motoredge_v4 (append-only, IDs PCH-AAAAMM-NNN, Math.trunc)
+│   │                      restoreFromPriceLog(entryId) — aplica before[] de una entrada del log (un solo sd())
+│   │                      Panel por producto: los que comparten lista se tildan juntos; APLICAR exige previsualizar
+│   │                      con los mismos parámetros; después, modal para sincronizar la calculadora.
+│   │                      Redondeo: r=0 → Math.trunc (como siempre); r=100/500/1000 → Math.round(x/r)*r
+│   │                      Log en d.priceLog dentro de motoredge_v4 (append-only, sin borrado, IDs PCH-AAAAMM-NNN)
 │   │                      Cada entrada tiene tc (tipo de cambio al momento del ajuste, desde window._blueARS)
-│   │                      ghSyncCalc() pushea precios.json a fungiabduction-ui/calculadora
+│   │                      ghSyncCalc() pushea precios.json a fungiabduction-ui/calculadora y guarda su payload
+│   │                      renderCalcStatus(): punto "calculadora desactualizada" en tab Inventario y sub-tab Lista
+│   │                      de Precios + banner. Se llama al iniciar, al aplicar/restaurar, al sincronizar, al editar/
+│   │                      eliminar listas, al cambiar asignaciones (tabla o modal de producto) y al restaurar backup.
 │   ├── settings.js     ← renderSettings(), guardarPrecios(), resetPrecios()
 │   ├── contactos.js    ← normNombre(), autoRegistrarContacto(), mostrarMigracionContactos(),
 │   │                     ejecutarMigracionContactos(), renderContactos(), abrirContacto()
@@ -235,13 +243,19 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
   stockSeedDone: bool, // Flag one-shot. Si se pierde, seedStockInicial() duplica el stock.
   contactos: [],       // Directorio de clientes. Ver ContactRecord abajo.
   contactosMigDone: bool, // Flag one-shot. Si se pierde, mostrarMigracionContactos() es idempotente.
-  priceLog: [],        // Log de cambios de precios (auditoría). Append-only.
+  priceLog: [],        // Log de cambios de precios (auditoría). Append-only: no hay borrado de entradas.
                        // Migrado desde 'me_price_log' (clave legada) al primer getPriceLog().
-                       // IDs PCH-AAAAMM-NNN (Math.max). Restaurable con restoreFromPriceLog(entryId).
+                       // IDs PCH-AAAAMM-NNN (newPriceLogId(log), Math.max). Restaurable con restoreFromPriceLog(entryId).
                        // Cada entrada: { id, ts, tc, motivo, tipo, valor, scope, cambios }.
-                       // Tipos: 'pct' (ajuste %), 'restore' (revert), 'sync' (calc pública).
+                       // scope: 'all' | [listaIds] (entradas viejas: 'all' o un listaId suelto).
+                       // Tipos: 'pct' (ajuste %), 'restore' (revert), 'sync' (calc pública),
+                       //        'edit' (edición manual de una lista en el editor; motivo "Edición manual").
+                       // 'pct' suma productos:[{id,nombre,emoji}] y redondeo (0|100|500|1000).
+                       // 'sync' suma payload: el precios.json publicado sin 'updated' (base del aviso
+                       //        "calculadora desactualizada"; syncs viejas sin payload → "sin verificar").
                        // cambios[]: { listaId, listaNombre, before:[{t,p}], after:[{t,p}] }.
-                       // 'before' es suficiente para revertir cualquier ajuste.
+                       // 'before' es suficiente para revertir cualquier ajuste. En 'edit' before/after
+                       // pueden tener distinta cantidad de tramos.
 }
 ```
 
@@ -379,7 +393,7 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
 
 9c. **`o.totales` puede ser undefined en órdenes legacy**: SIEMPRE usar optional chaining `o.totales?.totalGeneral` y `o.totales?.costoTotal`. Acceso directo `o.totales.campo` crashea silenciosamente en `renderInvDist()` / `buildSmartDefaults()` / `calcDistBase()` e impide que `invRenderHistorial()` se ejecute. Mismo patrón en `dashboard.js`. En `renderInvAll()` cada función está envuelta en try-catch individual para que un crash parcial no bloquee el resto.
 
-10. **Orden de inicialización** (en `main.js`, al final): `initConfigDeps()` → `loadConfig()` → `seedStockInicial()` → `ghInit()` → tema/apariencia → `buildTicketUI()` → `upd()` → `rfM()` → `uhd()` → `setInterval` → `setupDelegation()` → `setupDrop()`.
+10. **Orden de inicialización** (en `main.js`, al final): `initConfigDeps()` → `loadConfig()` → `seedStockInicial()` → `ghInit()` → tema/apariencia → `buildTicketUI()` → `upd()` → `rfM()` → `uhd()` → `setInterval` → `setupDelegation()` → `setupDrop()` → `renderCalcStatus()` (solo lectura: aviso de calculadora).
 
 11. **`descontarStockPorTicket(lineas)`**: decrementa DOS sistemas en paralelo. Primero `consumirStock(key, qty)` (lotes FIFO). Luego `stock[key] = Math.max(0, stock[key]-qty)` (stock plano). **NUNCA** usar `getActualQty()` para calcular el valor post-descuento del plano — los lotes pueden estar inflados y sobreescribirían el plano correcto.
 
@@ -433,8 +447,9 @@ backup     ←── storage
 github     ←── storage, notif, backup
 apariencia ←── notif
 stock      ←── storage, notif
-listas-precios ←── storage, notif, constants, formatters, stock
+listas-precios ←── storage, notif, constants, formatters, stock, ids
 productos  ←── storage, notif, constants, formatters, listas-precios
+price-manager ←── storage, notif, formatters, ids, listas-precios, productos, stock, github
 egresos    ←── storage, notif, formatters, ids, github
 ventas     ←── storage, notif, formatters, ids, github, productos
 inventario ←── storage, notif, formatters, productos, stock, ids, config, listas-precios
@@ -510,6 +525,11 @@ loadConfig();
 2. Correr build.bat  → regenera bundle.js
 3. Recargar index.html en el navegador
 ```
+
+### Tests
+
+`node --test "tests/**/*.test.mjs"` (Node 24, sin npm). `tests/helpers/env.mjs` instala `localStorage` en memoria y
+stubs de `window`/`document` antes de importar los módulos: los tests nunca tocan datos del navegador.
 
 ### Con servidor (para usar ES Modules directamente)
 

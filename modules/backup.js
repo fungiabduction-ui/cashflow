@@ -98,5 +98,6 @@ export function restoreBackupPayload(data){
   try{window.uhd?.();}catch(e){}
   try{window.renderPriceTerminal?.();}catch(e){}
   try{window.renderPriceLog?.();}catch(e){}
+  try{window.renderCalcStatus?.();}catch(e){}
   return (data.orders||[]).length;
 }

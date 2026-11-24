@@ -436,6 +436,7 @@ export function guardarProductoModal(){
   }
   saveProductos(prods);window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
   window.renderProductosRegistrados?.();window.renderInvStock?.();window.renderSettings?.();window.clM?.();
+  window.renderCalcStatus?.();
   sN(`✓ ${nombre} guardado`);
 }
 

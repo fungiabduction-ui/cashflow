@@ -121,6 +121,13 @@ function invNuevoId(mes){
   return 'I-'+mes+'-'+String(max+1).padStart(4,'0');
 }
 
+// Log de precios: PCH-AAAAMM-NNN, Math.max sobre el mes (mes UTC, como siempre). Puro: recibe el log.
+function newPriceLogId(log){
+  const mes=new Date().toISOString().slice(0,7).replace('-','');
+  const nums=(log||[]).filter(e=>e.id&&e.id.startsWith('PCH-'+mes)).map(e=>parseInt(e.id.split('-')[2])||0);
+  return`PCH-${mes}-${(Math.max(0,...nums)+1).toString().padStart(3,'0')}`;
+}
+
 
 // ===== core/config.js =====
 
@@ -254,6 +261,7 @@ function restoreBackupPayload(data){
   try{window.uhd?.();}catch(e){}
   try{window.renderPriceTerminal?.();}catch(e){}
   try{window.renderPriceLog?.();}catch(e){}
+  try{window.renderCalcStatus?.();}catch(e){}
   return (data.orders||[]).length;
 }
 
@@ -1007,7 +1015,7 @@ function renderAsignacionPrecios(){
     window.saveProductos?.(prods);window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
     const msg=document.getElementById('asig-msg');
     if(msg){msg.textContent='✓ Guardado';setTimeout(()=>msg.textContent='',2000);}
-    renderAsignacionPrecios();window.renderWAText?.();sN('✓ Asignaciones guardadas');
+    renderAsignacionPrecios();window.renderWAText?.();window.renderCalcStatus?.();sN('✓ Asignaciones guardadas');
   };
 }
 
@@ -1135,22 +1143,33 @@ function abrirEditarLista(lid){
     const nombre=document.getElementById('el-nombre').value.trim();
     if(!nombre){sN('El nombre es requerido',true);return;}
     if(!tramos.length){sN('Agregá al menos un tramo',true);return;}
+    const d=ld();
     const listas=getListasPrecios();
+    const nuevos=tramos.map(t=>({...t}));
     if(esNueva){
       const newId=newListaId();
-      listas.push({id:newId,nombre,tramos:tramos.map(t=>({...t}))});
+      listas.push({id:newId,nombre,tramos:nuevos});
     } else {
       const idx=listas.findIndex(l=>l.id===lid);
-      if(idx>=0)listas[idx]={id:lid,nombre,tramos:tramos.map(t=>({...t}))};
-    }
-    saveListasPrecios(listas);
-    // Sincronizar tramos a productos que usan esta lista
-    if(!esNueva){
+      if(idx>=0)listas[idx]={id:lid,nombre,tramos:nuevos};
+      // Sincronizar tramos a productos que usan esta lista
       const prods=window.getProductos?.()||[];
-      prods.forEach(p=>{if(p.listaPrecioId===lid){p.tramos=tramos.map(t=>({...t}));}});
-      window.saveProductos?.(prods);window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
+      prods.forEach(p=>{if(p.listaPrecioId===lid){p.tramos=nuevos.map(t=>({...t}));}});
+      d.productos=prods;
+      // Tramos cambiados → entrada 'edit' en el log de precios (append-only)
+      if(JSON.stringify(nuevos)!==tramosInicialJSON){
+        if(!Array.isArray(d.priceLog))d.priceLog=[];
+        d.priceLog.push({id:newPriceLogId(d.priceLog),ts:new Date().toISOString(),tipo:'edit',motivo:'Edición manual',
+          valor:null,scope:[lid],tc:window._blueARS||null,
+          cambios:[{listaId:lid,listaNombre:nombre,before:JSON.parse(tramosInicialJSON),after:nuevos.map(t=>({...t}))}]});
+      }
     }
-    window.clM?.();renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();sN('✓ Lista '+(esNueva?'creada':'actualizada'));
+    d.listasPrecios=listas;
+    sd(d); // un solo write: lista + productos + log
+    if(!esNueva){window.loadConfig?.();window.buildTicketUI?.();window.upd?.();}
+    window.clM?.();renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();
+    window.renderPriceTerminal?.();window.renderPriceLog?.();window.renderCalcStatus?.();
+    sN('✓ Lista '+(esNueva?'creada':'actualizada'));
   };
   document.getElementById('modal').classList.add('open');
 }
@@ -1166,7 +1185,7 @@ function eliminarLista(lid){
   }
   const listas=getListasPrecios().filter(l=>l.id!==lid);
   saveListasPrecios(listas);
-  renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();sN('Lista eliminada');
+  renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();window.renderCalcStatus?.();sN('Lista eliminada');
 }
 
 // ── renderInvPrecios mantiene compatibilidad (ya no se usa en sub-stock) ──
@@ -1645,6 +1664,7 @@ function guardarProductoModal(){
   }
   saveProductos(prods);window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
   window.renderProductosRegistrados?.();window.renderInvStock?.();window.renderSettings?.();window.clM?.();
+  window.renderCalcStatus?.();
   sN(`✓ ${nombre} guardado`);
 }
 
@@ -1760,49 +1780,54 @@ function getPriceLog(){
   return d.priceLog;
 }
 function savePriceLog(log){const d=ld();d.priceLog=log;sd(d);}
-function newPriceLogId(){
-  const mes=new Date().toISOString().slice(0,7).replace('-','');
-  const log=getPriceLog();
-  const del_mes=log.filter(e=>e.id.startsWith('PCH-'+mes));
-  const nums=del_mes.map(e=>parseInt(e.id.split('-')[2])||0);
-  const n=(Math.max(0,...nums)+1).toString().padStart(3,'0');
-  return `PCH-${mes}-${n}`;
-}
 
 // ── MATH ──
-// Math.trunc: 22785 * 1.10 = 25063.5 → 25063. Never rounds up.
-function ajustarPrecio(p,pct){return Math.trunc(p*(1+pct/100));}
-function calcNuevosTramos(tramos,pct){return tramos.map(t=>({t:t.t,p:ajustarPrecio(t.p,pct)}));}
+// Redondeo r=0: Math.trunc, nunca sube (22785 × 1.10 = 25063.5 → 25063).
+// r>0 ($100 / $500 / $1.000): al múltiplo de r más cercano.
+function ajustarPrecio(p,pct,r=0){const x=p*(1+pct/100);return r?Math.round(x/r)*r:Math.trunc(x);}
+function calcNuevosTramos(tramos,pct,r){return tramos.map(t=>({t:t.t,p:ajustarPrecio(t.p,pct,r)}));}
+// "Desde" de los tramos que quedan con el mismo precio que el anterior (pasa al redondear)
+function tramosRepetidos(tramos){return tramos.filter((t,i)=>i>0&&t.p===tramos[i-1].p).map(t=>t.t);}
+
+// Productos activos agrupados por lista: los que comparten lista se ajustan juntos.
+function agruparProductosPorLista(){
+  const listas=getListasPrecios();
+  const grupos=[],sinLista=[];
+  getProductos().filter(p=>p.activo!==false).forEach(p=>{
+    const lista=p.listaPrecioId?listas.find(l=>l.id===p.listaPrecioId):null;
+    if(!lista){sinLista.push(p);return;}
+    let g=grupos.find(x=>x.listaId===lista.id);
+    if(!g){g={listaId:lista.id,listaNombre:lista.nombre,productos:[]};grupos.push(g);}
+    g.productos.push(p);
+  });
+  return{grupos,sinLista};
+}
 
 // ── VALIDATION ──
-function validarAjuste(scope,pct){
-  if(!pct||pct===0)return'El porcentaje debe ser distinto de cero';
-  const todas=getListasPrecios();
-  const listas=scope==='all'?todas:todas.filter(l=>l.id===scope);
-  for(const lista of listas){
+function validarAjuste(listaIds,pct,r=0){
+  if(!listaIds?.length)return'Elegí al menos un producto';
+  if(!pct)return'El porcentaje debe ser distinto de cero';
+  for(const lista of getListasPrecios().filter(l=>listaIds.includes(l.id))){
     for(const t of lista.tramos||[]){
-      const nuevo=ajustarPrecio(t.p,pct);
-      if(nuevo<=0)return`El ajuste llevaría "${lista.nombre}" (tramo ≥${t.t}) a $${nuevo}. Reducí el porcentaje.`;
+      const nuevo=ajustarPrecio(t.p,pct,r);
+      if(nuevo<=0)return`El ajuste llevaría "${lista.nombre}" (tramo ≥${t.t}) a $${nuevo}. Reducí el porcentaje o el redondeo.`;
     }
   }
   return null;
 }
 
 // ── PREVIEW (no escribe nada) ──
-function previewAjuste(scope,pct){
-  const todas=getListasPrecios();
-  const listas=scope==='all'?todas:todas.filter(l=>l.id===scope);
-  return listas.map(lista=>({
-    listaId:lista.id,
-    listaNombre:lista.nombre,
+function previewAjuste(listaIds,pct,r=0){
+  return getListasPrecios().filter(l=>listaIds.includes(l.id)).map(lista=>({
+    listaId:lista.id,listaNombre:lista.nombre,
     before:lista.tramos.map(t=>({...t})),
-    after:calcNuevosTramos(lista.tramos,pct)
+    after:calcNuevosTramos(lista.tramos,pct,r)
   }));
 }
 
 // ── APPLY (una sola sd()) ──
-function applyPriceAdjustment(scope,pct,motivo){
-  const err=validarAjuste(scope,pct);
+function applyPriceAdjustment({listaIds,pct,redondeo=0,motivo='',productos=[]}){
+  const err=validarAjuste(listaIds,pct,redondeo);
   if(err){sN(err,true);return{ok:false};}
 
   const d=ld();
@@ -1810,9 +1835,9 @@ function applyPriceAdjustment(scope,pct,motivo){
   const cambios=[];
 
   listas.forEach(lista=>{
-    if(scope!=='all'&&lista.id!==scope)return;
+    if(!listaIds.includes(lista.id))return;
     const before=lista.tramos.map(t=>({...t}));
-    const after=calcNuevosTramos(lista.tramos,pct);
+    const after=calcNuevosTramos(lista.tramos,pct,redondeo);
     lista.tramos=after;
     cambios.push({listaId:lista.id,listaNombre:lista.nombre,before,after});
   });
@@ -1826,24 +1851,24 @@ function applyPriceAdjustment(scope,pct,motivo){
     }
   });
 
-  // Build log entry antes del sd() — newPriceLogId() lee el estado actual via ld()
-  const tc=window._blueARS||null;
-  const entry={
-    id:newPriceLogId(),
-    ts:new Date().toISOString(),
-    motivo:motivo||'',
-    tipo:'pct',
-    valor:pct,
-    scope,
-    tc,
-    cambios
-  };
   // Ensure d.priceLog existe (migration inline)
   if(!Array.isArray(d.priceLog)){
     try{const _r=localStorage.getItem('me_price_log');d.priceLog=_r?JSON.parse(_r):[];}
     catch(e){d.priceLog=[];}
     localStorage.removeItem('me_price_log');
   }
+  const entry={
+    id:newPriceLogId(d.priceLog),
+    ts:new Date().toISOString(),
+    motivo:motivo||'',
+    tipo:'pct',
+    valor:pct,
+    redondeo,
+    scope:listaIds.length>=listas.length?'all':[...listaIds],
+    productos:productos.map(p=>({id:p.id,nombre:p.nombre,emoji:p.emoji})),
+    tc:window._blueARS||null,
+    cambios
+  };
   d.listasPrecios=listas;
   d.priceLog.push(entry);
   sd(d); // atomic: listas + productos + priceLog en un solo write
@@ -1852,8 +1877,6 @@ function applyPriceAdjustment(scope,pct,motivo){
   window.loadConfig?.();
   window.buildTicketUI?.();
   window.upd?.();
-
-  sN(`✓ Precios actualizados — ${cambios.length} lista(s) · ${pct>0?'+':''}${pct}%`);
   return{ok:true,entry};
 }
 
@@ -1884,13 +1907,32 @@ function buildPreciosJson(){
   return out;
 }
 
+// Estado de la calculadora pública: compara lo que se publicaría hoy con el payload de la última sync.
+// 'ok' igual · 'stale' distinto · 'unverified' la última sync no guardó payload (o nunca hubo sync).
+function calcSyncStatus(){
+  const last=getPriceLog().filter(e=>e.tipo==='sync').at(-1);
+  if(!last?.payload)return'unverified';
+  const {updated,...actual}=buildPreciosJson();
+  return JSON.stringify(actual)===JSON.stringify(last.payload)?'ok':'stale';
+}
+
+// Entrada más reciente del log con TC que tocó alguna de estas listas (base del % sugerido)
+function ultimoAjusteConTc(listaIds){
+  return getPriceLog().slice().reverse().find(e=>e.tc&&(e.cambios||[]).some(c=>listaIds.includes(c.listaId)))||null;
+}
+function pctSugerido(listaIds,blue){
+  const e=blue?ultimoAjusteConTc(listaIds):null;
+  return e?{pct:Math.round((blue/e.tc-1)*1000)/10,tc:e.tc,ts:e.ts}:null;
+}
+
 async function ghSyncCalc(){
   const cfg=ghCfg();
   if(!cfg.token){sN('Configurá GitHub primero en el tab GitHub',true);return;}
   const btn=document.getElementById('btn-sync-calc');
   if(btn){btn.disabled=true;btn.textContent='↑ Sincronizando...';}
   try{
-    const json=JSON.stringify(buildPreciosJson(),null,2);
+    const pj=buildPreciosJson();
+    const json=JSON.stringify(pj,null,2);
     const encoded=safeB64Encode(json);
     const headers={'Authorization':'token '+cfg.token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
 
@@ -1909,9 +1951,12 @@ async function ghSyncCalc(){
       const now=new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
       localStorage.setItem(CALC_KEY,now);
       // Write sync event to unified log
-      const syncEntry={id:newPriceLogId(),ts:new Date().toISOString(),tipo:'sync',motivo:'Sync calculadora pública',repo:CALC_REPO,valor:null,scope:null,cambios:[]};
-      const sl=getPriceLog();sl.push(syncEntry);savePriceLog(sl);
-      renderSyncBanner();
+      // payload = el precios.json publicado sin 'updated': base del aviso "calculadora desactualizada"
+      const {updated,...payload}=pj;
+      const sl=getPriceLog();
+      sl.push({id:newPriceLogId(sl),ts:new Date().toISOString(),tipo:'sync',motivo:'Sync calculadora pública',repo:CALC_REPO,valor:null,scope:null,cambios:[],payload});
+      savePriceLog(sl);
+      renderCalcStatus();
       renderPriceTerminal();
       sN('✓ Calculadora sincronizada — precios.json actualizado');
     } else {
@@ -1929,49 +1974,147 @@ async function ghSyncCalc(){
 // fi() ya está disponible desde core/formatters.js en el bundle
 const escHtml=s=>s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';
 
+// Aviso "calculadora desactualizada": punto en el sub-tab Lista de Precios y en el tab Inventario + banner
+function renderCalcStatus(){
+  const stale=calcSyncStatus()==='stale';
+  [document.getElementById('isb-precios'),document.querySelector('.tab-btn[data-tab="inventario"]')].forEach(el=>{
+    if(!el)return;
+    let dot=el.querySelector('.calc-dot');
+    if(stale&&!dot){
+      dot=document.createElement('span');dot.className='calc-dot';dot.title='Calculadora desactualizada';
+      dot.style.cssText='display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--wn);margin-left:6px;vertical-align:middle';
+      el.appendChild(dot);
+    }
+    if(!stale&&dot)dot.remove();
+  });
+  renderSyncBanner();
+}
+
 function renderSyncBanner(){
   const el=document.getElementById('price-sync-banner');if(!el)return;
   const last=localStorage.getItem(CALC_KEY);
+  const st=calcSyncStatus();
+  const estado=st==='stale'?'<span style="color:var(--wn);font-weight:700">⚠ Calculadora desactualizada</span>'
+    :st==='ok'?'<span style="color:var(--ac)">✓ Calculadora al día</span>'
+    :'<span style="color:var(--tx3)">Estado sin verificar (se verifica desde la próxima sincronización)</span>';
   el.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--s1);border:1px solid var(--ac2)30;margin-bottom:12px">
     <div>
       <div style="font-family:var(--mo);font-size:9px;font-weight:700;color:var(--ac2);margin-bottom:3px">🔗 Calculadora Pública</div>
+      <div style="font-family:var(--mo);font-size:9px;margin-bottom:3px">${estado}</div>
       <div style="font-family:var(--mo);font-size:8px;color:var(--tx3)">${last?'Última sync: '+last+' · precios.json · <a href="'+CALC_URL+'" target="_blank" style="color:var(--ac2);text-decoration:none">'+CALC_REPO+'</a>':'Sin sync registrada en este dispositivo'}</div>
     </div>
     <button id="btn-sync-calc" class="btn btn-s" style="font-size:9px;height:32px;white-space:nowrap" onclick="ghSyncCalc()">↑ SINCRONIZAR CALCULADORA</button>
   </div>`;
 }
 
+// ── PANEL "CAMBIO DE PRECIOS" ──
+let _paSel=new Set();     // listas elegidas (por producto; las compartidas van juntas)
+let _paPreviewKey=null;   // parámetros de la última vista previa: APLICAR exige que coincidan
+let _blueFetch=null;      // una sola consulta del blue si no estaba cargado
+
+function paParams(){
+  const rawPct=parseFloat(document.getElementById('pa-pct')?.value||'0');
+  const tipo=parseInt(document.getElementById('pa-tipo')?.value||'1');
+  const redondeo=parseInt(document.getElementById('pa-redondeo')?.value||'0');
+  return{listaIds:[..._paSel],pct:rawPct*tipo,redondeo};
+}
+const paKey=p=>JSON.stringify([[...p.listaIds].sort(),p.pct,p.redondeo]);
+
+// Cualquier cambio de parámetros invalida la vista previa: hay que volver a previsualizar para aplicar
+function paInvalidar(){
+  _paPreviewKey=null;
+  const w=document.getElementById('pa-preview-wrap');if(w)w.style.display='none';
+  const b=document.getElementById('pa-apply');if(b){b.disabled=true;b.className='btn btn-s';}
+}
+function paSelTodos(on){
+  _paSel=new Set(on?agruparProductosPorLista().grupos.map(g=>g.listaId):[]);
+  renderPaProductos();paInvalidar();renderPaSugerido();
+}
+function paUsarSugerido(pct){
+  const p=document.getElementById('pa-pct'),t=document.getElementById('pa-tipo');
+  if(p)p.value=Math.abs(pct);
+  if(t)t.value=pct<0?'-1':'1';
+  paInvalidar();
+}
+
+function renderPaProductos(){
+  const el=document.getElementById('pa-prods');if(!el)return;
+  const {grupos,sinLista}=agruparProductosPorLista();
+  const CH='display:inline-flex;align-items:center;gap:6px;padding:6px 10px;font-family:var(--mo);font-size:10px;background:var(--bg)';
+  el.innerHTML=grupos.map(g=>{
+    const on=_paSel.has(g.listaId);
+    return`<button type="button" data-pa-lista="${escHtml(g.listaId)}" style="${CH};cursor:pointer;border:1px solid ${on?'var(--ac)':'var(--br)'};color:${on?'var(--ac)':'var(--tx2)'}">${on?'☑':'☐'} ${g.productos.map(p=>escHtml(p.emoji+' '+p.nombre)).join(' + ')}${g.productos.length>1?` <span style="font-size:8px;color:var(--tx3)">comparten ${escHtml(g.listaNombre)}</span>`:''}</button>`;
+  }).join('')+sinLista.map(p=>`<button type="button" disabled style="${CH};cursor:not-allowed;opacity:.5;border:1px dashed var(--br);color:var(--tx3)">☐ ${escHtml(p.emoji+' '+p.nombre)} <span style="font-size:8px">asigná una lista</span></button>`).join('');
+  el.onclick=e=>{
+    const b=e.target.closest('[data-pa-lista]');if(!b)return;
+    const id=b.getAttribute('data-pa-lista');
+    if(_paSel.has(id))_paSel.delete(id);else _paSel.add(id);
+    renderPaProductos();paInvalidar();renderPaSugerido();
+  };
+}
+
+// "% sugerido por dólar": blue actual vs TC del último ajuste de las listas elegidas. Sin datos previos: oculto.
+async function renderPaSugerido(){
+  const el=document.getElementById('pa-sug');if(!el)return;
+  if(!ultimoAjusteConTc([..._paSel])){el.innerHTML='';return;}
+  if(!window._blueARS){
+    el.innerHTML='<span style="color:var(--tx3)">consultando dólar blue…</span>';
+    _blueFetch=_blueFetch||Promise.resolve(window.actualizarPreciosDash?.()).catch(()=>{});
+    await _blueFetch;
+  }
+  const s=pctSugerido([..._paSel],window._blueARS);
+  if(!s){el.innerHTML='';return;}
+  const f=new Date(s.ts).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});
+  const txt=s.pct===0?'el blue no cambió':`el blue ${s.pct>0?'subió':'bajó'} ${Math.abs(s.pct)}%`;
+  el.innerHTML=`Desde el último ajuste de estas listas (${f}, TC $${fi(s.tc)}) ${txt}`
+    +(s.pct?` → <button type="button" class="pm-btn" style="font-size:8px;height:24px;padding:0 10px" onclick="paUsarSugerido(${s.pct})">usar ${Math.abs(s.pct)}%</button>`:'');
+}
+
 function renderPriceAdjust(){
   const cont=document.getElementById('inv-price-adjust-wrap');if(!cont)return;
-  const listas=getListasPrecios();
   const IS='background:var(--bg);border:1px solid var(--br);color:var(--tx);font-family:var(--mo);font-size:11px;padding:7px 10px;outline:none';
   const LB='font-family:var(--mo);font-size:8px;letter-spacing:.8px;color:var(--tx2);display:block;margin-bottom:4px;text-transform:uppercase';
-
-  let optsScope='<option value="all">▸ Todas las listas</option>';
-  listas.forEach(l=>{optsScope+=`<option value="${l.id}">${l.nombre}</option>`;});
+  const SB='font-size:8px;height:24px;padding:0 10px';
+  _paSel=new Set(agruparProductosPorLista().grupos.map(g=>g.listaId));
+  _paPreviewKey=null;
 
   cont.innerHTML=`<div id="price-sync-banner"></div>
   <div style="background:var(--s1);border:1px solid var(--br);padding:14px;margin-bottom:12px">
     <div style="font-family:var(--mo);font-size:9px;letter-spacing:1px;color:var(--ac);text-transform:uppercase;margin-bottom:12px">💸 Cambio de precios</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
-      <div><label style="${LB}">Alcance</label><select id="pa-scope" style="${IS};width:100%">${optsScope}</select></div>
+    <div style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <label style="${LB};margin:0">Productos</label>
+        <span style="display:flex;gap:6px"><button type="button" class="pm-btn" style="${SB}" onclick="paSelTodos(true)">Todos</button><button type="button" class="pm-btn" style="${SB}" onclick="paSelTodos(false)">Ninguno</button></span>
+      </div>
+      <div id="pa-prods" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px">
       <div><label style="${LB}">Variación %</label>
         <div style="display:flex">
-          <input type="number" id="pa-pct" value="10" step="0.1" style="${IS};flex:1;border-right:none" oninput="document.getElementById('pa-preview-wrap').style.display='none'">
+          <input type="number" id="pa-pct" value="10" step="0.1" style="${IS};flex:1;border-right:none;min-width:0" oninput="paInvalidar()">
           <div style="background:var(--s3);border:1px solid var(--br);border-left:none;padding:7px 10px;font-family:var(--mo);font-size:11px;color:var(--ac)">%</div>
         </div>
       </div>
       <div><label style="${LB}">Tipo</label>
-        <select id="pa-tipo" style="${IS};width:100%">
+        <select id="pa-tipo" style="${IS};width:100%" onchange="paInvalidar()">
           <option value="1">↑ Aumento</option>
           <option value="-1">↓ Descuento</option>
         </select>
       </div>
+      <div><label style="${LB}">Redondeo</label>
+        <select id="pa-redondeo" style="${IS};width:100%" onchange="paInvalidar()">
+          <option value="0">Sin redondeo</option>
+          <option value="100">$100</option>
+          <option value="500">$500</option>
+          <option value="1000">$1.000</option>
+        </select>
+      </div>
     </div>
+    <div id="pa-sug" style="font-family:var(--mo);font-size:9px;color:var(--tx2);margin-bottom:10px"></div>
     <div style="margin-bottom:12px"><label style="${LB}">Motivo (aparece en el log de auditoría)</label><input type="text" id="pa-motivo" placeholder="ej: Actualización junio 2026 · inflación +12%" style="${IS};width:100%"></div>
     <div style="display:flex;align-items:center;gap:8px">
       <button class="btn btn-s" onclick="renderPricePreview()" style="font-size:9px;height:32px">👁 PREVISUALIZAR</button>
-      <button class="btn btn-p" onclick="applyPriceFromUI()" style="font-size:9px;height:32px">✓ APLICAR CAMBIO</button>
+      <button id="pa-apply" class="btn btn-s" disabled onclick="applyPriceFromUI()" style="font-size:9px;height:32px" title="Previsualizá primero">✓ APLICAR CAMBIO</button>
     </div>
   </div>
   <div id="pa-preview-wrap" style="display:none"></div>
@@ -1983,24 +2126,30 @@ function renderPriceAdjust(){
     <div id="price-terminal" style="background:#0d1117;border:1px solid #21262d;padding:10px 14px;height:220px;overflow-y:auto;font-family:'Courier New',Courier,monospace;font-size:10px;line-height:1.7;color:#c9d1d9;box-sizing:border-box"><span style="color:#555">cargando...</span></div>
   </div>`;
 
+  renderPaProductos();
+  renderPaSugerido();
   renderSyncBanner();
   renderPriceTerminal();
 }
 
 function renderPricePreview(){
-  const scope=document.getElementById('pa-scope')?.value||'all';
-  const rawPct=parseFloat(document.getElementById('pa-pct')?.value||'0');
-  const tipo=parseInt(document.getElementById('pa-tipo')?.value||'1');
-  const pct=rawPct*tipo;
-  const err=validarAjuste(scope,pct);
+  const prm=paParams();
+  const err=validarAjuste(prm.listaIds,prm.pct,prm.redondeo);
   if(err){sN(err,true);return;}
-  const cambios=previewAjuste(scope,pct);
+  const cambios=previewAjuste(prm.listaIds,prm.pct,prm.redondeo);
+  const {grupos}=agruparProductosPorLista();
   const wrap=document.getElementById('pa-preview-wrap');if(!wrap)return;
 
   const fi2=n=>('$'+fi(n));
+  const mg=(precio,costo)=>{
+    if(!costo||!precio)return'<span style="color:var(--tx3)">—</span>';
+    const m=(precio-costo)/precio*100;
+    return`<span style="font-weight:700;color:${m>30?'var(--ac)':m>15?'var(--wn)':'var(--er)'}">${m.toFixed(1)}%</span>`;
+  };
+  const redTxt=prm.redondeo?' · redondeo '+fi2(prm.redondeo):'';
   let html=`<div style="background:var(--s1);border:1px solid var(--ac)30;margin-bottom:12px">
     <div style="background:var(--bg);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--br)">
-      <span style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac)">PREVIEW · ${scope==='all'?'Todas las listas':(cambios[0]?.listaNombre||scope)} · ${pct>0?'+':''}${pct}%</span>
+      <span style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac)">PREVIEW · ${cambios.length} lista(s) · ${prm.pct>0?'+':''}${prm.pct}%${redTxt}</span>
       <span style="font-family:var(--mo);font-size:8px;background:var(--ac)20;border:1px solid var(--ac)30;color:var(--ac);padding:2px 8px">ANTES DE CONFIRMAR</span>
     </div>
     <table style="width:100%;border-collapse:collapse">
@@ -2011,7 +2160,16 @@ function renderPricePreview(){
         <th style="font-family:var(--mo);font-size:7px;color:var(--tx3);letter-spacing:1px;padding:7px 12px;text-align:right;background:var(--bg);border-bottom:1px solid var(--br)">Δ</th>
       </tr></thead><tbody>`;
   cambios.forEach(c=>{
-    html+=`<tr><td colspan="4" style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac2);background:var(--s2);padding:5px 12px;border-bottom:1px solid var(--br)">${c.listaNombre}</td></tr>`;
+    html+=`<tr><td colspan="4" style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac2);background:var(--s2);padding:5px 12px;border-bottom:1px solid var(--br)">${escHtml(c.listaNombre)}</td></tr>`;
+    // Por producto: costo promedio y margen del tramo base actual → nuevo
+    (grupos.find(g=>g.listaId===c.listaId)?.productos||[]).forEach(p=>{
+      const costo=getCostoPromedio(p.id);
+      html+=`<tr><td colspan="4" style="font-family:var(--mo);font-size:9px;color:var(--tx2);padding:5px 12px;border-bottom:1px solid var(--s2)">${escHtml(p.emoji+' '+p.nombre)} · costo prom. ${costo?fi2(costo):'—'} · margen base ${mg(c.before[0]?.p,costo)} → ${mg(c.after[0]?.p,costo)}</td></tr>`;
+    });
+    const rep=tramosRepetidos(c.after);
+    if(rep.length){
+      html+=`<tr><td colspan="4" style="font-family:var(--mo);font-size:9px;color:var(--wn);padding:5px 12px;border-bottom:1px solid var(--s2)">⚠ Con este redondeo quedan con el mismo precio que el tramo anterior: ≥ ${rep.join(', ≥ ')}</td></tr>`;
+    }
     const maxRows=4;
     c.before.slice(0,maxRows).forEach((b,i)=>{
       const a=c.after[i];
@@ -2030,25 +2188,48 @@ function renderPricePreview(){
   html+='</tbody></table></div>';
   wrap.innerHTML=html;
   wrap.style.display='';
+  _paPreviewKey=paKey(prm);
+  const b=document.getElementById('pa-apply');if(b){b.disabled=false;b.className='btn btn-p';}
 }
 
 function applyPriceFromUI(){
-  const scope=document.getElementById('pa-scope')?.value||'all';
-  const rawPct=parseFloat(document.getElementById('pa-pct')?.value||'0');
-  const tipo=parseInt(document.getElementById('pa-tipo')?.value||'1');
-  const pct=rawPct*tipo;
+  const prm=paParams();
+  if(!_paPreviewKey||_paPreviewKey!==paKey(prm)){sN('Previsualizá el cambio antes de aplicarlo',true);return;}
   const motivo=(document.getElementById('pa-motivo')?.value||'').trim();
-  if(Math.abs(pct)>50&&!confirm(`Vas a aplicar un ajuste de ${pct>0?'+':''}${pct}%. ¿Confirmar?`))return;
-  const res=applyPriceAdjustment(scope,pct,motivo);
+  if(Math.abs(prm.pct)>50&&!confirm(`Vas a aplicar un ajuste de ${prm.pct>0?'+':''}${prm.pct}%. ¿Confirmar?`))return;
+  const productos=agruparProductosPorLista().grupos.filter(g=>prm.listaIds.includes(g.listaId)).flatMap(g=>g.productos);
+  const res=applyPriceAdjustment({...prm,motivo,productos});
   if(res.ok){
-    const wrap=document.getElementById('pa-preview-wrap');if(wrap)wrap.style.display='none';
+    paInvalidar();
     const mEl=document.getElementById('pa-motivo');if(mEl)mEl.value='';
     renderPriceTerminal();
     renderPriceLog();
     window.renderListasPrecios?.();
     window.renderAsignacionPrecios?.();
     window.renderWAText?.();
+    renderCalcStatus();
+    renderPaSugerido();
+    abrirModalSyncCalc(res.entry);
   }
+}
+
+// Después de aplicar: modal propio (no confirm()) para sincronizar la calculadora online
+function abrirModalSyncCalc(entry){
+  const n=entry.cambios.length;
+  const resumen=`✓ Precios actualizados (${entry.valor>0?'+':''}${entry.valor}% · ${n} lista${n===1?'':'s'}).`;
+  const tieneToken=!!ghCfg().token;
+  document.getElementById('mTitEl').textContent='💲 Precios actualizados';
+  document.getElementById('mTitEl').className='mtit';
+  document.getElementById('modalBox').className='modal';
+  document.getElementById('mTk').style.display='none';
+  document.getElementById('mBody').innerHTML=`<div style="font-family:var(--mo);font-size:11px;line-height:1.8">${resumen}<br>`
+    +(tieneToken?'¿Sincronizar la calculadora online ahora?'
+      :'Para sincronizar la calculadora online falta el token de GitHub: en ⚙️ Config → GitHub pegalo y tocá 🔑 Acceso. Después usá «↑ SINCRONIZAR CALCULADORA» en este panel.')
+    +'</div>';
+  document.getElementById('mFooter').innerHTML=tieneToken
+    ?'<button class="btn btn-p" onclick="clM();ghSyncCalc()">↑ Sincronizar ahora</button><button class="btn btn-s" onclick="clM()">Más tarde</button>'
+    :'<button class="btn btn-s" onclick="clM()">Entendido</button>';
+  document.getElementById('modal').classList.add('open');
 }
 
 function restoreFromPriceLog(entryId){
@@ -2084,27 +2265,33 @@ function restoreFromPriceLog(entryId){
     }
   });
   data.listasPrecios=listas;
-  sd(data);
-  window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
-  // Registrar la restauración en el log (append-only, trazabilidad completa)
-  const tc=window._blueARS||null;
-  const restoreEntry={
-    id:newPriceLogId(),
+  // Registrar la restauración en el log (append-only, trazabilidad completa) — mismo sd() que las listas
+  if(!Array.isArray(data.priceLog))data.priceLog=[];
+  data.priceLog.push({
+    id:newPriceLogId(data.priceLog),
     ts:new Date().toISOString(),
     tipo:'restore',
     motivo:'Restauración desde '+entryId,
     restoreFrom:entryId,
-    tc,
+    tc:window._blueARS||null,
     scope:entry.scope,
     cambios:cambiosRestore
-  };
-  const updLog=getPriceLog();updLog.push(restoreEntry);savePriceLog(updLog);
+  });
+  sd(data);
+  window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
   renderPriceTerminal();
   renderPriceLog();
   window.renderListasPrecios?.();
   window.renderAsignacionPrecios?.();
   window.renderWAText?.();
+  renderCalcStatus();
   sN('✓ Precios restaurados al estado anterior a '+entryId);
+}
+
+// Etiqueta de alcance: 'all' → todas; si no, los nombres de cambios[] (sirve para entradas viejas y nuevas)
+function etiquetaListas(e){
+  if(e.scope==='all')return'Todas las listas';
+  return(e.cambios||[]).map(c=>c.listaNombre).filter(Boolean).join(' · ')||(Array.isArray(e.scope)?e.scope.join(' · '):e.scope)||'—';
 }
 
 function renderPriceLog(){
@@ -2127,7 +2314,8 @@ function renderPriceLog(){
     if(entry.tipo==='pct'){const signo=entry.valor>0?'+':'';const col=entry.valor>0?'var(--ac)':'var(--er)';badge=`<div style="font-family:var(--mo);font-size:13px;font-weight:700;color:${col};text-align:right;white-space:nowrap">${signo}${entry.valor}%</div>`;}
     else if(entry.tipo==='restore'){badge='<div style="font-family:var(--mo);font-size:10px;font-weight:700;color:var(--ac2);white-space:nowrap">↩ REVERT</div>';}
     else if(entry.tipo==='sync'){badge='<div style="font-family:var(--mo);font-size:10px;font-weight:700;color:#58a6ff;white-space:nowrap">↑ SYNC</div>';}
-    const scopeLabel=entry.scope==='all'?'Todas las listas':(entry.cambios?.[0]?.listaNombre||entry.scope||'—');
+    else if(entry.tipo==='edit'){badge='<div style="font-family:var(--mo);font-size:10px;font-weight:700;color:var(--wn);white-space:nowrap">✏ EDIT</div>';}
+    const scopeLabel=escHtml(etiquetaListas(entry));
     const tramosTotal=(entry.cambios||[]).reduce((a,c)=>a+(c.before?.length||0),0);
     // Contenido expandido
     let detail='';
@@ -2136,15 +2324,17 @@ function renderPriceLog(){
     }else{
       const hasTC=!!entry.tc;
       const cambioRows=(entry.cambios||[]).map(c=>{
-        const rows=(c.before||[]).map((b,i)=>{const a=(c.after||[])[i]||b;const dt=a.p-b.p;return`<tr>
-          <td style="${tdS};color:var(--tx3)">≥ ${b.t}</td>
-          <td style="${tdS};color:var(--tx3);text-decoration:line-through;text-align:right">${fi2(b.p)}</td>
-          ${hasTC?`<td style="${tdS};color:var(--tx3);text-align:right">u$s${(b.p/entry.tc).toFixed(2)}</td>`:''}
-          <td style="${tdS};color:var(--ac);font-weight:700;text-align:right">${fi2(a.p)}</td>
-          ${hasTC?`<td style="${tdS};color:var(--ac2);text-align:right">u$s${(a.p/entry.tc).toFixed(2)}</td>`:''}
-          <td style="${tdS};color:${dt>=0?'var(--wn)':'var(--er)'};text-align:right">${dt>=0?'+':''}${fi2(dt)}</td>
+        const nT=Math.max(c.before?.length||0,c.after?.length||0);
+        const rows=Array.from({length:nT},(_,i)=>{const b=c.before?.[i],a=c.after?.[i];const dt=a&&b?a.p-b.p:null;
+          const tr=b&&a&&a.t!==b.t?`≥ ${b.t} → ≥ ${a.t}`:`≥ ${(b||a).t}`;return`<tr>
+          <td style="${tdS};color:var(--tx3)">${tr}</td>
+          <td style="${tdS};color:var(--tx3);text-decoration:line-through;text-align:right">${b?fi2(b.p):'—'}</td>
+          ${hasTC?`<td style="${tdS};color:var(--tx3);text-align:right">${b?'u$s'+(b.p/entry.tc).toFixed(2):'—'}</td>`:''}
+          <td style="${tdS};color:var(--ac);font-weight:700;text-align:right">${a?fi2(a.p):'—'}</td>
+          ${hasTC?`<td style="${tdS};color:var(--ac2);text-align:right">${a?'u$s'+(a.p/entry.tc).toFixed(2):'—'}</td>`:''}
+          <td style="${tdS};color:${dt===null?'var(--tx3)':dt>=0?'var(--wn)':'var(--er)'};text-align:right">${dt===null?(a?'nuevo':'quitado'):(dt>=0?'+':'')+fi2(dt)}</td>
         </tr>`;}).join('');
-        return`<div style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac2);padding:8px 0 4px">${c.listaNombre}</div>
+        return`<div style="font-family:var(--mo);font-size:8px;letter-spacing:1px;color:var(--ac2);padding:8px 0 4px">${escHtml(c.listaNombre||'')}</div>
         <table style="width:100%;border-collapse:collapse"><thead><tr>
           <th style="${thS};text-align:left">Tramo</th>
           <th style="${thS};text-align:right">Antes ARS</th>
@@ -2155,10 +2345,14 @@ function renderPriceLog(){
         </tr></thead><tbody>${rows}</tbody></table>`;
       }).join('');
       const tcNote=hasTC?`<div style="font-family:var(--mo);font-size:8px;color:var(--tx3);padding:2px 0 8px">TC al ajuste: <b style="color:var(--ac2)">$${fi(entry.tc)}</b> por u$s 1</div>`:'';
+      const extra=[
+        entry.productos?.length?'Productos: '+escHtml(entry.productos.map(p=>p.emoji+' '+p.nombre).join(', ')):'',
+        entry.redondeo?'Redondeo: '+fi2(entry.redondeo):''
+      ].filter(Boolean).map(t=>`<div style="font-family:var(--mo);font-size:8px;color:var(--tx3);padding:0 0 4px">${t}</div>`).join('');
       const footer=entry.tipo==='pct'
         ?`<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--s2)"><button onclick="restoreFromPriceLog('${entry.id}')" style="background:none;border:1px solid var(--ac2);color:var(--ac2);font-family:var(--mo);font-size:9px;padding:4px 14px;cursor:pointer">↩ Restaurar precios al estado anterior a este ajuste</button></div>`
         :(entry.restoreFrom?`<div style="margin-top:8px;font-family:var(--mo);font-size:8px;color:var(--tx3)">Restauración desde <span style="color:var(--ac2)">${escHtml(entry.restoreFrom)}</span></div>`:'');
-      detail=tcNote+cambioRows+footer;
+      detail=tcNote+extra+cambioRows+footer;
     }
     html+=`<div style="border-bottom:1px solid var(--s2)">
       <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:10px 14px;cursor:pointer" onclick="togglePriceLogEntry(${idx})">
@@ -2183,13 +2377,7 @@ function togglePriceLogEntry(idx){
   if(el)el.style.display=el.style.display==='none'?'':'none';
 }
 
-// ── TERMINAL ACTIVITY LOG ──
-function deletePriceLogEntry(id){
-  const log=getPriceLog().filter(e=>e.id!==id);
-  savePriceLog(log);
-  renderPriceTerminal();
-  renderPriceLog();
-}
+// ── TERMINAL ACTIVITY LOG (append-only: sin borrado) ──
 
 function renderPriceTerminal(){
   const cont=document.getElementById('price-terminal');if(!cont)return;
@@ -2198,26 +2386,28 @@ function renderPriceTerminal(){
     cont.innerHTML='<span style="color:#555">sin actividad registrada.</span>';
     return;
   }
-  const DEL=id=>`<span onclick="deletePriceLogEntry('${id}')" title="eliminar" style="color:#484f58;cursor:pointer;margin-left:10px;flex-shrink:0;user-select:none" onmouseover="this.style.color='#f85149'" onmouseout="this.style.color='#484f58'">×</span>`;
   const lines=log.map(e=>{
     const d=new Date(e.ts);
     const ts=d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+
               d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
     if(e.tipo==='sync'){
-      return `<div style="display:flex;justify-content:space-between;align-items:baseline"><span><span style="color:#484f58">[${ts}]</span> <span style="color:#58a6ff">SYNC ↑</span>  <span style="color:#8b949e">precios.json → ${escHtml(e.repo||CALC_REPO)}</span>  <span style="color:#3fb950">✓ OK</span>  <span style="color:#484f58">[${e.id}]</span></span>${DEL(e.id)}</div>`;
+      return `<div><span><span style="color:#484f58">[${ts}]</span> <span style="color:#58a6ff">SYNC ↑</span>  <span style="color:#8b949e">precios.json → ${escHtml(e.repo||CALC_REPO)}</span>  <span style="color:#3fb950">✓ OK</span>  <span style="color:#484f58">[${e.id}]</span></span></div>`;
     }
     if(e.tipo==='restore'){
-      const rscope=e.scope==='all'?'todas las listas':escHtml(e.cambios?.[0]?.listaNombre||e.scope||'');
+      const rscope=escHtml(etiquetaListas(e));
       const rmot=e.motivo?`  <span style="color:#e6edf3">"${escHtml(e.motivo)}"</span>`:'';
-      return `<div style="display:flex;justify-content:space-between;align-items:baseline"><span><span style="color:#484f58">[${ts}]</span> <span style="color:#d2a8ff;font-weight:700">↩ REVERT</span>  <span style="color:#8b949e">← ${escHtml(e.restoreFrom||'?')} · ${rscope}</span>${rmot}  <span style="color:#484f58">[${e.id}]</span></span>${DEL(e.id)}</div>`;
+      return `<div><span><span style="color:#484f58">[${ts}]</span> <span style="color:#d2a8ff;font-weight:700">↩ REVERT</span>  <span style="color:#8b949e">← ${escHtml(e.restoreFrom||'?')} · ${rscope}</span>${rmot}  <span style="color:#484f58">[${e.id}]</span></span></div>`;
+    }
+    const tramosTotal=(e.cambios||[]).reduce((a,c)=>a+(c.after?.length||0),0);
+    const mot=e.motivo?`  <span style="color:#e6edf3">"${escHtml(e.motivo)}"</span>`:'';
+    if(e.tipo==='edit'){
+      return `<div><span><span style="color:#484f58">[${ts}]</span> <span style="color:#e3b341;font-weight:700">✏ EDIT</span>  <span style="color:#8b949e">${escHtml(etiquetaListas(e))} · ${tramosTotal} tramo(s)</span>${mot}  <span style="color:#484f58">[${e.id}]</span></span></div>`;
     }
     const signo=e.valor>0?'+':'';
     const col=e.valor>0?'#3fb950':'#f85149';
     const tipo=e.valor>0?'AUMENTO':'DESCUENTO';
-    const tramosTotal=(e.cambios||[]).reduce((a,c)=>a+c.before.length,0);
-    const scope=e.scope==='all'?'todas las listas':escHtml(e.cambios[0]?.listaNombre||e.scope||'');
-    const mot=e.motivo?`  <span style="color:#e6edf3">"${escHtml(e.motivo)}"</span>`:'';
-    return `<div style="display:flex;justify-content:space-between;align-items:baseline"><span><span style="color:#484f58">[${ts}]</span> <span style="color:${col};font-weight:700">${signo}${e.valor}%</span> <span style="color:${col}">${tipo}</span>  <span style="color:#8b949e">${scope} · ${(e.cambios||[]).length} lista(s) · ${tramosTotal} tramo(s)</span>${mot}  <span style="color:#484f58">[${e.id}]</span></span>${DEL(e.id)}</div>`;
+    const scope=escHtml(etiquetaListas(e))+(e.redondeo?' · redondeo $'+fi(e.redondeo):'');
+    return `<div><span><span style="color:#484f58">[${ts}]</span> <span style="color:${col};font-weight:700">${signo}${e.valor}%</span> <span style="color:${col}">${tipo}</span>  <span style="color:#8b949e">${scope} · ${(e.cambios||[]).length} lista(s) · ${tramosTotal} tramo(s)</span>${mot}  <span style="color:#484f58">[${e.id}]</span></span></div>`;
   });
   cont.innerHTML=lines.join('');
   cont.scrollTop=cont.scrollHeight;
@@ -7687,6 +7877,7 @@ document.getElementById('fecha').value=hoy();document.getElementById('e-fecha').
 buildTicketUI();upd();rfM();uhd();setInterval(uhd,1000);
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)clM();});
 setupDelegation();setupDrop();
+renderCalcStatus(); // aviso "calculadora desactualizada" (solo lectura)
 
 // ── WINDOW EXPOSURE — required for HTML onclick/onchange handlers ──
 Object.assign(window, {
@@ -7744,9 +7935,9 @@ Object.assign(window, {
   renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort,
   mostrarMigracionContactos, ejecutarMigracionContactos,
   // price management
-  getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceTerminal, deletePriceLogEntry,
+  getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceTerminal,
   renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry,
-  restoreFromPriceLog,
+  restoreFromPriceLog, renderCalcStatus, paInvalidar, paSelTodos, paUsarSugerido,
   // tabs / ui
   showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange,
   // modals

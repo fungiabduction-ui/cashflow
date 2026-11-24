@@ -3,6 +3,7 @@ import { sN } from '../ui/notif.js';
 import { DEFAULT_LISTAS_PRECIOS } from '../core/constants.js';
 import { fi } from '../core/formatters.js';
 import { getCostoPromedio } from './stock.js';
+import { newPriceLogId } from '../core/ids.js';
 
 export function getListasPrecios(){
   const d=ld();
@@ -150,7 +151,7 @@ export function renderAsignacionPrecios(){
     window.saveProductos?.(prods);window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
     const msg=document.getElementById('asig-msg');
     if(msg){msg.textContent='✓ Guardado';setTimeout(()=>msg.textContent='',2000);}
-    renderAsignacionPrecios();window.renderWAText?.();sN('✓ Asignaciones guardadas');
+    renderAsignacionPrecios();window.renderWAText?.();window.renderCalcStatus?.();sN('✓ Asignaciones guardadas');
   };
 }
 
@@ -278,22 +279,33 @@ export function abrirEditarLista(lid){
     const nombre=document.getElementById('el-nombre').value.trim();
     if(!nombre){sN('El nombre es requerido',true);return;}
     if(!tramos.length){sN('Agregá al menos un tramo',true);return;}
+    const d=ld();
     const listas=getListasPrecios();
+    const nuevos=tramos.map(t=>({...t}));
     if(esNueva){
       const newId=newListaId();
-      listas.push({id:newId,nombre,tramos:tramos.map(t=>({...t}))});
+      listas.push({id:newId,nombre,tramos:nuevos});
     } else {
       const idx=listas.findIndex(l=>l.id===lid);
-      if(idx>=0)listas[idx]={id:lid,nombre,tramos:tramos.map(t=>({...t}))};
-    }
-    saveListasPrecios(listas);
-    // Sincronizar tramos a productos que usan esta lista
-    if(!esNueva){
+      if(idx>=0)listas[idx]={id:lid,nombre,tramos:nuevos};
+      // Sincronizar tramos a productos que usan esta lista
       const prods=window.getProductos?.()||[];
-      prods.forEach(p=>{if(p.listaPrecioId===lid){p.tramos=tramos.map(t=>({...t}));}});
-      window.saveProductos?.(prods);window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
+      prods.forEach(p=>{if(p.listaPrecioId===lid){p.tramos=nuevos.map(t=>({...t}));}});
+      d.productos=prods;
+      // Tramos cambiados → entrada 'edit' en el log de precios (append-only)
+      if(JSON.stringify(nuevos)!==tramosInicialJSON){
+        if(!Array.isArray(d.priceLog))d.priceLog=[];
+        d.priceLog.push({id:newPriceLogId(d.priceLog),ts:new Date().toISOString(),tipo:'edit',motivo:'Edición manual',
+          valor:null,scope:[lid],tc:window._blueARS||null,
+          cambios:[{listaId:lid,listaNombre:nombre,before:JSON.parse(tramosInicialJSON),after:nuevos.map(t=>({...t}))}]});
+      }
     }
-    window.clM?.();renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();sN('✓ Lista '+(esNueva?'creada':'actualizada'));
+    d.listasPrecios=listas;
+    sd(d); // un solo write: lista + productos + log
+    if(!esNueva){window.loadConfig?.();window.buildTicketUI?.();window.upd?.();}
+    window.clM?.();renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();
+    window.renderPriceTerminal?.();window.renderPriceLog?.();window.renderCalcStatus?.();
+    sN('✓ Lista '+(esNueva?'creada':'actualizada'));
   };
   document.getElementById('modal').classList.add('open');
 }
@@ -309,7 +321,7 @@ export function eliminarLista(lid){
   }
   const listas=getListasPrecios().filter(l=>l.id!==lid);
   saveListasPrecios(listas);
-  renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();sN('Lista eliminada');
+  renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();window.renderCalcStatus?.();sN('Lista eliminada');
 }
 
 // ── renderInvPrecios mantiene compatibilidad (ya no se usa en sub-stock) ──

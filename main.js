@@ -23,7 +23,7 @@ import { showInputModal, vTk, vEgr, clM, cpM } from './ui/modal.js';
 import { showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange } from './ui/tabs.js';
 import { normNombre, getContactos, getContactoById, getHistorialContacto, autoRegistrarContacto, guardarInfoContacto, renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort, mostrarMigracionContactos, ejecutarMigracionContactos } from './modules/contactos.js';
 import { setupDelegation, setupDrop, invSubTab, toggleStockGroup, onVariantInput } from './ui/delegacion.js';
-import { getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry, renderPriceTerminal, deletePriceLogEntry, restoreFromPriceLog } from './modules/price-manager.js';
+import { getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry, renderPriceTerminal, restoreFromPriceLog, renderCalcStatus, paInvalidar, paSelTodos, paUsarSugerido } from './modules/price-manager.js';
 // =====================================================================
 // MOTOR EDGE 3.8-E — Sistema dinámico de productos
 // =====================================================================
@@ -107,6 +107,7 @@ document.getElementById('fecha').value=hoy();document.getElementById('e-fecha').
 buildTicketUI();upd();rfM();uhd();setInterval(uhd,1000);
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)clM();});
 setupDelegation();setupDrop();
+renderCalcStatus(); // aviso "calculadora desactualizada" (solo lectura)
 
 // ── WINDOW EXPOSURE — required for HTML onclick/onchange handlers ──
 Object.assign(window, {
@@ -164,9 +165,9 @@ Object.assign(window, {
   renderContactos, abrirContacto, volverListaContactos, filtrarContactos, setCtSort,
   mostrarMigracionContactos, ejecutarMigracionContactos,
   // price management
-  getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceTerminal, deletePriceLogEntry,
+  getPriceLog, buildPreciosJson, ghSyncCalc, renderPriceTerminal,
   renderPriceAdjust, renderPricePreview, applyPriceFromUI, renderPriceLog, togglePriceLogEntry,
-  restoreFromPriceLog,
+  restoreFromPriceLog, renderCalcStatus, paInvalidar, paSelTodos, paUsarSugerido,
   // tabs / ui
   showTab, rfM, uhd, onVentasMesChange, onEgresosMesChange,
   // modals

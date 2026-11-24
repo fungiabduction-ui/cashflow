@@ -22,3 +22,10 @@ export function invNuevoId(mes){
   var max=Math.max.apply(null,del_mes.map(function(x){return parseInt(x.id.split('-')[2])||0;}));
   return 'I-'+mes+'-'+String(max+1).padStart(4,'0');
 }
+
+// Log de precios: PCH-AAAAMM-NNN, Math.max sobre el mes (mes UTC, como siempre). Puro: recibe el log.
+export function newPriceLogId(log){
+  const mes=new Date().toISOString().slice(0,7).replace('-','');
+  const nums=(log||[]).filter(e=>e.id&&e.id.startsWith('PCH-'+mes)).map(e=>parseInt(e.id.split('-')[2])||0);
+  return`PCH-${mes}-${(Math.max(0,...nums)+1).toString().padStart(3,'0')}`;
+}
