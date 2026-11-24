@@ -3,7 +3,7 @@ import { sN } from '../ui/notif.js';
 import { fv, fi, fu, pn, hoy, d2m, d2s, gtr } from '../core/formatters.js';
 import { PT, CT, HT, GP, PP, COSTS } from '../core/config.js';
 import { nId } from '../core/ids.js';
-import { sO, confirmarOrden } from './ventas.js';
+import { sO, confirmarOrden, buildTicketText, buildAuditText } from './ventas.js';
 import { getProductos } from './productos.js';
 import { getTramosProducto } from './listas-precios.js';
 import { descontarStockPorTicket, renderStockMiniPanel } from './inventario.js';
@@ -177,7 +177,7 @@ export function calc(){
           const r=gtr(tramos,qEval);if(r){precio=r.p;tramo=r.t;}
         }
         const subtotal=q*(precio||0);
-        lineas.push({emoji:prod.emoji,nombre:prod.nombre,qty:q,unit:prod.unit,precio,tramo,subtotal,prodId:prod.id,legacyKey:prod.legacyKey,qGrupo:gruposVol[prod.listaPrecioId]||q});
+        lineas.push({emoji:prod.emoji,nombre:prod.nombre,qty:q,unit:prod.unit,precio,tramo,subtotal,costo:q*(prod.costo||0),prodId:prod.id,legacyKey:prod.legacyKey,qGrupo:gruposVol[prod.listaPrecioId]||q});
         tot+=subtotal;
         if(prod.legacyKey)legacyMap[prod.legacyKey]={qty:q,precio,tramo,subtotal};
         costo+=q*(prod.costo||0);
@@ -302,39 +302,8 @@ export function generarTicket(){
 
   const payment=getPayment(totalFinal);
   const mes=d2m(fecha),id=nId(mes),fd=d2s(fecha);
-  // El cliente es dato interno: no va en el ticket que se copia (queda en o.cliente y en auditText)
-  let tk=`🧾 Orden de Venta: ${id}\n📅 Fecha: ${fd}`;
-  tk+=`\n\n🛒 Pedido\n\n`;
-  const lns=lineas.map(ln=>`${ln.emoji} ${ln.qty} ${ln.unit} × ${fv(ln.precio)} = ${fv(ln.subtotal)}`);
-  if(qV>0)lns.push(`💲 ${fv(qV)}`);
 
-  // Ajuste
-  const lineasAjTk=[];
-  if(ajuste.tipo==='libre'&&ajuste.libreTotal>0){lineasAjTk.push(`✏️ Total libre: ${fv(ajuste.libreTotal)}`);}
-  else{
-    if(ajuste.recargoPctMonto>0) lineasAjTk.push(`📈 Recargo ${ajuste.recargoPct}%: +${fv(ajuste.recargoPctMonto)}`);
-    if(ajuste.recargoFijoMonto>0) lineasAjTk.push(`📈 Recargo fijo: +${fv(ajuste.recargoFijoMonto)}`);
-    if(ajuste.descPctMonto>0)     lineasAjTk.push(`📉 Descuento ${ajuste.descPct}%: -${fv(ajuste.descPctMonto)}`);
-    if(ajuste.descFijoMonto>0)    lineasAjTk.push(`📉 Descuento fijo: -${fv(ajuste.descFijoMonto)}`);
-  }
-  let tkLineas=lns.join('\n');
-  if(lineasAjTk.length) tkLineas+=`\n\n${lineasAjTk.join('\n')}\n━━━━━━━━━━━━━━━━━━━━━`;
-  tk+=tkLineas+`\n\n💰 Total: ${fv(totalFinal)} ARS`;
-  if(ajuste.ajusteNeto!==0) tk+=`\n   (subtotal ${fv(tot)} ${ajuste.ajusteNeto>0?'+':'-'} ajuste ${fv(Math.abs(ajuste.ajusteNeto))})`;
-
-  // Equivalente en USD/USDT si no es ARS
-  if(tipoPago==='USD')  tk+=`\n💵 Total USD: ${fu(payment.usd)} (TC ${fi(payment.tc_usd)})`;
-  if(tipoPago==='USDT') tk+=`\n🔵 Total USDT: ${fu(payment.usdt)} (TC ${fi(payment.tc_usdt)})`;
-  if(tipoPago==='MIX'){
-    const parts=[];
-    if(payment.ars>0)  parts.push(`ARS ${fv(payment.ars)}`);
-    if(payment.usd>0)  parts.push(`USD ${fu(payment.usd)}`);
-    if(payment.usdt>0) parts.push(`USDT ${fu(payment.usdt)}`);
-    if(parts.length)   tk+=`\n💳 Pago: ${parts.join(' + ')}`;
-    if(payment.total_usdt!=null) tk+=` ≈ ${fu(payment.total_usdt)} USDT`;
-  }
-
-  // Nota
+  // Nota (el ajuste se suma a la nota)
   const notaAjParts=[];
   if(ajuste.tipo==='libre'&&ajuste.libreTotal>0) notaAjParts.push(`Total libre ${fv(ajuste.libreTotal)}`);
   else{
@@ -344,7 +313,6 @@ export function generarTicket(){
     if(ajuste.descFijo>0)    notaAjParts.push(`Dto fijo ${fv(ajuste.descFijo)}`);
   }
   const notaFinal=[nota, notaAjParts.join(' | ')].filter(Boolean).join(' | ');
-  if(notaFinal)tk+=`\n📝 Nota: ${notaFinal}`;
 
   const lm=legacyMap;
   const productos={
@@ -356,7 +324,7 @@ export function generarTicket(){
     goteros:lm.goteros?.qty||0,totalGoteros:lm.goteros?.subtotal||0,
     petri:lm.petri?.qty||0,totalPetri:lm.petri?.subtotal||0,
     variable:qV,
-    _lineas:lineas.map(l=>({prodId:l.prodId,varId:l.varId||null,nombre:l.nombre||'',emoji:l.emoji||'',qty:l.qty,precio:l.precio,subtotal:l.subtotal}))
+    _lineas:lineas.map(l=>({prodId:l.prodId,varId:l.varId||null,nombre:l.nombre||'',emoji:l.emoji||'',qty:l.qty,precio:l.precio,subtotal:l.subtotal,costo:l.costo}))
   };
   const totales={
     totalPastillasLinea:productos.totalPastillasLinea,totalCristales:productos.totalCristales,
@@ -367,7 +335,6 @@ export function generarTicket(){
     payment  // ← objeto completo {ars,usd,usdt,tc,total_ars,total_usdt,modo}
   };
   const margen=totalFinal>0?parseFloat(((totalFinal-costo)/totalFinal*100).toFixed(1)):0;
-  const aud=`--- AUDITORÍA ---\nSubtotal: ${fv(tot)} | Ajuste: ${ajuste.ajusteNeto>=0?'+':''}${fv(ajuste.ajusteNeto)} | Total: ${fv(totalFinal)} | Pago: ${payment.modo} | Costo: ${fv(costo)} | Margen: ${margen}% | ID: ${id}${cliente?` | Cliente: ${cliente}`:''}`;
 
   // Oversell: detectar líneas que superan el stock disponible ANTES de descontar.
   // No se mezcla con tk (texto que se copia al cliente) — se muestra aparte, junto
@@ -378,12 +345,15 @@ export function generarTicket(){
   const clienteId=autoRegistrarContacto(cliente,fecha);
   const tcOrden=tipoPago==='ARS'?1:(payment.tc_usd||payment.tc_usdt||null);
   const tcUsdtOrden=payment.tc_usdt||1;
-  if(!sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'}))return; // no se guardó: no descontar stock ni mostrar éxito (el formulario queda lleno)
+  // El cliente es dato interno: no va en el ticket que se copia (queda en o.cliente y en auditText)
+  const o={id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,estado:'pendiente'};
+  o.ticketText=buildTicketText(o);o.auditText=buildAuditText(o);
+  if(!sO(o))return; // no se guardó: no descontar stock ni mostrar éxito (el formulario queda lleno)
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
-  document.getElementById('tkOut').textContent=tk;
-  document.getElementById('audOut').textContent=aud;
+  document.getElementById('tkOut').textContent=o.ticketText;
+  document.getElementById('audOut').textContent=o.auditText;
   const stockWarnEl=document.getElementById('tkStockWarn');
   if(stockWarnEl){stockWarnEl.style.display=stockWarnMsg?'block':'none';stockWarnEl.textContent=stockWarnMsg;}
   document.getElementById('outA').style.display='block';

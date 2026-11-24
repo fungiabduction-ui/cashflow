@@ -171,6 +171,47 @@ export function bO(id){if(!confirm(`¿Eliminar venta ${id}?`))return;dO(id);wind
 
 export function confirLimpiar(){if(!confirm('¿Eliminar TODO el historial de ventas?'))return;const d=ld();d.orders=[];sd(d);window.rfM?.();rH();rS();window.renderDash?.();sN('Historial eliminado');window.uhd?.();}
 
+// ── Texto del ticket y de auditoría a partir de la orden: los usan generarTicket() y la edición ──
+// El cliente no va en el ticket (dato interno): queda en o.cliente y en la auditoría.
+export function buildTicketText(o){
+  const p=o.productos||{},t=o.totales||{},aj=o.ajuste||{ajusteNeto:t.ajusteNeto||0},pm=o.payment||{};
+  const prods=getProductos();
+  const unidad=l=>prods.find(x=>x.id===(l.varId||l.prodId))?.unit||'ud';
+  const total=t.totalGeneral||0;
+  let tk=`🧾 Orden de Venta: ${o.id}\n📅 Fecha: ${o.fechaDisplay}`;
+  tk+=`\n\n🛒 Pedido\n\n`;
+  const lns=(p._lineas||[]).filter(l=>l.prodId!=='__var').map(l=>`${l.emoji} ${l.qty} ${unidad(l)} × ${fv(l.precio)} = ${fv(l.subtotal)}`);
+  if(p.variable>0)lns.push(`💲 ${fv(p.variable)}`);
+  const ajTk=[];
+  if(aj.tipo==='libre'&&aj.libreTotal>0)ajTk.push(`✏️ Total libre: ${fv(aj.libreTotal)}`);
+  else{
+    if(aj.recargoPctMonto>0)ajTk.push(`📈 Recargo ${aj.recargoPct}%: +${fv(aj.recargoPctMonto)}`);
+    if(aj.recargoFijoMonto>0)ajTk.push(`📈 Recargo fijo: +${fv(aj.recargoFijoMonto)}`);
+    if(aj.descPctMonto>0)ajTk.push(`📉 Descuento ${aj.descPct}%: -${fv(aj.descPctMonto)}`);
+    if(aj.descFijoMonto>0)ajTk.push(`📉 Descuento fijo: -${fv(aj.descFijoMonto)}`);
+  }
+  let tkLineas=lns.join('\n');
+  if(ajTk.length)tkLineas+=`\n\n${ajTk.join('\n')}\n━━━━━━━━━━━━━━━━━━━━━`;
+  tk+=tkLineas+`\n\n💰 Total: ${fv(total)} ARS`;
+  if(aj.ajusteNeto)tk+=`\n   (subtotal ${fv(t.subtotalBruto??total)} ${aj.ajusteNeto>0?'+':'-'} ajuste ${fv(Math.abs(aj.ajusteNeto))})`;
+  if(o.tipoPago==='USD')tk+=`\n💵 Total USD: ${fu(pm.usd||0)} (TC ${fi(pm.tc_usd||0)})`;
+  if(o.tipoPago==='USDT')tk+=`\n🔵 Total USDT: ${fu(pm.usdt||0)} (TC ${fi(pm.tc_usdt||0)})`;
+  if(o.tipoPago==='MIX'){
+    const parts=[];
+    if(pm.ars>0)parts.push(`ARS ${fv(pm.ars)}`);
+    if(pm.usd>0)parts.push(`USD ${fu(pm.usd)}`);
+    if(pm.usdt>0)parts.push(`USDT ${fu(pm.usdt)}`);
+    if(parts.length)tk+=`\n💳 Pago: ${parts.join(' + ')}`;
+    if(pm.total_usdt!=null)tk+=` ≈ ${fu(pm.total_usdt)} USDT`;
+  }
+  if(o.nota)tk+=`\n📝 Nota: ${o.nota}`;
+  return tk;
+}
+export function buildAuditText(o){
+  const t=o.totales||{},total=t.totalGeneral||0,aj=t.ajusteNeto??o.ajuste?.ajusteNeto??0;
+  return`--- AUDITORÍA ---\nSubtotal: ${fv(t.subtotalBruto??total)} | Ajuste: ${aj>=0?'+':''}${fv(aj)} | Total: ${fv(total)} | Pago: ${o.payment?.modo||o.tipoPago||'ARS'} | Costo: ${fv(o.costo||0)} | Margen: ${o.margen}% | ID: ${o.id}${o.cliente?` | Cliente: ${o.cliente}`:''}`;
+}
+
 export function openEditVenta(id){
   const d=ld();const o=d.orders.find(x=>x.id===id);if(!o)return;
   const pm=o.payment||{ars:o.totales?.totalGeneral||0,usd:0,usdt:o.totales?.totalUSDT||0,tc_usd:0,tc_usdt:o.tc||0,modo:o.tipoPago||'ARS'};
