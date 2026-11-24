@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Hook anti-filtracion de MotorEdge. Activar una vez por clon:
+#   git config core.hooksPath .githooks
+# Rechaza el commit si en staging hay: .json/.csv/.xlsx/.pdf, un token de GitHub, o un archivo > 1 MB.
+shopt -s nocasematch
+max=1048576
+fail=0
+while IFS= read -r -d '' f; do
+  case "$f" in
+    *.json|*.csv|*.xlsx|*.pdf)
+      echo "BLOQUEADO: $f -> el repo no versiona .json/.csv/.xlsx/.pdf (posibles datos financieros)" >&2
+      fail=1
+      continue ;;
+  esac
+  size=$(git cat-file -s ":$f")
+  if [ "$size" -gt "$max" ]; then
+    echo "BLOQUEADO: $f -> pesa $size bytes (maximo 1 MB)" >&2
+    fail=1
+  fi
+  if git cat-file -p ":$f" | grep -qE 'gh[pousr]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}'; then
+    echo "BLOQUEADO: $f -> contiene un token de GitHub" >&2
+    fail=1
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACMR -z)
+if [ "$fail" -ne 0 ]; then
+  echo "Commit rechazado por .githooks/pre-commit. Saca esos archivos del staging: git reset -- <archivo>" >&2
+  exit 1
+fi
+exit 0
