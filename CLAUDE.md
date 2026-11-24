@@ -40,7 +40,10 @@ Primero auditar arquitectura e invariantes existentes (leer el módulo real, no 
 | `fungiabduction-ui/motoredge-data` | 🔒 Privado | `backups/` — backups manuales con fecha, nunca se pisan (ver invariante #8). `datos.json` es legacy: quedó huérfano ahí desde antes del refactor de ago/2026, nada lo lee ni lo escribe más — no reintroducir un flujo que vuelva a usarlo. |
 | `fungiabduction-ui/calculadora` | 🌍 Público | Calculadora pública (GitHub Pages). Recibe `precios.json` via `ghSyncCalc()` desde MotorEdge. |
 
-**`datos.json` y `backups/` están en `.gitignore` del repo `cashflow`.** No los agregues nunca al repo público.
+**`datos.json`, `backups/`, `BACKUPS DATA/`, `MP/`, `backup_*.json`, `*.xlsx`, `*.csv`, `*.pdf` están en `.gitignore`
+del repo `cashflow`.** No los agregues nunca al repo público. Los datos sueltos viejos están archivados fuera del repo,
+en `C:\Users\JET\Desktop\MOTOREDGE-ARCHIVO\`. Además el hook `.githooks/pre-commit` rechaza cualquier commit con
+`.json/.csv/.xlsx/.pdf`, tokens de GitHub (`ghp_…`, `github_pat_…`) o archivos de más de 1 MB.
 
 **NUNCA hacer commits con datos financieros en `cashflow`.** Si aparece `datos.json` o cualquier archivo dentro de `backups/` en `git status`, ignorarlo — está correctamente excluido por `.gitignore`.
 
@@ -71,35 +74,36 @@ git fetch origin main
 git log HEAD..origin/main --oneline   # commits en remoto que no están en local
 git log origin/main..HEAD --oneline   # commits en local que no están en remoto
 ```
-La rama local se llama `clean-main`, el remoto es `origin/main`. Verificado en sync al 2026-06-20 (commit `5a4c5bf`).
+La rama local es `main` con upstream `origin/main` (desde 2026-11-24; `clean-main` ya no existe).
 
 ### Workflow para agentes que hacen cambios en código fuente
 
 ```powershell
-# 1. Leer token
-$TOKEN = (Get-Content "token github.txt" -Raw).Trim()
-
-# 2. Editar archivos fuente en core/, modules/, ui/, styles/
-
-# 3. Regenerar bundle
-.\build.bat
-
-# 4. Commit y push
-git add .
-git commit -m "descripción del cambio"
-git push "https://$TOKEN@github.com/fungiabduction-ui/cashflow.git" main
+# 1. Editar archivos fuente en core/, modules/, ui/, styles/
+# 2. Probar (serve.bat, con una copia de los datos importada en localhost:7432)
+# 3. Subir — build, tests, commit SOLO de rutas de código, push:
+.\deploy.bat                                   # pregunta el mensaje
+# o, desde un agente (sin preguntar):
+powershell -NoProfile -ExecutionPolicy Bypass -File .\deploy.ps1 -Mensaje "descripción del cambio"
 ```
+
+**Nunca `git add .` ni `git add -A`** (hay datos financieros en la carpeta de trabajo de otros flujos) y nunca
+`--no-verify`. `deploy.ps1` agrega solo: `core modules ui styles main.js index.html bundle.js build.ps1 build.bat
+serve.bat CALCULADORA/index.html docs CLAUDE.md .gitignore .githooks tests run-tests.bat deploy.ps1 deploy.bat`.
+Si un archivo nuevo de código vive en otra ruta, agregarla a esa lista. El push usa el remoto `origin`, cuya URL ya
+lleva el token (al rotarlo: `git remote set-url origin "https://<TOKEN>@github.com/fungiabduction-ui/cashflow.git"`).
 
 Si el repo local no está inicializado (primera vez en una máquina nueva):
 ```powershell
-$TOKEN = (Get-Content "token github.txt" -Raw).Trim()
+$TOKEN = (Get-Content "token github.txt")[1].Trim()
 git init
 git config user.email "jetdatalog@gmail.com"
 git config user.name "JET"
 git remote add origin "https://$TOKEN@github.com/fungiabduction-ui/cashflow.git"
 git fetch origin main
 git checkout -b main --track origin/main
-# Ya tenés el código fuente descargado. Editá y hacé push normalmente.
+git config core.hooksPath .githooks   # activa el hook anti-filtración (obligatorio)
+# Ya tenés el código fuente descargado. Editá y subí con deploy.bat.
 ```
 
 ### PIN gate de la app
@@ -154,7 +158,10 @@ Datos reales de producción en `localStorage['motoredge_v4']`. Un error silencio
 ├── main.js             ← Entry point: 23 imports + init block + window exposure
 ├── bundle.js           ← Generado por build.bat (NO editar directamente)
 ├── build.bat           ← Regenera bundle.js desde los módulos fuente
-├── serve.bat           ← Servidor local Python en puerto 8080
+├── serve.bat           ← Servidor local Python en puerto 7432
+├── deploy.bat          ← Doble clic: llama a deploy.ps1 (build → tests → commit de código → push)
+├── deploy.ps1          ← Único camino para subir cambios. Nunca git add .
+├── .githooks/pre-commit← Hook anti-filtración (activar: git config core.hooksPath .githooks)
 │
 ├── core/
 │   ├── constants.js    ← DPT, DCT, DHT, DGP, DPP, DCOSTS, DEFAULT_PRODUCTS, DEFAULT_LISTAS_PRECIOS
@@ -534,7 +541,7 @@ stubs de `window`/`document` antes de importar los módulos: los tests nunca toc
 ### Con servidor (para usar ES Modules directamente)
 
 ```
-1. Correr serve.bat  → abre http://localhost:8080
+1. Correr serve.bat  → abre http://localhost:7432
 2. Editar archivos
 3. Recargar el navegador
    (no hace falta build.bat en este modo)
@@ -624,3 +631,5 @@ Llama a `build.ps1` que:
 - No usar `getActualQty()` en `descontarStockPorTicket()` para calcular el valor post-descuento del plano
 - No eliminar ni hacer force push que borre la carpeta `backups/` del repo GitHub
 - No usar conteo (`length + 1`) para generar IDs — siempre `Math.max` sobre IDs existentes del mes
+- No usar `git add .` / `git add -A` ni `git commit --no-verify` — subir siempre con `deploy.bat`
+- No desactivar ni relajar `.githooks/pre-commit` (ver invariante #19)
