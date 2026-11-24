@@ -1,4 +1,4 @@
-import { ld, sd } from '../core/storage.js';
+import { ld, sd, desbloquearEscritura } from '../core/storage.js';
 
 // ── PAYLOAD ──
 // Arma el objeto único de respaldo: motoredge_v4 completo + las claves satélite
@@ -80,7 +80,8 @@ export function restoreBackupPayload(data){
   delete data._apariencia;delete data._theme;delete data._version;delete data._savedAt;delete data._meta;
   delete data._exportedAt;
 
-  sd(data);
+  desbloquearEscritura(); // restaurar es una de las dos salidas del modo protegido
+  if(!sd(data))throw new Error('No se pudo guardar el backup restaurado (¿storage lleno?)');
   try{window.loadConfig?.();}catch(e){}
   try{window.buildTicketUI?.();}catch(e){}
   try{window.upd?.();}catch(e){}

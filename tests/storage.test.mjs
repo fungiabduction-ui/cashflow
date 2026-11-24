@@ -36,3 +36,19 @@ test('desbloquearEscritura() levanta el bloqueo', ()=>{
   assert.equal(sd({orders:[],egresos:[]}),true);
   assert.deepEqual(leer().orders,[]);
 });
+
+import { restoreBackupPayload } from '../modules/backup.js';
+test('restoreBackupPayload levanta el bloqueo y guarda', ()=>{
+  globalThis.__store.clear();globalThis.__store.set('motoredge_v4','{roto');
+  ld();assert.equal(escrituraBloqueada(),true);
+  assert.equal(restoreBackupPayload({orders:[{id:'V-202611-0001'}],egresos:[],priceLog:[]}),1);
+  assert.equal(escrituraBloqueada(),false);
+  assert.equal(leer().orders[0].id,'V-202611-0001');
+});
+test('restoreBackupPayload lanza si el guardado falla (no informa éxito)', ()=>{
+  resetStorage({orders:[],egresos:[]});
+  const orig=localStorage.setItem;
+  localStorage.setItem=(k,v)=>{if(k==='motoredge_v4'){const e=new Error('lleno');e.name='QuotaExceededError';throw e;}orig(k,v);};
+  try{assert.throws(()=>restoreBackupPayload({orders:[{id:'V-1'}],egresos:[],priceLog:[]}),/No se pudo guardar/);}
+  finally{localStorage.setItem=orig;}
+});

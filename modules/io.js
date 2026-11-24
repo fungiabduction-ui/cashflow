@@ -1,4 +1,4 @@
-import { ld, sd, gO, gOConf, gE, gInv, gLiqExterna } from '../core/storage.js';
+import { ld, sd, gO, gOConf, gE, gInv, gLiqExterna, desbloquearEscritura } from '../core/storage.js';
 import { buildBackupPayload, restoreBackupPayload } from './backup.js';
 import { sN } from '../ui/notif.js';
 import { fv, fi, hoy, d2s, d2m, parseDate, pn, trunc } from '../core/formatters.js';
@@ -530,6 +530,7 @@ export function hardReset(){
   if(!confirm(msg))return;
   expJSON();
   present.forEach(x=>{try{localStorage.removeItem(x.k);}catch(e){}});
+  desbloquearEscritura(); // hard reset es la otra salida del modo protegido
   sN('✓ Reset completo. Recargando...');
   setTimeout(()=>{location.href=location.pathname+'?v='+Date.now();},1500);
 }
