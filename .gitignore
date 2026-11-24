@@ -13,3 +13,18 @@ secrets*
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Datos financieros sueltos — viven en C:\Users\JET\Desktop\MOTOREDGE-ARCHIVO, nunca acá
+BACKUPS DATA/
+MP/
+backup_*.json
+*backup*.json
+*.xlsx
+*.csv
+*.pdf
+
+# Copias viejas y restos de herramientas
+OLD*/
+* - copia/
+.superpowers/
+.kilo/
