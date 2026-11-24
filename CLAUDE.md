@@ -275,6 +275,8 @@ Acceso SOLO via `ld()` (load) y `sd(d)` (save). Nunca `localStorage` directo par
 - `me_theme` — 'light' | 'dark' | 'modern'. ✅ En todos los backups.
 - `me_gh_last_push` — timestamp del último push. **No se respalda** (dato de dispositivo).
 - `me_gh_calc_last` — timestamp del último sync con calculadora. **No se respalda** (dato de dispositivo).
+- `motoredge_v4_corrupt_<AAAAMMDD-HHMM>` — copia del texto crudo de un `motoredge_v4` que no parseó (modo protegido,
+  invariante #1). **No se respalda** ni se borra sola (tampoco con `hardReset()`): sirve para rescatar datos a mano.
 - `me_price_log` — **CLAVE LEGADA. Ya no se usa.** Migrada a `d.priceLog` dentro de `motoredge_v4` al primer `getPriceLog()`. Se elimina automáticamente al migrar. `hardReset()` la limpia si aún existe en sesiones viejas.
 
 **Flujos de backup — cobertura completa:**
@@ -378,7 +380,16 @@ Las órdenes nuevas tienen `clienteId`. Las históricas sin `clienteId` se resue
 
 ## Invariantes críticos — NUNCA violar
 
-1. **`ld()` / `sd(d)`**: únicas funciones para leer/escribir `motoredge_v4`. `ld()` detecta JSON corrupto con setTimeout y notifica al usuario. Nunca silenciar ese error.
+1. **`ld()` / `sd(d)`**: únicas funciones para leer/escribir `motoredge_v4`.
+   **Modo protegido:** si `ld()` no puede parsear, copia el texto crudo (una vez por carga) a
+   `motoredge_v4_corrupt_<AAAAMMDD-HHMM>` (si no hay espacio, sigue igual), bloquea toda escritura y muestra un aviso
+   fijo (`#me-bloqueo`). Con el bloqueo, `sd()` no escribe y devuelve `false`. Solo `restoreBackupPayload()` y
+   `hardReset()` lo levantan (`desbloquearEscritura()`). Clave inexistente no es corrupción. Nunca silenciar ni
+   saltear el bloqueo.
+   **`sd()` devuelve `true`/`false`** y da el mensaje de error él mismo. `generarTicket` (no descuenta stock),
+   `confirmarOrden`, `saveEditVenta`, `generarEgreso`, `registrarIngreso` (lote + ingreso en un solo `sd()`),
+   `applyPriceAdjustment`, `restoreFromPriceLog`, el editor de listas y `restoreBackupPayload` (lanza) cortan si es
+   `false`. Un flujo nuevo que guarda debe chequearlo antes de efectos secundarios y de mostrar "✓".
 
 2. **IDs inmutables**: `V-AAAAMM-NNNN` (ventas), `E-AAAAMM-NNNN` (egresos), `ING-AAAAMM-NNNN` (ingresos), `I-AAAAMM-NNNN` (inversiones). Nunca regenerar IDs existentes. Todos los generadores usan `Math.max` sobre IDs del mismo mes — NO conteo, el conteo rompe tras eliminaciones.
 
@@ -535,7 +546,7 @@ loadConfig();
 
 ### Tests
 
-`node --test "tests/**/*.test.mjs"` (Node 24, sin npm). `tests/helpers/env.mjs` instala `localStorage` en memoria y
+`run-tests.bat` o `node --test "tests/**/*.test.mjs"` (Node 24, sin npm). `deploy.ps1` aborta si fallan. `tests/helpers/env.mjs` instala `localStorage` en memoria y
 stubs de `window`/`document` antes de importar los módulos: los tests nunca tocan datos del navegador.
 
 ### Con servidor (para usar ES Modules directamente)
@@ -566,7 +577,8 @@ Llama a `build.ps1` que:
 | Función | Módulo | Qué hace |
 |---|---|---|
 | `ld()` | core/storage | Lee motoredge_v4 de localStorage |
-| `sd(d)` | core/storage | Guarda motoredge_v4 en localStorage |
+| `sd(d)` | core/storage | Guarda motoredge_v4; devuelve true/false (false también en modo protegido) |
+| `escrituraBloqueada()` / `desbloquearEscritura()` | core/storage | Estado / salida del modo protegido (invariante #1) |
 | `gO()` | core/storage | Todas las órdenes (incluyendo pendientes) |
 | `gOConf()` | core/storage | Solo órdenes confirmadas (para finanzas) |
 | `gE()` | core/storage | Todos los egresos |
