@@ -1,6 +1,7 @@
 // tests/helpers/env.mjs — importar ANTES que cualquier módulo fuente.
 // localStorage en memoria y stubs mínimos de window/document: los tests nunca tocan datos del navegador.
 const store=new Map();
+globalThis.__store=store;
 const ls={
   getItem:k=>store.has(k)?store.get(k):null,
   setItem:(k,v)=>{store.set(k,String(v));},
