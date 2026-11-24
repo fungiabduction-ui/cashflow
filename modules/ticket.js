@@ -378,7 +378,7 @@ export function generarTicket(){
   const clienteId=autoRegistrarContacto(cliente,fecha);
   const tcOrden=tipoPago==='ARS'?1:(payment.tc_usd||payment.tc_usdt||null);
   const tcUsdtOrden=payment.tc_usdt||1;
-  sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'});
+  if(!sO({id,fecha,fechaDisplay:fd,mesActual:mes,tipoPago,tc:tcOrden,tcUsdt:tcUsdtOrden,payment,nota:notaFinal||null,cliente:cliente||null,clienteId:clienteId||null,productos,totales,costo,margen,ajuste,ticketText:tk,auditText:aud,estado:'pendiente'}))return; // no se guardó: no descontar stock ni mostrar éxito (el formulario queda lleno)
   descontarStockPorTicket(lineas);
   updStockHints();
   window.rfM?.();
@@ -406,7 +406,7 @@ export function generarTicket(){
 export function confirmarDesdeOutput(){
   const id=document.getElementById('outA')?.dataset.currentId;
   if(!id){sN('Sin orden activa',true);return;}
-  confirmarOrden(id);
+  if(!confirmarOrden(id))return;
   // Update output UI to confirmed state
   const badge=document.getElementById('outA-estado-badge');
   const confirmBtn=document.getElementById('outA-confirmar-btn');

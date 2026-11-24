@@ -112,7 +112,7 @@ export function applyPriceAdjustment({listaIds,pct,redondeo=0,motivo='',producto
   };
   d.listasPrecios=listas;
   d.priceLog.push(entry);
-  sd(d); // atomic: listas + productos + priceLog en un solo write
+  if(!sd(d))return{ok:false}; // atomic: listas + productos + priceLog en un solo write
 
   // Refresh live config so ticket engine uses new prices immediately
   window.loadConfig?.();
@@ -518,7 +518,7 @@ export function restoreFromPriceLog(entryId){
     scope:entry.scope,
     cambios:cambiosRestore
   });
-  sd(data);
+  if(!sd(data))return;
   window.loadConfig?.();window.buildTicketUI?.();window.upd?.();
   renderPriceTerminal();
   renderPriceLog();

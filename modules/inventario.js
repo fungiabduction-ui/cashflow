@@ -428,18 +428,18 @@ export function registrarIngreso(){
   const id=newIngresoId();
   const ts=new Date().toISOString();
 
-  // Crear lote
-  const lotes=getLotes();
-  if(!lotes[prod])lotes[prod]=[];
+  // Lote + ingreso en un solo sd(): si falla, no queda un lote sin su ingreso
+  const d=ld();
+  if(!d.lotes)d.lotes={};
+  if(!d.lotes[prod])d.lotes[prod]=[];
   const loteId=id+'-L1';
-  lotes[prod].push({id:loteId,ingreso_id:id,fecha:ts,qty_inicial:qty,qty_restante:qty,
+  d.lotes[prod].push({id:loteId,ingreso_id:id,fecha:ts,qty_inicial:qty,qty_restante:qty,
     costo_unitario:costo,proveedor:prov,nota});
-  saveLotes(lotes);
-
-  // Guardar ingreso
   const ing={id,fecha:ts,fecha_display:d2s(fecha)+' '+ts.substring(11,16),
     prod_id:prod,qty,costo_unitario:costo,total:qty*costo,proveedor:prov,nota,lote_id:loteId};
-  saveIngreso(ing);
+  if(!d.ingresos)d.ingresos=[];
+  d.ingresos.push(ing);
+  if(!sd(d))return;
 
   // Mov
   addStockMov({fecha:ts,tipo:'S-TICKET',prodId:prod,

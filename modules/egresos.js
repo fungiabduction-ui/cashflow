@@ -3,7 +3,7 @@ import { sN } from '../ui/notif.js';
 import { fv, fi, hoy, d2s, d2m, mL, mLong, pn, trunc, addMon } from '../core/formatters.js';
 import { nEId } from '../core/ids.js';
 
-export function sE(e){const d=ld();if(!d.egresos)d.egresos=[];d.egresos.push(e);sd(d);}
+export function sE(e){const d=ld();if(!d.egresos)d.egresos=[];d.egresos.push(e);return sd(d);}
 
 export function updEgreso(){
   const monto=parseFloat(document.getElementById('e-monto').value)||0;const cuotas=Math.max(1,parseInt(document.getElementById('e-cuotas').value)||1);
@@ -26,7 +26,7 @@ export function generarEgreso(){
   tk+=`\n\n━━━━━━━━━━━━━━━━━━━━━\n💰 Impacto en caja: -${fv(impacto)}`;
   if(cuotasN>1)tk+=`\nCuotas restantes: ${resta}\nFinaliza: ${finaliza}`;else tk+=`\nFinaliza: ${addMon(mes,0)}`;
   const egreso={id,fecha,fechaDisplay:fd,mesActual:mes,concepto,montoTotal:monto,cuotaBase:base,ultimaCuota:ultima,impactoCaja:impacto,cuotasTotales:cuotasN,cuotasRestantes:resta,finaliza,medio,obs:obs||null,ticketText:tk};
-  sE(egreso);window.rfM?.();rEH();rES();window.renderDash?.();document.getElementById('e-tkOut').textContent=tk;document.getElementById('e-outA').style.display='block';document.getElementById('e-outA').scrollIntoView({behavior:'smooth'});sN(`✓ ${id} registrado`);window.uhd?.();
+  if(!sE(egreso))return;window.rfM?.();rEH();rES();window.renderDash?.();document.getElementById('e-tkOut').textContent=tk;document.getElementById('e-outA').style.display='block';document.getElementById('e-outA').scrollIntoView({behavior:'smooth'});sN(`✓ ${id} registrado`);window.uhd?.();
 }
 
 export function limpiarEgr(){['e-concepto','e-monto','e-obs'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('e-fecha').value=hoy();document.getElementById('e-cuotas').value='1';document.getElementById('e-preview').style.display='none';document.getElementById('e-outA').style.display='none';}

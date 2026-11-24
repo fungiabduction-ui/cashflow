@@ -6,13 +6,15 @@ import { getProductos } from './productos.js';
 
 let showTotalsRow = false;
 
-export function sO(o){const d=ld();d.orders.push(o);sd(d);window.updateClientesDatalist?.();}
+export function sO(o){const d=ld();d.orders.push(o);const ok=sd(d);window.updateClientesDatalist?.();return ok;}
 
 export function confirmarOrden(id){
-  const d=ld();const o=(d.orders||[]).find(x=>x.id===id);if(!o)return;
+  const d=ld();const o=(d.orders||[]).find(x=>x.id===id);if(!o)return false;
   o.estado='confirmada';o.fechaConfirmacion=new Date().toISOString();
-  sd(d);window.rfM?.();rH();rS();window.renderDash?.();window.renderDashFlowChart?.();window.uhd?.();
+  if(!sd(d))return false;
+  window.rfM?.();rH();rS();window.renderDash?.();window.renderDashFlowChart?.();window.uhd?.();
   sN('✓ '+id+' — CONFIRMADA');
+  return true;
 }
 
 export function anularByIdModal(){window.showInputModal?.('🟢 Anular Venta por ID','ID de la venta (ej: V-202603-0001):',true,'uppercase',function(raw){if(!raw)return;const id=raw.toUpperCase();const o=gO().find(x=>x.id===id);if(!o){sN(`${id} no encontrado`,true);return;}if(!confirm(`¿Anular ${id}?\n${o.fechaDisplay} — ${fv(o.totales?.totalGeneral||0)}`))return;dO(id);window.rfM?.();rH();rS();window.renderDash?.();sN(`${id} anulada`);window.uhd?.();window.clM?.();});}
@@ -375,6 +377,7 @@ export function saveEditVenta(id){
   o.totales={...o.totales,totalGeneral:nuevoTotal,totalUSDT:payment.total_usdt,payment};
   const costo=o.costo||0;
   o.margen=nuevoTotal>0?parseFloat(((nuevoTotal-costo)/nuevoTotal*100).toFixed(1)):0;
-  sd(d);window.rfM?.();rH();rS();window.renderDash?.();window.clM?.();sN(`✓ ${id} actualizada`);window.uhd?.();window.updateClientesDatalist?.();
+  if(!sd(d))return; // no se guardó: el modal queda abierto con lo editado
+  window.rfM?.();rH();rS();window.renderDash?.();window.clM?.();sN(`✓ ${id} actualizada`);window.uhd?.();window.updateClientesDatalist?.();
   delete window._editLineas;
 }

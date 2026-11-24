@@ -301,7 +301,7 @@ export function abrirEditarLista(lid){
       }
     }
     d.listasPrecios=listas;
-    sd(d); // un solo write: lista + productos + log
+    if(!sd(d))return; // un solo write: lista + productos + log (si falla, el modal queda abierto)
     if(!esNueva){window.loadConfig?.();window.buildTicketUI?.();window.upd?.();}
     window.clM?.();renderListasPrecios();renderAsignacionPrecios();window.renderWAText?.();
     window.renderPriceTerminal?.();window.renderPriceLog?.();window.renderCalcStatus?.();
